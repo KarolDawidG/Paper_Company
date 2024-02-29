@@ -1,5 +1,5 @@
 # System ERP dla Papier Company
-![Logo](/img/img/logo.png)
+![Logo](/img/logo.png)
 ## Wprowadzenie
 Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial "The Office". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość.
 
