@@ -56,7 +56,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFu
   const id:string = req.params.id;
 
   try {
-    const [userInfo]:any = await UsersRecord.selectById(id);
+    const [userInfo]:any = await UsersRecord.selectById([id]);
     return res.status(STATUS_CODES.SUCCESS).json(userInfo);
   } catch (error:any) {
     logger.error(error.message);

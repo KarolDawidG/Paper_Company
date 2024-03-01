@@ -28,8 +28,8 @@ router.post("/", async (req: Request, res: Response) => {
 
   try {
     const userExists = {
-      emailExists: await UsersRecord.selectByEmail(email),
-      loginExists: await UsersRecord.selectByUsername(username),
+      emailExists: await UsersRecord.selectByEmail([email]),
+      loginExists: await UsersRecord.selectByUsername([username]),
     };
 
     if (Array.isArray(userExists.emailExists) && userExists.emailExists.length > 0) {

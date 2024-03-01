@@ -62,7 +62,7 @@ class UsersRecord implements IUserRecord {
     });
   }
 
-  static async delete(id: string): Promise<IQueryResult>  {
+  static async delete(id: string) {
     return performTransaction(async (connection) => {
       const result = await connection.execute(DELETE, [id]);
       return result;
@@ -101,17 +101,17 @@ class UsersRecord implements IUserRecord {
     return results.map((obj: any) => new UsersRecord(obj));
   }
 
-  static async selectByEmail(email:string) {
+  static async selectByEmail(email:string[]) {
     const [results] = await pool.execute(SELECT_BY_EMAIL, email);
     return results;
   }
 
-  static async selectById(id:string) {
+  static async selectById(id:string[]) {
     const [results] = await pool.execute(SELECT_BY_ID, id);
     return results;
   }
 
-  static async selectByUsername(username: string) {
+  static async selectByUsername(username: string[]) {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
     return results;
   }

@@ -9,6 +9,7 @@ import {
   queryParameterize,
 } from "../../config/config";
 import middleware from "../../config/middleware";
+
 import {
   SECRET_REFRESH_TOKEN,
   generateRefreshToken,
@@ -24,6 +25,8 @@ router.use(middleware);
 router.use(errorHandler);
 
 router.post("/", limiterLogin, async (req: Request, res: Response) => {
+  let idUser: string | undefined; // Deklaracja zmiennej poza blokiem try
+
   try {
     const user: string = req.body.username;
     const password: string = req.body.password;
@@ -38,26 +41,48 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         .status(STATUS_CODES.BAD_REQUEST)
         .send(MESSAGES.SQL_INJECTION_ALERT);
     }
-    console.log('test');
-    const ifUser: RowDataPacket[] = (await UsersRecord.selectByUsername(user)) as RowDataPacket[];
+    
+    const ifUser = await UsersRecord.selectByUsername([user]);  
+
+    if (Array.isArray(ifUser)) {
       if (ifUser.length === 0) {
+        // Obsługa, gdy ifUser jest pustą tablicą
         return res
           .status(STATUS_CODES.UNAUTHORIZED)
           .send(MESSAGES.UNPROCESSABLE_ENTITY);
       }
-      console.log(ifUser);
+    
+      // Użycie type guard, aby sprawdzić, czy ifUser[0] zawiera pole id
+      if ('id' in ifUser[0]) {
+        idUser = ifUser[0]?.id; // Przypisanie wartości do zmiennej idUser
+        
+      } else {
+        console.log("Brak pola 'id' w obiekcie użytkownika");
+        return res
+          .status(STATUS_CODES.UNAUTHORIZED)
+          .send(MESSAGES.UNPROCESSABLE_ENTITY);
+      }
+    } else {
+      console.log("Nie otrzymano oczekiwanej tablicy użytkowników");
+    }
+    
 
-    const idUser: any = ifUser[0]?.id;
-    console.log(idUser)
+    // Sprawdzenie, czy idUser ma wartość przed jego użyciem
     if (!idUser) {
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
         .send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
 
-    if (!ifUser[0].is_active) {
-      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
+    if (Array.isArray(ifUser) && ifUser.length > 0 && 'is_active' in ifUser[0]) {
+      if (!ifUser[0].is_active) {
+        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
+      }
+    } else {
+      // Obsługa przypadku, gdy ifUser nie jest tablicą lub nie zawiera odpowiednich danych
+      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
+    
 
     const hashedPassword: string = ifUser[0].password;
     const isPasswordValid: boolean = await bcrypt.compare(

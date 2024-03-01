@@ -36,7 +36,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   }
 
   try {
-    const [user]: any = await UsersRecord.selectById(id);
+    const [user]: any = await UsersRecord.selectById([id]);
     oldPassword = user?.password || '';
 
     const secret = jwt_secret + oldPassword;

@@ -25,7 +25,7 @@ router.post("/", async (req: Request, res: Response) => {
   let passwordReset: string = "";
 
   try {
-    const [emailExists]:any = await UsersRecord.selectByEmail(email);
+    const [emailExists]:any = await UsersRecord.selectByEmail([email]);
     if (!emailExists || emailExists.length === 0) {
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.EMAIL_SUCCESS);
     }
