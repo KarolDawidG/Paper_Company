@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Button, TextField, Box } from '@mui/material';
 import axios from 'axios';
 
-const Register = () => {
+const register = () => {
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -21,8 +21,10 @@ const Register = () => {
   const handleSubmit = async (event: React.FormEvent)  => {
     event.preventDefault();
     try {
+      // Tymczasowy URL - zmień na odpowiedni endpoint API
       const response = await axios.post('http://localhost:3001/register', userData);
       if (response.status === 200) {
+        // Sukces rejestracji, można przekierować lub wyświetlić komunikat
         console.log('Rejestracja udana:', response.data);
       }
     } catch (error) {
@@ -79,4 +81,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default register;

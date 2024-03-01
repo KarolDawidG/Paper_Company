@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import LoginModal from './components/auth/LoginModal';
-import RegisterModal from './components/auth/RegisterModal';
+import LoginModal from './components/auth/login/LoginModal';
+import RegisterModal from './components/auth/register/RegisterModal';
 import { Button, Typography, Container, Box } from '@mui/material';
 
 export default function Home() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false); 
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   return (
     <Container>
@@ -28,7 +28,7 @@ export default function Home() {
         </Box>
       </Box>
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
-      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} />
+      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} /> {/* Dodaj modal rejestracji */}
     </Container>
   );
 }
