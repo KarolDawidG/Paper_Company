@@ -1,62 +1,107 @@
-import Link from 'next/link';
-import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine, FaShieldAlt } from 'react-icons/fa';
-import { FiCompass } from 'react-icons/fi'; 
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer, IconButton, useTheme, useMediaQuery } from '@mui/material';
+import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine, FaShieldAlt } from 'react-icons/fa';
+import { FiCompass, FiMenu } from 'react-icons/fi';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
-    const isActive = (path:any) => router.pathname === path;
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const theme = useTheme();
+    const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+    const isActive = (path: any) => router.pathname === path;
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const menuItems = [
+        { name: 'Dashboard', path: '/dashboard', icon: <FiCompass />, color: 'blue' },
+        { name: 'Sales and Orders', path: '/sales-and-orders', icon: <FaShoppingCart />, color: 'green' },
+        { name: 'Warehouse', path: '/warehouse', icon: <FaWarehouse />, color: 'orange' },
+        { name: 'Accounting', path: '/accounting', icon: <FaRegMoneyBillAlt />, color: 'red' },
+        { name: 'Human Resources', path: '/human-resources', icon: <FaUserTie />, color: 'purple' },
+        { name: 'Data Analysis', path: '/data-analysis', icon: <FaChartLine />, color: 'pink' },
+        { name: 'Security', path: '/security', icon: <FaShieldAlt />, color: 'gray' },
+    ];
+
+    const drawerWidth = isLargeScreen ? 280 : 240;
+
+    const drawerContent = (
+        <List>
+            {menuItems.map((item, index) => (
+                <ListItemButton
+                    key={index}
+                    sx={{
+                        bgcolor: isActive(item.path) ? item.color : "inherit",
+                        '&:hover': {
+                            bgcolor: item.color,
+                            color: 'white',
+                            '.MuiListItemIcon-root': {
+                                color: 'white',
+                            },
+                        },
+                        color: isActive(item.path) ? 'white' : 'inherit',
+                        '.MuiListItemIcon-root': {
+                            color: isActive(item.path) ? 'white' : 'inherit',
+                        },
+                        textDecoration: 'none',
+                    }}
+                    onClick={() => {
+                        router.push(item.path);
+                        if (mobileOpen) setMobileOpen(false);
+                    }}
+                >
+                    <ListItemIcon sx={{ minWidth: 40 }}>
+                        {React.cloneElement(item.icon, {
+                            size: isActive(item.path) ? 26 : 18,
+                        })}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                </ListItemButton>
+            ))}
+        </List>
+    );
+
     return (
-        <div className='flex'>
-            <div className='fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between'>
-                <div className='flex flex-col items-center space-y-2'>
-                    
-                    <Link href='/dashboard'>
-                        <div title="Dashboard" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/dashboard') ? 'bg-yellow-500 text-white' : 'bg-green-600 text-white'}`}>
-                            <FiCompass size={isActive('/dashboard') ? 26 : 18}/>
-                        </div>
-                    </Link>
-
-                    <Link href='/sales-and-orders'>
-                    <div title="Sales and Orders" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/sales-and-orders') ? 'bg-yellow-500 text-white' : 'bg-indigo-700 text-white'}`}>
-                            <FaShoppingCart size={isActive('/sales-and-orders') ? 26 : 18}/>
-                        </div>
-                    </Link>
-
-                    <Link href='/warehouse'>
-                        <div title="Warehouse" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/warehouse') ? 'bg-yellow-500 text-white' : 'bg-blue-700 text-white'}`}>                           
-                        <FaWarehouse size={isActive('/warehouse') ? 26 : 18}/>
-                        </div>
-                    </Link>
-                    
-                    <Link href='/accounting'>
-                        <div title="Accountingders" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/accounting') ? 'bg-yellow-500 text-white' : 'bg-blue-400 text-white'}`}>                         
-                        <FaRegMoneyBillAlt size={isActive('/accounting') ? 26 : 18}/>
-                        </div>
-                    </Link>
-
-                    <Link href='/human-resources'>
-                        <div title="Human Resources" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/human-resources') ? 'bg-yellow-500 text-white' : 'bg-yellow-700 text-white'}`}>
-                            <FaUserTie size={isActive('/human-resources') ? 26 : 18}/>
-                        </div>
-                    </Link>
-
-                    <Link href='/data-analysis'>
-                        <div title="Data Analysis" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/data-analysis') ? 'bg-yellow-500 text-white' : 'bg-red-700 text-white'}`}>
-                            <FaChartLine size={isActive('/data-analysis') ? 26 : 18}/>
-                        </div>
-                    </Link>
-
-                    <Link href='/security'>
-                        <div title="Security" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/security') ? 'bg-yellow-500 text-white' : 'bg-gray-700 text-white'}`}>
-                            <FaShieldAlt size={isActive('/security') ? 26 : 18}/>
-                        </div>
-                    </Link>
-                    
-                </div>
-            </div>
-            <main className='ml-20 w-full'>{children}</main>
-        </div>
-    )
-}
+        <Box display="flex">
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}
+            >
+                <FiMenu />
+            </IconButton>
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true, 
+                }}
+                sx={{
+                    display: { xs: 'block', md: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
+            <Drawer
+                variant="permanent"
+                sx={{
+                    display: { xs: 'none', md: 'block' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                open
+            >
+                {drawerContent}
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, marginLeft: { md: `${drawerWidth}px` } }}>
+                {children}
+            </Box>
+        </Box>
+    );
+};

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { decodeJwt } from 'jose';
+import { TextField, Button, Grid, Typography } from '@mui/material';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -39,26 +40,40 @@ const Login = () => {
     }
   };
 
+  
   return (
-    <div>
+    <Grid container spacing={2} direction="column" alignItems="center" justifyContent="center">
+      <Typography variant="h5">Logowanie</Typography>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Login:</label>
-        <input
-          id="login"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Log In</button>
+        <Grid item>
+          <TextField
+            id="login"
+            label="Login"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <Button type="submit" variant="contained" color="primary">
+            Log In
+          </Button>
+        </Grid>
       </form>
-    </div>
+    </Grid>
   );
 };
 
