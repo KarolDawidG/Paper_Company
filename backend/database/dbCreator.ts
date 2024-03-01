@@ -1,12 +1,13 @@
-const {
+import { Pool, RowDataPacket } from "mysql2/promise";
+import {
   insertRoot,
   findRoot,
   createAccounts,
   deleteNotActiveAccount,
   event_schedulerON,
-} = require("./querrys");
+} from "./querrys";
 
-const createAccountsTable = async (pool) => {
+const createAccountsTable = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(createAccounts);
   } catch (err) {
@@ -14,7 +15,7 @@ const createAccountsTable = async (pool) => {
   }
 };
 
-const deleteAccount = async (pool) => {
+const deleteAccount = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(deleteNotActiveAccount);
   } catch (err) {
@@ -22,7 +23,7 @@ const deleteAccount = async (pool) => {
   }
 };
 
-const eventSchedulerON = async (pool) => {
+const eventSchedulerON = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(event_schedulerON);
   } catch (err) {
@@ -30,21 +31,22 @@ const eventSchedulerON = async (pool) => {
   }
 };
 
-const createRoot = async (pool) => {
+const createRoot = async (pool: Pool): Promise<void> => {
   try {
     const [rows] = await pool.query(findRoot);
-    if (rows.length === 0) {
+    // Sprawdzenie, czy wynik jest tablicą RowDataPacket
+    if (Array.isArray(rows) && (rows as RowDataPacket[]).length === 0) {
       await pool.query(insertRoot);
-      await console.log("User root (pass: Admin12#) has been adedd.");
+      console.log("User root (pass: Admin12#) has been added.");
     } else {
-      await console.log("User root status: 1");
+      console.log("User root status: 1");
     }
   } catch (err) {
     console.error(err);
   }
 };
 
-module.exports = {
+export {
   createAccountsTable,
   createRoot,
   deleteAccount,

@@ -1,13 +1,16 @@
-const { pool } = require("./pool");
-require('dotenv').config();
-const nameDB = process.env.NAME_DB;
+import { Pool, RowDataPacket, FieldPacket } from "mysql2/promise";
+import 'dotenv/config';
+import { pool } from "./pool";
 
-const checkDatabaseExists = async (nameDB) => {
+const nameDB = process.env.NAME_DB as string;
+
+const checkDatabaseExists = async (pool: Pool, nameDB: string): Promise<boolean> => {
   try {
     const [rows] = await pool.query(
       `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`, 
       [nameDB]
-    );
+    ) as [RowDataPacket[], FieldPacket[]];
+
     return rows.length > 0;
   } catch (err) {
     console.error(`Error checking database "${nameDB}":`, err);
@@ -15,9 +18,9 @@ const checkDatabaseExists = async (nameDB) => {
   }
 };
 
-const createDatabaseIfNotExists = async () => {
+const createDatabaseIfNotExists = async (): Promise<void> => {
   try {
-    const exists = await checkDatabaseExists(nameDB);
+    const exists = await checkDatabaseExists(pool, nameDB);
     if (!exists) {
       await pool.query(`CREATE DATABASE IF NOT EXISTS \`${nameDB}\``);
       console.log(`Database "${nameDB}" has been created.`);
@@ -29,7 +32,6 @@ const createDatabaseIfNotExists = async () => {
   }
 };
 
-
-module.exports = {
+export {
   createDatabaseIfNotExists,
 };

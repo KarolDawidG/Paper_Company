@@ -1,19 +1,17 @@
-const { pool } = require("./pool");
-require('dotenv').config();
+import 'dotenv/config';
+import { pool } from "./pool";
 
 const nameDB = process.env.NAME_DB;
 
-const {
+import {
   createAccountsTable,
   createRoot,
   deleteAccount,
   eventSchedulerON,
-} = require("./dbCreator");
-
+} from "./dbCreator";
 
 const initializeDatabase = async () => {
   try {
-    
     await pool.query(`USE ${nameDB}`);
     const tables = [
       createAccountsTable,
@@ -24,12 +22,10 @@ const initializeDatabase = async () => {
     for await (const table of tables) {
       await table(pool);
     }
-    console.log("Database started correctly");
+    console.log("Database initialized successfully.");
   } catch (err) {
     console.error(err);
   }
 };
 
-module.exports = {
-  initializeDatabase,
-};
+export { initializeDatabase };
