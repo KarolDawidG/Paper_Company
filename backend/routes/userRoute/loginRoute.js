@@ -39,7 +39,7 @@ router.post("/", limiterLogin, async (req, res) => {
 
     const ifUser = await UsersRecord.selectByUsername([user]);
     const idUser = ifUser[0].id;
-    
+
     if (ifUser.length === 0) {
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
@@ -64,14 +64,16 @@ router.post("/", limiterLogin, async (req, res) => {
 
     const token = generateToken(user, rola);
     const refreshToken = generateRefreshToken(user, rola);
-    
+
     await UsersRecord.updateRefreshTokenById([refreshToken, idUser]);
     
     return res.status(STATUS_CODES.SUCCESS).json({
       token: token,
       refreshToken: refreshToken,
+      idUser: idUser,
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
+    
   } catch (error) {
     logger.error(error.message);
     return res

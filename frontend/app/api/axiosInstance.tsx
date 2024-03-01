@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { refreshAccessToken } from './authService';
+import { base_URL } from '../components/utils/links';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: base_URL,
 });
 
 axiosInstance.interceptors.request.use(

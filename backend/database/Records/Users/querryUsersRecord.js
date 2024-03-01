@@ -15,7 +15,7 @@ const SELECT_ALL = "SELECT * FROM accounts";
 
 const SELECT_BY_EMAIL = "SELECT * FROM accounts WHERE email = ?";
 
-const SELECT_BY_ID = "SELECT * FROM accounts WHERE id = ?";
+const SELECT_BY_ID = "SELECT username, email, created_at, role FROM accounts WHERE id = ?";
 
 const SELECT_BY_USERNAME =
   "SELECT id, is_active, role, password FROM accounts WHERE username = ?";

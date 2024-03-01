@@ -43,4 +43,3 @@ app.get("/", (req, res) => {
     console.error("Initialization failed:", err);
   }
 })();
-

@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:3001';
+import { base_URL } from '../components/utils/links';
 
 export const refreshAccessToken = async () => {
   try {
@@ -10,7 +9,7 @@ export const refreshAccessToken = async () => {
       return null;
     }
 
-    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+    const response = await axios.post(`${base_URL}auth/refresh`, { refreshToken });
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
       return response.data.token;

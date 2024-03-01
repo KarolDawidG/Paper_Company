@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from '../app/api/axiosInstance'; 
+import { formatDate } from "@/app/components/helpers/formDate";
+import { UserData } from "@/app/components/interface/userDataInterface";
 
-interface UserData {
-    username: string;
-    email: string;
-    role: string;
-    created_at: string,
-  }
-  
 const Dashboard = () => {
     const [userData, setUserData] = useState<UserData | null>(null);
-    const formatDate = (dateString: string): string => {
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric',
-            month: 'long', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit' 
-        };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
-  
 
     useEffect(() => {
         const idUser = localStorage.getItem('idUser');
@@ -41,7 +25,7 @@ const Dashboard = () => {
             <h1 className="text-2xl font-bold text-center mb-4">Dashboard</h1>
             {userData && (
                 <div className="space-y-4">
-                    <p>Dane użytkownika:</p>
+                    <p>User data:</p>
                     <ul>
                         <li>Username: {userData.username}</li>
                         <li>E-mail: {userData.email}</li>

@@ -52,4 +52,17 @@ router.delete("/:id", verifyToken, async (req, res, next) => {
   }
 });
 
+router.get("/:id", verifyToken, async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const [userInfo] = await UsersRecord.selectById([id]);
+    return res.status(200).json(userInfo);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .send("Unknown server error. Please contact your administrator.");
+  }
+});
+
 module.exports = router;
