@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 const {createDatabaseIfNotExists} = require("./database/createDatabaseIfNotExists");
 const { initializeDatabase } = require("./database/initializeDatabase");
 const { limiter, errorHandler } = require("./config/config");
@@ -10,6 +10,8 @@ const adminRoute = require("./routes/adminRoute/adminRoute");
 const regRoute = require("./routes/userRoute/registerRoute");
 const logoutRoute = require("./routes/userRoute/logoutRoute");
 const usersRoute = require("./routes/adminRoute/usersRoute");
+const resetRoute = require("./routes/userRoute/resetRoute");
+const forgotRoute = require("./routes/userRoute/forgotPassRoute");
 
 const MESSAGES = require("./config/messages");
 const STATUS_CODES = require("./config/status-codes");
@@ -19,7 +21,8 @@ app.use("/auth", logRoute);
 app.use("/admin", adminRoute);
 app.use("/logout", logoutRoute);
 app.use("/users", usersRoute);
-
+app.use("/reset", resetRoute);
+app.use("/forgot", forgotRoute);
 
 app.use(middleware);
 app.use(limiter);
@@ -40,3 +43,4 @@ app.get("/", (req, res) => {
     console.error("Initialization failed:", err);
   }
 })();
+
