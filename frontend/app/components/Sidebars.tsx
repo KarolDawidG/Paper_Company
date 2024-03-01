@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer } from '@mui/material';
+import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine, FaShieldAlt } from 'react-icons/fa';
-import { FiCompass } from 'react-icons/fi';
+import { FiCompass, FiMenu } from 'react-icons/fi';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const theme = useTheme();
+    const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     const isActive = (path: any) => router.pathname === path;
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
     const menuItems = [
         { name: 'Dashboard', path: '/dashboard', icon: <FiCompass />, color: 'blue' },
@@ -18,51 +26,80 @@ export const Sidebars = ({ children }: { children: React.ReactNode }) => {
         { name: 'Security', path: '/security', icon: <FaShieldAlt />, color: 'gray' },
     ];
 
-    const handleNavigation = (path: string) => {
-        router.push(path);
-    };
+    const drawerWidth = isLargeScreen ? 280 : 240;
+
+    const drawerContent = (
+        <List>
+            {menuItems.map((item, index) => (
+                <ListItemButton
+                    key={index}
+                    sx={{
+                        bgcolor: isActive(item.path) ? item.color : "inherit",
+                        '&:hover': {
+                            bgcolor: item.color,
+                            color: 'white',
+                            '.MuiListItemIcon-root': {
+                                color: 'white',
+                            },
+                        },
+                        color: isActive(item.path) ? 'white' : 'inherit',
+                        '.MuiListItemIcon-root': {
+                            color: isActive(item.path) ? 'white' : 'inherit',
+                        },
+                        textDecoration: 'none',
+                    }}
+                    onClick={() => {
+                        router.push(item.path);
+                        if (mobileOpen) setMobileOpen(false);
+                    }}
+                >
+                    <ListItemIcon sx={{ minWidth: 40 }}>
+                        {React.cloneElement(item.icon, {
+                            size: isActive(item.path) ? 26 : 18,
+                        })}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                </ListItemButton>
+            ))}
+        </List>
+    );
 
     return (
         <Box display="flex">
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}
+            >
+                <FiMenu />
+            </IconButton>
             <Drawer
-                variant="permanent"
-                open
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true, 
+                }}
                 sx={{
-                    width: 240,
-                    '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box' },
+                    display: { xs: 'block', md: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                 }}
             >
-                <List>
-                    {menuItems.map((item, index) => (
-                        <ListItemButton
-                            key={index}
-                            sx={{
-                                bgcolor: isActive(item.path) ? item.color : "inherit",
-                                '&:hover': {
-                                    bgcolor: item.color,
-                                    color: 'white',
-                                    '.MuiListItemIcon-root': {
-                                        color: 'white',
-                                    },
-                                },
-                                color: isActive(item.path) ? 'white' : 'inherit',
-                                '.MuiListItemIcon-root': {
-                                    color: isActive(item.path) ? 'white' : 'inherit',
-                                }
-                            }}
-                            onClick={() => handleNavigation(item.path)}
-                        >
-                            <ListItemIcon sx={{ minWidth: 40 }}>
-                                {React.cloneElement(item.icon, {
-                                    size: isActive(item.path) ? 26 : 18,
-                                })}
-                            </ListItemIcon>
-                            <ListItemText primary={item.name} />
-                        </ListItemButton>
-                    ))}
-                </List>
+                {drawerContent}
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Drawer
+                variant="permanent"
+                sx={{
+                    display: { xs: 'none', md: 'block' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                open
+            >
+                {drawerContent}
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, marginLeft: { md: `${drawerWidth}px` } }}>
                 {children}
             </Box>
         </Box>

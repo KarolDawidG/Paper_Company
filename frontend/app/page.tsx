@@ -28,7 +28,7 @@ export default function Home() {
         </Box>
       </Box>
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
-      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} /> {/* Dodaj modal rejestracji */}
+      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} />
     </Container>
   );
 }

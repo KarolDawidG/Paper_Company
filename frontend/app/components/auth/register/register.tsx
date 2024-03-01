@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; 
 import { Button, TextField, Box } from '@mui/material';
 import axios from 'axios';
 
-const register = () => {
+const Register = () => {
+  const router = useRouter();
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -21,11 +22,12 @@ const register = () => {
   const handleSubmit = async (event: React.FormEvent)  => {
     event.preventDefault();
     try {
-      // Tymczasowy URL - zmień na odpowiedni endpoint API
+      
       const response = await axios.post('http://localhost:3001/register', userData);
       if (response.status === 200) {
-        // Sukces rejestracji, można przekierować lub wyświetlić komunikat
+        
         console.log('Rejestracja udana:', response.data);
+        setTimeout(() => router.push('/click-link'), 1000);
       }
     } catch (error) {
       console.error('Błąd rejestracji:', error);
@@ -81,4 +83,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;
