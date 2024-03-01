@@ -8,9 +8,9 @@ export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const isActive = (path:any) => router.pathname === path;
     return (
-        <div className='flex'>
-            <div className='fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between'>
-                <div className='flex flex-col items-center space-y-2'>
+        <div>
+            <div>
+                <div>
                     
                     <Link href='/dashboard'>
                         <div title="Dashboard" className={`icon-container p-3 rounded-lg cursor-pointer ${isActive('/dashboard') ? 'bg-yellow-500 text-white' : 'bg-green-600 text-white'}`}>
