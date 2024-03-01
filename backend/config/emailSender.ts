@@ -1,22 +1,23 @@
-const nodemailer = require("nodemailer");
-require('dotenv').config();
+import nodemailer from "nodemailer";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const createTransporter = () => {
   return nodemailer.createTransport({
-    service: process.env.service,
+    service: process.env.service!,
     auth: {
-      user: process.env.user,
-      pass: process.env.pass,
+      user: process.env.user!,
+      pass: process.env.pass!,
     },
   });
 };
 
 
-const sendResetPasswordEmail = async (email, username, link) => {
+const sendResetPasswordEmail = async (email:string, username:string, link:string) => {
   const transporter = createTransporter();
 
   const mailOptions = {
-    from: user,
+    from: process.env.user,
     to: email,
     subject: `Password Reset`,
     text: `
@@ -36,11 +37,11 @@ const sendResetPasswordEmail = async (email, username, link) => {
   await transporter.sendMail(mailOptions);
 };
 
-const sendRegisterEmail = async (email, username, link) => {
+const sendRegisterEmail = async (email:string, username:string, link:string) => {
   const transporter = createTransporter();
 
   const mailRegisOptions = {
-    from: user,
+    from: process.env.user,
     to: email,
     subject: `Welcome!`,
     text: `
@@ -61,12 +62,12 @@ const sendRegisterEmail = async (email, username, link) => {
   await transporter.sendMail(mailRegisOptions);
 };
 
-const sendContactEmail = async (name, email, subject, message) => {
+const sendContactEmail = async (name:string, email:string, subject:string, message:string) => {
   const transporter = createTransporter();
 
   const mailContactOptions = {
     from: email,
-    to: user,
+    to: process.env.user,
     subject: `Message from ${email}: ${subject}`,
     text: 
   `
@@ -80,4 +81,4 @@ const sendContactEmail = async (name, email, subject, message) => {
   await transporter.sendMail(mailContactOptions);
 };
 
-module.exports = { sendResetPasswordEmail, sendRegisterEmail, sendContactEmail};
+export { sendResetPasswordEmail, sendRegisterEmail, sendContactEmail};

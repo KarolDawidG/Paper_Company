@@ -1,4 +1,4 @@
-const MESSAGES = {
+const MESSAGES: Record<string, string> = {
   // Successful operations
   SERVER_STARTED: "Serwer pomyślnie uruchomiony na porcie",
   SUCCESSFUL_OPERATION: "Operacja zakończona sukcesem.",
@@ -35,4 +35,4 @@ const MESSAGES = {
   AUTHORIZATION_LVL: "Poziom autoryzacji: ",
 };
 
-module.exports = MESSAGES;
+export default MESSAGES;
