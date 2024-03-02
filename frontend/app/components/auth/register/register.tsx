@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation'; 
 import { Button, TextField, Box } from '@mui/material';
 import axios from 'axios';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
+  const REACT_APP_SITE_KEY:string = process.env.NEXT_PUBLIC_REACT_APP_SITE_KEY as string;
+  const BACKEND:string = process.env.NEXT_PUBLIC_BACKEND as string;
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [isHuman, setIsHuman] = useState(false);
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
   const router = useRouter();
+
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -19,11 +26,29 @@ const Register = () => {
     }));
   };
 
+  const onCaptchaChange = async (token: string | null) => {
+    if (token){
+      try {
+        const responseCaptcha = await axios.post(`${BACKEND}/cap`, {token});
+        if (responseCaptcha.data === "Human 👨 👩" ) {
+          setCaptchaValue(token);
+          setIsHuman(true);
+          console.log('git')
+        } else {
+          setIsHuman(false)
+          console.log('nie git')
+        }
+      } catch(error:any) {
+        console.error(error)
+      }
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent)  => {
     event.preventDefault();
     try {
       
-      const response = await axios.post('http://localhost:3001/register', userData);
+      const response = await axios.post(`${BACKEND}/register`, userData);
       if (response.status === 200) {
         
         console.log('Rejestracja udana:', response.data);
@@ -71,11 +96,19 @@ const Register = () => {
         value={userData.password}
         onChange={handleChange}
       />
+
+      <ReCAPTCHA
+        ref={captchaRef}
+        sitekey={REACT_APP_SITE_KEY}
+        onChange={onCaptchaChange}
+      />
+
       <Button
         type="submit"
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
+        disabled={!isHuman} 
       >
         Zarejestruj się
       </Button>
