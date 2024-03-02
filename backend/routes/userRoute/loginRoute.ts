@@ -1,5 +1,4 @@
 import express, { Request, Response, Router } from "express";
-import { RowDataPacket } from "mysql2/promise";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
@@ -25,7 +24,7 @@ router.use(middleware);
 router.use(errorHandler);
 
 router.post("/", limiterLogin, async (req: Request, res: Response) => {
-  let idUser: string | undefined; // Deklaracja zmiennej poza blokiem try
+  let idUser: string | undefined;
 
   try {
     const user: string = req.body.username;
@@ -46,15 +45,12 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 
     if (Array.isArray(ifUser)) {
       if (ifUser.length === 0) {
-        // Obsługa, gdy ifUser jest pustą tablicą
         return res
           .status(STATUS_CODES.UNAUTHORIZED)
           .send(MESSAGES.UNPROCESSABLE_ENTITY);
       }
-    
-      // Użycie type guard, aby sprawdzić, czy ifUser[0] zawiera pole id
       if ('id' in ifUser[0]) {
-        idUser = ifUser[0]?.id; // Przypisanie wartości do zmiennej idUser
+        idUser = ifUser[0]?.id;
         
       } else {
         console.log("Brak pola 'id' w obiekcie użytkownika");
@@ -66,8 +62,6 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
       console.log("Nie otrzymano oczekiwanej tablicy użytkowników");
     }
     
-
-    // Sprawdzenie, czy idUser ma wartość przed jego użyciem
     if (!idUser) {
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
@@ -79,7 +73,6 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
       }
     } else {
-      // Obsługa przypadku, gdy ifUser nie jest tablicą lub nie zawiera odpowiednich danych
       return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
     
@@ -106,7 +99,6 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 
     return res.status(STATUS_CODES.SUCCESS).json({
       token: token,
-      refreshToken: refreshToken,
       idUser: idUser,
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
@@ -118,8 +110,12 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
   }
 });
 
-router.post("/refresh", (req: Request, res: Response) => {
-  const refreshToken: string = req.body.refreshToken;
+router.post("/refresh", async (req: Request, res: Response) => {
+  const idUser: string = req.body.idUser;
+
+  const userInfo:any = await UsersRecord.selectTokenById([idUser]);
+  const refreshToken = userInfo[0]?.refresh_token;
+
   if (!refreshToken) {
     return res.status(401).json({ message: MESSAGES.NO_REFRESH_TOKEN });
   }
@@ -129,10 +125,12 @@ router.post("/refresh", (req: Request, res: Response) => {
     }
     const username: string = decoded.user;
     const role: string = decoded.role;
-
     const newToken: string = generateToken(username, role);
     const newRefreshToken: string = generateRefreshToken(username, role);
-    return res.json({ token: newToken, refreshToken: newRefreshToken });
+
+    UsersRecord.updateRefreshTokenById([newRefreshToken, idUser]);
+
+    return res.json({ token: newToken });
   });
 });
 

@@ -36,7 +36,7 @@ router.put("/:user/:role", verifyToken, async (req: Request, res: Response) => {
     return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
   } catch (error:any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error. Please contact your administrator.");
+    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in update.");
   }
 });
 
@@ -48,19 +48,21 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
     return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
   } catch (error:any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error. Please contact your administrator.");
+    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in delete.");
   }
 });
 
 router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const id:string = req.params.id;
 
+
   try {
     const [userInfo]:any = await UsersRecord.selectById([id]);
+
     return res.status(STATUS_CODES.SUCCESS).json(userInfo);
   } catch (error:any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error. Please contact your administrator.");
+    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in get user route.");
   }
 });
 

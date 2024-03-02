@@ -14,6 +14,7 @@ import {
   SELECT_BY_ID,
   SELECT_BY_USERNAME,
   UPDATE_TOKEN_BY_ID,
+  SELECT_TOKEN_BY_ID,
 } from "./querryUsersRecord";
 
 interface IUserRecord {
@@ -113,6 +114,10 @@ class UsersRecord implements IUserRecord {
 
   static async selectByUsername(username: string[]) {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
+    return results;
+  }
+  static async selectTokenById(id:string[]) {
+    const [results] = await pool.execute(SELECT_TOKEN_BY_ID, id);
     return results;
   }
 }

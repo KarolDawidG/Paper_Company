@@ -17,6 +17,8 @@ const SELECT_BY_EMAIL:string = "SELECT * FROM accounts WHERE email = ?";
 
 const SELECT_BY_ID:string = "SELECT username, email, created_at, role FROM accounts WHERE id = ?";
 
+const SELECT_TOKEN_BY_ID:string = "SELECT refresh_token FROM accounts WHERE id = ?";
+
 const SELECT_BY_USERNAME:string =
   "SELECT id, is_active, role, password FROM accounts WHERE username = ?";
 
@@ -31,4 +33,5 @@ export {
   SELECT_BY_ID,
   SELECT_BY_USERNAME,
   UPDATE_TOKEN_BY_ID,
+  SELECT_TOKEN_BY_ID,
 };

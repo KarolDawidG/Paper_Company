@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { RowDataPacket } from "mysql2/promise";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

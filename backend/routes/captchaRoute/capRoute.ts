@@ -4,7 +4,6 @@ import MESSAGES  from "../../config/messages";
 import URL from "../../config/url";
 import middleware from "../../config/middleware";
 import dotenv from "dotenv";
-
 dotenv.config();
 const REACT_APP_SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
 
@@ -14,7 +13,6 @@ router.use(middleware);
 
 router.post("/", async (req: Request, res: Response) => {
   const { token, inputVal } = req.body as { token: string; inputVal: string };
-
   try {
     const response = await axios.post(
       `${URL.RECAPTCHA}${REACT_APP_SECRET_KEY}&response=${token}`

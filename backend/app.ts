@@ -10,6 +10,7 @@ import logoutRoute from "./routes/userRoute/logoutRoute";
 import usersRoute from "./routes/adminRoute/usersRoute";
 import resetRoute from "./routes/userRoute/resetRoute";
 import forgotRoute from "./routes/userRoute/forgotPassRoute";
+import capRoutes from "./routes/captchaRoute/capRoute";
 
 import MESSAGES from "./config/messages";
 import STATUS_CODES from "./config/status-codes";
@@ -24,6 +25,7 @@ app.use("/logout", logoutRoute);
 app.use("/users", usersRoute);
 app.use("/reset", resetRoute);
 app.use("/forgot", forgotRoute);
+app.use("/cap", capRoutes);
 
 app.use(middleware);
 app.use(limiter);
