@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import LoginModal from './components/auth/login/LoginModal';
 import RegisterModal from './components/auth/register/RegisterModal';
 import { Button, Typography, Container, Box } from '@mui/material';
+import logo from '../public/logo.png';
 
 export default function Home() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -12,6 +14,7 @@ export default function Home() {
   return (
     <Container>
       <Box textAlign="center" marginTop={8}>
+      <Image src={logo} alt='Logo Paper Company' width={300} height={300}/>
         <Typography variant="h2" gutterBottom>
           Paper Company
         </Typography>

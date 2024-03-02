@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine, FaShieldAlt } from 'react-icons/fa';
 import { FiCompass, FiMenu } from 'react-icons/fi';
+import Image from 'next/image';
+import logo from '../../public/logo.png';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
@@ -30,6 +32,9 @@ export const Sidebars = ({ children }: { children: React.ReactNode }) => {
 
     const drawerContent = (
         <List>
+            <Box textAlign="center" my={2}>
+                <Image src={logo} alt="Logo Paper Company" width={150} height={150} />
+            </Box>
             {menuItems.map((item, index) => (
                 <ListItemButton
                     key={index}
