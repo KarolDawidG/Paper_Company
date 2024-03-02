@@ -1,19 +1,20 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export const lightTheme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#5E97F3', // Niebieski kolor, dobrze pasuje do nowoczesnych interfejsów
+      main: '#5E97F3',
     },
     secondary: {
-      main: '#FFC107', // Amberski dla akcentów
+      main: '#FFC107', 
     },
     background: {
-      default: '#f4f5f7', // Jasne tło, dla subtelnego wyglądu
+      default: '#f4f5f7',
       paper: '#ffffff',
     },
     text: {
-      primary: '#333333', // Ciemnoszary tekst dla lepszej czytelności
+      primary: '#333333',
       secondary: '#757575',
     },
   },
@@ -31,7 +32,7 @@ const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(','),
     button: {
-      textTransform: 'none', // Wyłącza automatyczne wielkie litery na przyciskach
+      textTransform: 'none',
     },
     h1: {
       fontSize: '2.2rem',
@@ -39,12 +40,54 @@ const theme = createTheme({
     h2: {
       fontSize: '1.8rem',
     },
-    // Dalsze dostosowanie typografii...
   },
   shape: {
-    borderRadius: 8, // Zaokrąglenie rogów dla komponentów
+    borderRadius: 8,
   },
-  // Możesz także dostosować inne aspekty motywu, takie jak przejścia, cienie, itp.
 });
 
-export default theme;
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#5E97F3',
+    },
+    secondary: {
+      main: '#FFC107', 
+    },
+    background: {
+      default: '#121212',
+      paper: '#424242',
+    },
+    text: {
+      primary: '#ffffff', 
+      secondary: '#eeeeee',
+    },
+  },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    button: {
+      textTransform: 'none',
+    },
+    h1: {
+      fontSize: '2.2rem',
+    },
+    h2: {
+      fontSize: '1.8rem',
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
