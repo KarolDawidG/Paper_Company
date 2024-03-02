@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation'; 
-import { Button, TextField, Box } from '@mui/material';
+import { Button, TextField, Box, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 import ReCAPTCHA from "react-google-recaptcha";
+import useSnackbarManager from '../../useSnackbarManager';
 
 const Register = () => {
+  const { snackbar, showSnackbar, handleClose } = useSnackbarManager();
   const REACT_APP_SITE_KEY:string = process.env.NEXT_PUBLIC_REACT_APP_SITE_KEY as string;
   const BACKEND:string = process.env.NEXT_PUBLIC_BACKEND as string;
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
@@ -33,13 +35,11 @@ const Register = () => {
         if (responseCaptcha.data === "Human 👨 👩" ) {
           setCaptchaValue(token);
           setIsHuman(true);
-          console.log('git')
         } else {
           setIsHuman(false)
-          console.log('nie git')
         }
       } catch(error:any) {
-        console.error(error)
+        showSnackbar(error.response.data, 'error');
       }
     }
   };
@@ -54,8 +54,8 @@ const Register = () => {
         console.log('Rejestracja udana:', response.data);
         setTimeout(() => router.push('/click-link'), 1000);
       }
-    } catch (error) {
-      console.error('Błąd rejestracji:', error);
+    } catch (error:any) {
+      showSnackbar(error.response.data, 'error');
     }
   };
 
@@ -112,6 +112,13 @@ const Register = () => {
       >
         Zarejestruj się
       </Button>
+
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
     </Box>
   );
 };
