@@ -6,6 +6,7 @@ import {lightTheme, darkTheme} from '@/app/theme/theme';
 import { useRouter } from 'next/router';
 import Footer from '@/app/components/Footer';
 import TopBar from '@/app/components/TopBar';
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -30,9 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
+  if (!mode) {
+    return <div>Loading...</div>; // TODO: dodać jakikolwiek loader
+  }
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer limit={3}/>
       <CssBaseline/>
       {isSidebarPage ? (
         <Sidebars>
