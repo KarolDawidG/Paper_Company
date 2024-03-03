@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { decodeJwt } from 'jose';
-import { TextField, Button, Grid, Typography, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Grid, Box, Snackbar, Alert } from '@mui/material';
 import useSnackbarManager from '../../useSnackbarManager';
 
 const Login = () => {
@@ -43,10 +43,8 @@ const Login = () => {
 
   
   return (
-    <Grid container spacing={2} direction="column" alignItems="center" justifyContent="center">
-      <Typography variant="h5">Logowanie</Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid item>
+    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      
           <TextField
             id="login"
             label="Login"
@@ -56,8 +54,7 @@ const Login = () => {
             variant="outlined"
             fullWidth
           />
-        </Grid>
-        <Grid item>
+
           <TextField
             id="password"
             label="Password"
@@ -67,20 +64,19 @@ const Login = () => {
             variant="outlined"
             fullWidth
           />
-        </Grid>
-        <Grid item>
+
+      
           <Button type="submit" variant="contained" color="primary">
             Log In
           </Button>
-        </Grid>
-      </form>
 
-        <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+          <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}
-        </Alert>
+          </Alert>
       </Snackbar>
-    </Grid>
+      
+    </Box>
   );
 };
 
