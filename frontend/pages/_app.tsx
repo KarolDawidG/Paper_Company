@@ -11,25 +11,18 @@ import useTranslation from '../app/components/useTranslation';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [locale, setLocale] = useState('en');
+  const [mode, setMode] = useState<'light' | 'dark'>();
   const t = useTranslation(locale);
   const router = useRouter();
   const isSidebarPage = !router.pathname.startsWith('/click-link');
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {noSsr: true});
-  const [mode, setMode] = useState<'light' | 'dark'>();
+  const theme = useMemo(()=>(mode === 'dark' ? darkTheme : lightTheme), [mode],);
 
   useEffect(() => {
     const savedLocale = localStorage.getItem('locale') || 'en';
-    setLocale(savedLocale);
-  }, []);
-
-const changeLanguage = (newLocale:string) => {
-  localStorage.setItem('locale', newLocale);
-  setLocale(newLocale);
-};
-
-  useEffect(() => {
     const savedTheme: any = localStorage.getItem('theme') || (prefersDarkMode ? 'light' : 'dark');
     setMode(savedTheme);
+    setLocale(savedLocale);
   }, [prefersDarkMode]);
 
   useEffect(() => {
@@ -38,7 +31,7 @@ const changeLanguage = (newLocale:string) => {
     }
   }, [mode]);
 
-  const theme = useMemo(()=>(mode === 'dark' ? darkTheme : lightTheme), [mode],);
+  
 
   const toggleTheme = () => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -55,12 +48,10 @@ const changeLanguage = (newLocale:string) => {
       {isSidebarPage ? (
         <Sidebars>
           <Box display="flex" flexDirection="column" minHeight="100vh">
-            <TopBar toggleTheme={toggleTheme} mode={mode}/>
+            <TopBar toggleTheme={toggleTheme} mode={mode} setLocale={setLocale}/>
             <Box component='main' flexGrow={1}>
-              <Component {...pageProps} />
+              <Component {...pageProps} locale={locale} />
             </Box>
-              <button onClick={() => changeLanguage('en')}>English</button>
-              <button onClick={() => changeLanguage('pl')}>Polski</button>
             <Footer />
           </Box>
         </Sidebars>

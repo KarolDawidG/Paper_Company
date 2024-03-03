@@ -1,17 +1,7 @@
 import { useState, useEffect } from 'react';
 
-interface Translation {
-    security: {
-      title: string;
-      intro: string;
-      protocols: string;
-      tools: string;
-      warning: string;
-    };
-    // Możesz dodać więcej definicji dla innych sekcji tłumaczeń
-  }
+type Translation = Record<string, any>;
 
-  
 const useTranslation = (locale:string) => {
     const [translations, setTranslations] = useState<Translation>({} as Translation);
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -6,8 +6,21 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import InfoIcon from '@mui/icons-material/Info';
 import { useRouter } from 'next/navigation'; 
 
-const TopBar = ({toggleTheme, mode}: any) => {
+const TopBar = ({toggleTheme, mode, setLocale}: any) => {
     const router = useRouter();
+    const [currentLocale, setCurrentLocale] = useState('en'); 
+
+    useEffect(() => {
+        const storedLocale = localStorage.getItem('locale') || 'en';
+        setCurrentLocale(storedLocale);
+    }, []);
+
+    const handleChangeLanguage = (locale: string) => {
+        setLocale(locale); 
+        setCurrentLocale(locale);
+        localStorage.setItem('locale', locale);
+    }
+
     //add endpont in backend side
     const handleLogOut = async () =>{
         try{
@@ -38,6 +51,23 @@ const TopBar = ({toggleTheme, mode}: any) => {
                 <IconButton color="inherit" aria-label="logout" onClick={handleLogOut}>
                     <ExitToAppIcon />
                 </IconButton>
+
+                <Button 
+                  color="inherit" 
+                  onClick={() => handleChangeLanguage('pl')}
+                  style={{ backgroundColor: currentLocale === 'pl' ? 'grey' : 'transparent' }}
+                >
+                  PL
+                </Button>
+
+                <Button 
+                  color="inherit" 
+                  onClick={() => handleChangeLanguage('en')}
+                  style={{ backgroundColor: currentLocale === 'en' ? 'grey' : 'transparent' }}
+                >
+                  EN
+                </Button>
+
             </Toolbar>
         </AppBar>
     );
