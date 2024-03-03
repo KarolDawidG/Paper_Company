@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
         localStorage.setItem('token', newAccessToken);
         axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest); 
-      }
+      }      
     }
     return Promise.reject(error);
   }

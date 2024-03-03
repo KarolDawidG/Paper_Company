@@ -5,6 +5,56 @@
       "protocols": "With stringent security protocols and continuous system monitoring, we ensure the highest level of data security for our clients.",
       "tools": "Our threat response tools are constantly updated, allowing for quick identification and neutralization of potential threats, ensuring operational continuity and security.",
       "warning": "Service under construction..."
+    },
+    "warehouse": {
+      "title": "Warehouse management",
+      "intro": "The warehouse management system allows for accurate monitoring of inventory levels and generating alerts when stocks run out or products are approaching expiry dates.",
+      "protocols": "Efficient management of product storage places ensures optimal use of available warehouse space and facilitates quick location and access to the necessary goods.",
+      "tools": "Our internal logistics solutions focus on optimizing the arrangement of goods in the warehouse, which contributes to increasing the efficiency of warehousing and order picking processes.",
+      "warning": "Service under construction..."
+    },
+    "sales_and_orders": {
+      "title": "Sales and Order Management",
+      "intro": "Our sales and order management system enables you to efficiently receive and process customer orders, ensuring a smooth flow from order placement to delivery.",
+      "protocols": "Easily create and manage commercial offers, adapting them to market needs and individual customer preferences.",
+      "tools": "Generating and managing invoices has never been easier, thanks to the automation of accounting processes and integration with payment systems.",
+      "tools2": "Our tools for tracking delivery status and communicating with customers help maintain high levels of customer satisfaction and loyalty by keeping them informed at every stage of order fulfillment.",
+      "warning": "Service under construction..."
+    },
+    "accounting": {
+      "title": "Finance and Accounting",
+      "intro": "Our financial system offers comprehensive payment and cash flow management, enabling effective transaction monitoring and optimization of operating costs.",
+      "protocols": "Financial transactions are processed automatically, which ensures speed and accuracy in accounting and minimizes the risk of errors.",
+      "tools": "The system enables the generation of detailed financial reports and balance sheets, offering full transparency of the company's finances and supporting strategic business decisions.",
+      "warning": "Service under construction..."
+    },
+    "data_analysis": {
+      "title": "Data Analysis and Reporting",
+      "intro": "Our data analysis and reporting tools enable you to generate comprehensive sales, financial and operational reports, providing key information for the decision-making process.",
+      "protocols": "Thanks to advanced analysis of market trends and internal data, our clients can effectively predict market changes and optimize their business strategies.",
+      "tools": "Our tools support business decisions at every level of the organization, providing access to current data and trends, which allows for quick response to changing market conditions.",
+      "warning": "Service under construction..."
+    },
+    "human_resources": {
+      "title": "Human Resources Management (HR)",
+      "intro": "Our HR system enables comprehensive management of recruitment processes, from candidate selection to onboarding, ensuring effective integration of new employees with the organization's culture.",
+      "protocols": "We offer an advanced remuneration and benefits management system that allows personalization of employee packages and automation of settlement processes.",
+      "tools": "The system also supports the planning and management of training, promoting the development of employee competences and increasing their commitment and work efficiency.",
+      "warning": "Service under construction......"
+    },
+    "side_bar":{
+      "dashboard":"Dashboard",
+      "sales_and_orders":"Sales and Orders",
+      "warehouse":"Warehaouse",
+      "accounting":"Accounting",
+      "h_r":"Human Resources",
+      "data_analysis":"Data analysis",
+      "security":"Security"
     }
   }
+
+  
+  
+      
+  
   

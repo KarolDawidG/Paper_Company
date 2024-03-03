@@ -5,12 +5,15 @@ import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine,
 import { FiCompass, FiMenu } from 'react-icons/fi';
 import Image from 'next/image';
 import logo from '../../public/logo.png';
+import useTranslation from '../components/useTranslation';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
     const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+    const currentLocale = localStorage.getItem('locale') || 'en';
+    const t = useTranslation(currentLocale);
 
     const isActive = (path: any) => router.pathname === path;
 
@@ -18,14 +21,18 @@ export const Sidebars = ({ children }: { children: React.ReactNode }) => {
         setMobileOpen(!mobileOpen);
     };
 
+    if (!t.side_bar) {
+        return <div>Loading translations...</div>;
+      }
+
     const menuItems = [
-        { name: 'Dashboard', path: '/dashboard', icon: <FiCompass />, color: 'blue' },
-        { name: 'Sales and Orders', path: '/sales-and-orders', icon: <FaShoppingCart />, color: 'green' },
-        { name: 'Warehouse', path: '/warehouse', icon: <FaWarehouse />, color: 'orange' },
-        { name: 'Accounting', path: '/accounting', icon: <FaRegMoneyBillAlt />, color: 'red' },
-        { name: 'Human Resources', path: '/human-resources', icon: <FaUserTie />, color: 'purple' },
-        { name: 'Data Analysis', path: '/data-analysis', icon: <FaChartLine />, color: 'pink' },
-        { name: 'Security', path: '/security', icon: <FaShieldAlt />, color: 'gray' },
+        { name: `${t.side_bar.dashboard}`, path: '/dashboard', icon: <FiCompass />, color: 'blue' },
+        { name: `${t.side_bar.sales_and_orders}`, path: '/sales-and-orders', icon: <FaShoppingCart />, color: 'green' },
+        { name: `${t.side_bar.warehouse}`, path: '/warehouse', icon: <FaWarehouse />, color: 'orange' },
+        { name: `${t.side_bar.accounting}`, path: '/accounting', icon: <FaRegMoneyBillAlt />, color: 'red' },
+        { name: `${t.side_bar.h_r}`, path: '/human-resources', icon: <FaUserTie />, color: 'purple' },
+        { name: `${t.side_bar.data_analysis}`, path: '/data-analysis', icon: <FaChartLine />, color: 'pink' },
+        { name: `${t.side_bar.security}`, path: '/security', icon: <FaShieldAlt />, color: 'gray' },
     ];
 
     const drawerWidth = isLargeScreen ? 280 : 240;

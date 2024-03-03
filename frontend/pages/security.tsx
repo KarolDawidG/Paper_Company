@@ -6,9 +6,9 @@ const Security = () => {
     const currentLocale = localStorage.getItem('locale') || 'en';
     const t = useTranslation(currentLocale);
     
-    if (!t.security) {
-        return <div>Loading translations...</div>;
-      }
+        if (!t.security) {
+            return <div>Loading translations...</div>;
+        }
       
     return (
         <div className="p-4 max-w-4xl mx-auto">

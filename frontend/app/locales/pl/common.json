@@ -4,7 +4,52 @@
       "intro": "Nasz system bezpieczeństwa i kontroli dostępu oferuje zaawansowane zarządzanie uprawnieniami i dostępem użytkowników, zapewniając ochronę przed nieautoryzowanym dostępem i potencjalnymi zagrożeniami.",
       "protocols": "Dzięki rygorystycznym protokołom bezpieczeństwa i ciągłemu monitorowaniu systemów, zapewniamy najwyższy poziom bezpieczeństwa danych naszych klientów.",
       "tools": "Nasze narzędzia do reagowania na zagrożenia są stale aktualizowane, co pozwala na szybką identyfikację i neutralizację potencjalnych zagrożeń, gwarantując ciągłość działania i bezpieczeństwo operacyjne.",
+      "warning": "Serwis w budowie.."
+    },
+    "warehouse": {
+      "title": "Zarządzanie Magazynem",
+      "intro": "System zarządzania magazynem umożliwia dokładne monitorowanie poziomów zapasów oraz generowanie alertów w przypadku niskiego stanu magazynowego lub zbliżających się terminów ważności produktów.",
+      "protocols": "Efektywne zarządzanie miejscami składowania produktów zapewnia optymalne wykorzystanie dostępnej przestrzeni magazynowej oraz ułatwia szybkie lokalizowanie i dostęp do potrzebnych towarów.",
+      "tools": "Nasze rozwiązania w zakresie logistyki wewnętrznej skupiają się na optymalizacji rozmieszczenia towarów w magazynie, co przyczynia się do zwiększenia efektywności procesów składowania i kompletacji zamówień.",
       "warning": "Serwis w budowie..."
+    },
+    "sales_and_orders": {
+      "title": "Zarządzanie Sprzedażą i Zamówieniami",
+      "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień od klientów, zapewniając płynny przepływ od momentu złożenia zamówienia aż do dostawy.",
+      "protocols": "Z łatwością twórz i zarządzaj ofertami handlowymi, dopasowując je do potrzeb rynku oraz indywidualnych preferencji klientów.",
+      "tools": "Generowanie i zarządzanie fakturami nigdy nie było prostsze, dzięki automatyzacji procesów księgowych i integracji z systemami płatności.",
+      "tools2": "Nasze narzędzia do śledzenia statusu dostaw i komunikacji z klientami pozwalają na utrzymanie wysokiego poziomu zadowolenia i lojalności klientów, informując ich na każdym etapie realizacji zamówienia.",
+      "warning": "Serwis w budowie...."
+    },
+    "accounting": {
+      "title": "Finanse i Księgowość",
+      "intro": "Nasz system finansowy oferuje kompleksowe zarządzanie płatnościami i przepływami pieniężnymi, umożliwiając efektywne monitorowanie transakcji i optymalizację kosztów operacyjnych.",
+      "protocols": "Przetwarzanie transakcji finansowych odbywa się w sposób automatyczny, co zapewnia szybkość i dokładność w księgowaniu oraz minimalizuje ryzyko błędów.",
+      "tools": "System umożliwia generowanie szczegółowych raportów finansowych i bilansów, oferując pełną przejrzystość finansów firmy i wspierając podejmowanie strategicznych decyzji biznesowych.",
+      "warning": "Serwis w budowie....."
+    },
+    "data_analysis": {
+      "title": "Analiza Danych i Raportowanie",
+      "intro": "Nasze narzędzia do analizy danych i raportowania umożliwiają generowanie kompleksowych raportów sprzedażowych, finansowych i operacyjnych, dostarczając kluczowych informacji dla procesu decyzyjnego.",
+      "protocols": "Dzięki zaawansowanej analizie trendów rynkowych i wewnętrznych danych, nasi klienci mogą skutecznie przewidywać zmiany na rynku oraz optymalizować swoje strategie biznesowe.",
+      "tools": "Nasze narzędzia wspierają decyzje biznesowe na każdym szczeblu organizacji, zapewniając dostęp do aktualnych danych i trendów, co pozwala na szybką reakcję na zmieniające się warunki rynkowe.",
+      "warning": "Serwis w budowie......"
+    },
+    "human_resources": {
+      "title": "Zarządzanie Zasobami Ludzkimi (HR)",
+      "intro": "Nasz system HR umożliwia kompleksowe zarządzanie procesami rekrutacyjnymi, od selekcji kandydatów po onboardowanie, zapewniając efektywną integrację nowych pracowników z kulturą organizacji.",
+      "protocols": "Oferujemy zaawansowany system wynagrodzeń i zarządzania dodatkami, który umożliwia personalizację pakietów pracowniczych oraz automatyzację procesów rozliczeniowych.",
+      "tools": "System wspiera również planowanie i zarządzanie szkoleniami, promując rozwój kompetencji pracowników i zwiększając ich zaangażowanie oraz efektywność pracy.",
+      "warning": "Serwis w budowie......."
+    },
+    "side_bar":{
+      "dashboard":"Panel Glowny",
+      "sales_and_orders":"Sprzedaz i zamowienia",
+      "warehouse":"Magazyn",
+      "accounting":"Ksiegowosc",
+      "h_r":"Zasoby Ludzkie",
+      "data_analysis":"Analiza danych",
+      "security":"Ochrona"
     }
   }
   
