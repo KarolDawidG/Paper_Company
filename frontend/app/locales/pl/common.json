@@ -1,0 +1,10 @@
+{
+    "security": {
+      "title": "Bezpieczeństwo i Kontrola Dostępu",
+      "intro": "Nasz system bezpieczeństwa i kontroli dostępu oferuje zaawansowane zarządzanie uprawnieniami i dostępem użytkowników, zapewniając ochronę przed nieautoryzowanym dostępem i potencjalnymi zagrożeniami.",
+      "protocols": "Dzięki rygorystycznym protokołom bezpieczeństwa i ciągłemu monitorowaniu systemów, zapewniamy najwyższy poziom bezpieczeństwa danych naszych klientów.",
+      "tools": "Nasze narzędzia do reagowania na zagrożenia są stale aktualizowane, co pozwala na szybką identyfikację i neutralizację potencjalnych zagrożeń, gwarantując ciągłość działania i bezpieczeństwo operacyjne.",
+      "warning": "Serwis w budowie..."
+    }
+  }
+  
