@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useRouter } from 'next/navigation'; 
-import Footer from '../Footer';
+import Footer from '../layout/Footer';
 import Image from 'next/image';
 import logo from '../../../public/logo.png';
 

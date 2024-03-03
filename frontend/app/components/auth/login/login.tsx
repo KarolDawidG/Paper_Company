@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { decodeJwt } from 'jose';
 import { TextField, Button, Grid, Box, Snackbar, Alert } from '@mui/material';
-import useSnackbarManager from '../../useSnackbarManager';
+import useSnackbarManager from '../../notification/useSnackbarManager';
 
 const Login = () => {
   const { snackbar, showSnackbar, handleClose } = useSnackbarManager();

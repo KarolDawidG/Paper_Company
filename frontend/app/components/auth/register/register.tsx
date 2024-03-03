@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Button, TextField, Box, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 import ReCAPTCHA from "react-google-recaptcha";
-import useSnackbarManager from '../../useSnackbarManager';
+import useSnackbarManager from '../../notification/useSnackbarManager';
 
 const Register = () => {
   const { snackbar, showSnackbar, handleClose } = useSnackbarManager();

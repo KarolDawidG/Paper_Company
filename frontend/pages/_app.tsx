@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Sidebars } from '@/app/components/Sidebars';
+import { Sidebars } from '@/app/components/layout/Sidebars';
 import type { AppProps } from 'next/app';
 import { ThemeProvider, CssBaseline, Box, useMediaQuery } from '@mui/material';
 import {lightTheme, darkTheme} from '@/app/theme/theme';
 import { useRouter } from 'next/router';
-import Footer from '@/app/components/Footer';
-import TopBar from '@/app/components/TopBar';
+import Footer from '@/app/components/layout/Footer';
+import TopBar from '@/app/components/layout/TopBar';
 import { ToastContainer } from "react-toastify";
 import useTranslation from '../app/components/useTranslation';
 

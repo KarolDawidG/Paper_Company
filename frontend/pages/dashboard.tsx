@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from '../app/api/axiosInstance'; 
 import { formatDate } from "@/app/components/helpers/formDate";
 import { UserData } from "@/app/components/interface/userDataInterface";
-import { notify } from "@/app/components/Notify";
+import { notify } from "@/app/components/notification/Notify";
 
 const Dashboard = () => {
     const [userData, setUserData] = useState<UserData | null>(null);

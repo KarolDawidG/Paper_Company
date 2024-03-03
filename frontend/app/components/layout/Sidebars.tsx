@@ -4,8 +4,8 @@ import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer, IconButt
 import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine, FaShieldAlt } from 'react-icons/fa';
 import { FiCompass, FiMenu } from 'react-icons/fi';
 import Image from 'next/image';
-import logo from '../../public/logo.png';
-import useTranslation from '../components/useTranslation';
+import logo from '../../../public/logo.png';
+import useTranslation from '../useTranslation';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
