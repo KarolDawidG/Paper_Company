@@ -1,20 +1,21 @@
-"use client";
+
+"use client"
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import LoginModal from './components/auth/login/LoginModal';
-import RegisterModal from './components/auth/register/RegisterModal';
+import AuthModal from './components/auth/AuthModal'; 
 import { Button, Typography, Container, Box } from '@mui/material';
 import logo from '../public/logo.png';
+import Register from './components/auth/register/register';
+import Login from './components/auth/login/login';
 
 export default function Home() {
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'login' | 'register' | null>(null);
 
   return (
     <Container>
       <Box textAlign="center" marginTop={8}>
-      <Image src={logo} alt='Logo Paper Company' width={300} height={300}/>
+        <Image src={logo} alt='Logo Paper Company' width={300} height={300}/>
         <Typography variant="h2" gutterBottom>
           Paper Company
         </Typography>
@@ -22,16 +23,17 @@ export default function Home() {
           Centrala logowania
         </Typography>
         <Box marginTop={2}>
-          <Button variant="contained" color="primary" onClick={() => setLoginModalOpen(true)} sx={{ marginRight: 2 }}>
+          <Button variant="contained" color="primary" onClick={() => setModalType('login')} sx={{ marginRight: 2 }}>
             Logowanie
           </Button>
-          <Button variant="contained" color="secondary" onClick={() => setRegisterModalOpen(true)}>
+          <Button variant="contained" color="secondary" onClick={() => setModalType('register')}>
             Rejestracja
           </Button>
         </Box>
       </Box>
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
-      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} />
+      <AuthModal isOpen={modalType !== null} onClose={() => setModalType(null)} title={modalType === 'login' ? 'Logowanie' : 'Rejestracja'}>
+        {modalType === 'login' ? <Login /> : <Register />}
+      </AuthModal>
     </Container>
   );
 }
