@@ -15,6 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const t = useTranslation(locale);
   const router = useRouter();
   const isSidebarPage = !router.pathname.startsWith('/click-link');
+  const isResetPasswordPage = router.asPath.startsWith('/reset/');
+  const shouldDisplaySidebarLayout = isSidebarPage && !isResetPasswordPage;
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {noSsr: true});
   const theme = useMemo(()=>(mode === 'dark' ? darkTheme : lightTheme), [mode],);
 
@@ -45,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <ToastContainer limit={3}/>
       <CssBaseline/>
-      {isSidebarPage ? (
+      {shouldDisplaySidebarLayout ? (
         <Sidebars>
           <Box display="flex" flexDirection="column" minHeight="100vh">
             <TopBar toggleTheme={toggleTheme} mode={mode} setLocale={setLocale}/>

@@ -4,13 +4,21 @@ import axios from 'axios';
 import { decodeJwt } from 'jose';
 import { TextField, Button, Grid, Box, Snackbar, Alert } from '@mui/material';
 import useSnackbarManager from '../../notification/useSnackbarManager';
+import ResetPasswordForm from '../reset/ResetPasswordForm';
 
 const Login = () => {
   const { snackbar, showSnackbar, handleClose } = useSnackbarManager();
   const BACKEND:string = process.env.NEXT_PUBLIC_BACKEND as string;
+  const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+  const handleResetPasswordDialogClose = ({ success, message }:any) => {
+    setResetPasswordDialogOpen(false);
+    showSnackbar(message, success ? 'info' : 'error');
+  };
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,18 +72,22 @@ const Login = () => {
             variant="outlined"
             fullWidth
           />
-
       
           <Button type="submit" variant="contained" color="primary">
             Log In
           </Button>
 
+          <Button color="secondary" onClick={() => setResetPasswordDialogOpen(true)}>
+            Nie pamietasz hasla?
+          </Button>
+
           <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
-          </Alert>
-      </Snackbar>
-      
+            {snackbar.message}
+            </Alert>
+          </Snackbar>
+
+          <ResetPasswordForm open={resetPasswordDialogOpen} handleClose={handleResetPasswordDialogClose} />
     </Box>
   );
 };

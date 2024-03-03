@@ -11,7 +11,6 @@ import { validatePassword } from "../../config/config";
 
 require('dotenv').config();
 const jwt_secret = process.env.jwt_secret;
-
 const router = express.Router();
 
 router.use(middleware);
@@ -38,7 +37,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   try {
     const [user]: any = await UsersRecord.selectById([id]);
     oldPassword = user?.password || '';
-
+    
     const secret = jwt_secret + oldPassword;
     const payload: any = jwt.verify(token, secret);
 

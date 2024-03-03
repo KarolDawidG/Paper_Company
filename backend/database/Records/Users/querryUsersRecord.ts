@@ -14,8 +14,8 @@ const UPDATE_ROLE:string = "UPDATE accounts SET role = ? WHERE username = ?";
 const SELECT_ALL:string = "SELECT * FROM accounts";
 
 const SELECT_BY_EMAIL:string = "SELECT * FROM accounts WHERE email = ?";
-
-const SELECT_BY_ID:string = "SELECT username, email, created_at, role FROM accounts WHERE id = ?";
+// the best bug ever xD
+const SELECT_BY_ID:string = "SELECT username, email, created_at, password, role FROM accounts WHERE id = ?";
 
 const SELECT_TOKEN_BY_ID:string = "SELECT refresh_token FROM accounts WHERE id = ?";
 
