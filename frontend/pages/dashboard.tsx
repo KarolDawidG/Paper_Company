@@ -4,8 +4,11 @@ import { formatDate } from "@/app/components/helpers/formDate";
 import { UserData } from "@/app/components/interface/userDataInterface";
 import { notify } from "@/app/components/notification/Notify";
 import { Typography, Button, Avatar, TextField, Box, List, ListItem, ListItemText, Grid, Divider } from "@mui/material";
+import ImpageUpload from "@/app/components/image-uploader";
+import { useImage } from "@/app/components/utils/context/ImageContext";
 
 const Dashboard = () => {
+    const {imageUrl}:any = useImage();
     const [userData, setUserData] = useState<UserData | null>(null);
     const [editMode, setEditMode] = useState(false);
     const [editedData, setEditedData] = useState({
@@ -107,7 +110,7 @@ return (
             </form> ) : (
               <div>
                 <Box display="flex" marginTop={1} alignItems="center" mb={2}>
-                    <Avatar alt="User avatar" src={'https://thispersondoesnotexist.com/'} />
+                    <Avatar alt="User avatar" src={imageUrl} />
                     <Typography variant="h6" ml={2}>Zmien zdjecie</Typography>
                 </Box>
                  <List>
@@ -143,9 +146,7 @@ return (
     </Grid>
     <Grid item xs={12} md={6}>
         <Box p={8} maxWidth="100%">
-            <Typography variant="h6" mb={1}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </Typography>
+            <ImpageUpload/>
         </Box>
     </Grid>
 </Grid>
