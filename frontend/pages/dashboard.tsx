@@ -109,10 +109,6 @@ return (
                 />
             </form> ) : (
               <div>
-                <Box display="flex" marginTop={1} alignItems="center" mb={2}>
-                    <Avatar alt="User avatar" src={imageUrl} />
-                    <Typography variant="h6" ml={2}>Zmien zdjecie</Typography>
-                </Box>
                  <List>
                      <ListItem>
                          <ListItemText primary={`Username: ${userData.username}`} />
