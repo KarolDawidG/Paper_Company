@@ -8,6 +8,8 @@ import Footer from '@/app/components/layout/Footer';
 import TopBar from '@/app/components/layout/TopBar';
 import { ToastContainer } from "react-toastify";
 import useTranslation from '../app/components/useTranslation';
+import "@uploadthing/react/styles.css";
+import { ImageProvider } from '@/app/components/utils/context/ImageContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [locale, setLocale] = useState('en');
@@ -52,7 +54,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Box display="flex" flexDirection="column" minHeight="100vh">
             <TopBar toggleTheme={toggleTheme} mode={mode} setLocale={setLocale}/>
             <Box component='main' flexGrow={1}>
+              <ImageProvider>
               <Component {...pageProps} locale={locale} />
+              </ImageProvider>
             </Box>
             <Footer />
           </Box>
