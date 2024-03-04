@@ -3,7 +3,6 @@ import { AppBar, Toolbar, IconButton, Typography, Button, Avatar } from "@mui/ma
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import InfoIcon from '@mui/icons-material/Info';
 import { useRouter } from 'next/navigation'; 
 
 const TopBar = ({toggleTheme, mode, setLocale}: any) => {
@@ -39,9 +38,6 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
                 <Typography variant="h6" style={{ flexGrow: 1, marginLeft: '10px' }}>
                     Paper Company
                 </Typography>
-                {/* <IconButton color="inherit" aria-label="info">
-                    <InfoIcon />
-                </IconButton> */}
                 <Button 
                   color="inherit" 
                   onClick={() => handleChangeLanguage('pl')}
@@ -56,10 +52,10 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
                 >
                   EN
                 </Button>
-                <IconButton edge="start" color="inherit" aria-label="mode" onClick={toggleTheme}>
+                <IconButton edge="start" style={{ marginLeft: '10px' }} color="inherit" aria-label="mode" onClick={toggleTheme}>
                     {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
                 </IconButton>
-                <IconButton color="inherit" aria-label="logout" onClick={handleLogOut}>
+                <IconButton color="inherit" style={{ marginLeft: '10px' }} aria-label="logout" onClick={handleLogOut}>
                     <ExitToAppIcon />
                 </IconButton>
             </Toolbar>
