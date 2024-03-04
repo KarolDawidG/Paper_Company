@@ -22,4 +22,3 @@ const dbConfig: DbConfig = {
 const pool = createPool(dbConfig);
 
 export { pool };
-

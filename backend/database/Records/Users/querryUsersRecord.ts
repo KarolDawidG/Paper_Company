@@ -22,6 +22,10 @@ const SELECT_TOKEN_BY_ID:string = "SELECT refresh_token FROM accounts WHERE id =
 const SELECT_BY_USERNAME:string =
   "SELECT id, is_active, role, password FROM accounts WHERE username = ?";
 
+const UPDATE_IMG_URL_BY_ID = "UPDATE accounts SET img_url = ? WHERE id = ?";
+
+const SELECT_URL_BY_ID:string = "SELECT img_url FROM accounts WHERE id = ?";
+
 export {
   INSERT,
   ACTIVE,
@@ -34,4 +38,6 @@ export {
   SELECT_BY_USERNAME,
   UPDATE_TOKEN_BY_ID,
   SELECT_TOKEN_BY_ID,
+  UPDATE_IMG_URL_BY_ID,
+  SELECT_URL_BY_ID,
 };

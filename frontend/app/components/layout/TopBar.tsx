@@ -4,14 +4,32 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useRouter } from 'next/navigation'; 
+import axiosInstance from "@/app/api/axiosInstance";
 
 const TopBar = ({toggleTheme, mode, setLocale}: any) => {
     const router = useRouter();
+    const BACKEND:string = process.env.NEXT_PUBLIC_BACKEND as string;
     const [currentLocale, setCurrentLocale] = useState('en'); 
+    const [urlImg, setUrlImg] = useState<string>();
 
     useEffect(() => {
-        const storedLocale = localStorage.getItem('locale') || 'en';
-        setCurrentLocale(storedLocale);
+        (async () => {
+          try {
+            const storedLocale = localStorage.getItem('idUser');
+            const res = await axiosInstance.get(`${BACKEND}/url/${storedLocale}`);
+            const responseData = res.data.img_url;
+            setUrlImg(responseData);        
+          } catch (error) {
+            console.error('Błąd:', error);
+          }
+        })();
+    }, []);
+    
+      
+
+    useEffect(() => {
+        const id = localStorage.getItem('locale') || 'en';
+        
     }, []);
 
     const handleChangeLanguage = (locale: string) => {
@@ -34,7 +52,7 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
     return (
         <AppBar position="static">
             <Toolbar>
-                <Avatar alt="User avatar" src={'https://thispersondoesnotexist.com/'}/>
+                <Avatar alt="User avatar" src={urlImg}/>
                 <Typography variant="h6" style={{ flexGrow: 1, marginLeft: '10px' }}>
                     Paper Company
                 </Typography>

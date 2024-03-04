@@ -15,6 +15,8 @@ import {
   SELECT_BY_USERNAME,
   UPDATE_TOKEN_BY_ID,
   SELECT_TOKEN_BY_ID,
+  UPDATE_IMG_URL_BY_ID,
+  SELECT_URL_BY_ID,
 } from "./querryUsersRecord";
 
 interface IUserRecord {
@@ -22,6 +24,7 @@ interface IUserRecord {
   username: string;
   email: string;
   role: string;
+  img_url: string;
 }
 
 interface IQueryResult {
@@ -33,12 +36,14 @@ class UsersRecord implements IUserRecord {
   username: string;
   email: string;
   role: string;
+  img_url: string;
 
   constructor(obj: IUserRecord) {
     this.id = obj.id;
     this.username = obj.username;
     this.email = obj.email;
     this.role = obj.role;
+    this.img_url = obj.img_url;
   }
 
   static async insert(username:string, hashPassword:string, email:string) {
@@ -116,9 +121,33 @@ class UsersRecord implements IUserRecord {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
     return results;
   }
+
   static async selectTokenById(id:string[]) {
     const [results] = await pool.execute(SELECT_TOKEN_BY_ID, id);
     return results;
+  }
+
+  static async updateImgUrl(id: string, img_url: string): Promise<void> {
+    try {
+      await performTransaction(async (connection) => {
+        const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  static async selectUrlById(id:string[]) {
+    const [results] = await pool.execute(SELECT_URL_BY_ID, id);
+    return results;
+  }
+
+  static async deleteUrl(id: string) {
+    const standardUrl = 'https://utfs.io/f/1746e7bf-a332-4236-9514-82a142f6e42f-z150.jpg';
+    return performTransaction(async (connection) => {
+      const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [standardUrl, id]);
+      return results;
+    });
   }
 }
 
