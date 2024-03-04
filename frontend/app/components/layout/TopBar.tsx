@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Typography, Button, Avatar } from "@mui/material";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -35,23 +35,13 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
     return (
         <AppBar position="static">
             <Toolbar>
-
-                <IconButton edge="start" color="inherit" aria-label="mode" onClick={toggleTheme}>
-                    {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-                </IconButton>
-
-                <Typography variant="h6" style={{ flexGrow: 1 }}>
+                <Avatar alt="User avatar" src={'https://thispersondoesnotexist.com/'}/>
+                <Typography variant="h6" style={{ flexGrow: 1, marginLeft: '10px' }}>
                     Paper Company
                 </Typography>
-
-                <IconButton color="inherit" aria-label="info">
+                {/* <IconButton color="inherit" aria-label="info">
                     <InfoIcon />
-                </IconButton>
-
-                <IconButton color="inherit" aria-label="logout" onClick={handleLogOut}>
-                    <ExitToAppIcon />
-                </IconButton>
-
+                </IconButton> */}
                 <Button 
                   color="inherit" 
                   onClick={() => handleChangeLanguage('pl')}
@@ -59,7 +49,6 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
                 >
                   PL
                 </Button>
-
                 <Button 
                   color="inherit" 
                   onClick={() => handleChangeLanguage('en')}
@@ -67,7 +56,12 @@ const TopBar = ({toggleTheme, mode, setLocale}: any) => {
                 >
                   EN
                 </Button>
-
+                <IconButton edge="start" color="inherit" aria-label="mode" onClick={toggleTheme}>
+                    {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
+                <IconButton color="inherit" aria-label="logout" onClick={handleLogOut}>
+                    <ExitToAppIcon />
+                </IconButton>
             </Toolbar>
         </AppBar>
     );
