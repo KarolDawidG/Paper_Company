@@ -5,7 +5,7 @@ import { FaShoppingCart, FaWarehouse, FaRegMoneyBillAlt, FaUserTie, FaChartLine,
 import { FiCompass, FiMenu } from 'react-icons/fi';
 import Image from 'next/image';
 import logo from '../../../public/logo.png';
-import useTranslation from '../useTranslation';
+import useTranslation from '../language/useTranslation';
 
 export const Sidebars = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();

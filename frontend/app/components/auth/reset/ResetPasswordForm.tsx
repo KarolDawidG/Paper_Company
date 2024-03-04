@@ -15,7 +15,6 @@ const ResetPasswordForm = ({ open, handleClose }:any) => {
     }
   };
   
-
   return (
     <Dialog open={open} onClose={() => handleClose(false)}>
       <DialogTitle>Resetuj hasło</DialogTitle>

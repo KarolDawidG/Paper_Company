@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Footer from '@/app/components/layout/Footer';
 import TopBar from '@/app/components/layout/TopBar';
 import { ToastContainer } from "react-toastify";
-import useTranslation from '../app/components/useTranslation';
+import useTranslation from '../app/components/language/useTranslation';
 import "@uploadthing/react/styles.css";
 import { ImageProvider } from '@/app/components/utils/context/ImageContext';
 

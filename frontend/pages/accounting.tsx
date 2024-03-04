@@ -1,5 +1,5 @@
 import React from "react";
-import useTranslation from '../app/components/useTranslation';
+import useTranslation from '../app/components/language/useTranslation';
 
 
 const Accounting = () => {

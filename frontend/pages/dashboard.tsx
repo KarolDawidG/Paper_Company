@@ -4,7 +4,7 @@ import { formatDate } from "@/app/components/helpers/formDate";
 import { UserData } from "@/app/components/interface/userDataInterface";
 import { notify } from "@/app/components/notification/Notify";
 import { Typography, Button, Avatar, TextField, Box, List, ListItem, ListItemText, Grid, Divider } from "@mui/material";
-import ImpageUpload from "@/app/components/image-uploader";
+import ImpageUpload from "@/app/components/cloud/ImpageUpload";
 import { useImage } from "@/app/components/utils/context/ImageContext";
 
 const Dashboard = () => {

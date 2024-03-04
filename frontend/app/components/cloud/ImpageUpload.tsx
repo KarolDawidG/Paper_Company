@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { UploadDropzone } from "./utils/uploadthings";
-import { notify } from "./notification/Notify";
+import { UploadDropzone } from "../utils/uploadthings";
+import { notify } from "../notification/Notify";
 import Image from "next/image";
-import { useImage } from "./utils/context/ImageContext";
+import { useImage } from "../utils/context/ImageContext";
 import { Typography, Box, Button } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 

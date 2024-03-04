@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'; 
 import { Button } from "@mui/material";
-import { notify } from "./notification/Notify";
+import { notify } from "../notification/Notify";
 import axios from "axios";
 
 interface DeleteImageButtonProps {

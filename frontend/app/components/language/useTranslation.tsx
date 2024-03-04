@@ -7,7 +7,7 @@ const useTranslation = (locale:string) => {
 
   useEffect(() => {
     const loadTranslations = async () => {
-      const translations = await import(`../locales/${locale}/common.json`);
+      const translations = await import(`../../locales/${locale}/common.json`);
       setTranslations(translations.default);
     };
 
