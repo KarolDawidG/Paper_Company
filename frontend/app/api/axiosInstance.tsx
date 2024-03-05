@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { refreshAccessToken } from './authService';
-import { base_URL } from '../components/utils/links';
+import axios from "axios";
+import { refreshAccessToken } from "./authService";
+import { base_URL } from "../components/utils/links";
 
 const axiosInstance = axios.create({
   baseURL: base_URL,
@@ -8,15 +8,15 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -29,13 +29,14 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
-        localStorage.setItem('token', newAccessToken);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest); 
-      }      
+        localStorage.setItem("token", newAccessToken);
+        axios.defaults.headers.common["Authorization"] =
+          `Bearer ${newAccessToken}`;
+        return axiosInstance(originalRequest);
+      }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

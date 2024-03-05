@@ -1,3 +1,3 @@
-import ClickLinkPage from '../app/components/auth/ClickLinkPage';
+import ClickLinkPage from "../app/components/auth/ClickLinkPage";
 
 export default ClickLinkPage;

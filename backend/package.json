@@ -4,8 +4,8 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "prettier": "npx prettier --write \"**/*.js\" --ignore-path .prettierignore && echo Script completed successfully. All files have been scanned by Prettier.",
-        "start": "npx ts-node-dev app.ts",
+        "prettier": "npx prettier --write \"**/*.{ts,tsx}\" --ignore-path .prettierignore && echo Skrypt został pomyślnie wykonany. Wszystkie pliki zostały przeskanowane przez Prettier.",
+        "dev": "npx ts-node-dev app.ts",
         "test": "jest"
     },
     "keywords": [],

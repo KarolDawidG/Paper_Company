@@ -1,44 +1,44 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 export const lightTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#5E97F3',
+      main: "#5E97F3",
     },
     secondary: {
-      main: '#FFC107', 
+      main: "#FFC107",
     },
     background: {
-      default: '#f4f5f7',
-      paper: '#ffffff',
+      default: "#f4f5f7",
+      paper: "#ffffff",
     },
     text: {
-      primary: '#333333',
-      secondary: '#757575',
+      primary: "#333333",
+      secondary: "#757575",
     },
   },
   typography: {
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(','),
+    ].join(","),
     button: {
-      textTransform: 'none',
+      textTransform: "none",
     },
     h1: {
-      fontSize: '2.2rem',
+      fontSize: "2.2rem",
     },
     h2: {
-      fontSize: '1.8rem',
+      fontSize: "1.8rem",
     },
   },
   shape: {
@@ -48,43 +48,43 @@ export const lightTheme = createTheme({
 
 export const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#5E97F3',
+      main: "#5E97F3",
     },
     secondary: {
-      main: '#FFC107', 
+      main: "#FFC107",
     },
     background: {
-      default: '#121212',
-      paper: '#424242',
+      default: "#121212",
+      paper: "#424242",
     },
     text: {
-      primary: '#ffffff', 
-      secondary: '#eeeeee',
+      primary: "#ffffff",
+      secondary: "#eeeeee",
     },
   },
   typography: {
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(','),
+    ].join(","),
     button: {
-      textTransform: 'none',
+      textTransform: "none",
     },
     h1: {
-      fontSize: '2.2rem',
+      fontSize: "2.2rem",
     },
     h2: {
-      fontSize: '1.8rem',
+      fontSize: "1.8rem",
     },
   },
   shape: {

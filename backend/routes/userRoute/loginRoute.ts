@@ -40,8 +40,8 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         .status(STATUS_CODES.BAD_REQUEST)
         .send(MESSAGES.SQL_INJECTION_ALERT);
     }
-    
-    const ifUser = await UsersRecord.selectByUsername([user]);  
+
+    const ifUser = await UsersRecord.selectByUsername([user]);
 
     if (Array.isArray(ifUser)) {
       if (ifUser.length === 0) {
@@ -49,9 +49,8 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
           .status(STATUS_CODES.UNAUTHORIZED)
           .send(MESSAGES.UNPROCESSABLE_ENTITY);
       }
-      if ('id' in ifUser[0]) {
+      if ("id" in ifUser[0]) {
         idUser = ifUser[0]?.id;
-        
       } else {
         console.log("Brak pola 'id' w obiekcie użytkownika");
         return res
@@ -61,26 +60,31 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
     } else {
       console.log("Nie otrzymano oczekiwanej tablicy użytkowników");
     }
-    
+
     if (!idUser) {
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
         .send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
 
-    if (Array.isArray(ifUser) && ifUser.length > 0 && 'is_active' in ifUser[0]) {
+    if (
+      Array.isArray(ifUser) &&
+      ifUser.length > 0 &&
+      "is_active" in ifUser[0]
+    ) {
       if (!ifUser[0].is_active) {
         return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
       }
     } else {
-      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
+      return res
+        .status(STATUS_CODES.UNAUTHORIZED)
+        .send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
-    
 
     const hashedPassword: string = ifUser[0].password;
     const isPasswordValid: boolean = await bcrypt.compare(
       password,
-      hashedPassword
+      hashedPassword,
     );
 
     if (!isPasswordValid) {
@@ -102,7 +106,7 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
       idUser: idUser,
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(error.message);
     return res
       .status(STATUS_CODES.SERVER_ERROR)
@@ -113,7 +117,7 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 router.post("/refresh", async (req: Request, res: Response) => {
   const idUser: string = req.body.idUser;
 
-  const userInfo:any = await UsersRecord.selectTokenById([idUser]);
+  const userInfo: any = await UsersRecord.selectTokenById([idUser]);
   const refreshToken = userInfo[0]?.refresh_token;
 
   if (!refreshToken) {

@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const notify = (e: any) => {
-  const theme = localStorage.getItem('theme') || 'light';
+  const theme = localStorage.getItem("theme") || "light";
 
   toast(e, {
     position: "top-right",

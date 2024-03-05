@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
-const ResetPasswordForm = ({ open, handleClose }:any) => {
-  const [email, setEmail] = useState('');
+const ResetPasswordForm = ({ open, handleClose }: any) => {
+  const [email, setEmail] = useState("");
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
   const handleResetPassword = async () => {
@@ -14,7 +21,7 @@ const ResetPasswordForm = ({ open, handleClose }:any) => {
       handleClose({ success: false, message: error });
     }
   };
-  
+
   return (
     <Dialog open={open} onClose={() => handleClose(false)}>
       <DialogTitle>Resetuj hasło</DialogTitle>

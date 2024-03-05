@@ -9,48 +9,63 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-    const id:string = req.params.id;
-  
-    try {
-      const [userInfo]:any = await UsersRecord.selectUrlById([id]);
-  
-      return res.status(STATUS_CODES.SUCCESS).json(userInfo);
-    } catch (error:any) {
-      logger.error(error.message);
-      return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in get user route.");
-    }
-  });
-
-  router.put("/:id", async (req: Request, res: Response) => {
+router.get(
+  "/:id",
+  verifyToken,
+  async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
-    const img_url: string = req.body.img_url;
-  
-    console.log(id);
-    console.log(img_url);
-  
+
     try {
-      await UsersRecord.updateImgUrl(id, img_url);
-      return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
+      const [userInfo]: any = await UsersRecord.selectUrlById([id]);
+
+      return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
       logger.error(error.message);
-      return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in update url.");
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send("Unknown server error in get user route.");
     }
-  });
-  
+  },
+);
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.put("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
+  const img_url: string = req.body.img_url;
+
+  console.log(id);
+  console.log(img_url);
 
   try {
-    await UsersRecord.deleteUrl(id);
-    return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
-  } catch (error:any) {
+    await UsersRecord.updateImgUrl(id, img_url);
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .send("The operation has been successful.");
+  } catch (error: any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in delete.");
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send("Unknown server error in update url.");
   }
 });
 
+router.delete(
+  "/:id",
+  verifyToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
+    try {
+      await UsersRecord.deleteUrl(id);
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send("The operation has been successful.");
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send("Unknown server error in delete.");
+    }
+  },
+);
 
 export default router;

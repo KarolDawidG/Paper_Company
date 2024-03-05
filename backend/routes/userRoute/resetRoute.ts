@@ -9,7 +9,7 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import { validatePassword } from "../../config/config";
 
-require('dotenv').config();
+require("dotenv").config();
 const jwt_secret = process.env.jwt_secret;
 const router = express.Router();
 
@@ -36,8 +36,8 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
 
   try {
     const [user]: any = await UsersRecord.selectById([id]);
-    oldPassword = user?.password || '';
-    
+    oldPassword = user?.password || "";
+
     const secret = jwt_secret + oldPassword;
     const payload: any = jwt.verify(token, secret);
 
@@ -47,7 +47,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
 
     logger.info(MESSAGES.SUCCESSFUL_RESET);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.PASS_RESET);
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(`Server error: ${error.message}`);
     return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.JWT_ERROR);
   }

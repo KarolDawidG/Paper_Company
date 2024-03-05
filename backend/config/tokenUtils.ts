@@ -17,13 +17,15 @@ const generateToken = (username: string, role: string): string => {
   const payload: TokenPayload = {
     user: username,
     role: role,
-    exp: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRATION_TIME.split("m")[0]) * 60 * 60,
+    exp:
+      Math.floor(Date.now() / 1000) +
+      parseInt(TOKEN_EXPIRATION_TIME.split("m")[0]) * 60 * 60,
   };
   return jwt.sign(payload, privateKey, { algorithm: "RS256" });
 };
 
 const generateRefreshToken = (username: string, role: string): string => {
-  const payload: Omit<TokenPayload, 'exp'> = {
+  const payload: Omit<TokenPayload, "exp"> = {
     user: username,
     role: role,
   };
@@ -32,4 +34,10 @@ const generateRefreshToken = (username: string, role: string): string => {
   });
 };
 
-export { generateToken, generateRefreshToken, TOKEN_EXPIRATION_TIME, SECRET_REFRESH_TOKEN, REFRESH_TOKEN_EXPIRATION };
+export {
+  generateToken,
+  generateRefreshToken,
+  TOKEN_EXPIRATION_TIME,
+  SECRET_REFRESH_TOKEN,
+  REFRESH_TOKEN_EXPIRATION,
+};

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { createPool } from "mysql2/promise";
 
 interface DbConfig {
@@ -11,10 +11,10 @@ interface DbConfig {
 }
 
 const dbConfig: DbConfig = {
-  host: process.env.HOST_DB || '',
-  user: process.env.USER_DB || '',
-  password: process.env.PASS_DB || '',
-  database: process.env.NAME_DB || '',
+  host: process.env.HOST_DB || "",
+  user: process.env.USER_DB || "",
+  password: process.env.PASS_DB || "",
+  database: process.env.NAME_DB || "",
   namedPlaceholders: true,
   decimalNumbers: true,
 };

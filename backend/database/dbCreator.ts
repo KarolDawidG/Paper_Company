@@ -46,9 +46,4 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export {
-  createAccountsTable,
-  createRoot,
-  deleteAccount,
-  eventSchedulerON,
-};
+export { createAccountsTable, createRoot, deleteAccount, eventSchedulerON };

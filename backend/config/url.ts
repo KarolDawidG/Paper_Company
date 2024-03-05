@@ -7,7 +7,7 @@ interface Urls {
 }
 
 const URL: Urls = {
-  MAIN_URL: 'http://localhost:3000',
+  MAIN_URL: "http://localhost:3000",
   REGISTER_URL: "http://localhost:3001/register/",
   URL_LOGIN: "http://localhost:3000",
   RESET_URL: "http://localhost:3000/reset/",

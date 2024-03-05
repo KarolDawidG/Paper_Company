@@ -11,21 +11,25 @@ const router = express.Router();
 
 router.use(middleware, limiter, errorHandler);
 
-router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-  const userRole: string = (req as any).userRole;
+router.get(
+  "/",
+  verifyToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userRole: string = (req as any).userRole;
 
-  if (userRole !== "admin") {
-    return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
-  }
+    if (userRole !== "admin") {
+      return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
+    }
 
-  try {
-    const usersList = await UsersRecord.listAll();
-    return res.json({ usersList });
-  } catch (error:any) {
-    logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
-  }
-});
+    try {
+      const usersList = await UsersRecord.listAll();
+      return res.json({ usersList });
+    } catch (error: any) {
+      logger.error(error.message);
+      return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    }
+  },
+);
 
 router.put("/:user/:role", verifyToken, async (req: Request, res: Response) => {
   const user: string = req.params.user;
@@ -33,37 +37,54 @@ router.put("/:user/:role", verifyToken, async (req: Request, res: Response) => {
 
   try {
     await UsersRecord.updateRole(role, user);
-    return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
-  } catch (error:any) {
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .send("The operation has been successful.");
+  } catch (error: any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in update.");
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send("Unknown server error in update.");
   }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-  const id: string = req.params.id;
+router.delete(
+  "/:id",
+  verifyToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
-  try {
-    await UsersRecord.delete(id);
-    return res.status(STATUS_CODES.SUCCESS).send("The operation has been successful.");
-  } catch (error:any) {
-    logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in delete.");
-  }
-});
+    try {
+      await UsersRecord.delete(id);
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send("The operation has been successful.");
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send("Unknown server error in delete.");
+    }
+  },
+);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-  const id:string = req.params.id;
+router.get(
+  "/:id",
+  verifyToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
+    try {
+      const [userInfo]: any = await UsersRecord.selectById([id]);
 
-  try {
-    const [userInfo]:any = await UsersRecord.selectById([id]);
-
-    return res.status(STATUS_CODES.SUCCESS).json(userInfo);
-  } catch (error:any) {
-    logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send("Unknown server error in get user route.");
-  }
-});
+      return res.status(STATUS_CODES.SUCCESS).json(userInfo);
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send("Unknown server error in get user route.");
+    }
+  },
+);
 
 export default router;

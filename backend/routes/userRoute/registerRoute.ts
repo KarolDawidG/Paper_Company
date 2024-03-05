@@ -11,7 +11,7 @@ import logger from "../../logs/logger";
 import { validatePassword } from "../../config/config";
 import { sendRegisterEmail } from "../../config/emailSender";
 
-require('dotenv').config();
+require("dotenv").config();
 const JWT_CONFIRMED_TOKEN = process.env.JWT_CONFIRMED_TOKEN;
 
 const router = express.Router();
@@ -31,25 +31,38 @@ router.post("/", async (req: Request, res: Response) => {
       loginExists: await UsersRecord.selectByUsername([username]),
     };
 
-    if (Array.isArray(userExists.emailExists) && userExists.emailExists.length > 0) {
+    if (
+      Array.isArray(userExists.emailExists) &&
+      userExists.emailExists.length > 0
+    ) {
       return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.EMAIL_EXIST);
     }
-    
-    if (Array.isArray(userExists.loginExists) && userExists.loginExists.length > 0) {
+
+    if (
+      Array.isArray(userExists.loginExists) &&
+      userExists.loginExists.length > 0
+    ) {
       return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.USER_EXIST);
     }
-    
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const idActivation = await UsersRecord.insert(username, hashPassword, email);
-    const activationToken = jwt.sign({ userId: idActivation }, JWT_CONFIRMED_TOKEN!, { expiresIn: "5m" });
+    const idActivation = await UsersRecord.insert(
+      username,
+      hashPassword,
+      email,
+    );
+    const activationToken = jwt.sign(
+      { userId: idActivation },
+      JWT_CONFIRMED_TOKEN!,
+      { expiresIn: "5m" },
+    );
     const link = `${URL.REGISTER_URL}${activationToken}`;
 
     await sendRegisterEmail(email, username, link);
 
     logger.info(MESSAGES.SUCCESSFUL_SIGN_UP);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_SIGN_UP);
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(error.message);
     return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }
@@ -68,7 +81,7 @@ router.get("/:token", async (req: Request, res: Response) => {
 
       return res.redirect(URL.URL_LOGIN);
     });
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(`Server error: ${error.message}`);
     return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }

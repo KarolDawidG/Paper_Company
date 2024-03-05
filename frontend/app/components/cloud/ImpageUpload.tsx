@@ -12,27 +12,26 @@ const ImpageUpload = () => {
   const { imageUrl, setImageUrl } = useImage();
   const [showDropzone, setShowDropzone] = useState(true);
   const [imageKey, setImageKey] = useState<string | undefined>();
-  const BACKEND:string = process.env.NEXT_PUBLIC_BACKEND as string;
+  const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
 
   const handleClientUploadComplete = async (res: any) => {
-    const storedLocale = localStorage.getItem('idUser');
+    const storedLocale = localStorage.getItem("idUser");
     const newImageUrl = res[0].url;
     const newImageKey = res[0].key;
     setImageUrl(newImageUrl);
     setImageKey(newImageKey);
-  
-    try {
-      // Przekazanie img_url jako części ciała żądania PUT
-      await axios.put(`${BACKEND}/url/${storedLocale}`, { img_url: newImageUrl });
-      setShowDropzone(false);
 
+    try {
+      await axios.put(`${BACKEND}/url/${storedLocale}`, {
+        img_url: newImageUrl,
+      });
+      setShowDropzone(false);
       window.location.reload();
-    } catch (error:any) {
-      console.error('Error:', error);
+    } catch (error: any) {
+      console.error("Error:", error);
       notify(`ERROR! ${error.message}`);
     }
   };
-  
 
   return (
     <div>
@@ -45,12 +44,7 @@ const ImpageUpload = () => {
         <div>
           {showDropzone ? (
             <Box>
-              <Box
-                display="flex"
-                marginTop={1}
-                alignItems="center"
-                mb={2}
-              >
+              <Box display="flex" marginTop={1} alignItems="center" mb={2}>
                 <Typography variant="h6" ml={2}>
                   Edycja zdjecia profilowego
                 </Typography>

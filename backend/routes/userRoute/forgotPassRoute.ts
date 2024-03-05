@@ -9,7 +9,7 @@ import STATUS_CODES from "../../config/status-codes";
 import URL from "../../config/url";
 import logger from "../../logs/logger";
 
-require('dotenv').config();
+require("dotenv").config();
 const jwt_secret: string = process.env.jwt_secret || "";
 
 const router: Router = express.Router();
@@ -25,7 +25,7 @@ router.post("/", async (req: Request, res: Response) => {
   let passwordReset: string = "";
 
   try {
-    const [emailExists]:any = await UsersRecord.selectByEmail([email]);
+    const [emailExists]: any = await UsersRecord.selectByEmail([email]);
     if (!emailExists || emailExists.length === 0) {
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.EMAIL_SUCCESS);
     }
@@ -33,7 +33,7 @@ router.post("/", async (req: Request, res: Response) => {
     emailReset = emailExists.email;
     idReset = emailExists.id;
     passwordReset = emailExists.password;
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(error.message);
     res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }
@@ -51,7 +51,7 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     logger.info(MESSAGES.EMAIL_SUCCESS);
     res.status(STATUS_CODES.SUCCESS).send(MESSAGES.EMAIL_SUCCESS);
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(`Server error email route: ${error.message}`);
     res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }

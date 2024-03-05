@@ -24,7 +24,7 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     logger.info("An E-mail has been sent!");
     res.status(STATUS_CODES.SUCCESS).send("An E-mail has been sent!");
-  } catch (error:any) {
+  } catch (error: any) {
     logger.error(`Server error contact route: ${error.message}`);
     res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }

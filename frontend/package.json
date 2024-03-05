@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prettier": "npx prettier --write \"**/*.{ts,tsx}\" --ignore-path .prettierignore && echo Skrypt został pomyślnie wykonany. Wszystkie pliki zostały przeskanowane przez Prettier.",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

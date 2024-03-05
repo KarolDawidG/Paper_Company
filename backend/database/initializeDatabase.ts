@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { pool } from "./pool";
 
 const nameDB = process.env.NAME_DB;

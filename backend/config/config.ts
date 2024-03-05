@@ -8,11 +8,16 @@ import fs from "fs";
 import { Request, Response, NextFunction } from "express";
 
 interface CustomRequest extends Request {
-  userRole?: string; 
+  userRole?: string;
   user?: any;
 }
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   console.error(err);
   logger.error(err.message);
   if (err instanceof SyntaxError) {
@@ -42,13 +47,11 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
     type: "pkcs8",
     format: "pem",
   },
-
-
 });
 
-  if (!fs.existsSync("./klucze")) {
-    fs.mkdirSync("./klucze");
-  }
+if (!fs.existsSync("./klucze")) {
+  fs.mkdirSync("./klucze");
+}
 
 fs.writeFileSync("./klucze/privateKey.pem", privateKey);
 fs.writeFileSync("./klucze/publicKey.pem", publicKey);
@@ -60,8 +63,8 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
       .status(STATUS_CODES.UNAUTHORIZED)
       .send(MESSAGES.USER_NOT_LOGGED_IN);
   }
-  const token = authHeader.split(' ')[1];
-  jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, decoded) => {
+  const token = authHeader.split(" ")[1];
+  jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
     if (err) {
       logger.info(MESSAGES.JWT_ERROR);
       return res
@@ -74,15 +77,14 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
   });
 };
 
-
 const queryParameterize = /^[A-Za-z0-9]+$/;
 
-const validateEmail = (e:string) => {
+const validateEmail = (e: string) => {
   const email = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
   return email.test(e);
 };
 
-const validatePassword = (e:string) => {
+const validatePassword = (e: string) => {
   if (e.length < 8) {
     return false;
   }
@@ -95,7 +97,7 @@ const validatePassword = (e:string) => {
   return true;
 };
 
-const validateUserName = (e:string) => {
+const validateUserName = (e: string) => {
   if (e.length >= 6 && e.length <= 16) {
     return true;
   } else {

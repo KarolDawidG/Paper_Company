@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 type Translation = Record<string, any>;
 
-const useTranslation = (locale:string) => {
-    const [translations, setTranslations] = useState<Translation>({} as Translation);
+const useTranslation = (locale: string) => {
+  const [translations, setTranslations] = useState<Translation>(
+    {} as Translation,
+  );
 
   useEffect(() => {
     const loadTranslations = async () => {

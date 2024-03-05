@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 const createTransporter = () => {
@@ -12,8 +12,11 @@ const createTransporter = () => {
   });
 };
 
-
-const sendResetPasswordEmail = async (email:string, username:string, link:string) => {
+const sendResetPasswordEmail = async (
+  email: string,
+  username: string,
+  link: string,
+) => {
   const transporter = createTransporter();
 
   const mailOptions = {
@@ -37,7 +40,11 @@ const sendResetPasswordEmail = async (email:string, username:string, link:string
   await transporter.sendMail(mailOptions);
 };
 
-const sendRegisterEmail = async (email:string, username:string, link:string) => {
+const sendRegisterEmail = async (
+  email: string,
+  username: string,
+  link: string,
+) => {
   const transporter = createTransporter();
 
   const mailRegisOptions = {
@@ -62,15 +69,19 @@ const sendRegisterEmail = async (email:string, username:string, link:string) => 
   await transporter.sendMail(mailRegisOptions);
 };
 
-const sendContactEmail = async (name:string, email:string, subject:string, message:string) => {
+const sendContactEmail = async (
+  name: string,
+  email: string,
+  subject: string,
+  message: string,
+) => {
   const transporter = createTransporter();
 
   const mailContactOptions = {
     from: email,
     to: process.env.user,
     subject: `Message from ${email}: ${subject}`,
-    text: 
-  `
+    text: `
   Email sender: ${email}
   Name of sender: ${name}
   Subject: ${subject}\n
@@ -81,4 +92,4 @@ const sendContactEmail = async (name:string, email:string, subject:string, messa
   await transporter.sendMail(mailContactOptions);
 };
 
-export { sendResetPasswordEmail, sendRegisterEmail, sendContactEmail};
+export { sendResetPasswordEmail, sendRegisterEmail, sendContactEmail };

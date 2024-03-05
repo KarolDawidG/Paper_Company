@@ -1,8 +1,8 @@
-import express, { Router } from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import bodyParser from 'body-parser';
-import URL from './url';
+import express, { Router } from "express";
+import cors from "cors";
+import helmet from "helmet";
+import bodyParser from "body-parser";
+import URL from "./url";
 
 const middleware: Router = express.Router();
 
@@ -22,7 +22,8 @@ middleware.use(express.json());
 
 middleware.use(express.urlencoded({ extended: true }));
 
-middleware.use( //TODO 
+middleware.use(
+  //TODO
   helmet({
     contentSecurityPolicy: {
       directives: {
@@ -48,6 +49,5 @@ middleware.use( //TODO
     permittedCrossDomainPolicies: true,
   }),
 );
-
 
 export default middleware;
