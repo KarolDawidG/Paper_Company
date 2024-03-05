@@ -7,10 +7,10 @@ import { Typography, Box, Button } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 import axiosInstance from "@/app/api/axiosInstance";
 import { ImageContextType } from "../utils/context/ImageContextType";
+import { MAIN_AVATAR } from "../utils/links";
 
 const ImpageUpload = () => {
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
-  const MAIN_AVATAR: string = '/main_avatar.jpg';
   const [dropImage, setDropImage] = useState<string>(MAIN_AVATAR);
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
   

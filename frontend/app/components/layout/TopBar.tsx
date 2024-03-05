@@ -15,11 +15,10 @@ import axiosInstance from "@/app/api/axiosInstance";
 import { useImage } from "../utils/context/ImageContext";
 
 const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
-  const { imageUrl }:string | any = useImage();
+  const { imageUrl, setImageUrl }:string | any = useImage();
   const router = useRouter();
   const [currentLocale, setCurrentLocale] = useState("en");
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
-
   const [urlImg, setUrlImg] = useState<string>();
 
   useEffect(() => {
@@ -30,6 +29,7 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
         const res = await axiosInstance.get(`${BACKEND}/url/${storedLocale}`);
         const responseData = res.data.img_url;
         setUrlImg(responseData);
+        setImageUrl(responseData);
       } catch (error) {
         console.error("Błąd:", error);
       }

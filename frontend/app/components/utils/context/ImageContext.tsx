@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { ImageContextType } from "./ImageContextType";
+import { MAIN_AVATAR } from "../links";
 
-const ImageContext = createContext<ImageContextType | string>('/main_avatar.jpg');
+const ImageContext = createContext<ImageContextType | string>(MAIN_AVATAR);
 
 export const ImageProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-  const [imageUrl, setImageUrl] = useState<string | any>('/main_avatar.jpg');
+  const [imageUrl, setImageUrl] = useState<string | any>(MAIN_AVATAR);
   
   useEffect(() => {
     const savedImage = localStorage.getItem('image');

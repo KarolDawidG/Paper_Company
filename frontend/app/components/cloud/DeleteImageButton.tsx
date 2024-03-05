@@ -1,14 +1,13 @@
-import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import { notify } from "../notification/Notify";
 import axios from "axios";
 import axiosInstance from "@/app/api/axiosInstance";
 import { useImage } from "../utils/context/ImageContext";
 import { ImageContextType } from "../utils/context/ImageContextType";
+import { MAIN_AVATAR } from "../utils/links";
 
 const DeleteImageButton = () => {
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
-  const MAIN_AVATAR: string = '/main_avatar.jpg';
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
   const imageKeyXX = imageUrlToImageKey(imageUrl);
 
@@ -33,6 +32,7 @@ const DeleteImageButton = () => {
         const idUser = localStorage.getItem('idUser');
       //usuwanie z bazy danych
         await axiosInstance.delete(`${BACKEND}/url/${idUser}`);
+        //ustawianie globalnego stanu dla glownego awatara
         setImageUrl(MAIN_AVATAR);
         notify("Avatar zostal usuniety")
     } catch (error: any) {
