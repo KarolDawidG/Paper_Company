@@ -22,11 +22,11 @@ const ImpageUpload = () => {
     setImageKey(newImageKey);
 
     try {
-      await axios.put(`${BACKEND}/url/${storedLocale}`, {
+      await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
         img_url: newImageUrl,
       });
       setShowDropzone(false);
-      window.location.reload();
+      notify('Obrazek przeslany')
     } catch (error: any) {
       console.error("Error:", error);
       notify(`ERROR! ${error.message}`);
@@ -35,14 +35,14 @@ const ImpageUpload = () => {
 
   return (
     <div>
-      {imageUrl ? (
+      
         <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
-          <Image src={imageUrl} alt="Avatar" width={200} height={200} />
+        <Image src={imageUrl ?? 'https://utfs.io/f/8c5ed6b4-9c43-49a9-b7be-e1096fc07f0f-kmjf4x.jpg'} alt="Avatar" width={200} height={200} />
           <DeleteImageButton imageKey={imageKey} />
         </Box>
-      ) : (
+      
         <div>
-          {showDropzone ? (
+          
             <Box>
               <Box display="flex" marginTop={1} alignItems="center" mb={2}>
                 <Typography variant="h6" ml={2}>
@@ -57,9 +57,9 @@ const ImpageUpload = () => {
                 }}
               />
             </Box>
-          ) : null}
+          
         </div>
-      )}
+      
     </div>
   );
 };

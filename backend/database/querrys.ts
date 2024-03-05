@@ -9,7 +9,7 @@ const createAccounts: string = `
       password varchar(255) NOT NULL,
       email varchar(100) NOT NULL,
       role varchar(20) NOT NULL DEFAULT 'user',
-      img_url varchar(100) NOT NULL DEFAULT 'https://utfs.io/f/1746e7bf-a332-4236-9514-82a142f6e42f-z150.jpg',
+      img_url varchar(100) NOT NULL DEFAULT 'https://utfs.io/f/8c5ed6b4-9c43-49a9-b7be-e1096fc07f0f-kmjf4x.jpg',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       is_active BOOLEAN DEFAULT false,
