@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CssBaseline />
       {shouldDisplaySidebarLayout ? (
         <Sidebars>
+          <ImageProvider>
           <Box display="flex" flexDirection="column" minHeight="100vh">
             <TopBar
               toggleTheme={toggleTheme}
@@ -62,12 +63,11 @@ function MyApp({ Component, pageProps }: AppProps) {
               setLocale={setLocale}
             />
             <Box component="main" flexGrow={1}>
-              <ImageProvider>
                 <Component {...pageProps} locale={locale} />
-              </ImageProvider>
             </Box>
             <Footer />
           </Box>
+          </ImageProvider>
         </Sidebars>
       ) : (
         <Component {...pageProps} />

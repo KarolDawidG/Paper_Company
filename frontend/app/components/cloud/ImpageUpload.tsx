@@ -6,60 +6,51 @@ import { useImage } from "../utils/context/ImageContext";
 import { Typography, Box, Button } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 import axiosInstance from "@/app/api/axiosInstance";
-import axios from "axios";
+import { ImageContextType } from "../utils/context/ImageContextType";
 
 const ImpageUpload = () => {
-  const { imageUrl, setImageUrl } = useImage();
-  const [showDropzone, setShowDropzone] = useState(true);
-  const [imageKey, setImageKey] = useState<string | undefined>();
+  const { imageUrl, setImageUrl } = useImage() as ImageContextType;
+  const MAIN_AVATAR: string = '/main_avatar.jpg';
+  const [dropImage, setDropImage] = useState<string>(MAIN_AVATAR);
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
-
+  
   const handleClientUploadComplete = async (res: any) => {
     const storedLocale = localStorage.getItem("idUser");
-    const newImageUrl = res[0].url;
-    const newImageKey = res[0].key;
+    const newImageUrl:any = res[0].url;
     setImageUrl(newImageUrl);
-    setImageKey(newImageKey);
-
-    try {
-      await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
-        img_url: newImageUrl,
-      });
-      setShowDropzone(false);
-      notify('Obrazek przeslany')
-    } catch (error: any) {
-      console.error("Error:", error);
-      notify(`ERROR! ${error.message}`);
-    }
+    setDropImage(newImageUrl);
+      try {
+        await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
+          img_url: newImageUrl,
+        });
+      
+        notify('Obrazek przeslany')
+      } catch (error: any) {
+        console.error("Error:", error);
+        notify(`ERROR! ${error.message}`);
+      }
   };
 
   return (
     <div>
-      
-        <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
-        <Image src={imageUrl ?? 'https://utfs.io/f/8c5ed6b4-9c43-49a9-b7be-e1096fc07f0f-kmjf4x.jpg'} alt="Avatar" width={200} height={200} />
-          <DeleteImageButton imageKey={imageKey} />
-        </Box>
-      
-        <div>
-          
-            <Box>
-              <Box display="flex" marginTop={1} alignItems="center" mb={2}>
-                <Typography variant="h6" ml={2}>
-                  Edycja zdjecia profilowego
-                </Typography>
-              </Box>
-              <UploadDropzone
-                endpoint="imageUploader"
-                onClientUploadComplete={handleClientUploadComplete}
-                onUploadError={(error: Error) => {
-                  notify(`ERROR! ${error.message}`);
-                }}
-              />
-            </Box>
-          
-        </div>
-      
+      <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
+        <img src={imageUrl || dropImage} alt="Avatar" width={150} height={150} loading="eager"/>
+        <DeleteImageButton />
+      </Box>
+      <Box>
+        <Box display="flex" marginTop={1} alignItems="center" mb={2}>
+          <Typography variant="h6" ml={2}>
+            Edycja zdjecia profilowego
+          </Typography>
+      </Box>
+          <UploadDropzone
+            endpoint="imageUploader"
+            onClientUploadComplete={handleClientUploadComplete}
+            onUploadError={(error: Error) => {
+            notify(`ERROR! ${error.message}`);
+            }}
+          />
+      </Box>
     </div>
   );
 };

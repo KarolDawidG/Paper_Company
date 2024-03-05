@@ -12,17 +12,21 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/app/api/axiosInstance";
+import { useImage } from "../utils/context/ImageContext";
 
 const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
+  const { imageUrl }:string | any = useImage();
   const router = useRouter();
-  const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
   const [currentLocale, setCurrentLocale] = useState("en");
+  const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
+
   const [urlImg, setUrlImg] = useState<string>();
 
   useEffect(() => {
     (async () => {
       try {
         const storedLocale = localStorage.getItem("idUser");
+        
         const res = await axiosInstance.get(`${BACKEND}/url/${storedLocale}`);
         const responseData = res.data.img_url;
         setUrlImg(responseData);
@@ -57,7 +61,7 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Avatar alt="User avatar" src={urlImg} />
+        <Avatar alt="User avatar" src={imageUrl} />
         <Typography variant="h6" style={{ flexGrow: 1, marginLeft: "10px" }}>
           Paper Company
         </Typography>
