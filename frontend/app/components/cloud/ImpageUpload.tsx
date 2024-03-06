@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { UploadDropzone } from "../utils/uploadthings";
 import { notify } from "../notification/Notify";
-import Image from "next/image";
 import { useImage } from "../utils/context/ImageContext";
 import { Typography, Box, Button } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 import axiosInstance from "@/app/api/axiosInstance";
 import { ImageContextType } from "../utils/context/ImageContextType";
 import { MAIN_AVATAR } from "../utils/links";
+import Image from "next/image";
 
 const ImpageUpload = () => {
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
@@ -34,7 +34,7 @@ const ImpageUpload = () => {
   return (
     <div>
       <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
-        <img src={imageUrl || dropImage} alt="Avatar" width={150} height={150} loading="eager"/>
+        <Image src={imageUrl || dropImage} alt="Avatar" width={150} height={150} loading="eager"/>
         <DeleteImageButton />
       </Box>
       <Box>

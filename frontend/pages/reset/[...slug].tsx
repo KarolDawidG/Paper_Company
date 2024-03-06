@@ -25,7 +25,6 @@ export default function Reset() {
 
   useEffect(() => {
     if (!id || !token) {
-      // Id lub token nie są jeszcze dostępne, nie wykonuj żądania
       return;
     }
 

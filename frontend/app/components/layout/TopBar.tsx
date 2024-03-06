@@ -34,11 +34,7 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
         console.error("Błąd:", error);
       }
     })();
-  }, []);
-
-  useEffect(() => {
-    const id = localStorage.getItem("locale") || "en";
-  }, []);
+  }, [setImageUrl]);
 
   const handleChangeLanguage = (locale: string) => {
     setLocale(locale);

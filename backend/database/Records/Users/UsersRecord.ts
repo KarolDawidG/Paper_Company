@@ -17,6 +17,7 @@ import {
   SELECT_TOKEN_BY_ID,
   UPDATE_IMG_URL_BY_ID,
   SELECT_URL_BY_ID,
+  UPDATE_USER_DATA_BY_ID,
 } from "./querryUsersRecord";
 
 interface IUserRecord {
@@ -156,6 +157,18 @@ class UsersRecord implements IUserRecord {
       return results;
     });
   }
+
+  static async updateUserData([username, email, id]: [string, string, string]) {
+    return performTransaction(async (connection) => {
+      const results = await connection.execute(UPDATE_USER_DATA_BY_ID, [
+        username,
+        email,
+        id,
+      ]);
+      return results;
+    });
+  }
+
 }
 
 export { UsersRecord };

@@ -31,21 +31,20 @@ router.get(
   },
 );
 
-router.put("/:user/:role", verifyToken, async (req: Request, res: Response) => {
-  const user: string = req.params.user;
-  const role: string = req.params.role;
-
-  try {
-    await UsersRecord.updateRole(role, user);
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .send("The operation has been successful.");
-  } catch (error: any) {
-    logger.error(error.message);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send("Unknown server error in update.");
-  }
+router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+  const userId: string = req.params.id;
+  const {username, email} = req.body;
+    try {
+      await UsersRecord.updateUserData([username, email, userId]);
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send("Dane ustawione poprawnie.");
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+    }
 });
 
 router.delete(
@@ -63,7 +62,7 @@ router.delete(
       logger.error(error.message);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
-        .send("Unknown server error in delete.");
+        .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
     }
   },
 );
@@ -82,7 +81,7 @@ router.get(
       logger.error(error.message);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
-        .send("Unknown server error in get user route.");
+        .send(`Users Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
     }
   },
 );

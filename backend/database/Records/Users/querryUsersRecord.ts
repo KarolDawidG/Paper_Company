@@ -29,6 +29,8 @@ const UPDATE_IMG_URL_BY_ID = "UPDATE accounts SET img_url = ? WHERE id = ?";
 
 const SELECT_URL_BY_ID: string = "SELECT img_url FROM accounts WHERE id = ?";
 
+const UPDATE_USER_DATA_BY_ID: string = "UPDATE accounts SET username = ?, email = ? WHERE id = ?";
+
 export {
   INSERT,
   ACTIVE,
@@ -43,4 +45,5 @@ export {
   SELECT_TOKEN_BY_ID,
   UPDATE_IMG_URL_BY_ID,
   SELECT_URL_BY_ID,
+  UPDATE_USER_DATA_BY_ID,
 };

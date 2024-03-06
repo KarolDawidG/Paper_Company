@@ -6,7 +6,6 @@ import { notify } from "@/app/components/notification/Notify";
 import {
   Typography,
   Button,
-  Avatar,
   TextField,
   Box,
   List,
@@ -16,20 +15,19 @@ import {
   Divider,
 } from "@mui/material";
 import ImpageUpload from "@/app/components/cloud/ImpageUpload";
-import { useImage } from "@/app/components/utils/context/ImageContext";
 
 const Dashboard = () => {
-  const { imageUrl }: any = useImage();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [editMode, setEditMode] = useState(false);
+  const [id, setUserId] = useState<string | null>();
   const [editedData, setEditedData] = useState({
     username: "",
     email: "",
-    profilePicture: null,
   });
 
   useEffect(() => {
-    const idUser = localStorage.getItem("idUser");
+    const idUser:string | null = localStorage.getItem("idUser");
+    setUserId(idUser);
 
     const fetchUserData = async () => {
       try {
@@ -49,25 +47,19 @@ const Dashboard = () => {
     setEditedData({
       username: userData?.username || "",
       email: userData?.email || "",
-      profilePicture: null,
     });
   };
 
   const handleSaveClick = async () => {
     try {
-      // TODO
-      // Wysyłanie danych do serwera w celu zapisania zmian
-      //await axiosInstance.put(`/users/${userData?.id}`, editedData);
-
-      // Aktualizacja danych użytkownika po edycji
       setUserData((prevUserData) => ({
         ...prevUserData!,
         username: editedData.username,
         email: editedData.email,
       }));
-
+      const response = await axiosInstance.put(`/users/${id}`, editedData);
       setEditMode(false);
-      notify("Zmiany zostały zapisane.");
+      notify(response.data);
     } catch (error) {
       console.error("Nie udało się zapisać zmian.", error);
       notify("Nie udało się zapisać zmian.");
