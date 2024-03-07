@@ -1,12 +1,13 @@
 import React from "react";
 import useTranslation from "../app/components/language/useTranslation";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const Warehouse = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
 
   if (!t.warehouse) {
-    return <div>Loading translations...</div>;
+    return <LinearProgress />
   }
 
   return (

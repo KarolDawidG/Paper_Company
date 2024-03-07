@@ -1,12 +1,13 @@
 import React from "react";
 import useTranslation from "../../language/useTranslation";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const UnauthorizedViewSecurity = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
 
   if (!t.security) {
-    return <div>Loading translations...</div>;
+    return <LinearProgress />
   }
 
   return (

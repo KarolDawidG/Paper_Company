@@ -4,9 +4,8 @@ import ResetPasswordForm from "../reset/ResetPasswordForm";
 import logicLogic from "./logicLogic";
 
 const Login = () => {
-
   const {
-    snackbar, 
+    snackbar,
     handleClose,
     username,
     password,
@@ -44,7 +43,10 @@ const Login = () => {
         Log in
       </Button>
 
-      <Button color="secondary" onClick={() => setResetPasswordDialogOpen(true)}>
+      <Button
+        color="secondary"
+        onClick={() => setResetPasswordDialogOpen(true)}
+      >
         Nie pamietasz hasla?
       </Button>
 

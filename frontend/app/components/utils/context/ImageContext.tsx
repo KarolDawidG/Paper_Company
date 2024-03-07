@@ -1,21 +1,29 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ImageContextType } from "./ImageContextType";
 import { MAIN_AVATAR } from "../links";
 
 const ImageContext = createContext<ImageContextType | string>(MAIN_AVATAR);
 
-export const ImageProvider: React.FC<{ children: ReactNode }> = ({children}) => {
+export const ImageProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [imageUrl, setImageUrl] = useState<string | any>(MAIN_AVATAR);
-  
-  useEffect(() => {
-    const savedImage = localStorage.getItem('image');
-      if (savedImage) {
-        setImageUrl(savedImage);
-      }
-  }, []); 
 
   useEffect(() => {
-    localStorage.setItem('image', imageUrl);
+    const savedImage = localStorage.getItem("image");
+    if (savedImage) {
+      setImageUrl(savedImage);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("image", imageUrl);
   }, [imageUrl]);
 
   return (

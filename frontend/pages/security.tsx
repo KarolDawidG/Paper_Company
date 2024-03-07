@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
 import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedViewSecurity";
 import AuthorizedViewSecurity from "@/app/components/pagesComponent/security/AuthorizedViewSecurity";
 
@@ -7,26 +8,24 @@ const Security = () => {
 
   useEffect(() => {
     try {
-      const data: any = localStorage.getItem('role');
+      const data: any = localStorage.getItem("role");
       if (data !== userRole) {
         setUserRole(data);
       }
     } catch (error) {
       console.error("Error fetching user role:", error);
     }
-  }, []);  
+  }, []);
 
   if (!userRole) {
-    return <div>Loading user role...</div>;
+    return <LinearProgress />;
   }
 
-  if (userRole !== 'admin') {
+  if (userRole !== "admin") {
     return <UnauthorizedViewSecurity />;
   }
 
-  return (
-    <AuthorizedViewSecurity />
-  );
+  return <AuthorizedViewSecurity />;
 };
 
 export default Security;
