@@ -63,4 +63,132 @@ router.delete(
   },
 );
 
+/**
+ * @swagger
+ * tags:
+ *   name: URL
+ *   description: Endpointy do obsługi danych związanych z URL awatara użytkownika.
+ */
+
+/**
+ * @swagger
+ * /url/{id}:
+ *   get:
+ *     summary: Pobiera informacje dotyczące URL użytkownika.
+ *     description: Endpoint do pobierania informacji dotyczących URL użytkownika na podstawie identyfikatora.
+ *     tags: [URL]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie pobrano informacje dotyczące URL użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userInfo:
+ *                   type: object
+ *                   description: Informacje dotyczące URL użytkownika.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /url/{id}:
+ *   put:
+ *     summary: Aktualizuje URL użytkownika.
+ *     description: Endpoint do aktualizacji URL użytkownika na podstawie identyfikatora.
+ *     tags: [URL]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               img_url:
+ *                 type: string
+ *                 description: Nowy URL obrazu użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zaktualizowano URL użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat potwierdzający aktualizację.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /url/{id}:
+ *   delete:
+ *     summary: Usuwa URL użytkownika.
+ *     description: Endpoint do usuwania URL użytkownika na podstawie identyfikatora.
+ *     tags: [URL]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie usunięto URL użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat potwierdzający usunięcie.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;

@@ -86,4 +86,193 @@ router.get(
   },
 );
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Endpointy do zarzadzania danymi uzytkownika.
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Pobiera listę wszystkich użytkowników.
+ *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     tags:
+ *       - Users
+ *     responses:
+ *       200:
+ *         description: Pomyślnie pobrano listę użytkowników.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 usersList:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       // Dodać odpowiednie pola, takie jak id, username, email itp.
+ *       403:
+ *         description: Brak dostępu do zasobu.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Pobiera informacje o użytkowniku.
+ *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie pobrano informacje o użytkowniku.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               // Dodać odpowiednie pola, takie jak id, username, email itp.
+ *       403:
+ *         description: Brak dostępu do zasobu.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Aktualizuje dane użytkownika.
+ *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nowa nazwa użytkownika.
+ *               email:
+ *                 type: string
+ *                 description: Nowy adres e-mail użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zaktualizowano dane użytkownika.
+ *       403:
+ *         description: Brak dostępu do zasobu.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Usuwa użytkownika.
+ *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie usunięto użytkownika.
+ *       403:
+ *         description: Brak dostępu do zasobu.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;

@@ -8,8 +8,8 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import URL from "../../config/url";
 import logger from "../../logs/logger";
-
 require("dotenv").config();
+
 const jwt_secret: string = process.env.jwt_secret || "";
 
 const router: Router = express.Router();
@@ -56,5 +56,52 @@ router.post("/", async (req: Request, res: Response) => {
     res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }
 });
+
+/**
+ * @swagger
+ * tags:
+ *   name: Forgot Password
+ *   description: Endpointy do obsługi przypomnienia hasła
+ */
+
+/**
+ * @swagger
+ * /forgot:
+ *   post:
+ *     summary: Wysyła email resetujący hasło.
+ *     description: Endpoint do wysyłania emaila z linkiem resetującym hasło użytkownika.
+ *     tags: [Forgot Password]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Adres email użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie wysłano email resetujący hasło.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat potwierdzający wysłanie emaila.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
 
 export default router;
