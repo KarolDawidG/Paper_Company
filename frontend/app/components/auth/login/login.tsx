@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { decodeJwt } from "jose";
@@ -13,6 +13,12 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  useEffect (()=>{
+    if (localStorage.getItem("token")){
+      router.push('/dashboard');
+    }
+  }, []);
 
   const handleResetPasswordDialogClose = ({ success, message }: any) => {
     setResetPasswordDialogOpen(false);
@@ -70,13 +76,10 @@ const Login = () => {
       />
 
       <Button type="submit" variant="contained" color="primary">
-        Log In
+        Log in
       </Button>
 
-      <Button
-        color="secondary"
-        onClick={() => setResetPasswordDialogOpen(true)}
-      >
+      <Button color="secondary" onClick={() => setResetPasswordDialogOpen(true)}>
         Nie pamietasz hasla?
       </Button>
 
