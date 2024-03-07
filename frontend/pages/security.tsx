@@ -17,13 +17,9 @@ const Security = () => {
     }
   }, []);
 
-  if (!userRole) {
-    return <LinearProgress />;
-  }
+  if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "admin") {
-    return <UnauthorizedViewSecurity />;
-  }
+  if (userRole !== "admin") return <UnauthorizedViewSecurity />;
 
   return <AuthorizedViewSecurity />;
 };
