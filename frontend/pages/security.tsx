@@ -1,27 +1,27 @@
-import React from "react";
-import useTranslation from "../app/components/language/useTranslation";
+import React, { useState, useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
+import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedViewSecurity";
+import AuthorizedViewSecurity from "@/app/components/pagesComponent/security/AuthorizedViewSecurity";
 
 const Security = () => {
-  const currentLocale = localStorage.getItem("locale") || "en";
-  const t = useTranslation(currentLocale);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
-  if (!t.security) {
-    return <div>Loading translations...</div>;
-  }
+  useEffect(() => {
+    try {
+      const data: any = localStorage.getItem("role");
+      if (data !== userRole) {
+        setUserRole(data);
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  }, []);
 
-  return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-4">
-        {t.security.title}
-      </h1>
-      <div className="space-y-4">
-        <p className="text-md text-gray-700">{t.security.intro}</p>
-        <p className="text-md text-gray-700">{t.security.protocols}</p>
-        <p className="text-md text-gray-700">{t.security.tools}</p>
-        <p className="text-md text-red-700">{t.security.warning}</p>
-      </div>
-    </div>
-  );
+  if (!userRole) return <LinearProgress />;
+
+  if (userRole !== "admin") return <UnauthorizedViewSecurity />;
+
+  return <AuthorizedViewSecurity />;
 };
 
 export default Security;

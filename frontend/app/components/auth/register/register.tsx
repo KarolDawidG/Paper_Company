@@ -4,7 +4,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import registerLogic from "./registerLogic";
 
 const Register = () => {
-
   const {
     isHuman,
     captchaRef,

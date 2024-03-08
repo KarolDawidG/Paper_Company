@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import useTranslation from "../app/components/language/useTranslation";
 import "@uploadthing/react/styles.css";
 import { ImageProvider } from "@/app/components/utils/context/ImageContext";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [locale, setLocale] = useState("en");
@@ -46,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   if (!mode) {
-    return <div>Loading...</div>; // TODO: dodać jakikolwiek loader
+    return <LinearProgress />
   }
 
   return (
@@ -56,17 +57,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       {shouldDisplaySidebarLayout ? (
         <Sidebars>
           <ImageProvider>
-          <Box display="flex" flexDirection="column" minHeight="100vh">
-            <TopBar
-              toggleTheme={toggleTheme}
-              mode={mode}
-              setLocale={setLocale}
-            />
-            <Box component="main" flexGrow={1}>
+            <Box display="flex" flexDirection="column" minHeight="100vh">
+              <TopBar
+                toggleTheme={toggleTheme}
+                mode={mode}
+                setLocale={setLocale}
+              />
+              <Box component="main" flexGrow={1}>
                 <Component {...pageProps} locale={locale} />
+              </Box>
+              <Footer />
             </Box>
-            <Footer />
-          </Box>
           </ImageProvider>
         </Sidebars>
       ) : (

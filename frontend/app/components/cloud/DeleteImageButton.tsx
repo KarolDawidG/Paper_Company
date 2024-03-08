@@ -15,29 +15,29 @@ const DeleteImageButton = () => {
     if (!imageUrl) {
       return null;
     }
-    const key = imageUrl.replace('https://utfs.io/f/', '');
+    const key = imageUrl.replace("https://utfs.io/f/", "");
     return key;
   }
 
   const handleDeleteImage = async () => {
     try {
       //usuwanie z uploadthing
-        await axios.delete("api/uploadthing", {
-          data: {
-            url: imageKeyXX,
-          },
-        });
+      await axios.delete("api/uploadthing", {
+        data: {
+          url: imageKeyXX,
+        },
+      });
       //usuwanie z localstorage
-        localStorage.removeItem('image');
-        const idUser = localStorage.getItem('idUser');
+      localStorage.removeItem("image");
+      const idUser = localStorage.getItem("idUser");
       //usuwanie z bazy danych
-        await axiosInstance.delete(`${BACKEND}/url/${idUser}`);
-        //ustawianie globalnego stanu dla glownego awatara
-        setImageUrl(MAIN_AVATAR);
-        notify("Avatar zostal usuniety")
+      await axiosInstance.delete(`${BACKEND}/url/${idUser}`);
+      //ustawianie globalnego stanu dla glownego awatara
+      setImageUrl(MAIN_AVATAR);
+      notify("Avatar zostal usuniety");
     } catch (error: any) {
-        console.error("Error deleting image:", error);
-        notify(`Error deleting image: ${error.message}`);
+      console.error("Error deleting image:", error);
+      notify(`Error deleting image: ${error.message}`);
     }
   };
 

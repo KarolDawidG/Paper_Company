@@ -21,13 +21,16 @@ const Dashboard = () => {
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
         <Box p={4} maxWidth="md" mx="auto">
-          <DashboardHeader/>
+          <DashboardHeader />
           {userData && (
             <div>
               {editMode ? (
-                <FormFields editedData={editedData} handleInputChange={handleInputChange}/>
+                <FormFields
+                  editedData={editedData}
+                  handleInputChange={handleInputChange}
+                />
               ) : (
-                  <ListUserItem userData={userData}/>
+                <ListUserItem userData={userData} />
               )}
               <Box mt={1}>
                 {editMode ? (
@@ -39,10 +42,14 @@ const Dashboard = () => {
                     >
                       Save
                     </Button>
-                    <Button variant="outlined" onClick={handleCancelClick}>Cancel</Button>
+                    <Button variant="outlined" onClick={handleCancelClick}>
+                      Cancel
+                    </Button>
                   </div>
                 ) : (
-                  <Button variant="outlined" onClick={handleEditClick}>Edit</Button>
+                  <Button variant="outlined" onClick={handleEditClick}>
+                    Edit
+                  </Button>
                 )}
               </Box>
             </div>

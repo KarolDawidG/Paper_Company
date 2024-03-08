@@ -11,10 +11,10 @@ const logicLogic = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  
-  useEffect (()=>{
-    if (localStorage.getItem("token")){
-      router.push('/dashboard');
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/dashboard");
     }
   }, []);
 
@@ -51,10 +51,9 @@ const logicLogic = () => {
     }
   };
 
-
   return {
-    snackbar, 
-    showSnackbar, 
+    snackbar,
+    showSnackbar,
     handleClose,
     username,
     password,

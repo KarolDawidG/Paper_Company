@@ -3,10 +3,15 @@ import { TextField } from "@mui/material";
 
 interface FormFieldsProps {
   editedData: { username: string; email: string };
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
 }
 
-const FormFields: React.FC<FormFieldsProps> = ({ editedData, handleInputChange }) => (
+const FormFields: React.FC<FormFieldsProps> = ({
+  editedData,
+  handleInputChange,
+}) => (
   <form>
     <TextField
       label="Username"
@@ -27,7 +32,7 @@ const FormFields: React.FC<FormFieldsProps> = ({ editedData, handleInputChange }
       value={editedData.email}
       onChange={handleInputChange}
     />
-  </ form>
+  </form>
 );
 
 export default FormFields;

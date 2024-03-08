@@ -13,28 +13,34 @@ const ImpageUpload = () => {
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
   const [dropImage, setDropImage] = useState<string>(MAIN_AVATAR);
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
-  
+
   const handleClientUploadComplete = async (res: any) => {
     const storedLocale = localStorage.getItem("idUser");
-    const newImageUrl:any = res[0].url;
+    const newImageUrl: any = res[0].url;
     setImageUrl(newImageUrl);
     setDropImage(newImageUrl);
-      try {
-        await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
-          img_url: newImageUrl,
-        });
-      
-        notify('Obrazek przeslany')
-      } catch (error: any) {
-        console.error("Error:", error);
-        notify(`ERROR! ${error.message}`);
-      }
+    try {
+      await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
+        img_url: newImageUrl,
+      });
+
+      notify("Obrazek przeslany");
+    } catch (error: any) {
+      console.error("Error:", error);
+      notify(`ERROR! ${error.message}`);
+    }
   };
 
   return (
     <div>
       <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
-        <Image src={imageUrl || dropImage} alt="Avatar" width={150} height={150} loading="eager"/>
+        <Image
+          src={imageUrl || dropImage}
+          alt="Avatar"
+          width={150}
+          height={150}
+          loading="eager"
+        />
         <DeleteImageButton />
       </Box>
       <Box>
@@ -42,14 +48,14 @@ const ImpageUpload = () => {
           <Typography variant="h6" ml={2}>
             Edycja zdjecia profilowego
           </Typography>
-      </Box>
-          <UploadDropzone
-            endpoint="imageUploader"
-            onClientUploadComplete={handleClientUploadComplete}
-            onUploadError={(error: Error) => {
+        </Box>
+        <UploadDropzone
+          endpoint="imageUploader"
+          onClientUploadComplete={handleClientUploadComplete}
+          onUploadError={(error: Error) => {
             notify(`ERROR! ${error.message}`);
-            }}
-          />
+          }}
+        />
       </Box>
     </div>
   );

@@ -19,6 +19,7 @@ import {
   FaChartLine,
   FaShieldAlt,
 } from "react-icons/fa";
+import LinearProgress from "@mui/material/LinearProgress";
 import { FiCompass, FiMenu } from "react-icons/fi";
 import Image from "next/image";
 import logo from "../../../public/logo.png";
@@ -39,7 +40,7 @@ export const Sidebars = ({ children }: { children: React.ReactNode }) => {
   };
 
   if (!t.side_bar) {
-    return <div>Loading translations...</div>;
+    return <LinearProgress />;
   }
 
   const menuItems = [
