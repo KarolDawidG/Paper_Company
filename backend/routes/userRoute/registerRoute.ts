@@ -87,4 +87,121 @@ router.get("/:token", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Register
+ *   description: Endpointy do rejestracji użytkowników.
+ */
+
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Rejestruje nowego użytkownika.
+ *     description: Endpoint do rejestracji nowego użytkownika w systemie.
+ *     tags: [Register]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Adres email użytkownika.
+ *               username:
+ *                 type: string
+ *                 description: Nazwa użytkownika.
+ *               password:
+ *                 type: string
+ *                 description: Hasło użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zarejestrowano użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat potwierdzający rejestrację.
+ *       400:
+ *         description: Błędne żądanie.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       403:
+ *         description: Adres email lub nazwa użytkownika już istnieją.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /register/{token}:
+ *   get:
+ *     summary: Aktywuje konto użytkownika.
+ *     description: Endpoint do aktywacji konta użytkownika na podstawie tokena.
+ *     tags: [Register]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         description: Token aktywacyjny.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       302:
+ *         description: Pomyślnie aktywowano konto użytkownika.
+ *         headers:
+ *           Location:
+ *             schema:
+ *               type: string
+ *               description: Przekierowanie do strony logowania.
+ *       401:
+ *         description: Błąd uwierzytelniania.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;

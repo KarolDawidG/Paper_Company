@@ -53,4 +53,110 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Password Reset
+ *   description: Endpointy do resetowania hasła użytkownika
+ */
+
+/**
+ * @swagger
+ * /reset/{id}/{token}:
+ *   get:
+ *     summary: Zwraca informacje o resetowaniu hasła.
+ *     description: Zwraca informacje o tym, że resetowanie hasła przebiegło pomyślnie.
+ *     tags: [Password Reset]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         description: Token resetujący hasło.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Informacje o pomyślnym resetowaniu hasła.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat o pomyślnym resetowaniu hasła.
+ */
+
+/**
+ * @swagger
+ * /reset/{id}/{token}:
+ *   post:
+ *     summary: Resetuje hasło użytkownika.
+ *     description: Resetuje hasło użytkownika na podstawie otrzymanego tokenu resetującego.
+ *     tags: [Password Reset]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         description: Token resetujący hasło.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: Nowe hasło użytkownika.
+ *               password2:
+ *                 type: string
+ *                 description: Potwierdzenie nowego hasła użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zresetowano hasło użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat o pomyślnym zresetowaniu hasła.
+ *       400:
+ *         description: Nieprawidłowe żądanie lub hasło nie spełnia wymagań.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera podczas resetowania hasła.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu serwera.
+ */
+
 export default router;

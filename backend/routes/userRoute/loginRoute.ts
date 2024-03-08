@@ -138,4 +138,152 @@ router.post("/refresh", async (req: Request, res: Response) => {
   });
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Endpointy do obsługi logowania uzytkownika.
+ */
+
+/**
+ * @swagger
+ * /auth:
+ *   post:
+ *     summary: Logowanie użytkownika
+ *     description: Loguje użytkownika i zwraca token dostępowy.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nazwa użytkownika.
+ *               password:
+ *                 type: string
+ *                 description: Hasło użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zalogowano użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token dostępowy.
+ *                 idUser:
+ *                   type: string
+ *                   description: Identyfikator użytkownika.
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat powitalny.
+ *       400:
+ *         description: Błędne żądanie.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       401:
+ *         description: Błędna nazwa użytkownika lub hasło.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       403:
+ *         description: Konto nieaktywne lub zablokowane.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       422:
+ *         description: Nieprawidłowe dane wejściowe.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       500:
+ *         description: Błąd serwera.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /auth/refresh:
+ *   post:
+ *     summary: Odśwież token dostępowy
+ *     description: Odświeża token dostępowy użytkownika na podstawie tokena odświeżającego.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idUser:
+ *                 type: string
+ *                 description: Identyfikator użytkownika.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie odświeżono token dostępowy.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Nowy token dostępowy.
+ *       401:
+ *         description: Brak tokena odświeżającego lub błąd weryfikacji.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ *       403:
+ *         description: Nieprawidłowy token odświeżający.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;

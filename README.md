@@ -3,6 +3,8 @@
 ## Wprowadzenie
 Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial "The Office". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość.
 
+## [Dokumentacja API](https://karoldawidg.github.io/Paper_Company_Documentation/)
+
 ## Funkcjonalności
 System ERP składa się z sześciu głównych modułów, zaprojektowanych, aby pokryć wszystkie aspekty działalności firmy:
 
