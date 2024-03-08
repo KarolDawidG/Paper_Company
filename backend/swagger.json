@@ -1,0 +1,1118 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Paper Company",
+    "version": "1.0.0",
+    "description": "Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial \"The Office\". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość."
+  },
+  "paths": {
+    "/forgot": {
+      "post": {
+        "summary": "Wysyła email resetujący hasło.",
+        "description": "Endpoint do wysyłania emaila z linkiem resetującym hasło użytkownika.",
+        "tags": [
+          "Forgot Password"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Adres email użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie wysłano email resetujący hasło.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat potwierdzający wysłanie emaila."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "summary": "Logowanie użytkownika",
+        "description": "Loguje użytkownika i zwraca token dostępowy.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "Nazwa użytkownika."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Hasło użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zalogowano użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Token dostępowy."
+                    },
+                    "idUser": {
+                      "type": "string",
+                      "description": "Identyfikator użytkownika."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat powitalny."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błędne żądanie.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Błędna nazwa użytkownika lub hasło.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Konto nieaktywne lub zablokowane.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Nieprawidłowe dane wejściowe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Odśwież token dostępowy",
+        "description": "Odświeża token dostępowy użytkownika na podstawie tokena odświeżającego.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idUser": {
+                    "type": "string",
+                    "description": "Identyfikator użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie odświeżono token dostępowy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Nowy token dostępowy."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Brak tokena odświeżającego lub błąd weryfikacji.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Nieprawidłowy token odświeżający.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Rejestruje nowego użytkownika.",
+        "description": "Endpoint do rejestracji nowego użytkownika w systemie.",
+        "tags": [
+          "Register"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Adres email użytkownika."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Nazwa użytkownika."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Hasło użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zarejestrowano użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat potwierdzający rejestrację."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błędne żądanie.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Adres email lub nazwa użytkownika już istnieją.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register/{token}": {
+      "get": {
+        "summary": "Aktywuje konto użytkownika.",
+        "description": "Endpoint do aktywacji konta użytkownika na podstawie tokena.",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Token aktywacyjny.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Pomyślnie aktywowano konto użytkownika.",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "description": "Przekierowanie do strony logowania."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Błąd uwierzytelniania.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset/{id}/{token}": {
+      "get": {
+        "summary": "Zwraca informacje o resetowaniu hasła.",
+        "description": "Zwraca informacje o tym, że resetowanie hasła przebiegło pomyślnie.",
+        "tags": [
+          "Password Reset"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Token resetujący hasło.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informacje o pomyślnym resetowaniu hasła.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat o pomyślnym resetowaniu hasła."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Resetuje hasło użytkownika.",
+        "description": "Resetuje hasło użytkownika na podstawie otrzymanego tokenu resetującego.",
+        "tags": [
+          "Password Reset"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Token resetujący hasło.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "Nowe hasło użytkownika."
+                  },
+                  "password2": {
+                    "type": "string",
+                    "description": "Potwierdzenie nowego hasła użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zresetowano hasło użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat o pomyślnym zresetowaniu hasła."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nieprawidłowe żądanie lub hasło nie spełnia wymagań.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas resetowania hasła.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu serwera."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/url/{id}": {
+      "get": {
+        "summary": "Pobiera informacje dotyczące URL użytkownika.",
+        "description": "Endpoint do pobierania informacji dotyczących URL użytkownika na podstawie identyfikatora.",
+        "tags": [
+          "URL"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano informacje dotyczące URL użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userInfo": {
+                      "type": "object",
+                      "description": "Informacje dotyczące URL użytkownika."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Aktualizuje URL użytkownika.",
+        "description": "Endpoint do aktualizacji URL użytkownika na podstawie identyfikatora.",
+        "tags": [
+          "URL"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "img_url": {
+                    "type": "string",
+                    "description": "Nowy URL obrazu użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zaktualizowano URL użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat potwierdzający aktualizację."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Usuwa URL użytkownika.",
+        "description": "Endpoint do usuwania URL użytkownika na podstawie identyfikatora.",
+        "tags": [
+          "URL"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie usunięto URL użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat potwierdzający usunięcie."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cap": {
+      "post": {
+        "summary": "Weryfikuje Captcha.",
+        "description": "Endpoint do weryfikacji Captcha dla użytkownika.",
+        "tags": [
+          "Captcha"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Token Captcha do weryfikacji."
+                  },
+                  "inputVal": {
+                    "type": "string",
+                    "description": "Wartość wejściowa (opcjonalna) używana do dalszej weryfikacji."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Weryfikacja Captcha zakończona sukcesem - użytkownik jest człowiekiem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Komunikat potwierdzający, że użytkownik jest człowiekiem."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Weryfikacja Captcha nie powiodła się - użytkownik jest robotem.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Komunikat informujący, że użytkownik jest robotem."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas weryfikacji Captcha.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Pobiera listę wszystkich użytkowników.",
+        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano listę użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": "// Odpowiednie pola, takie jak id, username, email itp."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Brak dostępu do zasobu.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Pobiera informacje o użytkowniku.",
+        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano informacje o użytkowniku.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": "// Odpowiednie pola, takie jak id, username, email itp."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Brak dostępu do zasobu.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Aktualizuje dane użytkownika.",
+        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "Nowa nazwa użytkownika."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Nowy adres e-mail użytkownika."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zaktualizowano dane użytkownika."
+          },
+          "403": {
+            "description": "Brak dostępu do zasobu.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Usuwa użytkownika.",
+        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie usunięto użytkownika."
+          },
+          "403": {
+            "description": "Brak dostępu do zasobu.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": [
+    {
+      "name": "Forgot Password",
+      "description": "Endpointy do obsługi przypomnienia hasła"
+    },
+    {
+      "name": "Auth",
+      "description": "Endpointy do obsługi logowania uzytkownika."
+    },
+    {
+      "name": "Register",
+      "description": "Endpointy do rejestracji użytkowników."
+    },
+    {
+      "name": "Password Reset",
+      "description": "Endpointy do resetowania hasła użytkownika"
+    },
+    {
+      "name": "URL",
+      "description": "Endpointy do obsługi danych związanych z URL awatara użytkownika."
+    },
+    {
+      "name": "Captcha",
+      "description": "Endpointy do weryfikacji Captcha."
+    },
+    {
+      "name": "Users",
+      "description": "Endpointy do zarzadzania danymi uzytkownika."
+    }
+  ]
+}

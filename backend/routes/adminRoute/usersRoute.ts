@@ -114,7 +114,7 @@ router.get(
  *                   items:
  *                     type: object
  *                     properties:
- *                       // Dodać odpowiednie pola, takie jak id, username, email itp.
+ *                       // Odpowiednie pola, takie jak id, username, email itp.
  *       403:
  *         description: Brak dostępu do zasobu.
  *         content:
@@ -159,7 +159,8 @@ router.get(
  *           application/json:
  *             schema:
  *               type: object
- *               // Dodać odpowiednie pola, takie jak id, username, email itp.
+ *               properties:
+ *                    // Odpowiednie pola, takie jak id, username, email itp.
  *       403:
  *         description: Brak dostępu do zasobu.
  *         content:

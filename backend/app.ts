@@ -12,13 +12,20 @@ import resetRoute from "./routes/userRoute/resetRoute";
 import forgotRoute from "./routes/userRoute/forgotPassRoute";
 import capRoutes from "./routes/captchaRoute/capRoute";
 import urlRoutes from "./routes/userRoute/urlRoute";
-// swager
+// swagger
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './swaggerOptions';
+
 import MESSAGES from "./config/messages";
 import STATUS_CODES from "./config/status-codes";
 const specs = swaggerJsdoc(swaggerOptions);
+
+//save api-docs into JSON
+import fs from 'fs';
+const jsonSpecs = JSON.stringify(specs, null, 2);
+const outputPath = './swagger.json';
+fs.writeFileSync(outputPath, jsonSpecs, 'utf-8');
 
 const app: express.Application = express();
 const PORT: number = 3001;
