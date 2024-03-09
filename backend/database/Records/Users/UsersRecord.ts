@@ -26,6 +26,7 @@ interface IUserRecord {
   email: string;
   role: string;
   img_url: string;
+  created_at: string;
 }
 
 interface IQueryResult {
@@ -38,6 +39,7 @@ class UsersRecord implements IUserRecord {
   email: string;
   role: string;
   img_url: string;
+  created_at: string;
 
   constructor(obj: IUserRecord) {
     this.id = obj.id;
@@ -45,6 +47,7 @@ class UsersRecord implements IUserRecord {
     this.email = obj.email;
     this.role = obj.role;
     this.img_url = obj.img_url;
+    this.created_at = obj.created_at;
   }
 
   static async insert(username: string, hashPassword: string, email: string) {
@@ -148,7 +151,7 @@ class UsersRecord implements IUserRecord {
 
   static async deleteUrl(id: string) {
     const standardUrl =
-      "https://utfs.io/f/8c5ed6b4-9c43-49a9-b7be-e1096fc07f0f-kmjf4x.jpg";
+      "https://utfs.io/f/bca7e335-8a46-4ffa-9186-81d51e65c875-kmjf4x.jpg";
     return performTransaction(async (connection) => {
       const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [
         standardUrl,
