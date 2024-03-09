@@ -13,6 +13,7 @@ import {
   TablePagination,
 } from '@mui/material';
 import { TableProps } from './UsersTable/TableInterfaces';
+import { formatDate } from '../../helpers/formDate';
 
 const CustomTable: React.FC<TableProps> = ({ data = [] }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -58,7 +59,8 @@ const CustomTable: React.FC<TableProps> = ({ data = [] }) => {
         <Table size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              <TableCell>Nr.</TableCell>
+              <TableCell>Data zatrudnienia</TableCell>
               <TableCell>Nazwa</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Rola</TableCell>
@@ -71,9 +73,10 @@ const CustomTable: React.FC<TableProps> = ({ data = [] }) => {
                   page * rowsPerPage + rowsPerPage
                 )
               : filteredData
-            ).map((user) => (
+            ).map((user, index) => (
               <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
+                <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                <TableCell>{formatDate(user.created_at)}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
