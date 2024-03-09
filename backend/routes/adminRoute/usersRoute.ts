@@ -38,22 +38,23 @@ router.put("/:id", async (req: Request, res: Response) => {
     }
 });
 
-router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
-    const id: string = req.params.id;
+// router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+//     const id: string = req.params.id;
+//     console.log(id);
 
-    try {
-      await UsersRecord.delete(id);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("The operation has been successful.");
-    } catch (error: any) {
-      logger.error(error.message);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-    }
-  },
-);
+//     try {
+//       await UsersRecord.delete(id);
+//       return res
+//         .status(STATUS_CODES.SUCCESS)
+//         .send("The operation has been successful.");
+//     } catch (error: any) {
+//       logger.error(error.message);
+//       return res
+//         .status(STATUS_CODES.SERVER_ERROR)
+//         .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+//     }
+//   },
+// );
 
 router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;

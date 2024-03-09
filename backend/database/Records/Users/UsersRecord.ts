@@ -99,9 +99,9 @@ class UsersRecord implements IUserRecord {
     });
   }
 
-  static async updateRole(role: string, username: string) {
+  static async updateRole(role: string, id: string) {
     return performTransaction(async (connection) => {
-      const results = await connection.execute(UPDATE_ROLE, [role, username]);
+      const results = await connection.execute(UPDATE_ROLE, [role, id]);
       return results;
     });
   }

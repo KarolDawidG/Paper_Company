@@ -10,7 +10,7 @@ const UPDATE_BY_ID: string = "UPDATE accounts SET password = ? WHERE id = ?";
 const UPDATE_TOKEN_BY_ID: string =
   "UPDATE accounts SET refresh_token = ? WHERE id = ?";
 
-const UPDATE_ROLE: string = "UPDATE accounts SET role = ? WHERE username = ?";
+const UPDATE_ROLE: string = "UPDATE accounts SET role = ? WHERE id = ?";
 
 const SELECT_ALL: string = "SELECT * FROM accounts";
 
