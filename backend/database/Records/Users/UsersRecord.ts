@@ -18,6 +18,7 @@ import {
   UPDATE_IMG_URL_BY_ID,
   SELECT_URL_BY_ID,
   UPDATE_USER_DATA_BY_ID,
+  SELECT_BY_ROLE,
 } from "./querryUsersRecord";
 
 interface IUserRecord {
@@ -111,6 +112,16 @@ class UsersRecord implements IUserRecord {
     return results.map((obj: any) => new UsersRecord(obj));
   }
 
+  static async listByRole(role: string) {
+    try {
+      const [results] = await pool.execute(SELECT_BY_ROLE, [role]) as any;
+      return results.map((obj: any) => new UsersRecord(obj));
+    } catch (error) {
+      console.error("Error in listByRole:", error);
+      throw error;
+    }
+  }
+  
   static async selectByEmail(email: string[]) {
     const [results] = await pool.execute(SELECT_BY_EMAIL, email);
     return results;

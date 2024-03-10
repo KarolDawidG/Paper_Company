@@ -1,34 +1,41 @@
-import React from "react";
-import useTranslation from "../app/components/language/useTranslation";
+import React, { useState, useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import { CardOne } from "@/app/components/pagesComponent/sales/CardOne";
-import { CardSecond } from "@/app/components/pagesComponent/sales/CardSecond";
-import { CardThird } from "@/app/components/pagesComponent/sales/CardThird";
-import { Divider } from "@mui/material";
+import AuthorizedViewSales from "@/app/components/pagesComponent/sales/AuthorizedViewSales";
+import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
+import { Box, Typography } from "@mui/material";
 
 const SalesAndOrders = () => {
-  const currentLocale = localStorage.getItem("locale") || "en";
-  const t = useTranslation(currentLocale);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
-  if (!t.sales_and_orders) {
-    return <LinearProgress />;
+  useEffect(() => {
+    try {
+      const data: any = localStorage.getItem("role");
+      if (data !== userRole) {
+        setUserRole(data);
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  }, []);
+
+  if (!userRole) return <LinearProgress />;
+
+  if (userRole !== "user"){
+
+    return (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Witamy w dziale sprzedazy!
+        </Typography>
+        <Typography>
+          Zaloga dzialu sprzedazy:
+        </Typography>
+        <UnauthorizedViewSecurity children={'user'}/>
+      </Box>
+    )
   }
 
-  return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-4">
-        {t.sales_and_orders.title}
-      </h1>
-      <Divider sx={{ maxWidth: 995 }}/>
-        <CardOne />
-      <Divider sx={{ maxWidth: 995 }}/>
-        <CardSecond />
-      <Divider sx={{ maxWidth: 995 }}/>
-        <CardThird />
-      <Divider sx={{ maxWidth: 995 }}/>
-      
-    </div>
-  );
+  return <AuthorizedViewSales />;
 };
 
 export default SalesAndOrders;

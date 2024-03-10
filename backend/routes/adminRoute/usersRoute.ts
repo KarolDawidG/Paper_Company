@@ -6,14 +6,14 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
-
 const router = express.Router();
-
 router.use(middleware, limiter, errorHandler);
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+//todo: dokumentacja do zmiany
+router.get("/:role", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+  const role: string = req.params.role;
     try {
-      const usersList = await UsersRecord.listAll();
+      const usersList = await UsersRecord.listByRole(role);
       return res.json({ usersList });
     } catch (error: any) {
       logger.error(error.message);
@@ -22,7 +22,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   },
 );
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const {username, email} = req.body;
     try {
@@ -38,25 +38,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     }
 });
 
-// router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
-//     const id: string = req.params.id;
-//     console.log(id);
-
-//     try {
-//       await UsersRecord.delete(id);
-//       return res
-//         .status(STATUS_CODES.SUCCESS)
-//         .send("The operation has been successful.");
-//     } catch (error: any) {
-//       logger.error(error.message);
-//       return res
-//         .status(STATUS_CODES.SERVER_ERROR)
-//         .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-//     }
-//   },
-// );
-
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
 
     try {

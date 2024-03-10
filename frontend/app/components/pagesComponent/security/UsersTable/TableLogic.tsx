@@ -19,7 +19,7 @@ const TableLogic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<UserData>('http://localhost:3001/users');
+        const response = await axios.get<UserData>('http://localhost:3001/admin');
         setData(response.data.usersList);
       } catch (error) {
         console.error('Error fetching data:', error);

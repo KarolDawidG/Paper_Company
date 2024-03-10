@@ -18,7 +18,7 @@ const useUserData = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await axiosInstance.get(`/users/${idUser}`);
+        const response = await axiosInstance.get(`/users/user/${idUser}`);
         setUserData(response.data);
       } catch (error) {
         console.error("Nie udało się pobrać danych użytkownika.", error);

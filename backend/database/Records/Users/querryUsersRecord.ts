@@ -14,6 +14,8 @@ const UPDATE_ROLE: string = "UPDATE accounts SET role = ? WHERE id = ?";
 
 const SELECT_ALL: string = "SELECT * FROM accounts";
 
+const SELECT_BY_ROLE: string = "SELECT * FROM `accounts` WHERE `role` = ?";
+
 const SELECT_BY_EMAIL: string = "SELECT * FROM accounts WHERE email = ?";
 // the best bug ever xD
 const SELECT_BY_ID: string =
@@ -46,4 +48,5 @@ export {
   UPDATE_IMG_URL_BY_ID,
   SELECT_URL_BY_ID,
   UPDATE_USER_DATA_BY_ID,
+  SELECT_BY_ROLE,
 };

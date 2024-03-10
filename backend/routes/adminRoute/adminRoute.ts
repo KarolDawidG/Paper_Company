@@ -10,28 +10,16 @@ import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 const router = express.Router();
 
 router.use(middleware, limiter, errorHandler);
-
-router.get(
-  "/",
-  verifyToken,
-  (req: Request, res: Response, next: NextFunction) => {
-    const userRole = (req as any).userRole;
-    logger.info(`${MESSAGES.AUTHORIZATION_LVL}: admin ${userRole}`);
-
-    if (userRole !== "admin") {
-      return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
-    }
-
-    try {
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json({ message: `${MESSAGES.SUCCESSFUL_OPERATION}` });
-    } catch (error: any) {
-      console.error(error);
-      logger.error(error.message);
-      return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
-    }
-  },
+//todo: dokumentacja do edycji
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const usersList = await UsersRecord.listAll();
+    return res.json({ usersList });
+  } catch (error: any) {
+    logger.error(error.message);
+    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+  }
+},
 );
 
 router.put("/:id/:role", verifyToken, async (req, res) => {
