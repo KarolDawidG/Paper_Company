@@ -1,5 +1,8 @@
-import dotenv from "dotenv";
-dotenv.config();
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
 
 interface Config {
   hostDB: string | undefined;

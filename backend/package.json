@@ -6,7 +6,8 @@
     "scripts": {
         "prettier": "npx prettier --write \"**/*.{ts,tsx}\" --ignore-path .prettierignore && echo Skrypt został pomyślnie wykonany. Wszystkie pliki zostały przeskanowane przez Prettier.",
         "dev": "npx ts-node-dev app.ts",
-        "test": "jest"
+        "test": "jest",
+        "dump": "cd database && ts-node mysqldump.ts"
     },
     "keywords": [],
     "author": "",
