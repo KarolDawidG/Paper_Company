@@ -1,6 +1,10 @@
 import React from "react";
 import useTranslation from "../app/components/language/useTranslation";
 import LinearProgress from "@mui/material/LinearProgress";
+import { CardOne } from "@/app/components/pagesComponent/sales/CardOne";
+import { CardSecond } from "@/app/components/pagesComponent/sales/CardSecond";
+import { CardThird } from "@/app/components/pagesComponent/sales/CardThird";
+import { Divider } from "@mui/material";
 
 const SalesAndOrders = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -15,13 +19,14 @@ const SalesAndOrders = () => {
       <h1 className="text-2xl font-bold text-center mb-4">
         {t.sales_and_orders.title}
       </h1>
-      <div className="space-y-4">
-        <p className="text-md text-gray-700">{t.sales_and_orders.intro}</p>
-        <p className="text-md text-gray-700">{t.sales_and_orders.protocols}</p>
-        <p className="text-md text-gray-700">{t.sales_and_orders.tools}</p>
-        <p className="text-md text-gray-700">{t.sales_and_orders.tools2}</p>
-        <p className="text-md text-red-700">{t.sales_and_orders.warning}</p>
-      </div>
+      <Divider sx={{ maxWidth: 995 }}/>
+        <CardOne />
+      <Divider sx={{ maxWidth: 995 }}/>
+        <CardSecond />
+      <Divider sx={{ maxWidth: 995 }}/>
+        <CardThird />
+      <Divider sx={{ maxWidth: 995 }}/>
+      
     </div>
   );
 };
