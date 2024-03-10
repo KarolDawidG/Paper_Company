@@ -11,16 +11,7 @@ const router = express.Router();
 
 router.use(middleware, limiter, errorHandler);
 
-router.get(
-  "/",
-  verifyToken,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const userRole: string = (req as any).userRole;
-
-    if (userRole !== "admin") {
-      return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
-    }
-
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const usersList = await UsersRecord.listAll();
       return res.json({ usersList });
@@ -31,7 +22,7 @@ router.get(
   },
 );
 
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const {username, email} = req.body;
     try {
@@ -47,30 +38,25 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-router.delete(
-  "/:id",
-  verifyToken,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const id: string = req.params.id;
+// router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+//     const id: string = req.params.id;
+//     console.log(id);
 
-    try {
-      await UsersRecord.delete(id);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("The operation has been successful.");
-    } catch (error: any) {
-      logger.error(error.message);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-    }
-  },
-);
+//     try {
+//       await UsersRecord.delete(id);
+//       return res
+//         .status(STATUS_CODES.SUCCESS)
+//         .send("The operation has been successful.");
+//     } catch (error: any) {
+//       logger.error(error.message);
+//       return res
+//         .status(STATUS_CODES.SERVER_ERROR)
+//         .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+//     }
+//   },
+// );
 
-router.get(
-  "/:id",
-  verifyToken,
-  async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
 
     try {

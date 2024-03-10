@@ -4,7 +4,7 @@ import ImpageUpload from "@/app/components/cloud/ImpageUpload";
 import DashboardHeader from "@/app/components/pagesComponent/dashboard/DashboardHeader";
 import FormFields from "@/app/components/pagesComponent/dashboard/FormFields";
 import ListUserItem from "@/app/components/pagesComponent/dashboard/ListUserItem";
-import useUserData from "@/app/components/pagesComponent/dashboard/useUserData";
+import useUserData from "@/app/components/pagesComponent/dashboard/UserDataLogic";
 
 const Dashboard = () => {
   const {
