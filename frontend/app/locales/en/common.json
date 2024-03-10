@@ -16,10 +16,7 @@
     "sales_and_orders": {
       "title": "Sales and Order Management",
       "intro": "Our sales and order management system enables you to efficiently receive and process customer orders, ensuring a smooth flow from order placement to delivery.",
-      "protocols": "Easily create and manage commercial offers, adapting them to market needs and individual customer preferences.",
-      "tools": "Generating and managing invoices has never been easier, thanks to the automation of accounting processes and integration with payment systems.",
-      "tools2": "Our tools for tracking delivery status and communicating with customers help maintain high levels of customer satisfaction and loyalty by keeping them informed at every stage of order fulfillment.",
-      "warning": "Service under construction..."
+      "info": "Contact our team."
     },
     "accounting": {
       "title": "Finance and Accounting",
@@ -31,9 +28,7 @@
     "data_analysis": {
       "title": "Data Analysis and Reporting",
       "intro": "Our data analysis and reporting tools enable you to generate comprehensive sales, financial and operational reports, providing key information for the decision-making process.",
-      "protocols": "Thanks to advanced analysis of market trends and internal data, our clients can effectively predict market changes and optimize their business strategies.",
-      "tools": "Our tools support business decisions at every level of the organization, providing access to current data and trends, which allows for quick response to changing market conditions.",
-      "warning": "Service under construction..."
+      "info": "Contact our team."
     },
     "human_resources": {
       "title": "Human Resources Management (HR)",

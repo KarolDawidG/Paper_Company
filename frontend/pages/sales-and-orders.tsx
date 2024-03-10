@@ -27,17 +27,20 @@ const SalesAndOrders = () => {
 
   if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "user"){
+  if (userRole !== "sales"){
 
     return (
-      <Box>
-        <Typography variant="h6" gutterBottom>
+      <Box sx={{ margin: "0 0 20px 0" }}>
+        <Typography variant="h1" gutterBottom>
           {t.sales_and_orders.title}
         </Typography>
         <Typography>
-          Zaloga dzialu sprzedazy:
+          {t.sales_and_orders.intro}
         </Typography>
-        <UnauthorizedViewSecurity children={'user'}/>
+        <Typography variant="h2">
+          {t.sales_and_orders.info}
+        </Typography>
+        <UnauthorizedViewSecurity children={'sales'}/>
       </Box>
     )
   }

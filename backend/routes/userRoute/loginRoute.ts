@@ -35,11 +35,11 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         .status(STATUS_CODES.UNPROCESSABLE_ENTITY)
         .send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
-    if (!user.match(queryParameterize)) {
-      return res
-        .status(STATUS_CODES.BAD_REQUEST)
-        .send(MESSAGES.SQL_INJECTION_ALERT);
-    }
+    // if (!user.match(queryParameterize)) {
+    //   return res
+    //     .status(STATUS_CODES.BAD_REQUEST)
+    //     .send(MESSAGES.SQL_INJECTION_ALERT);
+    // }
 
     const ifUser = await UsersRecord.selectByUsername([user]);
 

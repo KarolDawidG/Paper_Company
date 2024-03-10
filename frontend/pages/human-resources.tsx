@@ -1,27 +1,43 @@
-import React from "react";
-import useTranslation from "../app/components/language/useTranslation";
+import React, { useState, useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
+import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
+import { Box, Typography } from "@mui/material";
 
 const HumanResources = () => {
-  const currentLocale = localStorage.getItem("locale") || "en";
-  const t = useTranslation(currentLocale);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
-  if (!t.human_resources) {
-    return <LinearProgress />;
+  useEffect(() => {
+    try {
+      const data: any = localStorage.getItem("role");
+      if (data !== userRole) {
+        setUserRole(data);
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  }, []);
+
+  if (!userRole) return <LinearProgress />;
+
+  if (userRole !== "hr") {
+
+    return (
+      <Box>
+        <Typography variant="h6" color="error" gutterBottom>
+          Nie masz uprawnien do dostepu do tego komponentu!
+        </Typography>
+        <Typography>
+          Ponizej znajduje sie lista pracownikow, z ktorymi mozesz sie skontaktowac w danej sprawie!
+        </Typography>
+        <UnauthorizedViewSecurity children={'hr'}/>
+      </Box>
+    )
   }
-
+  
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-4">
-        {t.human_resources.title}
-      </h1>
-      <div className="space-y-4">
-        <p className="text-md text-gray-700">{t.human_resources.intro}</p>
-        <p className="text-md text-gray-700">{t.human_resources.protocols}</p>
-        <p className="text-md text-gray-700">{t.human_resources.tools}</p>
-        <p className="text-md text-red-700">{t.human_resources.warning}</p>
-      </div>
-    </div>
+    <Box>
+      <Typography>Strona w budowie</Typography>
+    </Box>
   );
 };
 

@@ -34,8 +34,7 @@ const Security = () => {
       </Box>
     )
   }
-
-
+  
   return <AuthorizedViewSecurity />;
 };
 

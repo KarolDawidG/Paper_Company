@@ -16,10 +16,7 @@
     "sales_and_orders": {
       "title": "Zarządzanie Sprzedażą i Zamówieniami",
       "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień od klientów, zapewniając płynny przepływ od momentu złożenia zamówienia aż do dostawy.",
-      "protocols": "Z łatwością twórz i zarządzaj ofertami handlowymi, dopasowując je do potrzeb rynku oraz indywidualnych preferencji klientów.",
-      "tools": "Generowanie i zarządzanie fakturami nigdy nie było prostsze, dzięki automatyzacji procesów księgowych i integracji z systemami płatności.",
-      "tools2": "Nasze narzędzia do śledzenia statusu dostaw i komunikacji z klientami pozwalają na utrzymanie wysokiego poziomu zadowolenia i lojalności klientów, informując ich na każdym etapie realizacji zamówienia.",
-      "warning": "Serwis w budowie...."
+      "info": "Skontaktuj się z naszym zespołem."
     },
     "accounting": {
       "title": "Finanse i Księgowość",
@@ -31,9 +28,7 @@
     "data_analysis": {
       "title": "Analiza Danych i Raportowanie",
       "intro": "Nasze narzędzia do analizy danych i raportowania umożliwiają generowanie kompleksowych raportów sprzedażowych, finansowych i operacyjnych, dostarczając kluczowych informacji dla procesu decyzyjnego.",
-      "protocols": "Dzięki zaawansowanej analizie trendów rynkowych i wewnętrznych danych, nasi klienci mogą skutecznie przewidywać zmiany na rynku oraz optymalizować swoje strategie biznesowe.",
-      "tools": "Nasze narzędzia wspierają decyzje biznesowe na każdym szczeblu organizacji, zapewniając dostęp do aktualnych danych i trendów, co pozwala na szybką reakcję na zmieniające się warunki rynkowe.",
-      "warning": "Serwis w budowie......"
+      "info": "Skontaktuj się z naszym zespołem."
     },
     "human_resources": {
       "title": "Zarządzanie Zasobami Ludzkimi (HR)",

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { User, UserData } from './TableInterfaces';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -23,6 +22,7 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import { TableProps } from './TableInterfaces';
 import { formatOnlyDate } from '../../../helpers/formDate';
 import TableLogic from './TableLogic';
+import { Role } from './RolaEnum';
 
 const CustomTable: React.FC<TableProps> = () => {
   const {
@@ -38,6 +38,11 @@ const CustomTable: React.FC<TableProps> = () => {
     filteredData,
   } = TableLogic();
 
+  const roleOptions = Object.values(Role).map((role) => (
+    <MenuItem key={role} value={role.toLowerCase()}>
+      {role}
+    </MenuItem>
+  ));
 
   return (
     <Box padding={1}>
@@ -104,8 +109,7 @@ const CustomTable: React.FC<TableProps> = () => {
                         }));
                       }}
                     >
-                      <MenuItem value="user">User</MenuItem>
-                      <MenuItem value="admin">Admin</MenuItem>
+                      {roleOptions}
                     </Select>
                   </FormControl>
                   <IconButton onClick={() => handleChangeRole(user.id)}>
