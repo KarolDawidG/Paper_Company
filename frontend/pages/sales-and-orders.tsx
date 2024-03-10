@@ -3,9 +3,12 @@ import LinearProgress from "@mui/material/LinearProgress";
 import AuthorizedViewSales from "@/app/components/pagesComponent/sales/AuthorizedViewSales";
 import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
 import { Box, Typography } from "@mui/material";
+import useTranslation from "@/app/components/language/useTranslation";
 
 const SalesAndOrders = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   useEffect(() => {
     try {
@@ -18,6 +21,10 @@ const SalesAndOrders = () => {
     }
   }, []);
 
+  if (!t.security) {
+    return <LinearProgress />;
+  }
+
   if (!userRole) return <LinearProgress />;
 
   if (userRole !== "user"){
@@ -25,7 +32,7 @@ const SalesAndOrders = () => {
     return (
       <Box>
         <Typography variant="h6" gutterBottom>
-          Witamy w dziale sprzedazy!
+          {t.sales_and_orders.title}
         </Typography>
         <Typography>
           Zaloga dzialu sprzedazy:

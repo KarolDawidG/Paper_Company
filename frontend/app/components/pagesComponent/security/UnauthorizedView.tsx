@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import axiosInstance from "@/app/api/axiosInstance";
-import {UserCard} from "./Card";
+import {UserCard} from "./UserCard";
 
 const UnauthorizedViewSecurity = ({children}:any) => {
   const [userData, setUserData] = useState<any | null>(null);

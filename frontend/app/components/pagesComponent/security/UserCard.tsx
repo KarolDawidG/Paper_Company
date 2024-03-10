@@ -18,6 +18,9 @@ export const UserCard = ({email, username, img_url}:any) => {
         <Typography variant="body2" color="text.secondary">
           E-mail: {email}
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Nr tel: 666 777 898
+        </Typography>
       </CardContent>
 
     </Card>
