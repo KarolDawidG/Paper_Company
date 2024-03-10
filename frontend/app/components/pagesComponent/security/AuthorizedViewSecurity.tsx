@@ -1,7 +1,7 @@
 import React from 'react';
 import useTranslation from "../../language/useTranslation";
 import LinearProgress from "@mui/material/LinearProgress";
-import CustomTable from './Table';
+import CustomTable from './UsersTable/Table';
 
 const AuthorizedViewSecurity = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
