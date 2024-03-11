@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -13,10 +13,19 @@ import { Box } from '@mui/material';
 
 export const CardOne = () => {
   const [expanded, setExpanded] = useState(false);
-  const [ilosc, setIlosc] = useState<number | any>();
-  const [email, setEmail] = useState<string>();
-  const [imie, setImie] = useState<string>();
-  const [produkt, setProdukt] = useState<string>();
+
+  const [formData, setFormData] = useState({
+    imie: "",
+    email: "",
+    produkt: "",
+    ilosc: "",
+    miasto: "",
+    ulica: "",
+    nr_budynku: "",
+    nr_mieszkania: "",
+    kod: "",
+    nazwa_frimy: "",
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -24,14 +33,14 @@ export const CardOne = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    const formData = {
-      imie,
-      email,
-      produkt,
-      ilosc,
-    };
     console.log(formData);
+  };
+
+  const handleChange = (field:string | number, value:string | number) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
   };
   
   return (
@@ -63,7 +72,7 @@ export const CardOne = () => {
                 variant="outlined"
                 margin="normal"
                 size="small"
-                onChange={(e) => setImie(e.target.value)}
+                onChange={(e) => handleChange("imie", e.target.value)}
                 required
               />
 
@@ -72,7 +81,7 @@ export const CardOne = () => {
                 variant="outlined"
                 margin="normal"
                 size="small"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleChange("email", e.target.value)}
                 required
                 type="email"
               />
@@ -82,7 +91,7 @@ export const CardOne = () => {
                 variant="outlined"
                 margin="normal"
                 size="small"
-                onChange={(e) => setProdukt(e.target.value)}
+                onChange={(e) => handleChange("produkt", e.target.value)}
                 required
               />
 
@@ -92,7 +101,65 @@ export const CardOne = () => {
                 margin="normal"
                 size="small"
                 type="number"
-                onChange={(e) => setIlosc(e.target.value)}
+                onChange={(e) => handleChange("ilosc", e.target.value)}
+                required
+              />
+
+              <Typography>
+                Adres:
+              </Typography>
+
+              <TextField
+                label="Miasto"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("miasto", e.target.value)}
+                required
+              />
+
+              <TextField
+                label="ulica"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("ulica", e.target.value)}
+                required
+              />
+
+              <TextField
+                label="Nr budynku"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("nr_budynku", e.target.value)}
+                required
+              />
+
+              <TextField
+                label="Nr mieszkania"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("nr_mieszkania", e.target.value)}
+                required
+              />
+
+              <TextField
+                label="Kod pocztowy"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("kod", e.target.value)}
+                required
+              />
+
+              <TextField
+                label="Nazwa firmy"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                onChange={(e) => handleChange("nazwa_frimy", e.target.value)}
                 required
               />
             </Box>
