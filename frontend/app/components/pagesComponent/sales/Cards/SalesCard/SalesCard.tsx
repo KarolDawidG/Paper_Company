@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -6,43 +6,22 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from './ExpandMore';
+import { ExpandMore } from '../ExpandMore';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
+import SalesCardLogic from "./SalesCardLogic";
 
 export const CardOne = () => {
-  const [expanded, setExpanded] = useState(false);
 
-  const [formData, setFormData] = useState({
-    imie: "",
-    email: "",
-    produkt: "",
-    ilosc: "",
-    miasto: "",
-    ulica: "",
-    nr_budynku: "",
-    nr_mieszkania: "",
-    kod: "",
-    nazwa_frimy: "",
-  });
+  const {
+    handleExpandClick,
+    handleSubmit,
+    handleChange,
+    formData,
+    expanded,
+  } = SalesCardLogic();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(formData);
-  };
-
-  const handleChange = (field:string | number, value:string | number) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
-  };
-  
   return (
     <Card sx={{ maxWidth: 999 }}>
       <CardHeader title="Przyjmowanie zamówień" />
