@@ -1082,6 +1082,74 @@
           }
         }
       }
+    },
+    "/sales": {
+      "post": {
+        "summary": "Dodaje nowe sprzedarze.",
+        "description": "Jak wyzej.",
+        "tags": [
+          "Sales"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "imie": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "produkt": {
+                    "type": "string"
+                  },
+                  "ilosc": {
+                    "type": "string"
+                  },
+                  "miasto": {
+                    "type": "string"
+                  },
+                  "ulica": {
+                    "type": "string"
+                  },
+                  "nr_budynku": {
+                    "type": "string"
+                  },
+                  "nr_mieszkania": {
+                    "type": "string"
+                  },
+                  "kod": {
+                    "type": "string"
+                  },
+                  "nazwa_firmy": {
+                    "type": "string"
+                  },
+                  "salesId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukces. Dane zostały wysłane poprawnie."
+          },
+          "400": {
+            "description": "Błąd w żądaniu."
+          },
+          "401": {
+            "description": "Nieautoryzowany dostęp."
+          },
+          "500": {
+            "description": "Wystąpił błąd serwera."
+          }
+        }
+      }
     }
   },
   "components": {},
@@ -1113,6 +1181,10 @@
     {
       "name": "Users",
       "description": "Endpointy do zarzadzania danymi uzytkownika."
+    },
+    {
+      "name": "Sales",
+      "description": "Endpointy do zarzadzania sprzedaza."
     }
   ]
 }

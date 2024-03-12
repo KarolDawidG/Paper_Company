@@ -40,10 +40,9 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  * @swagger
  * /sales:
  *   post:
- *     summary: Dodawanie nowej sprzedaży
+ *     summary: Dodaje nowe sprzedarze.
+ *     description: Jak wyzej.
  *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -51,7 +50,6 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             properties:
- *               // Tutaj umieść opisy pól formData
  *               imie:
  *                 type: string
  *               email:
