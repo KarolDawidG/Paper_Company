@@ -12,6 +12,8 @@ import resetRoute from "./routes/userRoute/resetRoute";
 import forgotRoute from "./routes/userRoute/forgotPassRoute";
 import capRoutes from "./routes/captchaRoute/capRoute";
 import urlRoutes from "./routes/userRoute/urlRoute";
+import salesRoutes from "./routes/salesRoute/salesRoute";
+
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -40,6 +42,7 @@ app.use("/reset", resetRoute);
 app.use("/forgot", forgotRoute);
 app.use("/cap", capRoutes);
 app.use("/url", urlRoutes);
+app.use("/sales", salesRoutes);
 
 app.use(middleware);
 app.use(limiter);

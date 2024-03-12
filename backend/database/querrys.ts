@@ -19,6 +19,25 @@ const createAccounts: string = `
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
+const createOrders: string = `
+    CREATE TABLE IF NOT EXISTS orders (
+      id varchar(36) NOT NULL,
+      imie varchar(50) NOT NULL,
+      email varchar(100) NOT NULL,
+      produkt varchar(255) NOT NULL,
+      ilosc int NOT NULL,
+      miasto varchar(100) NOT NULL,
+      ulica varchar(100) NOT NULL,
+      nr_budynku varchar(20) NOT NULL,
+      nr_mieszkania varchar(20),
+      kod varchar(20) NOT NULL,
+      nazwa_firmy varchar(100),
+      sales_id varchar(36),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
 const deleteNotActiveAccount: string = `
     CREATE EVENT IF NOT EXISTS delete_inactive_users
       ON SCHEDULE EVERY 15 MINUTE
@@ -37,4 +56,5 @@ export {
   createAccounts,
   deleteNotActiveAccount,
   event_schedulerON,
+  createOrders,
 };
