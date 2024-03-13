@@ -1,9 +1,12 @@
 import axiosInstance from "@/app/api/axiosInstance";
-import React, { useState, useEffect } from "react";
+import { notify } from "@/app/components/notification/Notify";
+import { useState, useEffect } from "react";
+import { useForm } from 'react-hook-form'; 
 
 const SalesCardLogic = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [expanded, setExpanded] = useState(false);
-  const [salesId, setSalesId] = useState<string | null>(null);
+  const [sales_id, setSalesId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     imie: "",
     email: "",
@@ -15,9 +18,8 @@ const SalesCardLogic = () => {
     nr_mieszkania: "",
     kod: "",
     nazwa_firmy: "",
-    salesId: "",
+    sales_id: "",
   });
-
 
   useEffect(() => {
     const idUser = localStorage.getItem('idUser');
@@ -25,7 +27,7 @@ const SalesCardLogic = () => {
       setSalesId(idUser);
       setFormData(prevData => ({
         ...prevData,
-        salesId: idUser 
+        sales_id: idUser 
       }));
     }    
     
@@ -35,17 +37,30 @@ const SalesCardLogic = () => {
     setExpanded(!expanded);
   };
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async() => {
     try {
-    const response = await axiosInstance.post('http://localhost:3001/sales', formData, {
+    const response = await axiosInstance.post('/sales', formData, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    console.log(response.data);
+    notify(response.data);
+    setFormData({
+          imie: "",
+          email: "",
+          produkt: "",
+          ilosc: "",
+          miasto: "",
+          ulica: "",
+          nr_budynku: "",
+          nr_mieszkania: "",
+          kod: "",
+          nazwa_firmy: "",
+          sales_id: "",
+        });
     } catch (error) {
       console.error('Request failed:', error);
+      notify("Nie udalo sie przekazac danych");
     }
   };
 
@@ -61,7 +76,10 @@ const SalesCardLogic = () => {
     handleSubmit,
     handleChange,
     formData,
-    expanded
+    expanded,
+    onSubmit,
+    register,
+    formState: { errors } 
   };
 };
 

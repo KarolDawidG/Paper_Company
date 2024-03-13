@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
 import { limiter, errorHandler } from "../../config/config";
-import { UsersRecord } from "../../database/Records/Users/UsersRecord";
+import { OrdersRecord } from "../../database/Records/Users/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -9,14 +9,12 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-//todo: dokumentacja 
-
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
 
     try {
       console.log(`Sales route: ${JSON.stringify(formData)}`);
-
+      await OrdersRecord.insert(formData)
       return res
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
@@ -27,7 +25,6 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
         .send(`Sales Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
-
 
 /**
  * @swagger
