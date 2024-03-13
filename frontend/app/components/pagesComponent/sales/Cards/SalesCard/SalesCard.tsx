@@ -111,7 +111,10 @@ export const CardOne = () => {
                 variant="outlined"
                 margin="normal"
                 size="small"
-                {...register("miasto", { required: true })}
+                {...register("miasto", { 
+                  required: true, 
+                  pattern: /^[a-zA-Z\s]{1,30}$/
+              })}
                 error={errors.miasto ? true : false}
                 helperText={errors.miasto ? "Miasto jest wymagane" : ""}
                 value={formData.miasto} 
@@ -163,7 +166,9 @@ export const CardOne = () => {
                 variant="outlined"
                 margin="normal"
                 size="small"
-                {...register("kod", { required: true })}
+                {...register("kod", { 
+                  required: true, 
+                  pattern: /^\d{2}-\d{3}$/ })}
                 error={errors.kod ? true : false}
                 helperText={errors.kod ? "Kod pocztowy jest wymagany" : ""}
                 value={formData.kod} 
