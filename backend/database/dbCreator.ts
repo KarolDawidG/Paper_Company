@@ -5,11 +5,20 @@ import {
   createAccounts,
   deleteNotActiveAccount,
   event_schedulerON,
+  createOrders,
 } from "./querrys";
 
 const createAccountsTable = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(createAccounts);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createTransactionOrders = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createOrders);
   } catch (err) {
     console.error(err);
   }
@@ -46,4 +55,4 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export { createAccountsTable, createRoot, deleteAccount, eventSchedulerON };
+export { createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };

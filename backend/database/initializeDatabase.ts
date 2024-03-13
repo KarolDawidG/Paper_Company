@@ -5,6 +5,7 @@ const nameDB = process.env.NAME_DB;
 
 import {
   createAccountsTable,
+  createTransactionOrders,
   createRoot,
   deleteAccount,
   eventSchedulerON,
@@ -15,6 +16,7 @@ const initializeDatabase = async () => {
     await pool.query(`USE ${nameDB}`);
     const tables = [
       createAccountsTable,
+      createTransactionOrders,
       createRoot,
       deleteAccount,
       eventSchedulerON,
