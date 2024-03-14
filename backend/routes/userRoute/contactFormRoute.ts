@@ -30,4 +30,60 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Contact
+ *   description: Endpointy do obsługi formularza kontaktowego
+ */
+
+/**
+ * @swagger
+ * /contact:
+ *   post:
+ *     summary: Wysyła e-mail z formularza kontaktowego.
+ *     description: Endpoint do wysyłania wiadomości e-mail z formularza kontaktowego.
+ *     tags: [Contact]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Imię i nazwisko osoby kontaktującej się.
+ *               email:
+ *                 type: string
+ *                 description: Adres e-mail osoby kontaktującej się.
+ *               subject:
+ *                 type: string
+ *                 description: Temat wiadomości.
+ *               message:
+ *                 type: string
+ *                 description: Treść wiadomości.
+ *     responses:
+ *       200:
+ *         description: Pomyślnie wysłano e-mail.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Potwierdzenie wysłania e-maila.
+ *       500:
+ *         description: Błąd serwera podczas wysyłania e-maila.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;
