@@ -54,4 +54,107 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
 },
 );
 
+/**
+ * @swagger
+ * tags:
+ *   name: Admin
+ *   description: Endpointy do zarządzania użytkownikami.
+ */
+
+/**
+ * @swagger
+ * /admin:
+ *   get:
+ *     summary: Pobiera listę wszystkich użytkowników.
+ *     description: Endpoint służący do pobierania listy wszystkich użytkowników.
+ *     tags: [Admin]
+ *     responses:
+ *       200:
+ *         description: Pomyślnie pobrano listę użytkowników.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 usersList:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       500:
+ *         description: Błąd serwera podczas pobierania listy użytkowników.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+/**
+ * @swagger
+ * /admin/{id}/{role}:
+ *   put:
+ *     summary: Aktualizuje rolę użytkownika.
+ *     description: Endpoint służący do aktualizacji roli użytkownika na podstawie jego identyfikatora.
+ *     tags: [Admin]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: role
+ *         required: true
+ *         description: Nowa rola użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie zaktualizowano rolę użytkownika.
+ *       500:
+ *         description: Błąd serwera podczas aktualizacji roli użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
+
+/**
+ * @swagger
+ * /admin/{id}:
+ *   delete:
+ *     summary: Usuwa użytkownika.
+ *     description: Endpoint służący do usuwania użytkownika na podstawie jego identyfikatora.
+ *     tags: [Admin]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie usunięto użytkownika.
+ *       500:
+ *         description: Błąd serwera podczas usuwania użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
+
 export default router;

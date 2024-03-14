@@ -6,6 +6,77 @@
     "description": "Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial \"The Office\". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość."
   },
   "paths": {
+    "/contact": {
+      "post": {
+        "summary": "Wysyła e-mail z formularza kontaktowego.",
+        "description": "Endpoint do wysyłania wiadomości e-mail z formularza kontaktowego.",
+        "tags": [
+          "Contact"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Imię i nazwisko osoby kontaktującej się."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Adres e-mail osoby kontaktującej się."
+                  },
+                  "subject": {
+                    "type": "string",
+                    "description": "Temat wiadomości."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Treść wiadomości."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomyślnie wysłano e-mail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Potwierdzenie wysłania e-maila."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas wysyłania e-maila.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/forgot": {
       "post": {
         "summary": "Wysyła email resetujący hasło.",
@@ -826,6 +897,142 @@
         }
       }
     },
+    "/admin": {
+      "get": {
+        "summary": "Pobiera listę wszystkich użytkowników.",
+        "description": "Endpoint służący do pobierania listy wszystkich użytkowników.",
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano listę użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas pobierania listy użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{id}/{role}": {
+      "put": {
+        "summary": "Aktualizuje rolę użytkownika.",
+        "description": "Endpoint służący do aktualizacji roli użytkownika na podstawie jego identyfikatora.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "role",
+            "required": true,
+            "description": "Nowa rola użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zaktualizowano rolę użytkownika."
+          },
+          "500": {
+            "description": "Błąd serwera podczas aktualizacji roli użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{id}": {
+      "delete": {
+        "summary": "Usuwa użytkownika.",
+        "description": "Endpoint służący do usuwania użytkownika na podstawie jego identyfikatora.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie usunięto użytkownika."
+          },
+          "500": {
+            "description": "Błąd serwera podczas usuwania użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Pobiera listę wszystkich użytkowników.",
@@ -951,85 +1158,12 @@
             }
           }
         }
-      },
-      "put": {
-        "summary": "Aktualizuje dane użytkownika.",
-        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string",
-                    "description": "Nowa nazwa użytkownika."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Nowy adres e-mail użytkownika."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Pomyślnie zaktualizowano dane użytkownika."
-          },
-          "403": {
-            "description": "Brak dostępu do zasobu.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Usuwa użytkownika.",
-        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
+      }
+    },
+    "/users/user/{id}": {
+      "get": {
+        "summary": "Pobiera informacje o użytkowniku.",
+        "description": "Pobiera informacje o użytkowniku na podstawie jego identyfikatora.",
         "tags": [
           "Users"
         ],
@@ -1046,7 +1180,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Pomyślnie usunięto użytkownika."
+            "description": "Pomyślnie pobrano informacje o użytkowniku.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "403": {
             "description": "Brak dostępu do zasobu.",
@@ -1155,6 +1296,10 @@
   "components": {},
   "tags": [
     {
+      "name": "Contact",
+      "description": "Endpointy do obsługi formularza kontaktowego"
+    },
+    {
       "name": "Forgot Password",
       "description": "Endpointy do obsługi przypomnienia hasła"
     },
@@ -1177,6 +1322,10 @@
     {
       "name": "Captcha",
       "description": "Endpointy do weryfikacji Captcha."
+    },
+    {
+      "name": "Admin",
+      "description": "Endpointy do zarządzania użytkownikami."
     },
     {
       "name": "Users",

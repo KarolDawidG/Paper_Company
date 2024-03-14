@@ -153,65 +153,11 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
 
 /**
  * @swagger
- * /users/{id}:
- *   put:
- *     summary: Aktualizuje dane użytkownika.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator użytkownika.
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *                 description: Nowa nazwa użytkownika.
- *               email:
- *                 type: string
- *                 description: Nowy adres e-mail użytkownika.
- *     responses:
- *       200:
- *         description: Pomyślnie zaktualizowano dane użytkownika.
- *       403:
- *         description: Brak dostępu do zasobu.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
- *       500:
- *         description: Błąd serwera.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
- */
-
-/**
- * @swagger
- * /users/{id}:
- *   delete:
- *     summary: Usuwa użytkownika.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
- *     tags:
- *       - Users
+ * /users/user/{id}:
+ *   get:
+ *     summary: Pobiera informacje o użytkowniku.
+ *     description: Pobiera informacje o użytkowniku na podstawie jego identyfikatora.
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: id
@@ -221,7 +167,11 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie usunięto użytkownika.
+ *         description: Pomyślnie pobrano informacje o użytkowniku.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  *       403:
  *         description: Brak dostępu do zasobu.
  *         content:
