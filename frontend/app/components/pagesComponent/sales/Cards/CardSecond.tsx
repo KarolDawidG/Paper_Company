@@ -7,13 +7,34 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from './ExpandMore';
+import axiosInstance from '@/app/api/axiosInstance';
+import axios from 'axios';
 
 export const CardSecond = () => {
+  const [data, setData] = React.useState<any[]>([]);
   const [expanded, setExpanded] = React.useState(false);
+
+  React.useEffect(() => {
+
+    const fetchData = async () => {
+      const idUser:any = localStorage.getItem('idUser');
+      try {
+        const response = await axios.get('http://localhost:3001/sales', { params: { idUser } });
+        setData(response.data.ordersList);
+        //console.log(response.data.ordersList);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+ 
+    fetchData();
+  }, []);
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
 
   return (
     <Card sx={{ maxWidth: 999 }}>

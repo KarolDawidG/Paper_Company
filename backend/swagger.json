@@ -1225,6 +1225,49 @@
       }
     },
     "/sales": {
+      "get": {
+        "summary": "Pobiera listę wszystkich zamowien nad ktorymi pracuje dany sprzedawca.",
+        "description": "Endpoint służący do pobierania listy wszystkich sprzedazy.",
+        "tags": [
+          "Sales"
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano listę sprzedazy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ordersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas pobierania listy użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Dodaje nowe sprzedarze.",
         "description": "Jak wyzej.",
@@ -1278,7 +1321,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukces. Dane zostały wysłane poprawnie."
+            "description": "Pomyślnie pobrano listę zamowien."
           },
           "400": {
             "description": "Błąd w żądaniu."

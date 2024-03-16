@@ -1,5 +1,6 @@
 import { performTransaction } from "../performTransaction";
 import { v4 as uuidv4 } from "uuid";
+import { pool } from "../../pool";
 
 interface Order {
   id: string;
@@ -42,6 +43,16 @@ class OrdersRecord {
       );
       return id;
     });
+  }
+
+  static async getListById(sales_id: string) {
+    try {
+      const [results] = await pool.execute("SELECT * FROM `orders` WHERE `sales_id` = ?", [sales_id]) as any;
+      return results.map((obj: any) => new OrdersRecord(obj));
+    } catch (error) {
+      console.error("Error in getListById:", error);
+      throw error;
+    }
   }
 }
 

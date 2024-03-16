@@ -9,6 +9,19 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
+router.get("/", async (req: Request, res: Response) => {
+  const idUser:any = req.query.idUser;
+    try {
+      const ordersList = await OrdersRecord.getListById(idUser)
+      return res.json({ ordersList });
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Sales Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
+
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
 
@@ -31,6 +44,37 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  * tags:
  *   name: Sales
  *   description: Endpointy do zarzadzania sprzedaza.
+ */
+
+/**
+ * @swagger
+ * /sales:
+ *   get:
+ *     summary: Pobiera listę wszystkich zamowien nad ktorymi pracuje dany sprzedawca.
+ *     description: Endpoint służący do pobierania listy wszystkich sprzedazy.
+ *     tags: [Sales]
+ *     responses:
+ *       200:
+ *         description: Pomyślnie pobrano listę sprzedazy.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ordersList:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       500:
+ *         description: Błąd serwera podczas pobierania listy użytkowników.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
  */
 
 /**
@@ -71,7 +115,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  *                 type: string
  *     responses:
  *       '200':
- *         description: Sukces. Dane zostały wysłane poprawnie.
+ *         description: Pomyślnie pobrano listę zamowien.
  *       '400':
  *         description: Błąd w żądaniu.
  *       '401':
