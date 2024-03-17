@@ -3,7 +3,7 @@ import useTranslation from "../../language/useTranslation";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Grid, Typography, Divider } from '@mui/material';
 import { CardOne } from './Cards/SalesCard/SalesCard';
-import { CardSecond } from './Cards/CardSecond';
+import { CardSecond } from './Cards/OrdersCard/CardSecond';
 import { CardThird } from './Cards/CardThird';
 
 const AuthorizedViewSales = () => {
