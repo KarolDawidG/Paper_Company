@@ -9,13 +9,13 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", verifyToken, async (req: Request, res: Response) => {
   const idUser:any = req.query.idUser;
     try {
       const ordersList = await OrdersRecord.getListById(idUser)
       return res.json({ ordersList });
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Sales Route: GET: ${error.message}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -24,7 +24,6 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
-
     try {
       console.log(`Sales route: ${JSON.stringify(formData)}`);
       await OrdersRecord.insert(formData)
@@ -32,10 +31,25 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Sales Route: POST: ${error.message}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
+
+router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+  const id:string = req.params.id;
+    try {
+      await OrdersRecord.delete(id)
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error: any) {
+      logger.error(`Sales Route: DELETE: ${error.message}`);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Sales Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 
@@ -124,4 +138,32 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  *         description: Wystąpił błąd serwera.
  */
 
+/**
+ * @swagger
+ * /sales/{id}:
+ *   delete:
+ *     summary: Usuwa zamowienia.
+ *     description: Endpoint służący do usuwania zamowienia na podstawie jego identyfikatora.
+ *     tags: [Sales]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator zamowienia.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pomyślnie usunięto zamowienie.
+ *       500:
+ *         description: Błąd serwera podczas usuwania użytkownika.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Komunikat błędu.
+ */
 export default router;

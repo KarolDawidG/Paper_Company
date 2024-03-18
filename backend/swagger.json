@@ -1334,6 +1334,47 @@
           }
         }
       }
+    },
+    "/sales/{id}": {
+      "delete": {
+        "summary": "Usuwa zamowienia.",
+        "description": "Endpoint służący do usuwania zamowienia na podstawie jego identyfikatora.",
+        "tags": [
+          "Sales"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator zamowienia.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie usunięto zamowienie."
+          },
+          "500": {
+            "description": "Błąd serwera podczas usuwania użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {},

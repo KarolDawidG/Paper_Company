@@ -54,6 +54,12 @@ class OrdersRecord {
       throw error;
     }
   }
+  static async delete(id: string) {
+    return performTransaction(async (connection) => {
+      const result = await connection.execute('DELETE FROM `orders` WHERE id = ?', [id]);
+      return result;
+    });
+  }
 }
 
 export { OrdersRecord };

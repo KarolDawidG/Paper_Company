@@ -15,6 +15,7 @@ import {
   Button,
 } from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
+import axiosInstance from '@/app/api/axiosInstance';
 
 const OrderTable: React.FC<any> = () => {
   const [data, setData] = useState<any[]>([]);
@@ -27,7 +28,7 @@ const OrderTable: React.FC<any> = () => {
     const fetchData = async () => {
       const idUser:any = localStorage.getItem('idUser');
       try {
-        const response = await axios.get('http://localhost:3001/sales', { params: { idUser } });
+        const response = await axiosInstance.get('/sales', { params: { idUser } });
         setData(response.data.ordersList);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,6 +56,16 @@ const filteredData = data.filter((order) =>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleDeleteOrder = async (id:string) => {
+    console.log(id)
+    try {
+      await axiosInstance.delete(`/sales/${id}`);
+      setData(data.filter((order) => order.orderData.id !== id)); 
+    } catch (error: any) {
+      console.error(error);
+    }
   };
   
   return (
@@ -100,7 +111,7 @@ const filteredData = data.filter((order) =>
                 <TableCell>{formatDate(order.orderData.created_at)}</TableCell>
 
                 <TableCell>
-                  <Button>
+                  <Button onClick={() => handleDeleteOrder(order.orderData.id)}>
                     Usun
                   </Button>
                 </TableCell>

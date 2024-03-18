@@ -62,7 +62,7 @@ const TableLogic = () => {
   const handleDeleteUser = async (id:string) => {
     try {
       await axiosInstance.delete(`http://localhost:3001/admin/${id}`);
-      window.location.reload();
+      setData(data.filter((user) => user.id !== id)); 
     } catch (error: any) {
       console.error(error);
     }
