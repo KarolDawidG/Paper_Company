@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import OrderDetailsModal from './OrderDetailsModal';
 import {
   Table,
   TableBody,
@@ -18,6 +18,7 @@ import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
 
 const OrderTable: React.FC<any> = () => {
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [data, setData] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [page, setPage] = useState<number>(0);
@@ -30,6 +31,7 @@ const OrderTable: React.FC<any> = () => {
       try {
         const response = await axiosInstance.get('/sales', { params: { idUser } });
         setData(response.data.ordersList);
+        console.log(response.data.ordersList)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -68,6 +70,14 @@ const filteredData = data.filter((order) =>
     }
   };
   
+  const handleOpenDetails = (order: any) => {
+    setSelectedOrder(order);
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedOrder(null);
+  };
+
   return (
     <Box padding={1}>
       <Box marginBottom={2} display='flex' alignItems='center'>
@@ -93,6 +103,7 @@ const filteredData = data.filter((order) =>
               <TableCell>Produkt</TableCell>
               <TableCell>Data zamowienia</TableCell>
               <TableCell>Usun</TableCell>
+              <TableCell>Szczegoly</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -116,6 +127,13 @@ const filteredData = data.filter((order) =>
                   </Button>
                 </TableCell>
 
+                <TableRow>
+                  <Button key={order.orderData.id} onClick={() => handleOpenDetails(order)}>
+                    Wyswietl
+                  </Button>
+                </TableRow>
+
+
 
               </TableRow>
             ))}
@@ -132,6 +150,15 @@ const filteredData = data.filter((order) =>
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {(selectedOrder && selectedOrder.orderData) && (
+        <OrderDetailsModal
+          open={true}
+          onClose={handleCloseDetails}
+          order={selectedOrder}
+        />
+      )}
+
     </Box>
   );
 };
