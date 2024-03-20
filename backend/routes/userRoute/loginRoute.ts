@@ -107,10 +107,10 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(`Login Route: POST: ${error.message}`);
     return res
       .status(STATUS_CODES.SERVER_ERROR)
-      .send(MESSAGES.INTERNET_DISCONNECTED);
+      .send(`Login Route: POST: ${MESSAGES.INTERNET_DISCONNECTED}`);
   }
 });
 

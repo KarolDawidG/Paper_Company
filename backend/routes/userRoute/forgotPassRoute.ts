@@ -35,7 +35,9 @@ router.post("/", async (req: Request, res: Response) => {
     passwordReset = emailExists.password;
   } catch (error: any) {
     logger.error(error.message);
-    res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(`Forgot Pass Route: POST: ${MESSAGES.SERVER_ERROR}`); 
   }
 
   const secret: string = jwt_secret + passwordReset;
