@@ -6,6 +6,7 @@ const nameDB = process.env.NAME_DB;
 import {
   createAccountsTable,
   createTransactionOrders,
+  createTransactionProducts,
   createRoot,
   deleteAccount,
   eventSchedulerON,
@@ -17,6 +18,7 @@ const initializeDatabase = async () => {
     const tables = [
       createAccountsTable,
       createTransactionOrders,
+      createTransactionProducts,
       createRoot,
       deleteAccount,
       eventSchedulerON,

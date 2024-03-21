@@ -37,6 +37,19 @@ const createOrders: string = `
       PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
+    const createProducts: string = `
+    CREATE TABLE IF NOT EXISTS products (
+      id varchar(36) NOT NULL,
+      name varchar(255) NOT NULL,
+      category varchar(50) NOT NULL,
+      description text,
+      price decimal(10, 2) NOT NULL,
+      stock int NOT NULL DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
 
 const deleteNotActiveAccount: string = `
     CREATE EVENT IF NOT EXISTS delete_inactive_users
@@ -57,4 +70,5 @@ export {
   deleteNotActiveAccount,
   event_schedulerON,
   createOrders,
+  createProducts,
 };
