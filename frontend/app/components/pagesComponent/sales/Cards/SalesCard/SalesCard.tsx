@@ -29,7 +29,7 @@ export const CardOne = () => {
       <CardHeader title="Przyjmowanie zamówień" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Kontakt z klientem w celu składania zamówień.
+          Dane klienta.
         </Typography>
       </CardContent>
 

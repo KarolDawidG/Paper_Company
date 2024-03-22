@@ -4,7 +4,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Grid, Typography, Divider } from '@mui/material';
 import { CardOne } from './Cards/SalesCard/SalesCard';
 import { CardSecond } from './Cards/OrdersCard/CardSecond';
-import { CardThird } from './Cards/CardThird';
+import { CardThird } from './Cards/BasketCard/BasketCard';
+import { ProductsCard } from './Cards/ProductsCard/ProductsCard';
 
 const AuthorizedViewSales = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -33,6 +34,10 @@ const AuthorizedViewSales = () => {
           
           <Grid sx={{ marginBottom: 2, marginTop:2 }}>
             <CardThird />
+          </Grid>
+
+          <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+            <ProductsCard />
           </Grid>
           
         </Grid>
