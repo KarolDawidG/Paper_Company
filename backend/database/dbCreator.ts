@@ -3,11 +3,20 @@ import {
   insertRoot,
   findRoot,
   createAccounts,
+  createOrderDetails,
   deleteNotActiveAccount,
   event_schedulerON,
   createOrders,
   createProducts,
 } from "./querrys";
+
+const createTransactionOrdersDetails = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createOrderDetails);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const createAccountsTable = async (pool: Pool): Promise<void> => {
   try {
@@ -64,4 +73,4 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export { createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };
+export { createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };

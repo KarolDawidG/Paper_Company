@@ -22,6 +22,7 @@ const createAccounts: string = `
 const createOrders: string = `
     CREATE TABLE IF NOT EXISTS orders (
       id varchar(36) NOT NULL,
+      account_id varchar(36) NOT NULL,
       imie varchar(50) NOT NULL,
       email varchar(100) NOT NULL,
       produkt varchar(255) NOT NULL,
@@ -32,12 +33,25 @@ const createOrders: string = `
       nr_mieszkania varchar(20),
       kod varchar(20) NOT NULL,
       nazwa_firmy varchar(100),
-      sales_id varchar(36),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
+      PRIMARY KEY (id),
+      FOREIGN KEY (account_id) REFERENCES accounts(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-    const createProducts: string = `
+
+const createOrderDetails: string = `
+    CREATE TABLE IF NOT EXISTS order_details (
+      id varchar(36) NOT NULL,
+      order_id varchar(36) NOT NULL,
+      product_id varchar(36) NOT NULL,
+      quantity int NOT NULL,
+      PRIMARY KEY (id),
+      FOREIGN KEY (order_id) REFERENCES orders(id),
+      FOREIGN KEY (product_id) REFERENCES products(id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
+const createProducts: string = `
     CREATE TABLE IF NOT EXISTS products (
       id varchar(36) NOT NULL,
       name varchar(255) NOT NULL,
@@ -49,7 +63,6 @@ const createOrders: string = `
       PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-
 
 const deleteNotActiveAccount: string = `
     CREATE EVENT IF NOT EXISTS delete_inactive_users
@@ -67,6 +80,7 @@ export {
   insertRoot,
   findRoot,
   createAccounts,
+  createOrderDetails,
   deleteNotActiveAccount,
   event_schedulerON,
   createOrders,

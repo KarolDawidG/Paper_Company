@@ -13,6 +13,7 @@ import forgotRoute from "./routes/userRoute/forgotPassRoute";
 import capRoutes from "./routes/captchaRoute/capRoute";
 import urlRoutes from "./routes/userRoute/urlRoute";
 import salesRoutes from "./routes/salesRoute/salesRoute";
+import producsRoute from "./routes/productsRoute/producsRoute";
 
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -43,6 +44,7 @@ app.use("/forgot", forgotRoute);
 app.use("/cap", capRoutes);
 app.use("/url", urlRoutes);
 app.use("/sales", salesRoutes);
+app.use("/products", producsRoute);
 
 app.use(middleware);
 app.use(limiter);

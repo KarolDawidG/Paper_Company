@@ -14,7 +14,7 @@ interface Order {
   nr_mieszkania: string;
   kod: string;
   nazwa_firmy: string;
-  sales_id: string;
+  account_id: string;
 }
 
 class OrdersRecord {
@@ -25,7 +25,7 @@ class OrdersRecord {
 
     return performTransaction(async (connection) => {
       await connection.execute(
-        "INSERT INTO orders (id, imie, email, produkt, ilosc, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy, sales_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO orders (id, imie, email, produkt, ilosc, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
           formData.imie,
@@ -38,16 +38,16 @@ class OrdersRecord {
           formData.nr_mieszkania,
           formData.kod,
           formData.nazwa_firmy,
-          formData.sales_id
+          formData.account_id
         ]
       );
       return id;
     });
   }
 
-  static async getListById(sales_id: string) {
+  static async getListById(account_id: string) {
     try {
-      const [results] = await pool.execute("SELECT * FROM `orders` WHERE `sales_id` = ?", [sales_id]) as any;
+      const [results] = await pool.execute("SELECT * FROM `orders` WHERE `account_id` = ?", [account_id]) as any;
       return results.map((obj: any) => new OrdersRecord(obj));
     } catch (error) {
       console.error("Error in getListById:", error);

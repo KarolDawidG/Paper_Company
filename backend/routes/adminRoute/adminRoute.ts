@@ -10,7 +10,7 @@ import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 const router = express.Router();
 
 router.use(middleware, limiter, errorHandler);
-//todo: dokumentacja do edycji
+
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const usersList = await UsersRecord.listAll();
