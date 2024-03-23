@@ -3,18 +3,11 @@ import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button } fr
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandMore';
-import { useEffect, useState } from "react";
 import { useCart } from './CartContext';
 
 export const CardThird = () => {
-    const { cartItems, addToCart, removeFromCart, increaseClickCount, decreaseClickCount } = useCart();
+    const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount } = useCart();
     const [expanded, setExpanded] = React.useState(false);
-    // const [cartItems, setCartItems] = useState([]);
-
-    // useEffect(() => {
-    //     const storedCartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    //     setCartItems(storedCartItems);
-    // }, []);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -22,31 +15,15 @@ export const CardThird = () => {
 
     const handleDeleteItem = (index) => {
         removeFromCart(index);
-        // const updatedCartItems = [...cartItems];
-        // updatedCartItems.splice(index, 1);
-        // setCartItems(updatedCartItems);
-        // localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
     const handleIncreaseClickCount = (index) => {
         increaseClickCount(index);
-        // const updatedCartItems = [...cartItems];
-        // updatedCartItems[index].clickCount += 1;
-        // setCartItems(updatedCartItems);
-        // localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
     const handleDecreaseClickCount = (index) => {
         decreaseClickCount(index)
-        // const updatedCartItems = [...cartItems];
-        // if (updatedCartItems[index].clickCount > 0) {
-        //     updatedCartItems[index].clickCount -= 1;
-        // }
-        // setCartItems(updatedCartItems);
-        // localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
-
-
 
     return (
         <Card sx={{ maxWidth: '100%' }}>

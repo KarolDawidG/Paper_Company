@@ -4,26 +4,13 @@ import {useState} from "react";
 import {useCart} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 
 export const ProductCard = ({ id, name, description, price, stock }) => {
-  const [cart, setCart] = useState([]);
   const [clickCount, setClickCount] = useState(0);
     const { addToCart } = useCart();
 
-  // const addToCart = (product) => {
-  //   setClickCount(prevCount => prevCount + 1);
-  //   setCart([...cart, product]);
-  //   console.log(product);
-  //
-  //   const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
-  //     const existingProductIndex = existingProducts.findIndex(item => item.id === product.id);
-  //     if (existingProductIndex !== -1) {
-  //         // Jesli produkt juz istnieje, aktualizujemy jego ilosc klikniec
-  //         existingProducts[existingProductIndex].clickCount += 1;
-  //     } else {
-  //         // Jesli produkt nie istnieje, dodajemy go do koszyka
-  //         existingProducts.push({ ...product, clickCount: 1 });
-  //     }
-  //   localStorage.setItem('cart', JSON.stringify(existingProducts));
-  // };
+  const handleAddToCart = (product) => {
+      setClickCount(prevCount => prevCount + 1);
+      addToCart(product)
+  };
 
   return (
       <Card>
@@ -57,7 +44,7 @@ export const ProductCard = ({ id, name, description, price, stock }) => {
                     </Grid>
 
                     <Grid item>
-                      <Button onClick={() => addToCart({ id, name, description, price, stock, clickCount })}>
+                      <Button onClick={() => handleAddToCart({ id, name, description, price, stock, clickCount })}>
                         Dodaj do koszyka
                       </Button>
                     </Grid>

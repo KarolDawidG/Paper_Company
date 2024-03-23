@@ -9,12 +9,12 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const [clickCount, setClickCount] = useState(0);
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+
 
     const addToCart = (product) => {
         setClickCount(prevCount => prevCount + 1);
         setCart([...cart, product]);
-        console.log(product);
 
         const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
         const existingProductIndex = existingProducts.findIndex(item => item.id === product.id);
@@ -24,6 +24,7 @@ export const CartProvider = ({ children }) => {
             existingProducts.push({ ...product, clickCount: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(existingProducts));
+        setCartItems(existingProducts);
     };
 
     const removeFromCart = (index) => {
