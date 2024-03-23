@@ -6,6 +6,7 @@ import { CardOne } from './Cards/SalesCard/SalesCard';
 import { CardSecond } from './Cards/OrdersCard/CardSecond';
 import { CardThird } from './Cards/BasketCard/BasketCard';
 import { ProductsCard } from './Cards/ProductsCard/ProductsCard';
+import {CartProvider} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 
 const AuthorizedViewSales = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -17,31 +18,33 @@ const AuthorizedViewSales = () => {
 
   return (
     <Grid container spacing={3} justifyContent="center">
-      <Grid item xs={12}>
-        <Grid sx={{ marginBottom: 2, padding: 2, marginTop:2 }}>
-          
-          <Typography variant="h4" align="center" gutterBottom>
-            {t.sales_and_orders.title}
-          </Typography>
+      <CartProvider>
+        <Grid item xs={12}>
+          <Grid sx={{ marginBottom: 2, padding: 2, marginTop:2 }}>
 
-          <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-            <CardOne/>
-          </Grid>
-          
-          <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-            <CardSecond />
-          </Grid>
-          
-          <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-            <CardThird />
-          </Grid>
+            <Typography variant="h4" align="center" gutterBottom>
+              {t.sales_and_orders.title}
+            </Typography>
 
-          <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-            <ProductsCard />
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <CardOne/>
+            </Grid>
+
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <CardSecond />
+            </Grid>
+
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <ProductsCard />
+            </Grid>
+
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <CardThird />
+            </Grid>
+
           </Grid>
-          
         </Grid>
-      </Grid>
+      </CartProvider>
     </Grid>
   );
 };

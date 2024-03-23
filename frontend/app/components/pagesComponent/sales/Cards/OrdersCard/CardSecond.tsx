@@ -7,7 +7,7 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandMore';
-import OrderTable from './OrdersTable /OrderTable';
+import OrderTable from './OrdersTable/OrderTable';
 
 export const CardSecond = () => {
   const [expanded, setExpanded] = useState(false);
@@ -17,7 +17,7 @@ export const CardSecond = () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 999 }}>
+  <Card sx={{ maxWidth: '100%' }}>
       <CardHeader title="Zamowienia"/>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -41,6 +41,6 @@ export const CardSecond = () => {
           <OrderTable/>
         </CardContent>
       </Collapse>
-    </Card>
+  </Card>
   );
 }

@@ -25,7 +25,7 @@ export const CardOne = () => {
   } = SalesCardLogic();
 
   return (
-    <Card sx={{ maxWidth: 999 }}>
+      <Card sx={{ maxWidth: '100%' }}>
       <CardHeader title="Przyjmowanie zamówień" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">

@@ -27,25 +27,39 @@ export const ProductsCard = () => {
 
 
   return (
-    <Card sx={{ maxWidth: 999 }}>
-      <CardHeader title="Produkty"/>
+      <Card sx={{ maxWidth: '100%' }}>
+        <CardHeader title="Produkty"/>
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            Obsluga produktow
+          </Typography>
+        </CardContent>
 
-      <CardActions disableSpacing>
-        <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
+        <CardActions disableSpacing>
+          <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
       
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <Grid container spacing={2} alignItems="stretch">
-        <CardContent> 
+        <CardContent>
           {data.map((product) => (
             <Grid item key={product.id} >
-              <ProductCard product={product} />
+              <ProductCard
+                  id={product.productsData.id}
+                  name={product.productsData.name}
+                  description={product.productsData.description}
+                  price={product.productsData.price}
+                  stock={product.productsData.stock}
+              />
             </Grid>
           ))}
         </CardContent>
-        </Grid>
       </Collapse>
     </Card>
   );
