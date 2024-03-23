@@ -29,7 +29,6 @@ const UnauthorizedViewSecurity = ({children}:any) => {
           </Grid>
         ))}
       </Grid>
-
     </Box>
   );
 };
