@@ -47,7 +47,7 @@ export const CardOne = () => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box noValidate sx={{ mt: 1 }}>
               <TextField
                 label="Imię klienta"
                 variant="outlined"

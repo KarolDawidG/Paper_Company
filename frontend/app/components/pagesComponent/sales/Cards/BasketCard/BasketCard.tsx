@@ -8,7 +8,6 @@ import { useCart } from './CartContext';
 export const CardThird = () => {
     const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount } = useCart();
     const [expanded, setExpanded] = React.useState(false);
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
