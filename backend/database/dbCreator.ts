@@ -8,11 +8,20 @@ import {
   event_schedulerON,
   createOrders,
   createProducts,
+  createClients,
 } from "./querrys";
 
 const createTransactionOrdersDetails = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(createOrderDetails);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createClientsTable = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createClients);
   } catch (err) {
     console.error(err);
   }
@@ -73,4 +82,4 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export { createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };
+export { createClientsTable, createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };

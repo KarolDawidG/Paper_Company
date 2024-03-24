@@ -1,18 +1,17 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Users/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
+router.use(middleware, limiter);
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
-  const idUser:any = req.query.idUser;
     try {
-      const ordersList = await OrdersRecord.getListById(idUser)
+      const ordersList = await OrdersRecord.getListById();
       return res.json({ ordersList });
     } catch (error: any) {
       logger.error(`Sales Route: GET: ${error.message}`);
@@ -24,8 +23,8 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
+  console.log(formData);
     try {
-      console.log(`Sales route: ${JSON.stringify(formData)}`);
       await OrdersRecord.insert(formData)
       return res
         .status(STATUS_CODES.SUCCESS)

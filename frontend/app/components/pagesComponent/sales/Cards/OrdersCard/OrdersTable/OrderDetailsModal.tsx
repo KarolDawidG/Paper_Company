@@ -53,36 +53,35 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: a
             Szczegóły zamówienia
           </Typography>
           <Box>
-            <Typography variant="subtitle1">
-              Imię: {order.orderData.imie}
-            </Typography>
+
             <Typography variant="subtitle1">
               Nazwa firmy: {order.orderData.nazwa_firmy}
             </Typography>
-            <Typography variant="subtitle1">
-              Produkt: {order.orderData.produkt}
-            </Typography>
+
             <Typography variant="subtitle1">
               Data zamówienia: {formatDate(order.orderData.created_at)}
             </Typography>
-            <Typography variant="subtitle1">
-                Ilosc: {order.orderData.ilosc}
-            </Typography>
+
             <Typography variant="h5" id="order-details-modal-title" gutterBottom>
                 Adres:
             </Typography>
+
             <Typography variant="subtitle1">
                 Miasto: {order.orderData.miasto}
             </Typography>
+
             <Typography variant="subtitle1">
                 Kod: {order.orderData.kod}
             </Typography>
+
             <Typography variant="subtitle1">
                 Ulica: {order.orderData.ulica}
             </Typography>
+
             <Typography variant="subtitle1">
                 Nr budynku/mieszkania: {order.orderData.nr_budynku}/{order.orderData.nr_mieszkania}
             </Typography>
+
           </Box>
           <Box sx={{ mt: 2 }}>
             <Button onClick={onClose} variant="outlined" color="primary">

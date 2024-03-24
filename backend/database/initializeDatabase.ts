@@ -7,10 +7,11 @@ import {
   createAccountsTable,
   createTransactionOrders,
   createTransactionProducts,
-  createTransactionOrdersDetails,
   createRoot,
   deleteAccount,
   eventSchedulerON,
+  createClientsTable,
+  createTransactionOrdersDetails,
 } from "./dbCreator";
 
 const initializeDatabase = async () => {
@@ -24,6 +25,7 @@ const initializeDatabase = async () => {
       createRoot,
       deleteAccount,
       eventSchedulerON,
+      createClientsTable,
     ];
     for await (const table of tables) {
       await table(pool);

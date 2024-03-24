@@ -6,7 +6,7 @@ import { ExpandMore } from '../ExpandMore';
 import { useCart } from './CartContext';
 
 export const CardThird = () => {
-    const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount } = useCart();
+    const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts } = useCart();
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -22,6 +22,10 @@ export const CardThird = () => {
 
     const handleDecreaseClickCount = (index) => {
         decreaseClickCount(index)
+    };
+
+    const handleBuyProducts = () => {
+        buyProducts()
     };
 
     return (
@@ -40,6 +44,12 @@ export const CardThird = () => {
             </CardActions>
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
+
+                <Grid container justifyContent="flex-end">
+                    <Typography variant="h6" color="text.secondary">Zloz zamowienie  </Typography>
+                    <Button onClick={() => handleBuyProducts()}>Buy</Button>
+                </Grid>
+
                 <CardContent>
                     <Grid container spacing={2}>
                         {cartItems.map((item, index) => (
@@ -60,7 +70,9 @@ export const CardThird = () => {
                                             <Button onClick={() => handleDeleteItem(index)}>Delete</Button>
                                         </Grid>
                                     </CardContent>
+
                                 </Card>
+
                             </Grid>
                         ))}
                     </Grid>

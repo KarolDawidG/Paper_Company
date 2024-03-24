@@ -26,7 +26,7 @@ export const CardOne = () => {
 
   return (
       <Card sx={{ maxWidth: '100%' }}>
-      <CardHeader title="Przyjmowanie zamówień" />
+      <CardHeader title="Adres dostawy" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           Dane klienta.
@@ -48,59 +48,6 @@ export const CardOne = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box noValidate sx={{ mt: 1 }}>
-              <TextField
-                label="Imię klienta"
-                variant="outlined"
-                margin="normal"
-                size="small"
-                {...register("imie", { required: true })}
-                error={errors.imie ? true : false}
-                helperText={errors.imie ? "Imię jest wymagane" : ""}
-                value={formData.imie} 
-                onChange={(e) => handleChange("imie", e.target.value)}           
-              />
-
-              <TextField
-                label="Adres e-mail"
-                variant="outlined"
-                margin="normal"
-                size="small"
-                {...register("email", { 
-                  required: true, 
-                  pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ 
-                })}
-                error={errors.email ? true : false}
-                helperText={errors.email ? "Wprowadź poprawny adres e-mail" : ""}
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                type="email"
-              />
-
-              <TextField
-                label="Produkt"
-                variant="outlined"
-                margin="normal"
-                size="small"
-                {...register("produkt", { required: true })}
-                error={errors.produkt ? true : false}
-                helperText={errors.produkt ? "Produkt jest wymagany" : ""}
-                value={formData.produkt} 
-                onChange={(e) => handleChange("produkt", e.target.value)}
-              />
-
-              <TextField
-                label="Ilość"
-                variant="outlined"
-                margin="normal"
-                size="small"
-                {...register("ilosc", { required: true })}
-                error={errors.ilosc ? true : false}
-                helperText={errors.ilosc ? "Ilosc jest wymagana" : ""}
-                type="number"
-                value={formData.ilosc} 
-                onChange={(e) => handleChange("ilosc", e.target.value)}
-                required
-              />
 
               <Typography>
                 Adres:
@@ -190,7 +137,7 @@ export const CardOne = () => {
               />
             </Box>
             <Button type="submit" variant="contained" color="primary">
-              Złóż zamówienie
+              Zapisz adres
             </Button>
           </form>
         </CardContent>

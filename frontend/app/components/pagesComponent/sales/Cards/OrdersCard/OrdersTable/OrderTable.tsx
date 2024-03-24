@@ -98,9 +98,9 @@ const filteredData = data.filter((order) =>
           <TableHead>
             <TableRow>
               <TableCell>Nr.</TableCell>
-              <TableCell>Imie</TableCell>
+              <TableCell>Id klienta</TableCell>
               <TableCell>Nazwa firmy</TableCell>
-              <TableCell>Produkt</TableCell>
+              <TableCell>Id koszyka</TableCell>
               <TableCell>Data zamowienia</TableCell>
               <TableCell>Usun</TableCell>
               <TableCell>Szczegoly</TableCell>
@@ -116,9 +116,9 @@ const filteredData = data.filter((order) =>
             ).map((order, index) => (
               <TableRow key={order.orderData.id}>
                 <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                <TableCell>{order.orderData.imie}</TableCell>
+                <TableCell>Id klienta</TableCell>
                 <TableCell>{order.orderData.nazwa_firmy}</TableCell>
-                <TableCell>{order.orderData.produkt}</TableCell>
+                <TableCell>Id koszyka</TableCell>
                 <TableCell>{formatDate(order.orderData.created_at)}</TableCell>
 
                 <TableCell>

@@ -4,10 +4,7 @@ import { pool } from "../../pool";
 
 interface Order {
   id: string;
-  imie: string;
-  email: string;
-  produkt: string;
-  ilosc: number;
+  client_id: string;
   miasto: string;
   ulica: string;
   nr_budynku: string;
@@ -25,35 +22,32 @@ class OrdersRecord {
 
     return performTransaction(async (connection) => {
       await connection.execute(
-        "INSERT INTO orders (id, imie, email, produkt, ilosc, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO orders (id, client_id, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
-          formData.imie,
-          formData.email,
-          formData.produkt,
-          formData.ilosc,
+          formData.client_id,
           formData.miasto,
           formData.ulica,
           formData.nr_budynku,
           formData.nr_mieszkania,
           formData.kod,
-          formData.nazwa_firmy,
-          formData.account_id
+          formData.nazwa_firmy
         ]
       );
       return id;
     });
   }
 
-  static async getListById(account_id: string) {
+  static async getListById() {
     try {
-      const [results] = await pool.execute("SELECT * FROM `orders` WHERE `account_id` = ?", [account_id]) as any;
+      const [results] = await pool.execute("SELECT * FROM `orders`") as any;
       return results.map((obj: any) => new OrdersRecord(obj));
     } catch (error) {
       console.error("Error in getListById:", error);
       throw error;
     }
   }
+
   static async delete(id: string) {
     return performTransaction(async (connection) => {
       const result = await connection.execute('DELETE FROM `orders` WHERE id = ?', [id]);

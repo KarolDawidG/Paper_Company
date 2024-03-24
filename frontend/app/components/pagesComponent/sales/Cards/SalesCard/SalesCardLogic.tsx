@@ -6,25 +6,24 @@ import { useForm } from 'react-hook-form';
 const SalesCardLogic = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [expanded, setExpanded] = useState(false);
-  const [account_id, setAccountId] = useState<string | null>(null);
+  const [client_id, setClient_id] = useState<string | null>(null);
+  const [cart_id, setCart_id] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    imie: "",
-    email: "",
-    produkt: "",
-    ilosc: "",
+    client_id: "",
+    cart_id: "",
     miasto: "",
     ulica: "",
     nr_budynku: "",
     nr_mieszkania: "",
     kod: "",
     nazwa_firmy: "",
-    account_id: "",
   });
 
   useEffect(() => {
+    const test_id = 'e270465a-e9fc-11ee-b89f-d8bbc1db3b34';
     const idUser = localStorage.getItem('idUser');
     if (idUser) {
-      setAccountId(idUser);
+      setClient_id(test_id);
     }    
   }, []);
 
@@ -34,11 +33,16 @@ const SalesCardLogic = () => {
 
   const onSubmit = async(data: Record<string, any>) => {
     try {
+      console.log("Dane do wysłania na backend:", {
+        ...data,
+        client_id: client_id
+      });
+
       const orderData = {
         ...data,
-        account_id: account_id
+        client_id: client_id
       };
-      
+
       const response = await axiosInstance.post('/sales', orderData, {
         headers: {
           'Content-Type': 'application/json'
@@ -57,8 +61,8 @@ const SalesCardLogic = () => {
       ...prevData,
       [field]: value
     }));
-  };
 
+  };
 
   return {
     handleExpandClick,
