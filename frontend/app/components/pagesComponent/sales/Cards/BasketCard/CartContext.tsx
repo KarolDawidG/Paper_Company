@@ -65,8 +65,9 @@ export const CartProvider = ({ children }) => {
                     'Content-Type': 'application/json'
                 }
             });
-
+            localStorage.removeItem('cart')
             console.log('Response:', response.data);
+            setCartItems([]);
             return response.data;
         } catch (error) {
             console.error('Request failed:', error);
