@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import axiosInstance from "@/app/api/axiosInstance";
 
 const CartContext = createContext();
 
@@ -50,8 +51,31 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
+    const buyProducts = async () =>{
+        const testId = '33e56799-8de0-490c-ad72-427571e6fb5d';
+
+        const basketData = {
+            ...cartItems,
+            order_id: testId
+        };
+
+        try {
+            const response = await axiosInstance.post('/basket', basketData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            localStorage.removeItem('cart')
+            console.log('Response:', response.data);
+            setCartItems([]);
+            return response.data;
+        } catch (error) {
+            console.error('Request failed:', error);
+        }
+    };
+
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseClickCount, decreaseClickCount }}>
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts }}>
             {children}
         </CartContext.Provider>
     );

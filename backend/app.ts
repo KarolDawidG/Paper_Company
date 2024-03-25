@@ -14,6 +14,7 @@ import capRoutes from "./routes/captchaRoute/capRoute";
 import urlRoutes from "./routes/userRoute/urlRoute";
 import salesRoutes from "./routes/salesRoute/salesRoute";
 import producsRoute from "./routes/productsRoute/producsRoute";
+import basketRoute from "./routes/basketRoute/basketRoute";
 
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -45,6 +46,7 @@ app.use("/cap", capRoutes);
 app.use("/url", urlRoutes);
 app.use("/sales", salesRoutes);
 app.use("/products", producsRoute);
+app.use("/basket", basketRoute);
 
 app.use(middleware);
 app.use(limiter);

@@ -19,14 +19,22 @@ const createAccounts: string = `
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
+const createClients: string = `
+    CREATE TABLE IF NOT EXISTS clients (
+      id varchar(36) NOT NULL,
+      first_name varchar(50) NOT NULL,
+      second_name varchar(255) NOT NULL,
+      email varchar(100) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      UNIQUE KEY (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
 const createOrders: string = `
     CREATE TABLE IF NOT EXISTS orders (
       id varchar(36) NOT NULL,
-      account_id varchar(36) NOT NULL,
-      imie varchar(50) NOT NULL,
-      email varchar(100) NOT NULL,
-      produkt varchar(255) NOT NULL,
-      ilosc int NOT NULL,
+      client_id varchar(36) NOT NULL,
       miasto varchar(100) NOT NULL,
       ulica varchar(100) NOT NULL,
       nr_budynku varchar(20) NOT NULL,
@@ -35,7 +43,7 @@ const createOrders: string = `
       nazwa_firmy varchar(100),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
-      FOREIGN KEY (account_id) REFERENCES accounts(id)
+      FOREIGN KEY (client_id) REFERENCES clients(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
@@ -85,4 +93,5 @@ export {
   event_schedulerON,
   createOrders,
   createProducts,
+  createClients,
 };
