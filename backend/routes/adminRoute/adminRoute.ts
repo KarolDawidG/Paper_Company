@@ -17,7 +17,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     return res.json({ usersList });
   } catch (error: any) {
     logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    return res.status(STATUS_CODES.SERVER_ERROR).send(`Admin Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
   }
 },
 );
@@ -33,7 +33,7 @@ router.put("/:id/:role", verifyToken, async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .send("Unknown server error. Please contact your administrator.");
+      .send(`Admin Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
   }
 });
 
@@ -49,7 +49,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
     logger.error(error.message);
     return res
       .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Users Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+      .send(`Admin Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
   }
 },
 );
