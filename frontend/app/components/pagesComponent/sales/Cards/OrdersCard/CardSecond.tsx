@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandMore';
 import OrderTable from './OrdersTable/OrderTable';
+import {Button, Grid} from "@mui/material";
+import ClientList from "@/app/components/pagesComponent/sales/Cards/OrdersCard/ClientList/ClientList";
 
 export const CardSecond = () => {
   const [expanded, setExpanded] = useState(false);
@@ -38,7 +40,8 @@ export const CardSecond = () => {
       
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <OrderTable/>
+         <ClientList/>
+         <OrderTable/>
         </CardContent>
       </Collapse>
   </Card>
