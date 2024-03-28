@@ -66,7 +66,6 @@ export const CartProvider = ({ children }) => {
                 }
             });
             localStorage.removeItem('cart')
-            console.log('Response:', response.data);
             setCartItems([]);
             return response.data;
         } catch (error) {

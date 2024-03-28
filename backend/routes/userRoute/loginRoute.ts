@@ -52,13 +52,10 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
       if ("id" in ifUser[0]) {
         idUser = ifUser[0]?.id;
       } else {
-        console.log("Brak pola 'id' w obiekcie użytkownika");
         return res
           .status(STATUS_CODES.UNAUTHORIZED)
           .send(MESSAGES.UNPROCESSABLE_ENTITY);
       }
-    } else {
-      console.log("Nie otrzymano oczekiwanej tablicy użytkowników");
     }
 
     if (!idUser) {

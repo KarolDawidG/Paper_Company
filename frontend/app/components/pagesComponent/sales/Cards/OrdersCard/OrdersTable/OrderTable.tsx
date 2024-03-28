@@ -31,7 +31,6 @@ const OrderTable: React.FC<any> = () => {
       try {
         const response = await axiosInstance.get('/sales', { params: { idUser } });
         setData(response.data.ordersList);
-        console.log(response.data.ordersList)
       } catch (error) {
         console.error('Error fetching data:', error);
       }

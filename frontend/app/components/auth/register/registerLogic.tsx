@@ -49,7 +49,6 @@ const registerLogic = () => {
     try {
       const response = await axios.post(`${BACKEND}/register`, userData);
       if (response.status === 200) {
-        console.log("Rejestracja udana:", response.data);
         setTimeout(() => router.push("/click-link"), 1000);
       }
     } catch (error: any) {

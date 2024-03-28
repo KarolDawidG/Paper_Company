@@ -1,55 +1,57 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
 import { limiter } from "../../config/config";
-import { OrdersRecord } from "../../database/Records/Users/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
+import {ClientRecord} from "../../database/Records/Users/ClientRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
     try {
-      const ordersList = await OrdersRecord.getListById();
-      return res.json({ ordersList });
+      const clientList = await ClientRecord.getList();
+
+      return res.json({ clientList });
     } catch (error: any) {
-      logger.error(`Sales Route: GET: ${error.message}`);
+      logger.error(`Client Route: GET: ${error.message}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+        .send(`Client Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 
-router.post("/", verifyToken, async (req: Request, res: Response) => {
-  const formData = req.body;
-    try {
-      await OrdersRecord.insert(formData)
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
-    } catch (error: any) {
-      logger.error(`Sales Route: POST: ${error.message}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
-    }
-});
-
-router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
-  const id:string = req.params.id;
-    try {
-      await OrdersRecord.delete(id)
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
-    } catch (error: any) {
-      logger.error(`Sales Route: DELETE: ${error.message}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-    }
-});
+// router.post("/", verifyToken, async (req: Request, res: Response) => {
+//   const formData = req.body;
+//   console.log(formData);
+//     try {
+//       await OrdersRecord.insert(formData)
+//       return res
+//         .status(STATUS_CODES.SUCCESS)
+//         .send(MESSAGES.SUCCESSFUL_OPERATION);
+//     } catch (error: any) {
+//       logger.error(`Client Route: POST: ${error.message}`);
+//       return res
+//         .status(STATUS_CODES.SERVER_ERROR)
+//         .send(`Client Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+//     }
+// });
+//
+// router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+//   const id:string = req.params.id;
+//     try {
+//       await OrdersRecord.delete(id)
+//       return res
+//         .status(STATUS_CODES.SUCCESS)
+//         .send(MESSAGES.SUCCESSFUL_OPERATION);
+//     } catch (error: any) {
+//       logger.error(`Client Route: DELETE: ${error.message}`);
+//       return res
+//         .status(STATUS_CODES.SERVER_ERROR)
+//         .send(`Client Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+//     }
+// });
 
 /**
  * @swagger

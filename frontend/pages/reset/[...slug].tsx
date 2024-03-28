@@ -44,7 +44,6 @@ export default function Reset() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (!passwordsMatch) {
-      console.log("Passwords do not match!");
       return;
     }
 

@@ -20,11 +20,8 @@ const SalesCardLogic = () => {
   });
 
   useEffect(() => {
-    const test_id = 'e270465a-e9fc-11ee-b89f-d8bbc1db3b34';
-    const idUser = localStorage.getItem('idUser');
-    if (idUser) {
-      setClient_id(test_id);
-    }    
+    const idClient = localStorage.getItem('clientId');
+      setClient_id(idClient);
   }, []);
 
   const handleExpandClick = () => {
@@ -33,11 +30,6 @@ const SalesCardLogic = () => {
 
   const onSubmit = async(data: Record<string, any>) => {
     try {
-      console.log("Dane do wysłania na backend:", {
-        ...data,
-        client_id: client_id
-      });
-
       const orderData = {
         ...data,
         client_id: client_id
