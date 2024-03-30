@@ -41,7 +41,6 @@ const AuthorizedViewSales = () => {
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
               <CardThird />
             </Grid>
-            ghgjhghjthkthkghjg
 
           </Grid>
         </Grid>

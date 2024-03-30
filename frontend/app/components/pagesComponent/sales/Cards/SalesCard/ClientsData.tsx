@@ -13,10 +13,21 @@ import {
     Button
 } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
+import OrderDetailsModal from "@/app/components/pagesComponent/sales/Cards/OrdersCard/OrdersTable/OrderDetailsModal";
+import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
 
 export const ClientsData = () => {
+    const [addClient, setAddClient] = useState<boolean>();
     const [data, setData] = useState<any[]>([]);
     const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
+
+    const handleOpenAddClient = () => {
+        setAddClient(true);
+    };
+
+    const handleCloseAddClient  = () => {
+        setAddClient(false);
+    };
 
     const handleIdClient = (clientId: number) => {
         setSelectedClientId(clientId);
@@ -28,6 +39,7 @@ export const ClientsData = () => {
             try {
                 const response = await axiosInstance.get('/client');
                 setData(response.data.clientList);
+                console.log(response.data.clientList);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -37,7 +49,12 @@ export const ClientsData = () => {
 
     return (
         <Box>
+            <Button onClick={() => handleOpenAddClient()}>
+                Dodaj klients
+            </Button>
+
             <Box noValidate sx={{ mt: 1 }}>
+
                 <Typography>
                     Select client:
                 </Typography>
@@ -71,6 +88,13 @@ export const ClientsData = () => {
                     </TableContainer>
                 </CardContent>
             </Box>
+
+            {(addClient ) && (
+                <AddClientModal
+                    open={true}
+                    onClose={handleCloseAddClient}
+                />
+            )}
         </Box>
     );
 };
