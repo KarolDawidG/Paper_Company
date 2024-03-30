@@ -7,7 +7,6 @@ const SalesCardLogic = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [expanded, setExpanded] = useState(false);
   const [client_id, setClient_id] = useState<string | null>(null);
-  const [cart_id, setCart_id] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     client_id: "",
     cart_id: "",
@@ -53,7 +52,6 @@ const SalesCardLogic = () => {
       ...prevData,
       [field]: value
     }));
-
   };
 
   return {
