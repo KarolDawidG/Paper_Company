@@ -32,7 +32,6 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                 }
             }
         }
-        console.log('Zapisywanie koszyka zakonczone sukcesem.')
         res.status(STATUS_CODES.SUCCESS).send(MESSAGES.DATA_INSERTED);
     } catch (error) {
         logger.error(error);

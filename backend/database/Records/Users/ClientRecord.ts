@@ -22,6 +22,23 @@ class ClientRecord {
             throw error;
         }
     }
+
+    static async insert(formData: Client) {
+      const id = uuidv4();
+  
+      return performTransaction(async (connection) => {
+        await connection.execute(
+          "INSERT INTO clients (id, first_name, second_name, email) VALUES (?, ?, ?, ?)",
+          [
+            id,
+            formData.first_name,
+            formData.second_name,
+            formData.email
+          ]
+        );
+        return id;
+      });
+    }
 }
 
 export { ClientRecord };

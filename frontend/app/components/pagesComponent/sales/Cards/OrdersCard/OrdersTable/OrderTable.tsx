@@ -25,7 +25,6 @@ const OrderTable: React.FC<any> = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
   useEffect(() => {
-
     const fetchData = async () => {
       const idUser:any = localStorage.getItem('idUser');
       try {
@@ -60,7 +59,6 @@ const filteredData = data.filter((order) =>
   };
 
   const handleDeleteOrder = async (id:string) => {
-    console.log(id)
     try {
       await axiosInstance.delete(`/sales/${id}`);
       setData(data.filter((order) => order.orderData.id !== id)); 

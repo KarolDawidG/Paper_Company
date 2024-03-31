@@ -24,12 +24,12 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void }> = ({open,
     const onSubmit = async(data: Record<string, any>) => {
         try {
             console.log(clientData)
-            // const response = await axiosInstance.post('/client', clientData, {
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            // notify(response.data);
+            const response = await axiosInstance.post('/client', clientData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            notify(response.data);
             reset();
         } catch (error) {
             console.error('Request failed:', error);

@@ -22,22 +22,21 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-// router.post("/", verifyToken, async (req: Request, res: Response) => {
-//   const formData = req.body;
-//   console.log(formData);
-//     try {
-//       await OrdersRecord.insert(formData)
-//       return res
-//         .status(STATUS_CODES.SUCCESS)
-//         .send(MESSAGES.SUCCESSFUL_OPERATION);
-//     } catch (error: any) {
-//       logger.error(`Client Route: POST: ${error.message}`);
-//       return res
-//         .status(STATUS_CODES.SERVER_ERROR)
-//         .send(`Client Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
-//     }
-// });
-//
+router.post("/", verifyToken, async (req: Request, res: Response) => {
+  const formData = req.body;
+    try {
+      await ClientRecord.insert(formData)
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error: any) {
+      logger.error(`Client Route: POST: ${error.message}`);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Client Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
+
 // router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
 //   const id:string = req.params.id;
 //     try {

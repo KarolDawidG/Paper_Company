@@ -3,11 +3,11 @@ import { Typography, Grid, CardContent, CardMedia, Card, Button } from '@mui/mat
 import {useState} from "react";
 import {useCart} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 
-export const ProductCard = ({ id, name, description, price, stock }) => {
+export const ProductCard = ({ id, name, description, price, stock }:any) => {
   const [clickCount, setClickCount] = useState(0);
-    const { addToCart } = useCart();
+    const { addToCart }:any = useCart();
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product:any) => {
       setClickCount(prevCount => prevCount + 1);
       addToCart(product)
   };

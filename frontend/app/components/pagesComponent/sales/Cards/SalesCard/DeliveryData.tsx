@@ -18,7 +18,7 @@ export const DeliveryData = () => {
     return (
         <Box>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Box noValidate sx={{ mt: 1 }}>
+                <Box  sx={{ mt: 1 }}>
                     <Typography>
                         Adres:
                     </Typography>
