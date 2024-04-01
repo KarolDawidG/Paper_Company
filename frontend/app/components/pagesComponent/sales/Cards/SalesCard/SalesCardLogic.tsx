@@ -39,7 +39,9 @@ const SalesCardLogic = () => {
           'Content-Type': 'application/json'
         }
       });
-      notify(response.data);
+      
+      localStorage.setItem("order_id", response.data.order_id);
+      notify("wszystko okey");
       reset();
     } catch (error) {
       console.error('Request failed:', error);

@@ -12,9 +12,8 @@ router.use(middleware, limiter);
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
     try {
-        const basketData = req.body;
-        const orderId = basketData.order_id;
-
+      const basketData = req.body;
+      const orderId = basketData.order_id;
         for (const key in basketData) {
             if (key !== "order_id") {
                 const { id, name, description, price, stock, clickCount } = basketData[key];
@@ -27,7 +26,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                     });
                 } catch (error) {
                     logger.error(error);
-                    res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+                    res.status(STATUS_CODES.SERVER_ERROR).send(`Basket error: ${MESSAGES.SERVER_ERROR}`);
                     return;
                 }
             }

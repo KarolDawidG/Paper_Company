@@ -7,13 +7,13 @@ export const useCart = () => {
     return useContext(CartContext);
 };
 
-export const CartProvider = ({ children }) => {
+export const CartProvider = ({ children }:any) => {
     const [cart, setCart] = useState([]);
     const [clickCount, setClickCount] = useState(0);
     const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart')) || []);
 
 
-    const addToCart = (product) => {
+    const addToCart = (product:any) => {
         setClickCount(prevCount => prevCount + 1);
         setCart([...cart, product]);
 
@@ -28,21 +28,21 @@ export const CartProvider = ({ children }) => {
         setCartItems(existingProducts);
     };
 
-    const removeFromCart = (index) => {
+    const removeFromCart = (index:any) => {
         const updatedCartItems = [...cartItems];
         updatedCartItems.splice(index, 1);
         setCartItems(updatedCartItems);
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
-    const increaseClickCount = (index) => {
+    const increaseClickCount = (index:any) => {
         const updatedCartItems = [...cartItems];
         updatedCartItems[index].clickCount += 1;
         setCartItems(updatedCartItems);
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
-    const decreaseClickCount = (index) => {
+    const decreaseClickCount = (index:any) => {
         const updatedCartItems = [...cartItems];
         if (updatedCartItems[index].clickCount > 0) {
             updatedCartItems[index].clickCount -= 1;
@@ -53,10 +53,11 @@ export const CartProvider = ({ children }) => {
 
     const buyProducts = async () =>{
         const testId = '33e56799-8de0-490c-ad72-427571e6fb5d';
+        const order_id = localStorage.getItem('order_id');
 
         const basketData = {
             ...cartItems,
-            order_id: testId
+            order_id: order_id
         };
 
         try {

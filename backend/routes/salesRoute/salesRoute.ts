@@ -24,10 +24,11 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
     try {
-      await OrdersRecord.insert(formData)
+      const order_id = await OrdersRecord.insert(formData);
+      console.log(order_id);
       return res
         .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
+        .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
       logger.error(`Sales Route: POST: ${error.message}`);
       return res
