@@ -48,6 +48,8 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       localStorage.removeItem("idUser");
+      localStorage.removeItem("order_id");
+      localStorage.removeItem("clientId");
       router.push("/");
     } catch (error) {
       console.error("Error: ", error);
