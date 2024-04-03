@@ -29,11 +29,3 @@ Aby rozpocząć pracę z naszym systemem ERP, zapoznaj się z dokumentacją i ś
 ## Demo
 Backend zostanie prawdopodobnie wydany na serwerze ct8.pl
 Frontend zas na netlify, badz render.
-
-### Instalacja
-Instrukcje instalacji i konfiguracji środowiska deweloperskiego, kroki niezbędne do uruchomienia aplikacji lokalnie oraz wskazówki dotyczące wdrażania.
-
----
-
-Dziękujemy za zainteresowanie Systemem ERP Papier Company. Razem możemy uczynić procesy biznesowe bardziej efektywnymi! - That's what she said!
-
