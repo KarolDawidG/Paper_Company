@@ -26,6 +26,3 @@ System jest budowany z wykorzystaniem nowoczesnych technologii:
 ## Rozpoczęcie pracy
 Aby rozpocząć pracę z naszym systemem ERP, zapoznaj się z dokumentacją i śledź instrukcje instalacji w sekcji **Instalacja**. Znajdziesz tam kroki niezbędne do lokalnego uruchomienia systemu oraz wskazówki dotyczące wdrażania na serwerze produkcyjnym.
 
-## Demo
-Backend zostanie prawdopodobnie wydany na serwerze ct8.pl
-Frontend zas na netlify, badz render.
