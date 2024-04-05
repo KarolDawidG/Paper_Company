@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import axiosInstance from "@/app/api/axiosInstance";
+import {notify} from "@/app/components/notification/Notify";
 
 const CartContext = createContext();
 
@@ -52,8 +53,18 @@ export const CartProvider = ({ children }:any) => {
     };
 
     const buyProducts = async () =>{
-        const testId = '33e56799-8de0-490c-ad72-427571e6fb5d';
         const order_id = localStorage.getItem('order_id');
+        const cart = localStorage.getItem('cart');
+
+        if (!order_id) {
+            notify("Brakuje numeru zamowienia!");
+            return;
+        }
+
+        if (!cart) {
+            notify("Brakuje koszyka!");
+            return;
+        }
 
         const basketData = {
             ...cartItems,
@@ -66,8 +77,10 @@ export const CartProvider = ({ children }:any) => {
                     'Content-Type': 'application/json'
                 }
             });
-            localStorage.removeItem('cart')
+            localStorage.removeItem('cart');
+            localStorage.removeItem('order_id')
             setCartItems([]);
+            notify("Produkty zostaly przeslane do dalszego procedowania!");
             return response.data;
         } catch (error) {
             console.error('Request failed:', error);
