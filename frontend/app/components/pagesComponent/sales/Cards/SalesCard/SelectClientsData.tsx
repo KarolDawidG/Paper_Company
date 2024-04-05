@@ -15,7 +15,7 @@ import {
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
 
-export const ClientsData = () => {
+export const SelectClientsData = () => {
     const [addClient, setAddClient] = useState<boolean>();
     const [data, setData] = useState<any[]>([]);
     const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
@@ -30,7 +30,8 @@ export const ClientsData = () => {
 
     const handleIdClient = (clientId: number) => {
         setSelectedClientId(clientId);
-        localStorage.setItem('clientId', clientId.toString());
+        // localStorage.setItem('clientId', clientId.toString());
+        sessionStorage.setItem('clientId', clientId.toString());
     };
 
     useEffect(() => {

@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
 import {DeliveryData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/DeliveryData";
-import {ClientsData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientsData";
+import {SelectClientsData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/SelectClientsData";
 
 export const CardOne = () => {
   const {
@@ -40,7 +40,7 @@ export const CardOne = () => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <ClientsData/>
+          <SelectClientsData/>
           <DeliveryData/>
         </CardContent>
       </Collapse>

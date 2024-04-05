@@ -1,12 +1,11 @@
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from 'react-hook-form'; 
 
 const SalesCardLogic = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [expanded, setExpanded] = useState(false);
-  const [client_id, setClient_id] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     client_id: "",
     cart_id: "",
@@ -18,20 +17,21 @@ const SalesCardLogic = () => {
     nazwa_firmy: "",
   });
 
-  useEffect(() => {
-    const idClient = localStorage.getItem('clientId');
-      setClient_id(idClient);
-  }, []);
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const onSubmit = async(data: Record<string, any>) => {
+    const idClient = sessionStorage.getItem('clientId');
     try {
+
+      if (!idClient) {
+        notify("Najpierw wybierz klienta!");
+        return;
+      }
       const orderData = {
         ...data,
-        client_id: client_id
+        client_id: idClient
       };
 
       const response = await axiosInstance.post('/sales', orderData, {
@@ -41,11 +41,11 @@ const SalesCardLogic = () => {
       });
       
       localStorage.setItem("order_id", response.data.order_id);
-      notify("wszystko okey");
+      notify("Dane klienta i adres dostawy, zostaly zapisane!");
       reset();
     } catch (error) {
       console.error('Request failed:', error);
-      notify("Nie udało się przekazać danych");
+      notify("Nie udało się przekazać danych!");
     }
   };
 
