@@ -14,12 +14,21 @@ import {
 } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
+import { notify } from "@/app/components/notification/Notify";
+import UpdateClientModal from "./UpdateClientModal";
 
 export const SelectClientsData = () => {
     const [addClient, setAddClient] = useState<boolean>();
+    const [editClient, setEditClient] = useState<boolean>();
     const [data, setData] = useState<any[]>([]);
     const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
-
+    const [updateData, setUpdateData] = useState({
+        id: "",
+        first_name: "",
+        second_name: "",
+        email: ""
+      });
+      
     const handleOpenAddClient = () => {
         setAddClient(true);
     };
@@ -28,11 +37,35 @@ export const SelectClientsData = () => {
         setAddClient(false);
     };
 
+    const handleOpenEditClient = (id:string, first_name:string, second_name:string, email:string) => {
+        const updateData = {
+            id: id,
+            first_name: first_name,
+            second_name: second_name,
+            email: email
+          };
+        setUpdateData(updateData);
+        setEditClient(true);
+    };
+
+    const handleCloseEditClient  = () => {
+        setEditClient(false);
+    };
+
     const handleIdClient = (clientId: number) => {
         setSelectedClientId(clientId);
-        // localStorage.setItem('clientId', clientId.toString());
         sessionStorage.setItem('clientId', clientId.toString());
     };
+
+    const handleDelete = async (clientId:string) => {
+        try {
+          await axiosInstance.delete(`/client/${clientId}`); 
+        } catch (error: any) {
+          notify('Nie mozna usunac uzytkownika, ktory juz dokonal zakupow.');
+          console.error(error);
+        }
+      };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,6 +100,8 @@ export const SelectClientsData = () => {
                                     <TableCell>Name</TableCell>
                                     <TableCell>Email</TableCell>
                                     <TableCell>Select</TableCell>
+                                    <TableCell>Delete</TableCell>
+                                    <TableCell>Update</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -78,6 +113,17 @@ export const SelectClientsData = () => {
                                         <TableCell>
                                             <Button onClick={() => handleIdClient(client.clientData.id)}>
                                                 Wybierz
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button onClick={() => handleDelete(client.clientData.id)}>
+                                                Usun
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            {/* <Button onClick={() => handleUpdate(client.clientData.id, client.clientData.first_name, client.clientData.second_name, client.clientData.email)}> */}
+                                            <Button onClick={() => handleOpenEditClient(client.clientData.id, client.clientData.first_name, client.clientData.second_name, client.clientData.email)}>    
+                                                Zmien
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -92,6 +138,14 @@ export const SelectClientsData = () => {
                 <AddClientModal
                     open={true}
                     onClose={handleCloseAddClient}
+                />
+            )}
+
+            {(editClient ) && (
+                <UpdateClientModal
+                    open={true}
+                    onClose={handleCloseEditClient}
+                    updateData={updateData} 
                 />
             )}
         </Box>

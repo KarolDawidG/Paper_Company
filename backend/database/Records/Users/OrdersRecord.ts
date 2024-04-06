@@ -54,6 +54,7 @@ class OrdersRecord {
       return result;
     });
   }
+
 }
 
 export { OrdersRecord };

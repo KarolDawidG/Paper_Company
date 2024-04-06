@@ -30,6 +30,7 @@ const OrderTable: React.FC<any> = () => {
       try {
         const response = await axiosInstance.get('/sales', { params: { idUser } });
         setData(response.data.ordersList);
+        console.log(response.data.ordersList)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -97,7 +98,7 @@ const filteredData = data.filter((order) =>
               <TableCell>Nr.</TableCell>
               <TableCell>Id klienta</TableCell>
               <TableCell>Nazwa firmy</TableCell>
-              <TableCell>Id koszyka</TableCell>
+              <TableCell>Id zamowienia</TableCell>
               <TableCell>Data zamowienia</TableCell>
               <TableCell>Usun</TableCell>
               <TableCell>Szczegoly</TableCell>
@@ -113,9 +114,9 @@ const filteredData = data.filter((order) =>
             ).map((order, index) => (
               <TableRow key={order.orderData.id}>
                 <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                <TableCell>Id klienta</TableCell>
+                <TableCell>{order.orderData.client_id}</TableCell>
                 <TableCell>{order.orderData.nazwa_firmy}</TableCell>
-                <TableCell>Id koszyka</TableCell>
+                <TableCell>{order.orderData.id}</TableCell>
                 <TableCell>{formatDate(order.orderData.created_at)}</TableCell>
 
                 <TableCell>

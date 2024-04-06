@@ -39,6 +39,34 @@ class ClientRecord {
         return id;
       });
     }
+
+    static async delete(id: string) {
+      return performTransaction(async (connection) => {
+        const result = await connection.execute('DELETE FROM `clients` WHERE id = ?', [id]);
+        return result;
+      });
+    }
+
+    static async updateClient(first_name:string, second_name:string, email:string, id:string) {
+      try {
+        return performTransaction(async (connection) => {
+          const results = await connection.execute("UPDATE `clients` SET first_name = ?, second_name = ?, email = ? WHERE id = ?", [
+            first_name,
+            second_name,
+            email,
+            id,
+          ]);
+          return results;
+        });
+      } catch (error) {
+        console.log(error);
+        console.error("Error updating client:", error);
+        throw new Error("Error updating client");
+      }
+    }
+    
+
 }
+
 
 export { ClientRecord };

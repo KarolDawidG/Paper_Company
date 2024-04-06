@@ -25,7 +25,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
     try {
       const order_id = await OrdersRecord.insert(formData);
-      console.log(order_id);
+    
       return res
         .status(STATUS_CODES.SUCCESS)
         .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });

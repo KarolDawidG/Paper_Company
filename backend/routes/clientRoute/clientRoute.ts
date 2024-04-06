@@ -37,38 +37,54 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-// router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
-//   const id:string = req.params.id;
-//     try {
-//       await OrdersRecord.delete(id)
-//       return res
-//         .status(STATUS_CODES.SUCCESS)
-//         .send(MESSAGES.SUCCESSFUL_OPERATION);
-//     } catch (error: any) {
-//       logger.error(`Client Route: DELETE: ${error.message}`);
-//       return res
-//         .status(STATUS_CODES.SERVER_ERROR)
-//         .send(`Client Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-//     }
-// });
+router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
+  const id:string = req.params.clientId;
+    try {
+      await ClientRecord.delete(id)
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error: any) {
+      logger.error(`Client Route: DELETE: ${error.message}`);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Client Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
+
+router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  const {first_name, second_name, email} = req.body;
+    try {
+      await ClientRecord.updateClient(first_name, second_name, email, id);
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send("Dane ustawione poprawnie.");
+    } catch (error: any) {
+      logger.error(error.message);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
 
 /**
  * @swagger
  * tags:
- *   name: Sales
- *   description: Endpointy do zarzadzania sprzedaza.
+ *   name: Clients
+ *   description: Endpointy do zarzadzania klientami.
  */
 
 /**
  * @swagger
- * /sales:
+ * /client:
  *   get:
- *     summary: Pobiera listę wszystkich zamowien nad ktorymi pracuje dany sprzedawca.
- *     description: Endpoint służący do pobierania listy wszystkich sprzedazy.
- *     tags: [Sales]
+ *     summary: Pobiera listę wszystkich klientow.
+ *     description: Endpoint służący do pobierania listy wszystkich klientow.
+ *     tags: [Clients]
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę sprzedazy.
+ *         description: Pomyślnie pobrano listę klientow.
  *         content:
  *           application/json:
  *             schema:
@@ -79,7 +95,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  *                   items:
  *                     type: object
  *       500:
- *         description: Błąd serwera podczas pobierania listy użytkowników.
+ *         description: Błąd serwera podczas pobierania listy.
  *         content:
  *           application/json:
  *             schema:
@@ -92,11 +108,11 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /sales:
+ * /client:
  *   post:
- *     summary: Dodaje nowe sprzedarze.
+ *     summary: Dodaje nowego klienta.
  *     description: Jak wyzej.
- *     tags: [Sales]
+ *     tags: [Clients]
  *     requestBody:
  *       required: true
  *       content:
@@ -104,31 +120,15 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             properties:
- *               imie:
+ *               first_name:
+ *                 type: string
+ *               second_name:
  *                 type: string
  *               email:
  *                 type: string
- *               produkt:
- *                 type: string
- *               ilosc:
- *                 type: string
- *               miasto:
- *                 type: string
- *               ulica:
- *                 type: string
- *               nr_budynku:
- *                 type: string
- *               nr_mieszkania:
- *                 type: string
- *               kod:
- *                 type: string
- *               nazwa_firmy:
- *                 type: string
- *               salesId:
- *                 type: string
  *     responses:
  *       '200':
- *         description: Pomyślnie pobrano listę zamowien.
+ *         description: Pomyślnie pobrano listę.
  *       '400':
  *         description: Błąd w żądaniu.
  *       '401':
@@ -139,23 +139,23 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /sales/{id}:
+ * /client/{id}:
  *   delete:
- *     summary: Usuwa zamowienia.
- *     description: Endpoint służący do usuwania zamowienia na podstawie jego identyfikatora.
- *     tags: [Sales]
+ *     summary: Usuwa danego klienta.
+ *     description: Endpoint służący do usuwania danego klienta.
+ *     tags: [Clients]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identyfikator zamowienia.
+ *         description: Identyfikator.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie usunięto zamowienie.
+ *         description: Pomyślnie usunięto klienta.
  *       500:
- *         description: Błąd serwera podczas usuwania użytkownika.
+ *         description: Błąd serwera podczas usuwania.
  *         content:
  *           application/json:
  *             schema:
