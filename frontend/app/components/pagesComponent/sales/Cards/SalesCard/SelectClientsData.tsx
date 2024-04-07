@@ -67,15 +67,16 @@ export const SelectClientsData = () => {
       };
 
 
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get('/client');
+            setData(response.data.clientList);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axiosInstance.get('/client');
-                setData(response.data.clientList);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
         fetchData();
     }, []);
 
@@ -121,7 +122,6 @@ export const SelectClientsData = () => {
                                             </Button>
                                         </TableCell>
                                         <TableCell>
-                                            {/* <Button onClick={() => handleUpdate(client.clientData.id, client.clientData.first_name, client.clientData.second_name, client.clientData.email)}> */}
                                             <Button onClick={() => handleOpenEditClient(client.clientData.id, client.clientData.first_name, client.clientData.second_name, client.clientData.email)}>    
                                                 Zmien
                                             </Button>
@@ -145,7 +145,8 @@ export const SelectClientsData = () => {
                 <UpdateClientModal
                     open={true}
                     onClose={handleCloseEditClient}
-                    updateData={updateData} 
+                    updateData={updateData}
+                    fetchData={fetchData}
                 />
             )}
         </Box>

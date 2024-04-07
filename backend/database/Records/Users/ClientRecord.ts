@@ -47,21 +47,13 @@ class ClientRecord {
     }
 
     static async updateClient([id, first_name, second_name, email]: [string, string, string, string]) {
-        const connection = await pool.getConnection();
-        try {
-            await connection.execute(
+        return performTransaction(async (connection) => {
+            return connection.execute(
                 "UPDATE `clients` SET first_name = ?, second_name = ?, email = ? WHERE id = ?",
                 [first_name, second_name, email, id]
             );
-        } catch (error) {
-            console.error("Error updating client:", error);
-            throw error;
-        } finally {
-            connection.release();
-        }
+        });
     }
-
-
 }
 
 

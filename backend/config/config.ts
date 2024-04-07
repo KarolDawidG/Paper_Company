@@ -20,11 +20,7 @@ const errorHandler = (
 ) => {
   console.error(err);
   logger.error(err.message);
-  if (err instanceof SyntaxError) {
-    return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_REQUEST);
-  } else {
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.UNKNOW_ERROR);
-  }
+  return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_REQUEST);
 };
 
 const limiter = rateLimit({
@@ -57,7 +53,7 @@ fs.writeFileSync("./klucze/privateKey.pem", privateKey);
 fs.writeFileSync("./klucze/publicKey.pem", publicKey);
 
 const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  const authHeader: any = req.headers.authorization;
   if (!authHeader) {
     return res
       .status(STATUS_CODES.UNAUTHORIZED)
