@@ -11,6 +11,7 @@ import axiosInstance from "@/app/api/axiosInstance";
 import {notify} from "@/app/components/notification/Notify";
 import { useForm } from 'react-hook-form';
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 
 const UpdateClientModal: React.FC<{ open: boolean; onClose: () => void; updateData:any }> = ({open, onClose, updateData}) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -24,8 +25,7 @@ const UpdateClientModal: React.FC<{ open: boolean; onClose: () => void; updateDa
 
     const onSubmit = async(data: Record<string, any>) => {
         try {
-            
-            const response = await axiosInstance.put(`/client/${clientData.id},`, clientData, {
+            const response = await axios.put(`http://localhost:3001/client/${clientData.id}`, clientData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
