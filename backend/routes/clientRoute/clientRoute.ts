@@ -54,19 +54,37 @@ router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => 
 
 router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const id: string = req.params.id;
-  const {first_name, second_name, email} = req.body;
-    try {
-      await ClientRecord.updateClient(first_name, second_name, email, id);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("Dane ustawione poprawnie.");
-    } catch (error: any) {
-      logger.error(error.message);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
-    }
+  const { first_name, second_name, email } = req.body;
+  
+  try {
+    await ClientRecord.updateClient(id, { first_name, second_name, email });
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .send("Dane ustawione poprawnie.");
+  } catch (error: any) {
+    logger.error(error.message);
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+  }
 });
+
+
+// router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+//   const id: string = req.params.id;
+//   const {first_name, second_name, email} = req.body;
+//     try {
+//       await ClientRecord.updateClient(first_name, second_name, email, id);
+//       return res
+//         .status(STATUS_CODES.SUCCESS)
+//         .send("Dane ustawione poprawnie.");
+//     } catch (error: any) {
+//       logger.error(error.message);
+//       return res
+//         .status(STATUS_CODES.SERVER_ERROR)
+//         .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+//     }
+// });
 
 /**
  * @swagger
