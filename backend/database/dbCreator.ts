@@ -3,6 +3,7 @@ import {
   insertRoot,
   findRoot,
   createAccounts,
+  createClientAddresses,
   createOrderDetails,
   deleteNotActiveAccount,
   event_schedulerON,
@@ -22,6 +23,13 @@ const createTransactionOrdersDetails = async (pool: Pool): Promise<void> => {
 const createClientsTable = async (pool: Pool): Promise<void> => {
   try {
     await pool.query(createClients);
+  } catch (err) {
+    console.error(err);
+  }
+};
+const createClientsAddressTable = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createClientAddresses);
   } catch (err) {
     console.error(err);
   }
@@ -82,4 +90,4 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export { createClientsTable, createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };
+export { createClientsTable, createClientsAddressTable, createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };

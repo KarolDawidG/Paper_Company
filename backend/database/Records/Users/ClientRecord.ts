@@ -23,9 +23,13 @@ class ClientRecord {
         }
     }
 
+    static async getAddress(id: string[]) {
+        const [results] = await pool.execute( "SELECT nazwa_firmy, miasto, kod, ulica, nr_budynku, nr_mieszkania FROM `client_addresses` WHERE id = ?", id);
+        return results;
+    }
+
     static async insert(formData: Client) {
       const id = uuidv4();
-  
       return performTransaction(async (connection) => {
         await connection.execute(
           "INSERT INTO clients (id, first_name, second_name, email) VALUES (?, ?, ?, ?)",

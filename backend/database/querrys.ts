@@ -30,9 +30,9 @@ const createClients: string = `
       UNIQUE KEY (email)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-
-const createOrders: string = `
-    CREATE TABLE IF NOT EXISTS orders (
+/// new table
+const createClientAddresses: string = `
+    CREATE TABLE IF NOT EXISTS client_addresses (
       id varchar(36) NOT NULL,
       client_id varchar(36) NOT NULL,
       miasto varchar(100) NOT NULL,
@@ -44,6 +44,18 @@ const createOrders: string = `
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       FOREIGN KEY (client_id) REFERENCES clients(id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
+const createOrders: string = `
+    CREATE TABLE IF NOT EXISTS orders (
+      id varchar(36) NOT NULL,
+      client_id varchar(36) NOT NULL,
+      client_address_id varchar(36) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      FOREIGN KEY (client_id) REFERENCES clients(id),
+      FOREIGN KEY (client_address_id) REFERENCES client_addresses(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
@@ -105,6 +117,7 @@ export {
   insertRoot,
   findRoot,
   createAccounts,
+  createClientAddresses,
   createOrderDetails,
   deleteNotActiveAccount,
   event_schedulerON,

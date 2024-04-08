@@ -1,42 +1,31 @@
-import { performTransaction } from "../performTransaction";
-import { v4 as uuidv4 } from "uuid";
-import { pool } from "../../pool";
+import {performTransaction} from "../performTransaction";
+import {v4 as uuidv4} from "uuid";
+import {pool} from "../../pool";
 
 interface Order {
-  id: string;
-  client_id: string;
-  miasto: string;
-  ulica: string;
-  nr_budynku: string;
-  nr_mieszkania: string;
-  kod: string;
-  nazwa_firmy: string;
-  account_id: string;
+    id: string;
+    client_id: string;
+    client_address_id: string;
 }
 
 class OrdersRecord {
   constructor(private orderData: Order) {}
 
-  static async insert(formData: Order) {
-    const id = uuidv4();
+    static async insert(client_id: string, client_address_id: string) {
+        const id: string = uuidv4();
 
-    return performTransaction(async (connection) => {
-      await connection.execute(
-        "INSERT INTO orders (id, client_id, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          id,
-          formData.client_id,
-          formData.miasto,
-          formData.ulica,
-          formData.nr_budynku,
-          formData.nr_mieszkania,
-          formData.kod,
-          formData.nazwa_firmy
-        ]
-      );
-      return id;
-    });
-  }
+        return performTransaction(async (connection) => {
+            await connection.execute(
+                "INSERT INTO orders (id, client_id, client_address_id ) VALUES (?, ?, ?)",
+                [
+                    id,
+                    client_id,
+                    client_address_id,
+                ]
+            );
+            return id;
+        });
+    }
 
   static async getListById() {
     try {
@@ -50,8 +39,7 @@ class OrdersRecord {
 
   static async delete(id: string) {
     return performTransaction(async (connection) => {
-      const result = await connection.execute('DELETE FROM `orders` WHERE id = ?', [id]);
-      return result;
+        return await connection.execute('DELETE FROM `orders` WHERE id = ?', [id]);
     });
   }
 

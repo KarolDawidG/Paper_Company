@@ -1,97 +1,89 @@
-import React from 'react';
-import {
-  Modal,
-  Backdrop,
-  Fade,
-  Typography,
-  Box,
-  Button,
-} from '@mui/material';
-import { formatDate } from '@/app/components/helpers/formDate';
+import React, { useEffect, useState } from 'react';
+import {Modal, Backdrop, Fade, Typography, Box, Button} from '@mui/material';
+import axiosInstance from "@/app/api/axiosInstance";
 
-const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: any }> = ({
-  open,
-  onClose,
-  order,
-}) => {
+const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: string  }> = ({open, onClose, order,}) => {
+    const [data, setData] = useState<any>();
 
-  return (
-<Modal
-  open={open}
-  onClose={onClose}
-  aria-labelledby="order-details-modal-title"
-  aria-describedby="order-details-modal-description"
-  closeAfterTransition
-  slots={{
-    backdrop: Backdrop,
-  }}
-  slotProps={{
-    backdrop: {
-      timeout: 500,
-    },
-  }}
->
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get(`/client/${order}`);
+            setData(response.data.clientAddress);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-      <Fade in={open}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            minWidth: '400px',
-            maxWidth: '80vw',
-            maxHeight: '80vh',
-            overflowY: 'auto',
-            borderRadius: '8px',
-          }}
+    useEffect(() => {
+        fetchData();
+    }, [order]);
+
+    return (
+        <Modal
+            open={open}
+            onClose={onClose}
+            aria-labelledby="order-details-modal-title"
+            aria-describedby="order-details-modal-description"
+            closeAfterTransition
+            slots={{
+                backdrop: Backdrop,
+            }}
+            slotProps={{
+                backdrop: {
+                    timeout: 500,
+                },
+            }}
         >
-          <Typography variant="h6" id="order-details-modal-title" gutterBottom>
-            Szczegóły zamówienia
-          </Typography>
-          <Box>
-
-            <Typography variant="subtitle1">
-              Nazwa firmy: {order.orderData.nazwa_firmy}
-            </Typography>
-
-            <Typography variant="subtitle1">
-              Data zamówienia: {formatDate(order.orderData.created_at)}
-            </Typography>
-
-            <Typography variant="h5" id="order-details-modal-title" gutterBottom>
-                Adres:
-            </Typography>
-
-            <Typography variant="subtitle1">
-                Miasto: {order.orderData.miasto}
-            </Typography>
-
-            <Typography variant="subtitle1">
-                Kod: {order.orderData.kod}
-            </Typography>
-
-            <Typography variant="subtitle1">
-                Ulica: {order.orderData.ulica}
-            </Typography>
-
-            <Typography variant="subtitle1">
-                Nr budynku/mieszkania: {order.orderData.nr_budynku}/{order.orderData.nr_mieszkania}
-            </Typography>
-
-          </Box>
-          <Box sx={{ mt: 2 }}>
-            <Button onClick={onClose} variant="outlined" color="primary">
-              Zamknij
-            </Button>
-          </Box>
-        </Box>
-      </Fade>
-    </Modal>
-  );
+            <Fade in={open}>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        minWidth: '400px',
+                        maxWidth: '80vw',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
+                        borderRadius: '8px',
+                    }}
+                >
+                    <Typography variant="h6" id="order-details-modal-title" gutterBottom>
+                        Szczegóły zamówienia
+                    </Typography>
+                    <Box>
+                        {data && (
+                            <>
+                                <Typography variant="subtitle1">
+                                    Nazwa firmy: {data[0].nazwa_firmy}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Miasto: {data[0].miasto}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Kod: {data[0].kod}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Ulica: {data[0].ulica}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Nr budynku/mieszkania: {data[0].nr_budynku}/{data[0].nr_mieszkania}
+                                </Typography>
+                            </>
+                        )}
+                    </Box>
+                    <Box sx={{ mt: 2 }}>
+                        <Button onClick={onClose} variant="outlined" color="primary">
+                            Zamknij
+                        </Button>
+                    </Box>
+                </Box>
+            </Fade>
+        </Modal>
+    );
 };
 
 export default OrderDetailsModal;

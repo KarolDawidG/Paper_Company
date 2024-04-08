@@ -6,6 +6,7 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
+import {AddressRecord} from "../../database/Records/Users/AddressRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
@@ -23,9 +24,12 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
+  const client_id = req.body.client_id;
+
     try {
-      const order_id = await OrdersRecord.insert(formData);
-    
+      const client_address_id = await AddressRecord.insert(formData);
+      const order_id = await OrdersRecord.insert(client_id, client_address_id );
+
       return res
         .status(STATUS_CODES.SUCCESS)
         .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
