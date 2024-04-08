@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import SalesCardLogic from "./SalesCardLogic";
 
-export const AddDeliveryModal = () => {
+export const DeliveryData = () => {
     const {
         handleSubmit,
         handleChange,

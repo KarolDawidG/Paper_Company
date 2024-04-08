@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Button, Divider } from '@mui/material';
+import { Box, CardContent, Button } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
 import UpdateClientModal from "./UpdateClientModal";
 import { AddressTable } from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/AddressTable";
-import ClientTable from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/ClientsTable";
+import ClientTable from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/ClientTable";
 
 export const SelectClientsData = () => {
     const [addClient, setAddClient] = useState<boolean>();
@@ -57,6 +57,7 @@ export const SelectClientsData = () => {
         }
     };
 
+
     const fetchData = async () => {
         try {
             const response = await axiosInstance.get('/client');
@@ -72,25 +73,24 @@ export const SelectClientsData = () => {
 
     return (
         <Box>
-            <Divider variant="middle" color="primary" style={{ marginBottom: '10px' }} />
-            <Typography variant="h6">
-                Do you want to add new client?
-            </Typography>
-            <Button variant="contained" color="primary" onClick={() => handleOpenAddClient()}>
+            <Button onClick={() => handleOpenAddClient()}>
                 Add client
             </Button>
-            <Divider variant="middle" color="primary" style={{ marginTop: '10px' }} />
-
-
-
 
             <Box>
-                <Typography variant="h6">
+
+                <Typography>
                     Select client:
                 </Typography>
 
                 <CardContent>
-                    <ClientTable data={data} handleIdClient={handleIdClient} handleDelete={handleDelete} handleOpenEditClient={handleOpenEditClient} selectedClientId={selectedClientId}/>
+                    <ClientTable
+                        data={data}
+                        handleIdClient={handleIdClient}
+                        handleDelete={handleDelete}
+                        handleOpenEditClient={handleOpenEditClient}
+                        selectedClientId={selectedClientId}
+                    />
                 </CardContent>
 
                 {selectedClientId && <AddressTable selectedClientId={selectedClientId} />}
@@ -98,11 +98,19 @@ export const SelectClientsData = () => {
             </Box>
 
             {(addClient) && (
-                <AddClientModal open={true} onClose={handleCloseAddClient}/>
+                <AddClientModal
+                    open={true}
+                    onClose={handleCloseAddClient}
+                />
             )}
 
             {(editClient) && (
-                <UpdateClientModal open={true} onClose={handleCloseEditClient} updateData={updateData} fetchData={fetchData}/>
+                <UpdateClientModal
+                    open={true}
+                    onClose={handleCloseEditClient}
+                    updateData={updateData}
+                    fetchData={fetchData}
+                />
             )}
         </Box>
     );
