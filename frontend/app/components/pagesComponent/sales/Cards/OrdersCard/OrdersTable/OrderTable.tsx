@@ -1,19 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import OrderDetailsModal from './OrderDetailsModal';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
-  Box,
-  Typography,
-  TablePagination,
-  Button,
-} from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Box, Typography, TablePagination, Button} from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
 
@@ -30,7 +17,6 @@ const OrderTable: React.FC<any> = () => {
       try {
         const response = await axiosInstance.get('/sales', { params: { idUser } });
         setData(response.data.ordersList);
-        console.log(response.data.ordersList)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -69,7 +55,8 @@ const filteredData = data.filter((order) =>
   };
   
   const handleOpenDetails = (order: any) => {
-    setSelectedOrder(order);
+    //setSelectedOrder(order);
+   setSelectedOrder(order.orderData.client_address_id);
   };
 
   const handleCloseDetails = () => {
@@ -131,8 +118,6 @@ const filteredData = data.filter((order) =>
                   </Button>
                 </TableRow>
 
-
-
               </TableRow>
             ))}
           </TableBody>
@@ -149,7 +134,7 @@ const filteredData = data.filter((order) =>
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      {(selectedOrder && selectedOrder.orderData) && (
+      {(selectedOrder ) && (
         <OrderDetailsModal
           open={true}
           onClose={handleCloseDetails}

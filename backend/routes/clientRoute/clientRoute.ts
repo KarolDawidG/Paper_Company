@@ -21,6 +21,19 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
         .send(`Client Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
+// uprzatnac ten syf xD
+router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
+  const id:string = req.params.addressId;
+  try {
+    const clientAddress = await ClientRecord.getAddress([id]);
+    return res.json({ clientAddress });
+  } catch (error: any) {
+    logger.error(`Client Route Get Address: GET: ${error.message}`);
+    return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Client Route Get Address: GET: ${MESSAGES.UNKNOW_ERROR}`);
+  }
+});
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;

@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import SalesCardLogic from "./SalesCardLogic";
 
-export const DeliveryData = () => {
+export const AddDeliveryModal = () => {
     const {
         handleSubmit,
         handleChange,
@@ -20,7 +20,7 @@ export const DeliveryData = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box  sx={{ mt: 1 }}>
                     <Typography>
-                        Adres:
+                        Do you want to add new Adres to selected clients?
                     </Typography>
                         <TextField
                                 label="Miasto"
@@ -31,7 +31,7 @@ export const DeliveryData = () => {
                                     required: true,
                                     pattern: /^[a-zA-Z\s]{1,30}$/
                                 })}
-                                error={errors.miasto ? true : false}
+                                error={!!errors.miasto}
                                 helperText={errors.miasto ? "Miasto jest wymagane" : ""}
                                 value={formData.miasto}
                                 onChange={(e) => handleChange("miasto", e.target.value)}
@@ -44,7 +44,7 @@ export const DeliveryData = () => {
                                 margin="normal"
                                 size="small"
                                 {...register("ulica", { required: true })}
-                                error={errors.ulica ? true : false}
+                                error={!!errors.ulica}
                                 helperText={errors.ulica ? "Ulica jest wymagana" : ""}
                                 value={formData.ulica}
                                 onChange={(e) => handleChange("ulica", e.target.value)}
@@ -57,7 +57,7 @@ export const DeliveryData = () => {
                                 margin="normal"
                                 size="small"
                                 {...register("nr_budynku", { required: true })}
-                                error={errors.nr_budynku ? true : false}
+                                error={!!errors.nr_budynku}
                                 helperText={errors.nr_budynku ? "Nr budynku jest wymagany" : ""}
                                 value={formData.nr_budynku}
                                 onChange={(e) => handleChange("nr_budynku", e.target.value)}
@@ -70,7 +70,7 @@ export const DeliveryData = () => {
                                 margin="normal"
                                 size="small"
                                 {...register("nr_mieszkania", { required: true })}
-                                error={errors.nr_mieszkania ? true : false}
+                                error={!!errors.nr_mieszkania}
                                 helperText={errors.nr_mieszkania ? "Nr mieszkania jest wymagany" : ""}
                                 value={formData.nr_mieszkania}
                                 onChange={(e) => handleChange("nr_mieszkania", e.target.value)}
@@ -85,7 +85,7 @@ export const DeliveryData = () => {
                                 {...register("kod", {
                                     required: true,
                                     pattern: /^\d{2}-\d{3}$/ })}
-                                error={errors.kod ? true : false}
+                                error={!!errors.kod}
                                 helperText={errors.kod ? "Kod pocztowy jest wymagany" : ""}
                                 value={formData.kod}
                                 onChange={(e) => handleChange("kod", e.target.value)}
@@ -98,7 +98,7 @@ export const DeliveryData = () => {
                                 margin="normal"
                                 size="small"
                                 {...register("nazwa_firmy", { required: true })}
-                                error={errors.nazwa_firmy ? true : false}
+                                error={!!errors.nazwa_firmy}
                                 helperText={errors.nazwa_firmy ? "Nazwa firmy jest wymagana" : ""}
                                 value={formData.nazwa_firmy}
                                 onChange={(e) => handleChange("nazwa_firmy", e.target.value)}

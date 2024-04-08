@@ -58,7 +58,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void }> = ({open,
                                 margin="normal"
                                 size="small"
                                 {...register("email", { required: true })}
-                                error={errors.email ? true : false}
+                                error={!!errors.email}
                                 helperText={errors.email ? "Email jest wymagany" : ""}
                                 value={clientData.email}
                                 onChange={(e) => handleChange("email", e.target.value)}
@@ -71,7 +71,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void }> = ({open,
                                 margin="normal"
                                 size="small"
                                 {...register("first_name", { required: true })}
-                                error={errors.first_name ? true : false}
+                                error={!!errors.first_name}
                                 helperText={errors.first_name ? "First name is required" : ""}
                                 value={clientData.first_name}
                                 onChange={(e) => handleChange("first_name", e.target.value)}
@@ -84,7 +84,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void }> = ({open,
                                 margin="normal"
                                 size="small"
                                 {...register("second_name", { required: true })}
-                                error={errors.second_name ? true : false}
+                                error={!!errors.second_name}
                                 helperText={errors.second_name ? "Second name is required" : ""}
                                 value={clientData.second_name}
                                 onChange={(e) => handleChange("second_name", e.target.value)}
