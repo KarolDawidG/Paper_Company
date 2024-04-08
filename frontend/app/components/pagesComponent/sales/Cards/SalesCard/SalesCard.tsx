@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
-import {AddDeliveryModal} from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddDeliveryModal";
+import {DeliveryData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/DeliveryData";
 import {SelectClientsData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/SelectClientsData";
 
 export const CardOne = () => {
@@ -41,7 +41,7 @@ export const CardOne = () => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <SelectClientsData/>
-          <AddDeliveryModal/>
+          <DeliveryData/>
         </CardContent>
       </Collapse>
     </Card>

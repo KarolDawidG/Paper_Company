@@ -5,6 +5,7 @@ import axiosInstance from "@/app/api/axiosInstance";
 
 export const AddressTable = ({ selectedClientId }) => {
     const [addressData, setAddressData] = useState([]);
+    //const [clientId, setClientId] = useState(sessionStorage.getItem('clientId'));
 
     const fetchAddressData = async () => {
         try {
@@ -22,10 +23,11 @@ export const AddressTable = ({ selectedClientId }) => {
     }, [selectedClientId]);
 
     return (
+
             <Box>
                 <CardContent>
                     <Box>
-                        <Typography variant="h6">Address table</Typography>
+                        <Typography variant="h6">Tabela adresow</Typography>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
@@ -49,5 +51,6 @@ export const AddressTable = ({ selectedClientId }) => {
                     </Box>
                 </CardContent>
             </Box>
+
     );
 };
