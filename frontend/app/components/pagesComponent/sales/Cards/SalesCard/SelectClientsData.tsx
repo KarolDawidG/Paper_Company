@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Button } from '@mui/material';
+import {Box, CardContent, Button, Divider} from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
@@ -73,7 +73,10 @@ export const SelectClientsData = () => {
 
     return (
         <Box>
-            <Button onClick={() => handleOpenAddClient()}>
+            <Typography variant="h6">
+                Do you want to add new client?
+            </Typography>
+            <Button variant="contained" color="primary" onClick={() => handleOpenAddClient()}>
                 Add client
             </Button>
 
