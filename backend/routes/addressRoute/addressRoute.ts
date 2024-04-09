@@ -5,7 +5,7 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
-import {AddressRecord} from "../../database/Records/Users/AddressRecord";
+import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 

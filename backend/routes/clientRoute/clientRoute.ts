@@ -5,7 +5,7 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
-import {ClientRecord} from "../../database/Records/Users/ClientRecord";
+import {ClientRecord} from "../../database/Records/Client/ClientRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
@@ -95,7 +95,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 //       logger.error(error.message);
 //       return res
 //         .status(STATUS_CODES.SERVER_ERROR)
-//         .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+//         .send(`nn Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
 //     }
 // });
 

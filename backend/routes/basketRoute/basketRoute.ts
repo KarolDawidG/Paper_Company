@@ -5,7 +5,7 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
-import { BasketRecord } from "../../database/Records/Users/BasketRecord";
+import { BasketRecord } from "../../database/Records/Basket/BasketRecord";
 
 const router = express.Router();
 router.use(middleware, limiter);

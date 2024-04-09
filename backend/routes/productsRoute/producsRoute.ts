@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
 import { limiter } from "../../config/config";
-import { ProductsRecord } from "../../database/Records/Users/ProductsRecord";
+import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";

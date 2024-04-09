@@ -57,7 +57,7 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
 /**
  * @swagger
  * tags:
- *   name: Users
+ *   name: nn
  *   description: Endpointy do zarzadzania danymi uzytkownika.
  */
 
@@ -68,7 +68,7 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *     summary: Pobiera listę wszystkich użytkowników.
  *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
  *     tags:
- *       - Users
+ *       - nn
  *     responses:
  *       200:
  *         description: Pomyślnie pobrano listę użytkowników.
@@ -112,7 +112,7 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *     summary: Pobiera informacje o użytkowniku.
  *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
  *     tags:
- *       - Users
+ *       - nn
  *     parameters:
  *       - in: path
  *         name: id
@@ -157,7 +157,7 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *   get:
  *     summary: Pobiera informacje o użytkowniku.
  *     description: Pobiera informacje o użytkowniku na podstawie jego identyfikatora.
- *     tags: [Users]
+ *     tags: [nn]
  *     parameters:
  *       - in: path
  *         name: id

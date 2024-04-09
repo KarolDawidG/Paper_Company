@@ -1,12 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
 import { limiter } from "../../config/config";
-import { OrdersRecord } from "../../database/Records/Users/OrdersRecord";
+import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
-import {AddressRecord} from "../../database/Records/Users/AddressRecord";
+import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 

@@ -1038,7 +1038,7 @@
         "summary": "Pobiera listę wszystkich użytkowników.",
         "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
         "tags": [
-          "Users"
+          "nn"
         ],
         "responses": {
           "200": {
@@ -1100,7 +1100,7 @@
         "summary": "Pobiera informacje o użytkowniku.",
         "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
         "tags": [
-          "Users"
+          "nn"
         ],
         "parameters": [
           {
@@ -1165,7 +1165,7 @@
         "summary": "Pobiera informacje o użytkowniku.",
         "description": "Pobiera informacje o użytkowniku na podstawie jego identyfikatora.",
         "tags": [
-          "Users"
+          "nn"
         ],
         "parameters": [
           {
@@ -1412,7 +1412,7 @@
       "description": "Endpointy do zarządzania użytkownikami."
     },
     {
-      "name": "Users",
+      "name": "nn",
       "description": "Endpointy do zarzadzania danymi uzytkownika."
     },
     {
