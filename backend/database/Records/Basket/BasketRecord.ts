@@ -1,5 +1,6 @@
 import { performTransaction } from "../performTransaction";
 import { v4 as uuidv4 } from "uuid";
+import {INSERT_BASKET} from "./querryBasketRecord";
 
 interface Basket {
   id: string;
@@ -15,8 +16,7 @@ class BasketRecord {
     const id = uuidv4();
 
     return performTransaction(async (connection) => {
-      await connection.execute(
-        "INSERT INTO order_details (id, order_id, product_id, quantity) VALUES (?, ?, ?, ?)",
+      await connection.execute(INSERT_BASKET,
         [
           id,
           formData.order_id,

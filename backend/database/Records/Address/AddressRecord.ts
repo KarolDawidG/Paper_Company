@@ -1,6 +1,7 @@
 import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
+import {DELETE_ADDRESS, INSERT_ADDRESS, SELECT_BY_CLIENT_ID} from "./querryAddressRecord";
 
 interface Address {
   id: string;
@@ -21,7 +22,7 @@ class AddressRecord {
 
     return performTransaction(async (connection) => {
       await connection.execute(
-        "INSERT INTO client_addresses (id, client_id, miasto, ulica, nr_budynku, nr_mieszkania, kod, nazwa_firmy) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+          INSERT_ADDRESS,
         [
           id,
           formData.client_id,
@@ -39,7 +40,7 @@ class AddressRecord {
 
   static async getListById(id:string) {
     try {
-      const [results] = await pool.execute("SELECT * FROM `client_addresses` WHERE client_id = ?", [id]) as any;
+      const [results] = await pool.execute(SELECT_BY_CLIENT_ID, [id]) as any;
       return results.map((obj: any) => new AddressRecord(obj));
     } catch (error) {
       console.error("Error in getListById:", error);
@@ -49,7 +50,7 @@ class AddressRecord {
 
   static async delete(id: string) {
     return performTransaction(async (connection) => {
-        return connection.execute('DELETE FROM `client_addresses` WHERE id = ?', [id]);
+        return connection.execute(DELETE_ADDRESS, [id]);
     });
   }
 

@@ -1,6 +1,7 @@
 import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
+import {DELETE_ORDER, INSERT_ORDER, SELECT_ORDERS} from "./querryOrderRecord";
 
 interface Order {
     id: string;
@@ -15,8 +16,7 @@ class OrdersRecord {
         const id: string = uuidv4();
 
         return performTransaction(async (connection) => {
-            await connection.execute(
-                "INSERT INTO orders (id, client_id, client_address_id ) VALUES (?, ?, ?)",
+            await connection.execute(INSERT_ORDER,
                 [
                     id,
                     client_id,
@@ -29,7 +29,7 @@ class OrdersRecord {
 
   static async getListById() {
     try {
-      const [results] = await pool.execute("SELECT * FROM `orders`") as any;
+      const [results] = await pool.execute(SELECT_ORDERS) as any;
       return results.map((obj: any) => new OrdersRecord(obj));
     } catch (error) {
       console.error("Error in getListById:", error);
@@ -39,7 +39,7 @@ class OrdersRecord {
 
   static async delete(id: string) {
     return performTransaction(async (connection) => {
-        return await connection.execute('DELETE FROM `orders` WHERE id = ?', [id]);
+        return await connection.execute(DELETE_ORDER, [id]);
     });
   }
 

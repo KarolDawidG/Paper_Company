@@ -1,6 +1,5 @@
-import { performTransaction } from "../performTransaction";
-import { v4 as uuidv4 } from "uuid";
 import { pool } from "../../pool";
+import {SELECT_PRODUCTS} from "./querryProductsRecord";
 
 interface Products {
   id: string;
@@ -17,7 +16,7 @@ class ProductsRecord {
 
   static async getAll() {
     try {
-      const [results] = await pool.execute("SELECT * FROM `products`") as any;
+      const [results] = await pool.execute(SELECT_PRODUCTS) as any;
       return results.map((obj: any) => new ProductsRecord(obj));
     } catch (error) {
       console.error("Error in getAll:", error);

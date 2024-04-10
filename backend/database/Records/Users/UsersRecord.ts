@@ -19,7 +19,7 @@ import {
   SELECT_URL_BY_ID,
   UPDATE_USER_DATA_BY_ID,
   SELECT_BY_ROLE,
-} from "../querryUsersRecord";
+} from "./querryUsersRecord";
 
 interface IUserRecord {
   id: string;
