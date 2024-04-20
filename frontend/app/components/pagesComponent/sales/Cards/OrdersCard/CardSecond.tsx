@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../ExpandMore';
+import { ExpandMore } from '../ExpandUtils/ExpandMore';
 import OrderTable from './OrdersTable/OrderTable';
 
 export const CardSecond = () => {

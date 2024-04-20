@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../ExpandMore';
+import { ExpandMore } from '../ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 
 export const CardThird = () => {

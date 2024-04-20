@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import {Box, CardContent, Button, Divider} from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
-import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/AddClientModal";
+import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
 import UpdateClientModal from "./UpdateClientModal";
 import { AddressTable } from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/AddressTable";
@@ -115,6 +115,15 @@ export const SelectClientsData = () => {
                     fetchData={fetchData}
                 />
             )}
+
+
+            <Typography variant="h6">
+                Do you want to add new address?
+            </Typography>
+            <Button variant="contained" color="primary" >
+                Add address
+            </Button>
+            
         </Box>
     );
 };
