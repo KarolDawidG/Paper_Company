@@ -2,10 +2,10 @@ import React from "react";
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
+import { Box, Modal, Fade, Backdrop } from '@mui/material';
 import SalesCardLogic from "../SalesCardLogic";
 
-export const DeliveryData = () => {
+export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void }> = ({open, onClose}) => {
     const {
         handleSubmit,
         handleChange,
@@ -16,7 +16,9 @@ export const DeliveryData = () => {
     } = SalesCardLogic();
 
     return (
-        <Box>
+    <Modal open={open} onClose={onClose} aria-labelledby="order-details-modal-title" aria-describedby="order-details-modal-description" closeAfterTransition slots={{backdrop: Backdrop,}} slotProps={{backdrop: {timeout: 500,},}}>
+       <Fade in={open}>
+          <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, minWidth: '400px', maxWidth: '80vw', maxHeight: '80vh', overflowY: 'auto', borderRadius: '8px',}}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box  sx={{ mt: 1 }}>
                     <Typography>
@@ -110,5 +112,7 @@ export const DeliveryData = () => {
                    </Button>
             </form>
         </Box>
+    </Fade>
+</Modal>
     );
 };

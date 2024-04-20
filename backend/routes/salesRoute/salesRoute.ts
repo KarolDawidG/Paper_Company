@@ -41,6 +41,23 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+router.post("/new-order", verifyToken, async (req: Request, res: Response) => {
+  const {client_id, client_address_id} = req.body;
+
+    try {
+      const order_id = await OrdersRecord.insert(client_id, client_address_id );
+
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
+    } catch (error: any) {
+      logger.error(`Sales/new-order Route: POST: ${error.message}`);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(`Sales/new-order Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+    }
+});
+
 router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {

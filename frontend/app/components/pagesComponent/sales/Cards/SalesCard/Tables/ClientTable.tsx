@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }) => {
+const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }:any) => {
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -16,7 +16,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((client, index) => (
+                    {data.map((client:any, index:any) => (
                         <TableRow key={client.id} sx={selectedClientId === client.clientData.id ? { backgroundColor: '#666666' } : {}}>
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>{client.clientData.first_name} {client.clientData.second_name}</TableCell>
