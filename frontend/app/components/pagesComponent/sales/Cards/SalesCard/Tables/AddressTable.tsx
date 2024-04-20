@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
+import { notify } from "@/app/components/notification/Notify";
 
-export const AddressTable = ({ selectedClientId }) => {
+export const AddressTable = ({ selectedClientId }:any) => {
     const [addressData, setAddressData] = useState([]);
-    //const [clientId, setClientId] = useState(sessionStorage.getItem('clientId'));
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
+
 
     const fetchAddressData = async () => {
         try {
@@ -15,6 +17,37 @@ export const AddressTable = ({ selectedClientId }) => {
             console.error('Error fetching data:', error);
         }
     };
+
+    const handleIdAddress = (addressId: any) => {
+        sessionStorage.setItem("addressId", addressId);
+        setSelectedAddressId(addressId);
+    };
+    
+
+    const handleOrder = async () => {
+        try {
+          const client_id = sessionStorage.getItem('clientId');
+          const client_address_id = sessionStorage.getItem('adressId');
+          const orderData = { client_id, client_address_id };
+          const response = await axiosInstance.post('/sales/new-order', orderData, {
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+    
+          console.log(orderData);
+          localStorage.setItem("order_id", response.data.order_id);
+          notify("Dane klienta i adres dostawy, zostały zapisane!");
+        } catch (error) {
+            console.error("Błąd podczas tworzenia zamówienia:", error);
+            notify("Nie udało się złożyć zamówienia. Spróbuj ponownie.");
+        }
+    };
+    
+    const handleClearSelect = () => {
+        sessionStorage.removeItem('addressId');
+        setSelectedAddressId(null); 
+    }
 
     useEffect(() => {
         if (selectedClientId) {
@@ -35,14 +68,20 @@ export const AddressTable = ({ selectedClientId }) => {
                                         <TableCell>No.</TableCell>
                                         <TableCell>Nazwa Firmy</TableCell>
                                         <TableCell>Miasto</TableCell>
+                                        <TableCell>Select</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {addressData.map((address, index) => (
-                                        <TableRow key={index}>
+                                    {addressData.map((address:any, index:number) => (
+                                        <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.addressData.id ? '#666666' : 'inherit' }}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{address.addressData.nazwa_firmy}</TableCell>
                                             <TableCell>{address.addressData.miasto}</TableCell>
+                                            <TableCell>
+                                                <Button onClick={() => handleIdAddress(address.addressData.id)}>
+                                                    Select
+                                                </Button>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -50,6 +89,20 @@ export const AddressTable = ({ selectedClientId }) => {
                         </TableContainer>
                     </Box>
                 </CardContent>
+                <Box>
+                <Typography>
+                    Chcesz stworzyc zamowienie dla wybranych danych?
+                </Typography>
+
+                <Button onClick={() => handleOrder()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
+                    Tworz
+                </Button>
+
+                <Button onClick={() => handleClearSelect()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
+                    Czysc
+                </Button>
+
+                </Box>
             </Box>
 
     );
