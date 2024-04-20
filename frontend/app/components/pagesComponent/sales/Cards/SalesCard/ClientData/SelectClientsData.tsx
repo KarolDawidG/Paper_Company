@@ -40,6 +40,7 @@ export const SelectClientsData = () => {
   const handleIdClient = (clientId: number) => {
     setSelectedClientId(clientId);
     sessionStorage.setItem("clientId", clientId.toString());
+    sessionStorage.removeItem('addressId');
   };
 
   const handleDelete = async (clientId: string) => {
@@ -63,6 +64,12 @@ export const SelectClientsData = () => {
   const toggleModal = (modalName: any, value: any) => {
     setModals((prev) => ({ ...prev, [modalName]: value }));
   };
+
+  const handleClearSelect = () => {
+    sessionStorage.removeItem('clientId');
+    sessionStorage.removeItem('addressId');
+    setSelectedClientId(null); 
+}
 
   useEffect(() => {
     fetchData();
@@ -90,6 +97,9 @@ export const SelectClientsData = () => {
             handleOpenEditClient={handleOpenEditClient}
             selectedClientId={selectedClientId}
           />
+            <Button onClick={() => handleClearSelect()}>
+              Czysc
+            </Button>
         </CardContent>
 
         {selectedClientId && (

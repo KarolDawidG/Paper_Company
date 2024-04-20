@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }:any) => {

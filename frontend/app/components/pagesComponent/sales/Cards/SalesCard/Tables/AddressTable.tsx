@@ -44,6 +44,10 @@ export const AddressTable = ({ selectedClientId }:any) => {
         }
     };
     
+    const handleClearSelect = () => {
+        sessionStorage.removeItem('addressId');
+        setSelectedAddressId(null); 
+    }
 
     useEffect(() => {
         if (selectedClientId) {
@@ -93,6 +97,11 @@ export const AddressTable = ({ selectedClientId }:any) => {
                 <Button onClick={() => handleOrder()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
                     Tworz
                 </Button>
+
+                <Button onClick={() => handleClearSelect()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
+                    Czysc
+                </Button>
+
                 </Box>
             </Box>
 
