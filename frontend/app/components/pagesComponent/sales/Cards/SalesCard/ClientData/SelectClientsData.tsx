@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Box, CardContent, Button, Divider } from "@mui/material";
+import { Box, Card, CardContent, Button } from "@mui/material";
 import axiosInstance from "@/app/api/axiosInstance";
-import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/AddClientModal";
+import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/Modals/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
-import UpdateClientModal from "./UpdateClientModal";
+import UpdateClientModal from "./Modals/UpdateClientModal";
 import { AddressTable } from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/AddressTable";
 import ClientTable from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/ClientTable";
-import { AddDeliveryDataModal } from "../DeliveryData/AddDeliveryDataModal";
+import { AddDeliveryDataModal } from "./Modals/AddDeliveryDataModal";
 
-export const SelectClientsData = () => {
+const SelectClientsData = () => {
   const [modals, setModals] = useState({
     addClient: false,
     editClient: false,
@@ -46,6 +46,7 @@ export const SelectClientsData = () => {
   const handleDelete = async (clientId: string) => {
     try {
       await axiosInstance.delete(`/client/${clientId}`);
+      fetchData(); 
     } catch (error: any) {
       notify("Cannot delete user who has already made purchases.");
       console.error(error);
@@ -76,68 +77,74 @@ export const SelectClientsData = () => {
   }, []);
 
   return (
-    <Box>
-      <Typography variant="h6">Do you want to add new client?</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenAddClient()}
-      >
-        Add client
-      </Button>
+    <Card variant="outlined">
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Do you want to add a new client?
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenAddClient}
+          sx={{ marginBottom: 2 }}
+        >
+          Add Client
+        </Button>
 
-      <Box>
-        <Typography>Select client:</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+          <Typography>Select a client:</Typography>
+          <Button onClick={handleClearSelect} variant="contained" color="primary">
+            Clear your select
+          </Button>
+        </Box>
 
-        <CardContent>
-          <ClientTable
-            data={data}
-            handleIdClient={handleIdClient}
-            handleDelete={handleDelete}
-            handleOpenEditClient={handleOpenEditClient}
-            selectedClientId={selectedClientId}
+        <ClientTable
+          data={data}
+          handleIdClient={handleIdClient}
+          handleDelete={handleDelete}
+          handleOpenEditClient={handleOpenEditClient}
+          selectedClientId={selectedClientId}
+        />
+
+        {selectedClientId && <AddressTable selectedClientId={selectedClientId} />}
+
+        <Typography variant="h6" gutterBottom>
+          Do you want to add a new address?
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenAddAddress}
+        >
+          Add Address
+        </Button>
+
+        {modals.addAddress && (
+          <AddDeliveryDataModal
+            open={true}
+            onClose={() => toggleModal("addAddress", false)}
           />
-            <Button onClick={() => handleClearSelect()}>
-              Czysc
-            </Button>
-        </CardContent>
-
-        {selectedClientId && (
-          <AddressTable selectedClientId={selectedClientId} />
         )}
-      </Box>
 
-      <Typography variant="h6">Do you want to add new address?</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenAddAddress()}
-      >
-        Add address
-      </Button>
+        {modals.addClient && (
+          <AddClientModal
+            open={true}
+            fetchData={fetchData}
+            onClose={() => toggleModal("addClient", false)}
+          />
+        )}
 
-      {modals.addAddress && (
-        <AddDeliveryDataModal
-          open={true}
-          onClose={() => toggleModal("addAddress", false)}
-        />
-      )}
-
-      {modals.addClient && (
-        <AddClientModal
-          open={true}
-          onClose={() => toggleModal("addClient", false)}
-        />
-      )}
-
-      {modals.editClient && (
-        <UpdateClientModal
-          open={true}
-          onClose={() => toggleModal("editClient", false)}
-          updateData={updateData}
-          fetchData={fetchData}
-        />
-      )}
-    </Box>
+        {modals.editClient && (
+          <UpdateClientModal
+            open={true}
+            onClose={() => toggleModal("editClient", false)}
+            updateData={updateData}
+            fetchData={fetchData}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
+
+export default SelectClientsData;

@@ -43,7 +43,6 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/new-order", verifyToken, async (req: Request, res: Response) => {
   const {client_id, client_address_id} = req.body;
-
     try {
       const order_id = await OrdersRecord.insert(client_id, client_address_id );
 

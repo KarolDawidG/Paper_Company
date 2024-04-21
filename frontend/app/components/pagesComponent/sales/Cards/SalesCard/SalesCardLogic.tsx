@@ -3,10 +3,23 @@ import { notify } from "@/app/components/notification/Notify";
 import { useState } from "react";
 import { useForm } from 'react-hook-form'; 
 
+type FormData = {
+  client_id: string;
+  cart_id: string;
+  miasto: string;
+  ulica: string;
+  nr_budynku: string;
+  nr_mieszkania: string;
+  kod: string;
+  nazwa_firmy: string;
+  [key: string]: string;
+};
+
 const SalesCardLogic = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [expanded, setExpanded] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<FormData>({
     client_id: "",
     cart_id: "",
     miasto: "",
@@ -41,8 +54,9 @@ const SalesCardLogic = () => {
       });
       
       localStorage.setItem("order_id", response.data.order_id);
-      notify("Dane klienta i adres dostawy, zostaly zapisane!");
+      notify("Nowy adres dostawy zostal zapisany!");
       reset();
+      
     } catch (error) {
       console.error('Request failed:', error);
       notify("Nie udało się przekazać danych!");

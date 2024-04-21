@@ -17,10 +17,10 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                 </TableHead>
                 <TableBody>
                     {data.map((client:any, index:any) => (
-                        <TableRow key={client.id} sx={selectedClientId === client.clientData.id ? { backgroundColor: '#666666' } : {}}>
+                        <TableRow key={client.id || index} sx={selectedClientId === (client.clientData && client.clientData.id) ? { backgroundColor: '#666666' } : {}}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{client.clientData.first_name} {client.clientData.second_name}</TableCell>
-                            <TableCell>{client.clientData.email}</TableCell>
+                            <TableCell>{client.clientData?.first_name} {client.clientData?.second_name}</TableCell>
+                            <TableCell>{client.clientData?.email}</TableCell>
                             <TableCell>
                                 <Button onClick={() => handleIdClient(client.clientData.id)}>
                                     Select

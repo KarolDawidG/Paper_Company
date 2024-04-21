@@ -27,7 +27,7 @@ export const AddressTable = ({ selectedClientId }:any) => {
     const handleOrder = async () => {
         try {
           const client_id = sessionStorage.getItem('clientId');
-          const client_address_id = sessionStorage.getItem('adressId');
+          const client_address_id = sessionStorage.getItem('addressId');
           const orderData = { client_id, client_address_id };
           const response = await axiosInstance.post('/sales/new-order', orderData, {
               headers: {
@@ -35,7 +35,6 @@ export const AddressTable = ({ selectedClientId }:any) => {
               }
           });
     
-          console.log(orderData);
           localStorage.setItem("order_id", response.data.order_id);
           notify("Dane klienta i adres dostawy, zostały zapisane!");
         } catch (error) {
@@ -94,14 +93,16 @@ export const AddressTable = ({ selectedClientId }:any) => {
                     Chcesz stworzyc zamowienie dla wybranych danych?
                 </Typography>
 
-                <Button onClick={() => handleOrder()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
-                    Tworz
-                </Button>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-                <Button onClick={() => handleClearSelect()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
-                    Czysc
-                </Button>
+                    <Button onClick={() => handleOrder()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
+                        Tworz
+                    </Button>
 
+                    <Button onClick={() => handleClearSelect()} disabled={!selectedAddressId}   sx={{backgroundColor: selectedAddressId ? '#1976d2' : '#ccc', color: '#fff', '&:hover': { backgroundColor: selectedAddressId ? '#1565c0' : '#ccc',}, '&:disabled': { backgroundColor: '#ccc', color: '#666' }}}>
+                        Czysc
+                    </Button>
+                </Box>
                 </Box>
             </Box>
 
