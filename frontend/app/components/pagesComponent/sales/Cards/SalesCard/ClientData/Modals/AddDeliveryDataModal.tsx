@@ -14,7 +14,7 @@ type FormData = {
     [key in FieldKeys]: string;
 };
 
-export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void, fetchAddressData: () => void}> = ({ open, onClose, fetchAddressData }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
 
     const onSubmit = async (data: FormData) => {
@@ -30,6 +30,7 @@ export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void
             });
             localStorage.setItem("order_id", response.data.order_id);
             notify("Nowy adres dostawy został zapisany!");
+            fetchAddressData();
             reset();
             onClose();
         } catch (error) {
