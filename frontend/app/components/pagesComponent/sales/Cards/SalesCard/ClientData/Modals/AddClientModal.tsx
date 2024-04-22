@@ -11,7 +11,7 @@ import {
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
 import { useForm } from 'react-hook-form';
-import { modalStyle } from './modalStyle';
+import { modalStyle } from './ModalStyles/modalStyle';
 
 const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: () => void }> = ({ open, onClose, fetchData }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({

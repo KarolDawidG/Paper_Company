@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Box, Modal, Fade } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
-import { modalStyle } from "./modalStyle";
+import { modalStyle } from "./ModalStyles/modalStyle";
 
 type FieldKeys = 'miasto' | 'ulica' | 'nr_budynku' | 'nr_mieszkania' | 'kod' | 'nazwa_firmy';
 
