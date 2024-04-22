@@ -46,9 +46,10 @@ class ClientRecord {
 
     static async delete(id: string) {
       return performTransaction(async (connection) => {
-          return connection.execute(DELETE_CLIENT, [id]);
+          await connection.execute("DELETE FROM `client_addresses` WHERE client_id = ?", [id]);
+          return connection.execute("DELETE FROM `clients` WHERE id = ?", [id]);
       });
-    }
+  }
 
     static async updateClient([id, first_name, second_name, email]: [string, string, string, string]) {
         return performTransaction(async (connection) => {

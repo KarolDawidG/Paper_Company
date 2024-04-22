@@ -24,15 +24,11 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
-  const client_id = req.body.client_id;
-
     try {
-      const client_address_id = await AddressRecord.insert(formData);
-      const order_id = await OrdersRecord.insert(client_id, client_address_id );
-
+      await AddressRecord.insert(formData);
       return res
         .status(STATUS_CODES.SUCCESS)
-        .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
+        .send({ message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
       logger.error(`Sales Route: POST: ${error.message}`);
       return res
@@ -43,7 +39,6 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/new-order", verifyToken, async (req: Request, res: Response) => {
   const {client_id, client_address_id} = req.body;
-
     try {
       const order_id = await OrdersRecord.insert(client_id, client_address_id );
 

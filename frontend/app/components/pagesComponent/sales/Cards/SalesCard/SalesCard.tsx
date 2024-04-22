@@ -8,13 +8,13 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandUtils/ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
-import {SelectClientsData} from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
+import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
 
 export const CardOne = () => {
   const {
     handleExpandClick,
     expanded,
-    formState: { errors } 
+    formState: { errors } //chyba niepotrzebne
   } = SalesCardLogic();
 
   return (

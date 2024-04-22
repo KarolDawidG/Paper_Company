@@ -1,56 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import { Box, CardContent, Button, Divider } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Box, Card, CardContent } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
-import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/AddClientModal";
+import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/Modals/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
-import UpdateClientModal from "./UpdateClientModal";
+import UpdateClientModal from "./Modals/UpdateClientModal";
 import { AddressTable } from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/AddressTable";
 import ClientTable from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/ClientTable";
-import { AddDeliveryDataModal } from "../DeliveryData/AddDeliveryDataModal";
+import { AddDeliveryDataModal } from "./Modals/AddDeliveryDataModal";
+import { useDeleteClientDialogLogic } from './Modals/DeleteClientDialogLogic';
+import { useClientTableLogic } from "./Modals/ClientTableLogic";
+import { useAddressTableLogic } from "./Modals/AddressTableLogic";
 
-export const SelectClientsData = () => {
-  const [modals, setModals] = useState({
-    addClient: false,
-    editClient: false,
-    addAddress: false,
-  });
-  const [data, setData] = useState<any[]>([]);
-  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
-  const [updateData, setUpdateData] = useState({
-    id: "",
-    first_name: "",
-    second_name: "",
-    email: "",
-  });
-
-  const handleOpenAddClient = () => toggleModal("addClient", true);
-  const handleOpenAddAddress = () => toggleModal("addAddress", true);
-  
-  const handleOpenEditClient = (
-    id: string,
-    first_name: string,
-    second_name: string,
-    email: string
-  ) => {
-    setUpdateData({ id, first_name, second_name, email });
-    toggleModal("editClient", true);
-  };
-
-  const handleIdClient = (clientId: number) => {
-    setSelectedClientId(clientId);
-    sessionStorage.setItem("clientId", clientId.toString());
-    sessionStorage.removeItem('addressId');
-  };
-
-  const handleDelete = async (clientId: string) => {
-    try {
-      await axiosInstance.delete(`/client/${clientId}`);
-    } catch (error: any) {
-      notify("Cannot delete user who has already made purchases.");
-      console.error(error);
-    }
-  };
+const SelectClientsData = () => {
 
   const fetchData = async () => {
     try {
@@ -59,11 +20,12 @@ export const SelectClientsData = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
-
-  const toggleModal = (modalName: any, value: any) => {
-    setModals((prev) => ({ ...prev, [modalName]: value }));
-  };
+};
+  const { openDeleteDialog, handleOpenDeleteDialog, handleCloseDeleteDialog, handleDelete } = useDeleteClientDialogLogic({ fetchData });
+  const { selectedClientId, setSelectedClientId, updateData, modals, handleOpenAddClient, handleOpenAddAddress, handleOpenEditClient, handleIdClient, toggleModal } = useClientTableLogic({ fetchData });
+  const { handleOrder, addressData, selectedAddressId, handleDeleteAddress, handleIdAddress, handleClearAddressSelect, fetchAddressData } = useAddressTableLogic({ selectedClientId });
+  
+  const [data, setData] = useState<any[]>([]);
 
   const handleClearSelect = () => {
     sessionStorage.removeItem('clientId');
@@ -76,68 +38,106 @@ export const SelectClientsData = () => {
   }, []);
 
   return (
-    <Box>
-      <Typography variant="h6">Do you want to add new client?</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenAddClient()}
-      >
-        Add client
-      </Button>
+    <Card variant="outlined">
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Do you want to add a new client?
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenAddClient}
+          sx={{ marginBottom: 2 }}
+        >
+          Add Client
+        </Button>
 
-      <Box>
-        <Typography>Select client:</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+          <Typography>Select a client:</Typography>
+          <Button onClick={handleClearSelect} variant="contained" color="primary">
+            Clear your select
+          </Button>
+        </Box>
 
-        <CardContent>
-          <ClientTable
-            data={data}
-            handleIdClient={handleIdClient}
-            handleDelete={handleDelete}
-            handleOpenEditClient={handleOpenEditClient}
-            selectedClientId={selectedClientId}
-          />
-            <Button onClick={() => handleClearSelect()}>
-              Czysc
+        <ClientTable
+          data={data}
+          handleIdClient={handleIdClient}
+          handleDelete={handleOpenDeleteDialog}
+          handleOpenEditClient={handleOpenEditClient}
+          selectedClientId={selectedClientId}
+        />
+
+<Dialog
+          open={openDeleteDialog}
+          onClose={handleCloseDeleteDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this client? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog} color="primary">
+              Cancel
             </Button>
-        </CardContent>
+            <Button onClick={handleDelete} color="secondary" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-        {selectedClientId && (
-          <AddressTable selectedClientId={selectedClientId} />
+        {selectedClientId && 
+        <AddressTable 
+          selectedAddressId={selectedAddressId}
+          addressData={addressData}
+          handleIdAddress={handleIdAddress}
+          handleOrder={handleOrder}
+          handleDeleteAddress={handleDeleteAddress}
+          handleClearAddresSelect={handleClearAddressSelect}
+        
+        />}
+
+        <Typography variant="h6" gutterBottom>
+          Do you want to add a new address?
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenAddAddress}
+        >
+          Add Address
+        </Button>
+
+        {modals.addAddress && (
+          <AddDeliveryDataModal
+            open={true}
+            onClose={() => toggleModal("addAddress", false)}
+            fetchAddressData={fetchAddressData}
+          />
         )}
-      </Box>
 
-      <Typography variant="h6">Do you want to add new address?</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleOpenAddAddress()}
-      >
-        Add address
-      </Button>
+        {modals.addClient && (
+          <AddClientModal
+            open={true}
+            fetchData={fetchData}
+            onClose={() => toggleModal("addClient", false)}
+          />
+        )}
 
-      {modals.addAddress && (
-        <AddDeliveryDataModal
-          open={true}
-          onClose={() => toggleModal("addAddress", false)}
-        />
-      )}
-
-      {modals.addClient && (
-        <AddClientModal
-          open={true}
-          onClose={() => toggleModal("addClient", false)}
-        />
-      )}
-
-      {modals.editClient && (
-        <UpdateClientModal
-          open={true}
-          onClose={() => toggleModal("editClient", false)}
-          updateData={updateData}
-          fetchData={fetchData}
-        />
-      )}
-    </Box>
+        {modals.editClient && (
+          <UpdateClientModal
+            open={true}
+            onClose={() => toggleModal("editClient", false)}
+            updateData={updateData}
+            fetchData={fetchData}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
+
+export default SelectClientsData;
