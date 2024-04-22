@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import { Box, Card, CardContent, Button } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Box, Card, CardContent } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/Modals/AddClientModal";
 import { notify } from "@/app/components/notification/Notify";
@@ -8,50 +7,11 @@ import UpdateClientModal from "./Modals/UpdateClientModal";
 import { AddressTable } from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/AddressTable";
 import ClientTable from "@/app/components/pagesComponent/sales/Cards/SalesCard/Tables/ClientTable";
 import { AddDeliveryDataModal } from "./Modals/AddDeliveryDataModal";
+import { useDeleteClientDialogLogic } from './Modals/DeleteClientDialogLogic';
+import { useClientTableLogic } from "./Modals/ClientTableLogic";
+import { useAddressTableLogic } from "./Modals/AddressTableLogic";
 
 const SelectClientsData = () => {
-  const [modals, setModals] = useState({
-    addClient: false,
-    editClient: false,
-    addAddress: false,
-  });
-  const [data, setData] = useState<any[]>([]);
-  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
-  const [updateData, setUpdateData] = useState({
-    id: "",
-    first_name: "",
-    second_name: "",
-    email: "",
-  });
-
-  const handleOpenAddClient = () => toggleModal("addClient", true);
-  const handleOpenAddAddress = () => toggleModal("addAddress", true);
-  
-  const handleOpenEditClient = (
-    id: string,
-    first_name: string,
-    second_name: string,
-    email: string
-  ) => {
-    setUpdateData({ id, first_name, second_name, email });
-    toggleModal("editClient", true);
-  };
-
-  const handleIdClient = (clientId: number) => {
-    setSelectedClientId(clientId);
-    sessionStorage.setItem("clientId", clientId.toString());
-    sessionStorage.removeItem('addressId');
-  };
-
-  const handleDelete = async (clientId: string) => {
-    try {
-      await axiosInstance.delete(`/client/${clientId}`);
-      fetchData(); 
-    } catch (error: any) {
-      notify("Cannot delete user who has already made purchases.");
-      console.error(error);
-    }
-  };
 
   const fetchData = async () => {
     try {
@@ -60,11 +20,12 @@ const SelectClientsData = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
-
-  const toggleModal = (modalName: any, value: any) => {
-    setModals((prev) => ({ ...prev, [modalName]: value }));
-  };
+};
+  const { openDeleteDialog, handleOpenDeleteDialog, handleCloseDeleteDialog, handleDelete } = useDeleteClientDialogLogic({ fetchData });
+  const { selectedClientId, setSelectedClientId, updateData, modals, handleOpenAddClient, handleOpenAddAddress, handleOpenEditClient, handleIdClient, toggleModal } = useClientTableLogic({ fetchData });
+  const { handleOrder, addressData, selectedAddressId, handleDeleteAddress, handleIdAddress, handleClearAddressSelect, fetchAddressData } = useAddressTableLogic({ selectedClientId });
+  
+  const [data, setData] = useState<any[]>([]);
 
   const handleClearSelect = () => {
     sessionStorage.removeItem('clientId');
@@ -75,57 +36,6 @@ const SelectClientsData = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  //////////////////////////////////////////////////////////////////////
-
-  const [addressData, setAddressData] = useState([]);
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
-
-
-  const fetchAddressData = async () => {
-      try {
-          const response = await axiosInstance.get(`/address/${selectedClientId}`);
-          setAddressData(response.data.addressList);
-      } catch (error) {
-          console.error('Error fetching data:', error);
-      }
-  };
-
-  const handleIdAddress = (addressId: any) => {
-      sessionStorage.setItem("addressId", addressId);
-      setSelectedAddressId(addressId);
-  };
-  
-
-  const handleOrder = async () => {
-      try {
-        const client_id = sessionStorage.getItem('clientId');
-        const client_address_id = sessionStorage.getItem('addressId');
-        const orderData = { client_id, client_address_id };
-        const response = await axiosInstance.post('/sales/new-order', orderData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-  
-        localStorage.setItem("order_id", response.data.order_id);
-        notify("Dane klienta i adres dostawy, zostały zapisane!");
-      } catch (error) {
-          console.error("Błąd podczas tworzenia zamówienia:", error);
-          notify("Nie udało się złożyć zamówienia. Spróbuj ponownie.");
-      }
-  };
-
-  const handleClearAddresSelect = () => {
-    sessionStorage.removeItem('addressId');
-    setSelectedAddressId(null); 
-}
-
-  useEffect(() => {
-      if (selectedClientId) {
-          fetchAddressData();
-      }
-  }, [selectedClientId]);
 
   return (
     <Card variant="outlined">
@@ -152,10 +62,32 @@ const SelectClientsData = () => {
         <ClientTable
           data={data}
           handleIdClient={handleIdClient}
-          handleDelete={handleDelete}
+          handleDelete={handleOpenDeleteDialog}
           handleOpenEditClient={handleOpenEditClient}
           selectedClientId={selectedClientId}
         />
+
+<Dialog
+          open={openDeleteDialog}
+          onClose={handleCloseDeleteDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this client? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDelete} color="secondary" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {selectedClientId && 
         <AddressTable 
@@ -163,7 +95,8 @@ const SelectClientsData = () => {
           addressData={addressData}
           handleIdAddress={handleIdAddress}
           handleOrder={handleOrder}
-          handleClearAddresSelect={handleClearAddresSelect}
+          handleDeleteAddress={handleDeleteAddress}
+          handleClearAddresSelect={handleClearAddressSelect}
         
         />}
 

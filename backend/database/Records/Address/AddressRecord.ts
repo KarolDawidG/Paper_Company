@@ -50,9 +50,11 @@ class AddressRecord {
 
   static async delete(id: string) {
     return performTransaction(async (connection) => {
-        return connection.execute(DELETE_ADDRESS, [id]);
+        await connection.execute("DELETE FROM `orders` WHERE client_address_id = ?", [id]);
+        return connection.execute("DELETE FROM `client_addresses` WHERE id = ?", [id]);
     });
-  }
+}
+
 
 }
 

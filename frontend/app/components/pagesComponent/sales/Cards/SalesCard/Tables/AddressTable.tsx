@@ -2,7 +2,7 @@ import React from "react";
 import Typography from '@mui/material/Typography';
 import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
-export const AddressTable = ({ selectedAddressId, addressData, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
+export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     return (
             <Box>
                 <CardContent>
@@ -16,6 +16,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleIdAddress, 
                                         <TableCell>Nazwa Firmy</TableCell>
                                         <TableCell>Miasto</TableCell>
                                         <TableCell>Select</TableCell>
+                                        <TableCell>Delete</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -27,6 +28,11 @@ export const AddressTable = ({ selectedAddressId, addressData, handleIdAddress, 
                                             <TableCell>
                                                 <Button onClick={() => handleIdAddress(address.addressData.id)}>
                                                     Select
+                                                </Button>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button onClick={() => handleDeleteAddress(address.addressData.id)}>
+                                                    Delete
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
