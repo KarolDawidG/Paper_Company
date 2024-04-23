@@ -1,10 +1,5 @@
 import { useState } from "react";
 
-interface PaginationLogicProps {
-    data: any[];
-    addressData?: any; // Dodanie tej linii, jeśli addressData jest opcjonalne
-}
-
 export const usePaginationLogic = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);

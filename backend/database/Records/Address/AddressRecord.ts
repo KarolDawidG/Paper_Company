@@ -15,7 +15,7 @@ interface Address {
 }
 
 class AddressRecord {
-  constructor(private addressData: Address) {}
+  constructor(private Data: Address) {}
 
   static async insert(formData: Address) {
     const id = uuidv4();

@@ -4,26 +4,14 @@ import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHea
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
 import { usePaginationLogic } from './PaginationControl';
+import SearchBar from "./Search";
+import useSearchLogic from "./SearchControl";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
-    const {
-        page,
-        rowsPerPage,
-        handleChangePage,
-        handleChangeRowsPerPage
-    } = usePaginationLogic();
-
-    
+    const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
+    const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data: addressData });
     const [openDialog, setOpenDialog] = useState(false);
     const [currentAddressId, setCurrentAddressId] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const filteredData = addressData.filter(({ addressData }: any) =>
-        addressData && Object.values(addressData).some((value: any) =>
-            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
-    console.log("Dane po filtrowaniu:", filteredData);
 
     const handleOpenDialog = (id:any) => {
         setCurrentAddressId(id);
@@ -41,19 +29,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
 
     return (
     <Box>
-            <Box marginBottom={2} display='flex' alignItems='center'>
-                <Typography variant="h6" style={{ marginRight: '16px' }}>
-                    Wyszukaj zamówienie:
-                </Typography>
-                
-                <TextField
-                    label="Search"
-                    variant="outlined"
-                    size="small"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </Box>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         <CardContent>
             <Typography variant="h6">Tabela adresow</Typography>
                 <TableContainer component={Paper}>
@@ -70,17 +46,17 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                             <TableBody>
 
                             {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((address:any, index:number) => (
-                                    <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.addressData.id ? '#666666' : 'inherit' }}>
+                                    <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.Data.id ? '#666666' : 'inherit' }}>
                                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                                        <TableCell>{address.addressData.nazwa_firmy}</TableCell>
-                                        <TableCell>{address.addressData.miasto}</TableCell>
+                                        <TableCell>{address.Data.nazwa_firmy}</TableCell>
+                                        <TableCell>{address.Data.miasto}</TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleIdAddress(address.addressData.id)}>
+                                            <Button onClick={() => handleIdAddress(address.Data.id)}>
                                                 Select
                                             </Button>
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleOpenDialog(address.addressData.id)}>
+                                            <Button onClick={() => handleOpenDialog(address.Data.id)}>
                                                 Delete
                                             </Button>
                                         </TableCell>
