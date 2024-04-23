@@ -15,6 +15,8 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
       try {
         const response = await axiosInstance.get(`/address/${selectedClientId}`);
         setAddressData(response.data.addressList);
+        console.log("Fetch AddressData");
+        console.log(response.data.addressList);
       } catch (error) {
         console.error('Error fetching data:', error);
         notify("Failed to fetch address data.");

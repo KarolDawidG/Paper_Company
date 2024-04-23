@@ -1,8 +1,27 @@
-import React from "react";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import React, { useState } from "react";
+import { Button, TextField, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
+import { usePaginationLogic } from './PaginationControl';
+import useSearchLogic from "./SearchControl";
+import SearchBar from "./Search";
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }:any) => {
+    const {
+        page,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = usePaginationLogic();
+
+    const {
+        searchTerm,
+        setSearchTerm,
+        filteredData
+    } = useSearchLogic({ data });
+
     return (
+    <Box>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+
         <TableContainer component={Paper}>
             <Table>
                 <TableHead>
@@ -16,23 +35,24 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((client:any, index:any) => (
-                        <TableRow key={client.id || index} sx={selectedClientId === (client.clientData && client.clientData.id) ? { backgroundColor: '#666666' } : {}}>
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>{client.clientData?.first_name} {client.clientData?.second_name}</TableCell>
-                            <TableCell>{client.clientData?.email}</TableCell>
+
+                {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((client: any, index: any) => (                        
+                        <TableRow key={client.id || index} sx={selectedClientId === (client.Data && client.Data.id) ? { backgroundColor: '#666666' } : {}}>
+                            <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                            <TableCell>{client.Data?.first_name} {client.Data?.second_name}</TableCell>
+                            <TableCell>{client.Data?.email}</TableCell>
                             <TableCell>
-                                <Button onClick={() => handleIdClient(client.clientData.id)}>
+                                <Button onClick={() => handleIdClient(client.Data.id)}>
                                     Select
                                 </Button>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => handleDelete(client.clientData.id)}>
+                                <Button onClick={() => handleDelete(client.Data.id)}>
                                     Delete
                                 </Button>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => handleOpenEditClient(client.clientData.id, client.clientData.first_name, client.clientData.second_name, client.clientData.email)}>
+                                <Button onClick={() => handleOpenEditClient(client.Data.id, client.Data.first_name, client.Data.second_name, client.Data.email)}>
                                     Update
                                 </Button>
                             </TableCell>
@@ -41,6 +61,18 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                 </TableBody>
             </Table>
         </TableContainer>
+
+        <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                component="div"
+                count={filteredData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Box>
+ 
     );
 };
 

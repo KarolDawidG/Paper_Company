@@ -12,7 +12,7 @@ interface Client {
 }
 
 class ClientRecord {
-  constructor(private clientData: Client) {}
+  constructor(private Data: Client) {}
 
     static async getList() {
         try {

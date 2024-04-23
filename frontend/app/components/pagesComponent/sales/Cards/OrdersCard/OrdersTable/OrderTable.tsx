@@ -55,7 +55,6 @@ const filteredData = data.filter((order) =>
   };
   
   const handleOpenDetails = (order: any) => {
-    //setSelectedOrder(order);
    setSelectedOrder(order.orderData.client_address_id);
   };
 

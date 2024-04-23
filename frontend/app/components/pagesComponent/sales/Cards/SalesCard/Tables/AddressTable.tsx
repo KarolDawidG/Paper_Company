@@ -1,12 +1,29 @@
 import React, { useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
+import { usePaginationLogic } from './PaginationControl';
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
+    const {
+        page,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage
+    } = usePaginationLogic();
+
+    
     const [openDialog, setOpenDialog] = useState(false);
     const [currentAddressId, setCurrentAddressId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredData = addressData.filter(({ addressData }: any) =>
+        addressData && Object.values(addressData).some((value: any) =>
+            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    );
+    console.log("Dane po filtrowaniu:", filteredData);
 
     const handleOpenDialog = (id:any) => {
         setCurrentAddressId(id);
@@ -24,6 +41,19 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
 
     return (
     <Box>
+            <Box marginBottom={2} display='flex' alignItems='center'>
+                <Typography variant="h6" style={{ marginRight: '16px' }}>
+                    Wyszukaj zamówienie:
+                </Typography>
+                
+                <TextField
+                    label="Search"
+                    variant="outlined"
+                    size="small"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </Box>
         <CardContent>
             <Typography variant="h6">Tabela adresow</Typography>
                 <TableContainer component={Paper}>
@@ -38,9 +68,10 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                             </TableRow>
                         </TableHead>
                             <TableBody>
-                                {addressData.map((address:any, index:number) => (
+
+                            {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((address:any, index:number) => (
                                     <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.addressData.id ? '#666666' : 'inherit' }}>
-                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                                         <TableCell>{address.addressData.nazwa_firmy}</TableCell>
                                         <TableCell>{address.addressData.miasto}</TableCell>
                                         <TableCell>
@@ -76,6 +107,15 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
             <BaseDialog open={openDialog} onClose={handleCloseDialog} onConfirm={handleConfirmDelete} title="Confirm Deletion" confirmText="Delete" cancelText="Cancel">
                 Are you sure you want to delete this address? This action cannot be undone.
             </BaseDialog>
-    </Box>
-);
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                component="div"
+                count={filteredData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Box>
+   );
 };
