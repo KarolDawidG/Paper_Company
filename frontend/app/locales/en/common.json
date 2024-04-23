@@ -16,7 +16,8 @@
     "sales_and_orders": {
       "title": "Sales and Order Management",
       "intro": "Our sales and order management system enables you to efficiently receive and process customer orders, ensuring a smooth flow from order placement to delivery.",
-      "info": "Contact our team."
+      "info": "Contact our team.",
+      "mainInfo": "The component responsible for managing the customer and delivery addresses of the ordered goods."
     },
     "accounting": {
       "title": "Finance and Accounting",

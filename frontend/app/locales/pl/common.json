@@ -16,7 +16,8 @@
     "sales_and_orders": {
       "title": "Zarządzanie Sprzedażą i Zamówieniami",
       "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień od klientów, zapewniając płynny przepływ od momentu złożenia zamówienia aż do dostawy.",
-      "info": "Skontaktuj się z naszym zespołem."
+      "info": "Skontaktuj się z naszym zespołem.",
+      "mainInfo": "Komponent odpowiedzialny za zarządzanie klientem i adresami dostawy zamowionego towaru."
     },
     "accounting": {
       "title": "Finanse i Księgowość",

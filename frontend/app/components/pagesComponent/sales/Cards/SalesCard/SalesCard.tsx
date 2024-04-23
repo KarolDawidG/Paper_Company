@@ -9,20 +9,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../ExpandUtils/ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
 import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
+import useTranslation from "@/app/components/language/useTranslation";
 
 export const CardOne = () => {
-  const {
-    handleExpandClick,
-    expanded,
-    formState: { errors } //chyba niepotrzebne
-  } = SalesCardLogic();
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+  const {handleExpandClick, expanded, formState: { errors }} = SalesCardLogic();
 
   return (
       <Card sx={{ maxWidth: '100%' }}>
       <CardHeader title="Sales" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Dane klienta.
+          {t.sales_and_orders?.mainInfo}
         </Typography>
       </CardContent>
 

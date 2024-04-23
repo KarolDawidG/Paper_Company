@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-    Modal,
-    Backdrop,
-    Fade,
-    Typography,
-    Box,
-    Button,
-    TextField
-} from '@mui/material';
+import { Modal, Fade, Typography, Box, TextField} from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
 import { useForm } from 'react-hook-form';
 import { modalStyle } from './ModalStyles/modalStyle';
+import { MainButton } from '@/app/components/layout/Buttons';
 
 const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: () => void }> = ({ open, onClose, fetchData }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -74,13 +67,16 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: 
                             error={Boolean(errors.second_name)}
                             helperText={errors.second_name?.message}
                         />
-                        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                            Zapisz klienta
-                        </Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
+                            <MainButton type="submit">
+                                Save
+                            </MainButton>
+
+                            <MainButton onClick={onClose}>
+                                Close
+                            </MainButton>
+                        </Box>
                     </form>
-                    <Button onClick={onClose} variant="outlined" color="primary" sx={{ mt: 2 }}>
-                        Zamknij
-                    </Button>
                 </Box>
             </Fade>
         </Modal>

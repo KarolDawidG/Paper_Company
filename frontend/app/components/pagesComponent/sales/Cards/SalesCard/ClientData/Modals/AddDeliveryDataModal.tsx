@@ -7,6 +7,7 @@ import { Box, Modal, Fade } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
 import { modalStyle } from "./ModalStyles/modalStyle";
+import { MainButton } from "@/app/components/layout/Buttons";
 
 type FieldKeys = 'miasto' | 'ulica' | 'nr_budynku' | 'nr_mieszkania' | 'kod' | 'nazwa_firmy';
 
@@ -63,12 +64,16 @@ export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void
                                 helperText={errors[field]?.message || ''}
                             />
                         ))}
-                        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                            Save the data
-                        </Button>
-                        <Button onClick={onClose} variant="outlined" color="primary" sx={{ mt: 2 }}>
-                            Close
-                        </Button>
+
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
+                            <MainButton type="submit">
+                                Save
+                            </MainButton>
+
+                            <MainButton onClick={onClose}>
+                                Close
+                            </MainButton>
+                        </Box>
                     </form>
                 </Box>
             </Fade>

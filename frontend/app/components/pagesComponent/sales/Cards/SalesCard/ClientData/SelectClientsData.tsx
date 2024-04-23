@@ -10,6 +10,7 @@ import { useDeleteClientDialogLogic } from '../Logic/DeleteClientDialogLogic';
 import { useClientTableLogic } from "../Logic/ClientTableLogic";
 import { useAddressTableLogic } from "../Logic/AddressTableLogic";
 import BaseDialog from '../../../../../utils/BaseDialog';
+import  {MainButton} from "@/app/components/layout/Buttons";
 
 const SelectClientsData = () => {
   const [open, setOpen] = useState(false);
@@ -47,23 +48,23 @@ const handleConfirm = () => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Do you want to add a new client?
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenAddClient}
-          sx={{ marginBottom: 2 }}
-        >
-          Add Client
-        </Button>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+          <Typography >
+            Do you want to add a new client?
+          </Typography>
+
+          <MainButton onClick={handleOpenAddClient}>
+            Add Client
+          </MainButton>
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Typography>Select a client:</Typography>
-          <Button onClick={handleClearSelect} variant="contained" color="primary">
+
+          <MainButton onClick={handleClearSelect}>
             Clear your select
-          </Button>
+          </MainButton>
         </Box>
 
         <ClientTable
@@ -74,17 +75,17 @@ const handleConfirm = () => {
           selectedClientId={selectedClientId}
         />
       
-      <BaseDialog 
-        open={openDeleteDialog} 
-        onClose={handleCloseDeleteDialog} 
-        onConfirm={handleConfirm} 
-        title="Confirm Deletion" 
-        confirmText="Delete"
-        cancelText="Cancel"
-      >
-        Are you sure you want to delete this client? This action cannot be undone.
-      </BaseDialog>
-       
+      <Box sx={{ display: 'flex',marginTop: 2 ,justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+        
+        <Typography>
+          Do you want to add a new address?
+        </Typography>
+
+        <MainButton  onClick={handleOpenAddAddress}>
+          Add Address
+        </MainButton>
+
+      </Box>
 
         {selectedClientId && 
         <AddressTable 
@@ -94,20 +95,7 @@ const handleConfirm = () => {
           handleOrder={handleOrder}
           handleDeleteAddress={handleDeleteAddress}
           handleClearAddresSelect={handleClearAddressSelect}
-        
         />}
-
-        <Typography variant="h6" gutterBottom>
-          Do you want to add a new address?
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenAddAddress}
-        >
-          Add Address
-        </Button>
-
         {modals.addAddress && (
           <AddDeliveryDataModal
             open={true}
@@ -115,7 +103,6 @@ const handleConfirm = () => {
             fetchAddressData={fetchAddressData}
           />
         )}
-
         {modals.addClient && (
           <AddClientModal
             open={true}
@@ -123,7 +110,6 @@ const handleConfirm = () => {
             onClose={() => toggleModal("addClient", false)}
           />
         )}
-
         {modals.editClient && (
           <UpdateClientModal
             open={true}
@@ -132,6 +118,9 @@ const handleConfirm = () => {
             fetchData={fetchData}
           />
         )}
+      <BaseDialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} onConfirm={handleConfirm} title="Confirm Deletion" confirmText="Delete" cancelText="Cancel">
+        Are you sure you want to delete this client? This action cannot be undone.
+      </BaseDialog>
       </CardContent>
     </Card>
   );
