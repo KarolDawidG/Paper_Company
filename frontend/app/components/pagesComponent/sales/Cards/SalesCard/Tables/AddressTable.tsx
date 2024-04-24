@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination } from '@mui/material';
+import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
 import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
 import SearchBar from "../../../../../utils/tableUtils/Search";
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
+import useSorting from "@/app/components/utils/tableUtils/SortingControl";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
     const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data: addressData });
     const [openDialog, setOpenDialog] = useState(false);
     const [currentAddressId, setCurrentAddressId] = useState(null);
-
+    const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('miasto');
+    const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+    
     const handleOpenDialog = (id:any) => {
         setCurrentAddressId(id);
         setOpenDialog(true);
@@ -37,15 +40,34 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                         <TableHead>
                             <TableRow>
                                 <TableCell>No.</TableCell>
-                                <TableCell>Nazwa Firmy</TableCell>
-                                <TableCell>Miasto</TableCell>
+                                
+                                <TableCell>
+                                    <TableSortLabel
+                                        active={orderBy === 'nazwa_firmy'}
+                                        direction={order}
+                                        onClick={(event) => handleRequestSort(event, 'nazwa_firmy')}
+                                        >
+                                        Nazwa Firmy
+                                    </TableSortLabel>
+                                </TableCell>
+
+                                <TableCell>
+                                    <TableSortLabel
+                                        active={orderBy === 'miasto'}
+                                        direction={order}
+                                        onClick={(event) => handleRequestSort(event, 'miasto')}
+                                        >
+                                        Miasto
+                                    </TableSortLabel>
+                                </TableCell>
+
                                 <TableCell>Select</TableCell>
                                 <TableCell>Delete</TableCell>
                             </TableRow>
                         </TableHead>
                             <TableBody>
 
-                            {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((address:any, index:number) => (
+                            {sortedData.map((address:any, index:number) => (
                                     <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.id ? '#666666' : 'inherit' }}>
                                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                                         <TableCell>{address.nazwa_firmy}</TableCell>
