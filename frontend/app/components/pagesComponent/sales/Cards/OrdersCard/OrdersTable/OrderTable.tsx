@@ -3,13 +3,16 @@ import OrderDetailsModal from './OrderDetailsModal';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Box, Typography, TablePagination, Button} from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
+import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
+import SearchBar from '@/app/components/utils/tableUtils/Search';
+import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
+import { notify } from '@/app/components/notification/Notify';
 
 const OrderTable: React.FC<any> = () => {
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [data, setData] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
+  const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,37 +28,19 @@ const OrderTable: React.FC<any> = () => {
     fetchData();
   }, []);
 
-const filteredData = data.filter((order) =>
-  Object.values(order.orderData).some((value:any) =>
-    value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  )
-);
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const handleDeleteOrder = async (id:string) => {
     try {
       await axiosInstance.delete(`/sales/${id}`);
-      setData(data.filter((order) => order.orderData.id !== id)); 
+      setData(data.filter((order) => order.Data.id !== id));
+      notify('Usuwanie zakonczone sukcesem');
     } catch (error: any) {
       console.error(error);
+      notify('Nie mozna usunac procedowanego zamowienia!');
     }
   };
   
   const handleOpenDetails = (order: any) => {
-   setSelectedOrder(order.orderData.client_address_id);
+   setSelectedOrder(order.Data.client_address_id);
   };
 
   const handleCloseDetails = () => {
@@ -64,18 +49,8 @@ const filteredData = data.filter((order) =>
 
   return (
     <Box padding={1}>
-      <Box marginBottom={2} display='flex' alignItems='center'>
-        <Typography variant="h6" style={{ marginRight: '16px' }}>
-          Wyszukaj zamowienie:
-        </Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Box>
+
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
 
       <TableContainer component={Paper}>
         <Table size="small" aria-label="simple table">
@@ -98,21 +73,21 @@ const filteredData = data.filter((order) =>
                 )
               : filteredData
             ).map((order, index) => (
-              <TableRow key={order.orderData.id}>
+              <TableRow key={order.Data.id}>
                 <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                <TableCell>{order.orderData.client_id}</TableCell>
-                <TableCell>{order.orderData.nazwa_firmy}</TableCell>
-                <TableCell>{order.orderData.id}</TableCell>
-                <TableCell>{formatDate(order.orderData.created_at)}</TableCell>
+                <TableCell>{order.Data.client_id}</TableCell>
+                <TableCell>{order.Data.nazwa_firmy}</TableCell>
+                <TableCell>{order.Data.id}</TableCell>
+                <TableCell>{formatDate(order.Data.created_at)}</TableCell>
 
                 <TableCell>
-                  <Button onClick={() => handleDeleteOrder(order.orderData.id)}>
+                  <Button onClick={() => handleDeleteOrder(order.Data.id)}>
                     Usun
                   </Button>
                 </TableCell>
 
                 <TableRow>
-                  <Button key={order.orderData.id} onClick={() => handleOpenDetails(order)}>
+                  <Button key={order.Data.id} onClick={() => handleOpenDetails(order)}>
                     Wyswietl
                   </Button>
                 </TableRow>

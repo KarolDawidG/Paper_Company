@@ -3,9 +3,9 @@ import Typography from '@mui/material/Typography';
 import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
-import { usePaginationLogic } from './PaginationControl';
-import SearchBar from "./Search";
-import useSearchLogic from "./SearchControl";
+import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
+import SearchBar from "../../../../../utils/tableUtils/Search";
+import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();

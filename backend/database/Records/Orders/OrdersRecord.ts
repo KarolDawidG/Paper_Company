@@ -10,7 +10,7 @@ interface Order {
 }
 
 class OrdersRecord {
-  constructor(private orderData: Order) {}
+  constructor(private Data: Order) {}
 
     static async insert(client_id: string, client_address_id: string) {
         const id: string = uuidv4();

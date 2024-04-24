@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, TextField, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
-import { usePaginationLogic } from './PaginationControl';
-import useSearchLogic from "./SearchControl";
-import SearchBar from "./Search";
+import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
+import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
+import SearchBar from "../../../../../utils/tableUtils/Search";
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }:any) => {
     const {
