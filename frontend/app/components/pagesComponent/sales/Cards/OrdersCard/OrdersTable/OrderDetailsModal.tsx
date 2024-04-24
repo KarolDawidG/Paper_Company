@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {Modal, Backdrop, Fade, Typography, Box, Button} from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
+import { modalStyle } from '../../SalesCard/ClientData/Modals/ModalStyles/modalStyle';
+import { MainButton } from '@/app/components/layout/Buttons';
 
 const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: string  }> = ({open, onClose, order,}) => {
     const [data, setData] = useState<any>();
@@ -35,22 +37,7 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: s
             }}
         >
             <Fade in={open}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        minWidth: '400px',
-                        maxWidth: '80vw',
-                        maxHeight: '80vh',
-                        overflowY: 'auto',
-                        borderRadius: '8px',
-                    }}
-                >
+                <Box sx={modalStyle}>
                     <Typography variant="h6" id="order-details-modal-title" gutterBottom>
                         Szczegóły zamówienia
                     </Typography>
@@ -76,9 +63,9 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: s
                         )}
                     </Box>
                     <Box sx={{ mt: 2 }}>
-                        <Button onClick={onClose} variant="outlined" color="primary">
-                            Zamknij
-                        </Button>
+                        <MainButton onClick={onClose} >
+                            Close
+                        </MainButton>
                     </Box>
                 </Box>
             </Fade>

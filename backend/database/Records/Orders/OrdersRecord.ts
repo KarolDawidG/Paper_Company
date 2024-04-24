@@ -7,10 +7,21 @@ interface Order {
     id: string;
     client_id: string;
     client_address_id: string;
+    created_at: string;
 }
 
-class OrdersRecord {
-  constructor(private Data: Order) {}
+class OrdersRecord implements Order {
+  id: string;
+  client_id: string;
+  client_address_id: string;
+  created_at: string;
+
+  constructor(obj: Order) {
+    this.id = obj.id;
+    this.client_id = obj.client_id;
+    this.client_address_id = obj.client_address_id;
+    this.created_at = obj.created_at;
+  }
 
     static async insert(client_id: string, client_address_id: string) {
         const id: string = uuidv4();

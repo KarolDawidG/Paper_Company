@@ -23,16 +23,21 @@ import { TableProps } from './TableInterfaces';
 import { formatOnlyDate } from '../../../helpers/formDate';
 import TableLogic from './TableLogic';
 import { Role } from './RolaEnum';
+import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
+import SearchBar from '@/app/components/utils/tableUtils/Search';
 
 const CustomTable: React.FC<TableProps> = () => {
   const {
-    searchTerm,
-    setSearchTerm,
     page,
     rowsPerPage,
-    selectedRoles, setSelectedRoles,
     handleChangePage,
-    handleChangeRowsPerPage,
+    handleChangeRowsPerPage
+} = usePaginationLogic();
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedRoles, setSelectedRoles,
     handleChangeRole,
     handleDeleteUser,
     filteredData,
@@ -46,18 +51,8 @@ const CustomTable: React.FC<TableProps> = () => {
 
   return (
     <Box padding={1}>
-      <Box marginBottom={2} display='flex' alignItems='center'>
-        <Typography variant="h6" style={{ marginRight: '16px' }}>
-          Wyszukaj użytkownika:
-        </Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Box>
+
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
 
       <TableContainer component={Paper}>
         <Table size="small" aria-label="simple table">

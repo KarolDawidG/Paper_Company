@@ -7,11 +7,11 @@ interface SearchLogicProps {
 export const useSearchLogic = ({ data }: SearchLogicProps) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredData = data.filter((item: any) =>
-        item.Data && Object.values(item.Data).some((value: any) =>
-            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredData = data.filter((item:any) =>
+        Object.values(item).some((value:any) =>
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
-    );
+      );
 
     return {
         searchTerm,

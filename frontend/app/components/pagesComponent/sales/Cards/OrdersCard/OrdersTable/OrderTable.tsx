@@ -31,7 +31,7 @@ const OrderTable: React.FC<any> = () => {
   const handleDeleteOrder = async (id:string) => {
     try {
       await axiosInstance.delete(`/sales/${id}`);
-      setData(data.filter((order) => order.Data.id !== id));
+      setData(data.filter((order) => order.id !== id));
       notify('Usuwanie zakonczone sukcesem');
     } catch (error: any) {
       console.error(error);
@@ -40,7 +40,7 @@ const OrderTable: React.FC<any> = () => {
   };
   
   const handleOpenDetails = (order: any) => {
-   setSelectedOrder(order.Data.client_address_id);
+   setSelectedOrder(order.client_address_id);
   };
 
   const handleCloseDetails = () => {
@@ -58,7 +58,6 @@ const OrderTable: React.FC<any> = () => {
             <TableRow>
               <TableCell>Nr.</TableCell>
               <TableCell>Id klienta</TableCell>
-              <TableCell>Nazwa firmy</TableCell>
               <TableCell>Id zamowienia</TableCell>
               <TableCell>Data zamowienia</TableCell>
               <TableCell>Usun</TableCell>
@@ -73,21 +72,20 @@ const OrderTable: React.FC<any> = () => {
                 )
               : filteredData
             ).map((order, index) => (
-              <TableRow key={order.Data.id}>
+              <TableRow key={order.id}>
                 <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                <TableCell>{order.Data.client_id}</TableCell>
-                <TableCell>{order.Data.nazwa_firmy}</TableCell>
-                <TableCell>{order.Data.id}</TableCell>
-                <TableCell>{formatDate(order.Data.created_at)}</TableCell>
+                <TableCell>{order.client_id}</TableCell>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{formatDate(order.created_at)}</TableCell>
 
                 <TableCell>
-                  <Button onClick={() => handleDeleteOrder(order.Data.id)}>
+                  <Button onClick={() => handleDeleteOrder(order.id)}>
                     Usun
                   </Button>
                 </TableCell>
 
                 <TableRow>
-                  <Button key={order.Data.id} onClick={() => handleOpenDetails(order)}>
+                  <Button key={order.id} onClick={() => handleOpenDetails(order)}>
                     Wyswietl
                   </Button>
                 </TableRow>

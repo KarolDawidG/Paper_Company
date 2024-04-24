@@ -37,22 +37,22 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                 <TableBody>
 
                 {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((client: any, index: any) => (                        
-                        <TableRow key={client.id || index} sx={selectedClientId === (client.Data && client.Data.id) ? { backgroundColor: '#666666' } : {}}>
+                        <TableRow key={client.id || index} sx={selectedClientId === (client && client.id) ? { backgroundColor: '#666666' } : {}}>
                             <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                            <TableCell>{client.Data?.first_name} {client.Data?.second_name}</TableCell>
-                            <TableCell>{client.Data?.email}</TableCell>
+                            <TableCell>{client?.first_name} {client?.second_name}</TableCell>
+                            <TableCell>{client?.email}</TableCell>
                             <TableCell>
-                                <Button onClick={() => handleIdClient(client.Data.id)}>
+                                <Button onClick={() => handleIdClient(client.id)}>
                                     Select
                                 </Button>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => handleDelete(client.Data.id)}>
+                                <Button onClick={() => handleDelete(client.id)}>
                                     Delete
                                 </Button>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => handleOpenEditClient(client.Data.id, client.Data.first_name, client.Data.second_name, client.Data.email)}>
+                                <Button onClick={() => handleOpenEditClient(client.id, client.first_name, client.second_name, client.email)}>
                                     Update
                                 </Button>
                             </TableCell>

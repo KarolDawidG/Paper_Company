@@ -11,8 +11,21 @@ interface Client {
   created_at: string;
 }
 
-class ClientRecord {
-  constructor(private Data: Client) {}
+class ClientRecord implements Client {
+  id: string;
+  first_name: string;
+  second_name: string;
+  email: string;
+  created_at: string;
+
+  constructor(obj: Client) {
+    this.id = obj.id;
+    this.first_name = obj.first_name;
+    this.second_name = obj.second_name;
+    this.email = obj.email;
+    this.created_at = obj.created_at;
+  }
+
 
     static async getList() {
         try {

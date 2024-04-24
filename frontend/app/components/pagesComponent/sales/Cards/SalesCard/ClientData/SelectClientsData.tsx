@@ -19,6 +19,7 @@ const SelectClientsData = () => {
     try {
       const response = await axiosInstance.get("/client");
       setData(response.data.clientList);
+      console.log(response.data.clientList);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

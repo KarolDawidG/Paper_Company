@@ -14,8 +14,26 @@ interface Address {
   nazwa_firmy: string;
 }
 
-class AddressRecord {
-  constructor(private Data: Address) {}
+class AddressRecord implements Address {
+  id: string;
+  client_id: string;
+  miasto: string;
+  ulica: string;
+  nr_budynku: string;
+  nr_mieszkania: string;
+  kod: string;
+  nazwa_firmy: string;
+
+  constructor(obj: Address) {
+    this.id = obj.id;
+    this.client_id = obj.client_id;
+    this.miasto = obj.miasto;
+    this.ulica = obj.ulica;
+    this.nr_budynku = obj.nr_budynku;
+    this.nr_mieszkania = obj.nr_mieszkania;
+    this.kod = obj.kod;
+    this.nazwa_firmy = obj.nazwa_firmy;
+  }
 
   static async insert(formData: Address) {
     const id = uuidv4();

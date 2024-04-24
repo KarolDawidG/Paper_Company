@@ -46,17 +46,17 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                             <TableBody>
 
                             {(rowsPerPage > 0 ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredData).map((address:any, index:number) => (
-                                    <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.Data.id ? '#666666' : 'inherit' }}>
+                                    <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.id ? '#666666' : 'inherit' }}>
                                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                                        <TableCell>{address.Data.nazwa_firmy}</TableCell>
-                                        <TableCell>{address.Data.miasto}</TableCell>
+                                        <TableCell>{address.nazwa_firmy}</TableCell>
+                                        <TableCell>{address.miasto}</TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleIdAddress(address.Data.id)}>
+                                            <Button onClick={() => handleIdAddress(address.id)}>
                                                 Select
                                             </Button>
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleOpenDialog(address.Data.id)}>
+                                            <Button onClick={() => handleOpenDialog(address.id)}>
                                                 Delete
                                             </Button>
                                         </TableCell>
