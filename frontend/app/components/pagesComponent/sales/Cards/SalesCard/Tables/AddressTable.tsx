@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel } from '@mui/material';
+import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel, IconButton } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
 import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
 import SearchBar from "../../../../../utils/tableUtils/Search";
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import useSorting from "@/app/components/utils/tableUtils/SortingControl";
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
@@ -72,16 +75,19 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                                         <TableCell>{address.nazwa_firmy}</TableCell>
                                         <TableCell>{address.miasto}</TableCell>
+
                                         <TableCell>
-                                            <Button onClick={() => handleIdAddress(address.id)}>
-                                                Select
-                                            </Button>
+                                            <IconButton onClick={() => handleIdAddress(address.id)} color="inherit">
+                                                {selectedAddressId === address.id ? <CheckCircleOutlinedIcon /> : <RadioButtonUncheckedOutlinedIcon />}
+                                            </IconButton>
                                         </TableCell>
+
                                         <TableCell>
-                                            <Button onClick={() => handleOpenDialog(address.id)}>
-                                                Delete
-                                            </Button>
+                                            <IconButton onClick={() => handleOpenDialog(address.id)} color="inherit">
+                                                <HighlightOffOutlinedIcon />
+                                            </IconButton>
                                         </TableCell>
+
                                     </TableRow>
                                 ))}
                             </TableBody>

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box
+  Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box
 } from '@mui/material';
 import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import SearchBar from "../../../../../utils/tableUtils/Search";
 import useSorting from "../../../../../utils/tableUtils/SortingControl";
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }: any) => {
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
@@ -16,6 +19,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
   return (
     <Box>
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -59,17 +63,24 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
           </TableHead>
           <TableBody>
             {sortedData.map((client: any, index: number) => (
-              <TableRow key={client.id || index}>
+              <TableRow key={client.id || index} sx={{ backgroundColor: selectedClientId === client.id ? '#666666' : 'inherit' }}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{client.email}</TableCell>
                 <TableCell>{client.first_name}</TableCell>
                 <TableCell>{client.second_name}</TableCell>
+
                 <TableCell>
-                  <Button onClick={() => handleIdClient(client.id)}>Select</Button>
+                  <IconButton onClick={() => handleIdClient(client.id)} color="inherit">
+                    {selectedClientId === client.id ? <CheckCircleOutlinedIcon /> : <RadioButtonUncheckedOutlinedIcon />}
+                  </IconButton>
                 </TableCell>
+
                 <TableCell>
-                  <Button onClick={() => handleDelete(client.id)}>Delete</Button>
+                  <IconButton onClick={() => handleDelete(client.id)} color="inherit">
+                    <HighlightOffOutlinedIcon />
+                  </IconButton>
                 </TableCell>
+
                 <TableCell>
                   <Button onClick={() => handleOpenEditClient(client.id, client.first_name, client.second_name, client.email)}>Update</Button>
                 </TableCell>
@@ -78,6 +89,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
           </TableBody>
         </Table>
       </TableContainer>
+      
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
         component="div"
