@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box
-} from '@mui/material';
-import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
+import { Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box} from '@mui/material';
+import usePaginationLogic from '../../../../../utils/tableUtils/PaginationControl';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import SearchBar from "../../../../../utils/tableUtils/Search";
 import useSorting from "../../../../../utils/tableUtils/SortingControl";
@@ -15,6 +13,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('email');
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+  const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Box>
@@ -25,7 +24,6 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
           <TableHead>
             <TableRow>
               <TableCell>No.</TableCell>
-
               <TableCell>
                 <TableSortLabel
                   active={orderBy === 'email'}
@@ -35,7 +33,6 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                   Email
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>
                 <TableSortLabel
                   active={orderBy === 'first_name'}
@@ -45,7 +42,6 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                   First Name
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>
                 <TableSortLabel
                   active={orderBy === 'second_name'}
@@ -55,16 +51,15 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                   Second Name
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>Select</TableCell>
               <TableCell>Delete</TableCell>
               <TableCell>Update</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.map((client: any, index: number) => (
+            {paginatedData.map((client: any, index: number) => (
               <TableRow key={client.id || index} sx={{ backgroundColor: selectedClientId === client.id ? '#666666' : 'inherit' }}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                 <TableCell>{client.email}</TableCell>
                 <TableCell>{client.first_name}</TableCell>
                 <TableCell>{client.second_name}</TableCell>
@@ -93,7 +88,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
         component="div"
-        count={filteredData.length}
+        count={sortedData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

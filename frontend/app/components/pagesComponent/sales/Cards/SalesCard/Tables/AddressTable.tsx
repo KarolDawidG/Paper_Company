@@ -18,7 +18,8 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
     const [currentAddressId, setCurrentAddressId] = useState(null);
     const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('miasto');
     const sortedData = stableSort(filteredData, getComparator(order, orderBy));
-    
+    const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
     const handleOpenDialog = (id:any) => {
         setCurrentAddressId(id);
         setOpenDialog(true);
@@ -70,7 +71,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                         </TableHead>
                             <TableBody>
 
-                            {sortedData.map((address:any, index:number) => (
+                            {paginatedData.map((address:any, index:number) => (
                                     <TableRow key={index} sx={{ backgroundColor: selectedAddressId === address.id ? '#666666' : 'inherit' }}>
                                         <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                                         <TableCell>{address.nazwa_firmy}</TableCell>
@@ -114,7 +115,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 component="div"
-                count={filteredData.length}
+                count={sortedData.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
