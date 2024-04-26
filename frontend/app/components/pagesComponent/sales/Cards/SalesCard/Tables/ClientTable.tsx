@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box} from '@mui/material';
+import { Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box, Typography, TextField} from '@mui/material';
 import usePaginationLogic from '../../../../../utils/tableUtils/PaginationControl';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import SearchBar from "../../../../../utils/tableUtils/Search";
@@ -7,9 +7,10 @@ import useSorting from "../../../../../utils/tableUtils/SortingControl";
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import SetPageComponent from "../../../../../utils/tableUtils/SetPageComponent";
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }: any) => {
-  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
+  const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('email');
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
@@ -84,9 +85,16 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
           </TableBody>
         </Table>
       </TableContainer>
-      
+
+      <SetPageComponent 
+        page={page}
+        setPage={setPage}
+        sortedData={sortedData}
+        rowsPerPage={rowsPerPage} 
+      />
+
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+        rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
         component="div"
         count={sortedData.length}
         rowsPerPage={rowsPerPage}

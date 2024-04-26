@@ -25,10 +25,12 @@ import TableLogic from './TableLogic';
 import { Role } from './RolaEnum';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
+import SetPageComponent from '@/app/components/utils/tableUtils/SetPageComponent';
 
 const CustomTable: React.FC<TableProps> = () => {
   const {
     page,
+    setPage,
     rowsPerPage,
     handleChangePage,
     handleChangeRowsPerPage
@@ -117,6 +119,13 @@ const CustomTable: React.FC<TableProps> = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      
+      <SetPageComponent 
+        page={page}
+        setPage={setPage}
+        sortedData={filteredData}
+        rowsPerPage={rowsPerPage} 
+      />
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}

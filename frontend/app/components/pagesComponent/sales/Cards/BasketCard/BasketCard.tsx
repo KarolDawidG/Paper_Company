@@ -6,21 +6,21 @@ import { ExpandMore } from '../ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 
 export const CardThird = () => {
-    const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts } = useCart();
+    const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts }:any = useCart();
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const handleDeleteItem = (index) => {
+    const handleDeleteItem = (index:any) => {
         removeFromCart(index);
     };
 
-    const handleIncreaseClickCount = (index) => {
+    const handleIncreaseClickCount = (index:any) => {
         increaseClickCount(index);
     };
 
-    const handleDecreaseClickCount = (index) => {
+    const handleDecreaseClickCount = (index:any) => {
         decreaseClickCount(index)
     };
 
@@ -52,7 +52,7 @@ export const CardThird = () => {
 
                 <CardContent>
                     <Grid container spacing={2}>
-                        {cartItems.map((item, index) => (
+                        {cartItems.map((item:any, index:any) => (
                             <Grid item xs={12} key={index}>
                                 <Card variant="outlined">
                                     <CardContent>

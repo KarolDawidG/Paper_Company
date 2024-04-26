@@ -15,6 +15,7 @@ export const usePaginationLogic = () => {
 
     return {
         page,
+        setPage,
         rowsPerPage,
         handleChangePage,
         handleChangeRowsPerPage

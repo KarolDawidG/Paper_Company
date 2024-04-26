@@ -10,9 +10,10 @@ import useSorting from "@/app/components/utils/tableUtils/SortingControl";
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
+import SetPageComponent from "@/app/components/utils/tableUtils/SetPageComponent";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
-    const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
+    const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
     const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data: addressData });
     const [openDialog, setOpenDialog] = useState(false);
     const [currentAddressId, setCurrentAddressId] = useState(null);
@@ -112,6 +113,14 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
             <BaseDialog open={openDialog} onClose={handleCloseDialog} onConfirm={handleConfirmDelete} title="Confirm Deletion" confirmText="Delete" cancelText="Cancel">
                 Are you sure you want to delete this address? This action cannot be undone.
             </BaseDialog>
+
+            <SetPageComponent 
+                page={page}
+                setPage={setPage}
+                sortedData={sortedData}
+                rowsPerPage={rowsPerPage} 
+            />
+
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 component="div"
