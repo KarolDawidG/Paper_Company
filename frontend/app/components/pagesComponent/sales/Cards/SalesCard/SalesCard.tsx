@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
 import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
 import useTranslation from "@/app/components/language/useTranslation";

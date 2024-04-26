@@ -2,12 +2,13 @@ import * as React from 'react';
 import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 
 export const CardThird = () => {
     const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts }:any = useCart();
     const [expanded, setExpanded] = React.useState(false);
+    
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };

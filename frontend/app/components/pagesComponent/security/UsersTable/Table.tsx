@@ -1,23 +1,5 @@
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
-  Box,
-  Typography,
-  TablePagination,
-  Button,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  IconButton
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, TablePagination, Button, Select, FormControl, InputLabel, MenuItem, IconButton} from '@mui/material';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { TableProps } from './TableInterfaces';
 import { formatOnlyDate } from '../../../helpers/formDate';

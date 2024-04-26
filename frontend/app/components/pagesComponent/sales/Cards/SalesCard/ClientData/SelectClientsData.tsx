@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Box, Card, CardContent } from '@mui/material';
+import { Typography, Box, Card, CardContent } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/Modals/AddClientModal";
 import UpdateClientModal from "./Modals/UpdateClientModal";
@@ -19,7 +19,6 @@ const SelectClientsData = () => {
     try {
       const response = await axiosInstance.get("/client");
       setData(response.data.clientList);
-      console.log(response.data.clientList);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
