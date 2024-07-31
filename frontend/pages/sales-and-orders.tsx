@@ -4,6 +4,7 @@ import AuthorizedViewSales from "@/app/components/pagesComponent/sales/Authorize
 import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
 import { Box, Typography } from "@mui/material";
 import useTranslation from "@/app/components/language/useTranslation";
+import WarningPage from "@/app/components/pagesComponent/dashboard/WarningPage";
 
 const SalesAndOrders = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -34,12 +35,7 @@ const SalesAndOrders = () => {
         <Typography variant="h1" gutterBottom>
           {t.sales_and_orders.title}
         </Typography>
-        <Typography>
-          {t.sales_and_orders.intro}
-        </Typography>
-        <Typography variant="h2">
-          {t.sales_and_orders.info}
-        </Typography>
+        <WarningPage />
         <UnauthorizedViewSecurity children={'sales'}/>
       </Box>
     )

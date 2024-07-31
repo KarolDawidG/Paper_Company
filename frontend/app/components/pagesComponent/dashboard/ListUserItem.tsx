@@ -1,6 +1,7 @@
 import React from "react";
-import { List, ListItem, ListItemText } from "@mui/material";
+import { LinearProgress, List, ListItem, ListItemText } from "@mui/material";
 import { formatDate } from "../../helpers/formDate";
+import useTranslation from "@/app/components/language/useTranslation";
 
 interface ListItemProps {
   userData: {
@@ -11,26 +12,36 @@ interface ListItemProps {
   };
 }
 
-const ListUserItem: React.FC<ListItemProps> = ({ userData }) => (
-  <List>
-    <ListItem>
-      <ListItemText primary={`Username: ${userData.username}`} />
-    </ListItem>
+const ListUserItem: React.FC<ListItemProps> = ({ userData }) => {
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
-    <ListItem>
-      <ListItemText primary={`E-mail: ${userData.email}`} />
-    </ListItem>
+    if (!t.dashboard) {
+      return <LinearProgress />;
+    }
 
-    <ListItem>
-      <ListItemText primary={`User role: ${userData.role}`} />
-    </ListItem>
+  return (
+    
+    <List>
+      <ListItem>
+        <ListItemText primary={`${t.dashboard.username}: ${userData.username}`} />
+      </ListItem>
 
-    <ListItem>
-      <ListItemText
-        primary={`Account creation date: ${formatDate(userData.created_at)}`}
-      />
-    </ListItem>
-  </List>
-);
+      <ListItem>
+        <ListItemText primary={`${t.dashboard.email}: ${userData.email}`} />
+      </ListItem>
+
+      <ListItem>
+        <ListItemText primary={`${t.dashboard.user_role}: ${userData.role}`} />
+      </ListItem>
+
+      <ListItem>
+        <ListItemText
+          primary={`${t.dashboard.creation_date} ${formatDate(userData.created_at)}`}
+        />
+      </ListItem>
+    </List>
+  )
+};
 
 export default ListUserItem;

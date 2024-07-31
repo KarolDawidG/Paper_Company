@@ -46,6 +46,18 @@
       "h_r":"Human Resources",
       "data_analysis":"Data analysis",
       "security":"Security"
+    },
+    "dashboard":{
+      "username":"Username",
+      "email":"E-mail",
+      "user_role":"User role",
+      "creation_date":"Account creation date",
+      "edit_photo": "Edit profile picture",
+      "delete_image": "Delete Image"
+    },
+    "warning_page": {
+      "permissions": "You do not have permissions to access this component!",
+      "user_list": "Below is a list of employees you can contact regarding a given matter!"
     }
   }
 

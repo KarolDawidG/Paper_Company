@@ -1,15 +1,19 @@
-import { Button } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import { notify } from "../notification/Notify";
 import axios from "axios";
 import axiosInstance from "@/app/api/axiosInstance";
 import { useImage } from "../utils/context/ImageContext";
 import { ImageContextType } from "../utils/context/ImageContextType";
 import { MAIN_AVATAR } from "../utils/links";
+import useTranslation from "@/app/components/language/useTranslation";
 
 const DeleteImageButton = () => {
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
   const imageKeyXX = imageUrlToImageKey(imageUrl);
+
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   function imageUrlToImageKey(imageUrl: any): string | null {
     if (!imageUrl) {
@@ -41,6 +45,10 @@ const DeleteImageButton = () => {
     }
   };
 
+    if (!t.dashboard) {
+      return <LinearProgress />;
+    }
+
   return (
     <div>
       <Button
@@ -48,7 +56,7 @@ const DeleteImageButton = () => {
         variant="contained"
         onClick={handleDeleteImage}
       >
-        Delete Image
+        {t.dashboard.delete_image}
       </Button>
     </div>
   );

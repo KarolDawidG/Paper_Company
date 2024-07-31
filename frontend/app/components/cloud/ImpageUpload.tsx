@@ -2,17 +2,21 @@ import { useState } from "react";
 import { UploadDropzone } from "../utils/uploadthings";
 import { notify } from "../notification/Notify";
 import { useImage } from "../utils/context/ImageContext";
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button, LinearProgress } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 import axiosInstance from "@/app/api/axiosInstance";
 import { ImageContextType } from "../utils/context/ImageContextType";
 import { MAIN_AVATAR } from "../utils/links";
+import useTranslation from "@/app/components/language/useTranslation";
 import Image from "next/image";
 
 const ImpageUpload = () => {
   const { imageUrl, setImageUrl } = useImage() as ImageContextType;
   const [dropImage, setDropImage] = useState<string>(MAIN_AVATAR);
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
+
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   const handleClientUploadComplete = async (res: any) => {
     const storedLocale = localStorage.getItem("idUser");
@@ -31,6 +35,10 @@ const ImpageUpload = () => {
     }
   };
 
+  if (!t.dashboard) {
+    return <LinearProgress />;
+  }
+  
   return (
     <div>
       <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
@@ -46,7 +54,7 @@ const ImpageUpload = () => {
       <Box>
         <Box display="flex" marginTop={1} alignItems="center" mb={2}>
           <Typography variant="h6" ml={2}>
-            Edycja zdjecia profilowego
+            {t.dashboard.edit_photo}
           </Typography>
         </Box>
         <UploadDropzone

@@ -3,6 +3,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
 import AuthorizedViewSecurity from "@/app/components/pagesComponent/security/AuthorizedViewSecurity";
 import { Box, Typography } from "@mui/material";
+import WarningPage from "@/app/components/pagesComponent/dashboard/WarningPage";
 
 const Security = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -24,12 +25,7 @@ const Security = () => {
 
     return (
       <Box>
-        <Typography variant="h6" color="error" gutterBottom>
-          Nie masz uprawnien do dostepu do tego komponentu!
-        </Typography>
-        <Typography>
-          Ponizej znajduje sie lista pracownikow, z ktorymi mozesz sie skontaktowac w danej sprawie!
-        </Typography>
+        <WarningPage />
         <UnauthorizedViewSecurity children={'admin'}/>
       </Box>
     )

@@ -46,6 +46,18 @@
       "h_r":"Zasoby Ludzkie",
       "data_analysis":"Analiza danych",
       "security":"Ochrona"
+    },
+    "dashboard":{ 
+      "username":"Nazwa użytkownika", 
+      "email":"E-mail", 
+      "user_role":"Rola użytkownika", 
+      "creation_date":"Data utworzenia konta", 
+      "edit_photo": "Edytuj zdjęcie profilowe ",
+      "delete_image": "Usun awatar"
+    },
+    "warning_page": {
+      "permissions": "Nie masz uprawnien do dostepu do tego komponentu!",
+      "user_list": "Ponizej znajduje sie lista pracownikow, z ktorymi mozesz sie skontaktowac w danej sprawie!"
     }
   }
   
