@@ -14,11 +14,6 @@ const TableLogic = () => {
     )
   );
 
-//   const filteredData = data.filter((item: any) =>
-//     item.Data && Object.values(item.Data).some((value: any) =>
-//         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-//     )
-// );
 
   useEffect(() => {
     const fetchData = async () => {

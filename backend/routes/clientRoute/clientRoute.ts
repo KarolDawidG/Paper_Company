@@ -197,3 +197,9 @@ router.put("/:id", async (req: Request, res: Response) => {
  *                   description: Komunikat błędu.
  */
 export default router;
+
+
+// ssh -o KexAlgorithms=diffie-hellman-group1-sha1 
+// -o HostKeyAlgorithms=+ssh-rsa 
+// -o Ciphers=+aes128-cbc 
+// -o MACs=+hmac-sha1 user@192.168.1.200
