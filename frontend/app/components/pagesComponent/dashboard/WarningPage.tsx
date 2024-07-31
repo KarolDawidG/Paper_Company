@@ -6,9 +6,9 @@ const WarningPage = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
 
-  if (!t.warning_page) {
-    return <LinearProgress />;
-  }
+    if (!t.warning_page) {
+      return <LinearProgress />;
+    }
 
   return (
     <>
