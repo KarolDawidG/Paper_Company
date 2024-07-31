@@ -49,7 +49,7 @@
     },
     "dashboard":{ 
       "username":"Nazwa użytkownika", 
-      "email":"E-mail", 
+      "email":"E-mail",
       "user_role":"Rola użytkownika", 
       "creation_date":"Data utworzenia konta", 
       "edit_photo": "Edytuj zdjęcie profilowe ",

@@ -82,6 +82,15 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
         >
           EN
         </Button>
+        <Button
+          color="inherit"
+          onClick={() => handleChangeLanguage("fr")}
+          style={{
+            backgroundColor: currentLocale === "fr" ? "grey" : "transparent",
+          }}
+        >
+          FR
+        </Button>
         <IconButton
           edge="start"
           style={{ marginLeft: "10px" }}

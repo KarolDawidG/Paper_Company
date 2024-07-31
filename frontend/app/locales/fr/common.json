@@ -1,0 +1,62 @@
+{
+  "security": {
+    "title": "Sécurité et Contrôle d'Accès",
+    "intro": "Notre système de sécurité et de contrôle d'accès offre une gestion avancée des autorisations et des accès des utilisateurs, garantissant une protection contre les accès non autorisés et les menaces potentielles.",
+    "protocols": "Grâce à des protocoles de sécurité rigoureux et à une surveillance continue des systèmes, nous garantissons le plus haut niveau de sécurité des données de nos clients.",
+    "tools": "Nos outils de réponse aux menaces sont constamment mis à jour, permettant une identification et une neutralisation rapides des menaces potentielles, garantissant la continuité des opérations et la sécurité opérationnelle.",
+    "warning": "Service en construction..."
+  },
+  "warehouse": {
+    "title": "Gestion de l'Entrepôt",
+    "intro": "Le système de gestion de l'entrepôt permet de surveiller avec précision les niveaux de stock et de générer des alertes en cas de faible niveau de stock ou de dates de péremption des produits imminentes.",
+    "protocols": "Une gestion efficace des emplacements de stockage des produits garantit une utilisation optimale de l'espace disponible et facilite la localisation et l'accès rapides aux marchandises nécessaires.",
+    "tools": "Nos solutions de logistique interne se concentrent sur l'optimisation de la disposition des marchandises dans l'entrepôt, contribuant à accroître l'efficacité des processus de stockage et de préparation des commandes.",
+    "warning": "Service en construction..."
+  },
+  "sales_and_orders": {
+    "title": "Gestion des Ventes et des Commandes",
+    "intro": "Notre système de gestion des ventes et des commandes permet de recevoir et de traiter efficacement les commandes des clients, garantissant un flux fluide depuis la passation de la commande jusqu'à la livraison.",
+    "info": "Contactez notre équipe.",
+    "mainInfo": "Composant responsable de la gestion du client et des adresses de livraison des marchandises commandées."
+  },
+  "accounting": {
+    "title": "Finance et Comptabilité",
+    "intro": "Notre système financier offre une gestion complète des paiements et des flux de trésorerie, permettant de surveiller efficacement les transactions et d'optimiser les coûts opérationnels.",
+    "protocols": "Le traitement des transactions financières est automatisé, garantissant rapidité et précision dans la comptabilisation et minimisant les risques d'erreurs.",
+    "tools": "Le système permet de générer des rapports financiers détaillés et des bilans, offrant une transparence totale des finances de l'entreprise et soutenant la prise de décisions stratégiques.",
+    "warning": "Service en construction..."
+  },
+  "data_analysis": {
+    "title": "Analyse de Données et Reporting",
+    "intro": "Nos outils d'analyse de données et de reporting permettent de générer des rapports complets de vente, financiers et opérationnels, fournissant des informations clés pour le processus décisionnel.",
+    "info": "Contactez notre équipe."
+  },
+  "human_resources": {
+    "title": "Gestion des Ressources Humaines (RH)",
+    "intro": "Notre système RH permet une gestion complète des processus de recrutement, de la sélection des candidats à l'intégration, assurant une intégration efficace des nouveaux employés dans la culture de l'organisation.",
+    "protocols": "Nous offrons un système avancé de gestion des salaires et des avantages, permettant la personnalisation des packages des employés et l'automatisation des processus de paie.",
+    "tools": "Le système prend également en charge la planification et la gestion des formations, favorisant le développement des compétences des employés et augmentant leur engagement et leur efficacité au travail.",
+    "warning": "Service en construction..."
+  },
+  "side_bar": {
+    "dashboard": "Tableau de Bord",
+    "sales_and_orders": "Ventes et Commandes",
+    "warehouse": "Entrepôt",
+    "accounting": "Comptabilité",
+    "h_r": "Ressources Humaines",
+    "data_analysis": "Analyse de Données",
+    "security": "Sécurité"
+  },
+  "dashboard": {
+    "username": "Nom d'utilisateur",
+    "email": "E-mail",
+    "user_role": "Rôle de l'utilisateur",
+    "creation_date": "Date de création du compte",
+    "edit_photo": "Modifier la photo de profil",
+    "delete_image": "Supprimer l'avatar"
+  },
+  "warning_page": {
+    "permissions": "Vous n'avez pas la permission d'accéder à ce composant!",
+    "user_list": "Ci-dessous se trouve une liste des employés que vous pouvez contacter pour cette question!"
+  }
+}
