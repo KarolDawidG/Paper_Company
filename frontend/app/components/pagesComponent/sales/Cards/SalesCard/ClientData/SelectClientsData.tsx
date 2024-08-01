@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Card, CardContent } from '@mui/material';
+import { Typography, Box, Card, CardContent, LinearProgress } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import AddClientModal from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/Modals/AddClientModal";
 import UpdateClientModal from "./Modals/UpdateClientModal";
@@ -11,9 +11,12 @@ import { useClientTableLogic } from "../Logic/ClientTableLogic";
 import { useAddressTableLogic } from "../Logic/AddressTableLogic";
 import BaseDialog from '../../../../../utils/BaseDialog';
 import  {MainButton} from "@/app/components/layout/Buttons";
+import useTranslation from "@/app/components/language/useTranslation";
 
 const SelectClientsData = () => {
   const [open, setOpen] = useState(false);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   const fetchData = async () => {
     try {
@@ -46,25 +49,29 @@ const handleConfirm = () => {
     fetchData();
   }, []);
 
+  if (!t.sales_and_orders) {
+    return <LinearProgress />;
+  }
+
   return (
     <Card variant="outlined">
       <CardContent>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
           <Typography >
-            Do you want to add a new client?
+            {t.sales_and_orders.add_client}
           </Typography>
 
           <MainButton onClick={handleOpenAddClient}>
-            Add Client
+            {t.sales_and_orders.add_client_button}
           </MainButton>
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Typography>Select a client:</Typography>
+          <Typography>{t.sales_and_orders.select_client}:</Typography>
 
           <MainButton onClick={handleClearSelect}>
-            Clear your select
+            {t.sales_and_orders.clear_client}
           </MainButton>
         </Box>
 
@@ -79,11 +86,11 @@ const handleConfirm = () => {
       <Box sx={{ display: 'flex',marginTop: 2 ,justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
         
         <Typography>
-          Do you want to add a new address?
+          {t.sales_and_orders.add_address}
         </Typography>
 
         <MainButton  onClick={handleOpenAddAddress}>
-          Add Address
+          {t.sales_and_orders.add_address_button}
         </MainButton>
 
       </Box>
@@ -120,7 +127,7 @@ const handleConfirm = () => {
           />
         )}
       <BaseDialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} onConfirm={handleConfirm} title="Confirm Deletion" confirmText="Delete" cancelText="Cancel">
-        Are you sure you want to delete this client? This action cannot be undone.
+          {t.sales_and_orders.confirm_delete_client}
       </BaseDialog>
       </CardContent>
     </Card>

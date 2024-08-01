@@ -15,9 +15,17 @@
     },
     "sales_and_orders": {
       "title": "Zarządzanie Sprzedażą i Zamówieniami",
-      "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień od klientów, zapewniając płynny przepływ od momentu złożenia zamówienia aż do dostawy.",
+      "card_sales_title": "Sprzedaż",
+      "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień klientów, zapewniając płynny przepływ od złożenia zamówienia do dostawy.",
       "info": "Skontaktuj się z naszym zespołem.",
-      "mainInfo": "Komponent odpowiedzialny za zarządzanie klientem i adresami dostawy zamowionego towaru."
+      "mainInfo": "Komponent odpowiedzialny za zarządzanie adresami klientów i dostawy zamówionych towarów.",
+      "add_client": "Czy chcesz dodać nowego klienta?",
+      "add_client_button": "Dodaj Klienta",
+      "select_client": "Wybierz klienta",
+      "clear_client": "Wyczyść wybór",
+      "confirm_delete_client": "Czy na pewno chcesz usunąć tego klienta? Tej operacji nie można cofnąć.",
+      "add_address": "Czy chcesz dodać nowy adres?",
+      "add_address_button": "Dodaj Adres"
     },
     "accounting": {
       "title": "Finanse i Księgowość",
@@ -58,6 +66,22 @@
     "warning_page": {
       "permissions": "Nie masz uprawnien do dostepu do tego komponentu!",
       "user_list": "Ponizej znajduje sie lista pracownikow, z ktorymi mozesz sie skontaktowac w danej sprawie!"
+    },
+    "table": {
+      "search": "Szukaj",
+      "page": "Strona",
+      "no": "Lp.",
+      "first_name": "Imię",
+      "second_name": "Nazwisko",
+      "select": "Wybierz",
+      "delete": "Usuń",
+      "update": "Aktualizuj",
+      "city": "Miasto",
+      "company_name": "Nazwa Firmy",
+      "current_page": "Bieżąca strona",
+      "rows_per_page": "Wiersze na stronę",
+      "create": "Utwórz",
+      "clear": "Wyczyść"
     }
   }
   

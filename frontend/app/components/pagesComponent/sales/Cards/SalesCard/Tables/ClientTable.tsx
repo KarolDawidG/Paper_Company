@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box, Typography, TextField} from '@mui/material';
+import { Button, Table, IconButton, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TableSortLabel, Box, LinearProgress} from '@mui/material';
 import usePaginationLogic from '../../../../../utils/tableUtils/PaginationControl';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import SearchBar from "../../../../../utils/tableUtils/Search";
@@ -8,6 +8,7 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import SetPageComponent from "../../../../../utils/tableUtils/SetPageComponent";
+import useTranslation from "@/app/components/language/useTranslation";
 
 const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient, selectedClientId }: any) => {
   const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
@@ -15,6 +16,12 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('email');
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
   const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+
+  if (!t.table) {
+    return <LinearProgress />;
+  }
 
   return (
     <Box>
@@ -24,14 +31,14 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>No.</TableCell>
+              <TableCell>{t.table.no}</TableCell>
               <TableCell>
                 <TableSortLabel
                   active={orderBy === 'email'}
                   direction={order}
                   onClick={(event) => handleRequestSort(event, 'email')}
                 >
-                  Email
+                  E-mail
                 </TableSortLabel>
               </TableCell>
               <TableCell>
@@ -40,7 +47,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                   direction={order}
                   onClick={(event) => handleRequestSort(event, 'first_name')}
                 >
-                  First Name
+                  {t.table.first_name}
                 </TableSortLabel>
               </TableCell>
               <TableCell>
@@ -49,12 +56,12 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                   direction={order}
                   onClick={(event) => handleRequestSort(event, 'second_name')}
                 >
-                  Second Name
+                  {t.table.second_name}
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Select</TableCell>
-              <TableCell>Delete</TableCell>
-              <TableCell>Update</TableCell>
+              <TableCell>{t.table.select}</TableCell>
+              <TableCell>{t.table.delete}</TableCell>
+              <TableCell>{t.table.update}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,7 +85,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
                 </TableCell>
 
                 <TableCell>
-                  <Button onClick={() => handleOpenEditClient(client.id, client.first_name, client.second_name, client.email)}>Update</Button>
+                  <Button onClick={() => handleOpenEditClient(client.id, client.first_name, client.second_name, client.email)}>{t.table.update}</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -95,6 +102,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
+        labelRowsPerPage={`${t.table.rows_per_page}:`}
         component="div"
         count={sortedData.length}
         rowsPerPage={rowsPerPage}

@@ -15,9 +15,17 @@
   },
   "sales_and_orders": {
     "title": "Gestion des Ventes et des Commandes",
-    "intro": "Notre système de gestion des ventes et des commandes permet de recevoir et de traiter efficacement les commandes des clients, garantissant un flux fluide depuis la passation de la commande jusqu'à la livraison.",
+    "card_sales_title": "Ventes",
+    "intro": "Notre système de gestion des ventes et des commandes vous permet de recevoir et de traiter efficacement les commandes des clients, garantissant un flux fluide de la commande à la livraison.",
     "info": "Contactez notre équipe.",
-    "mainInfo": "Composant responsable de la gestion du client et des adresses de livraison des marchandises commandées."
+    "mainInfo": "Le composant responsable de la gestion des adresses des clients et de livraison des marchandises commandées.",
+    "add_client": "Voulez-vous ajouter un nouveau client ?",
+    "add_client_button": "Ajouter un Client",
+    "select_client": "Sélectionnez un client",
+    "clear_client": "Effacer la sélection",
+    "confirm_delete_client": "Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.",
+    "add_address": "Voulez-vous ajouter une nouvelle adresse ?",
+    "add_address_button": "Ajouter une Adresse"
   },
   "accounting": {
     "title": "Finance et Comptabilité",
@@ -58,5 +66,25 @@
   "warning_page": {
     "permissions": "Vous n'avez pas la permission d'accéder à ce composant!",
     "user_list": "Ci-dessous se trouve une liste des employés que vous pouvez contacter pour cette question!"
+  },
+  "table": {
+    "search": "Rechercher",
+    "page": "Page",
+    "no": "N°",
+    "first_name": "Prénom",
+    "second_name": "Nom",
+    "select": "Sélectionner",
+    "delete": "Supprimer",
+    "update": "Mettre à jour",
+    "city": "Ville",
+    "company_name": "Nom de l'entreprise",
+    "current_page": "Page actuelle",
+    "rows_per_page": "Lignes par page",
+    "create": "Créer",
+    "clear": "Effacer"
   }
+
+
+
+  
 }

@@ -10,15 +10,20 @@ import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
 import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
 import useTranslation from "@/app/components/language/useTranslation";
+import { LinearProgress } from "@mui/material";
 
 export const CardOne = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const {handleExpandClick, expanded, formState: { errors }} = SalesCardLogic();
 
+  if (!t.sales_and_orders) {
+    return <LinearProgress />;
+  }
+  
   return (
       <Card sx={{ maxWidth: '100%' }}>
-      <CardHeader title="Sales" />
+      <CardHeader title={`${t.sales_and_orders.card_sales_title}`} />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {t.sales_and_orders?.mainInfo}

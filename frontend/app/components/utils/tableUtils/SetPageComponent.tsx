@@ -1,14 +1,22 @@
 import React from "react";
-import { Typography, TextField, Box} from '@mui/material';
+import { Typography, TextField, Box, LinearProgress} from '@mui/material';
+import useTranslation from "@/app/components/language/useTranslation";
 
 const PaginationControls = ({ page, setPage, sortedData, rowsPerPage }: any) => {
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+
+    if (!t.table) {
+      return <LinearProgress />;
+    }
+
   return (
     <Box sx={{ display: 'flex', marginTop:2, justifyContent: 'space-between', marginBottom: 2 }}>
-      <Typography>Current page: {page+1} / {Math.ceil(sortedData.length/rowsPerPage)}</Typography>
+      <Typography>{t.table.current_page}: {page+1} / {Math.ceil(sortedData.length/rowsPerPage)}</Typography>
       <form>
         <TextField
           id="outlined-number"
-          label="Page"
+          label={`${t.table.page}`}
           type="number"
           InputLabelProps={{ shrink: true }}
           onChange={(event: any) => {
