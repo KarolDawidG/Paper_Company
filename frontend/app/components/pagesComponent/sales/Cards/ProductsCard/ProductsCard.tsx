@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, Typography, Collapse, CardActions, CardContent, CardHeader, Card} from '@mui/material';
+import {Grid, Typography, Collapse, CardActions, CardContent, CardHeader, Card, LinearProgress} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import axios from 'axios';
 import {ProductCard} from './ProductCard';
+import useTranslation from "@/app/components/language/useTranslation";
 
 export const ProductsCard = () => {
   const [data, setData] = useState<any[]>([]);
   const [expanded, setExpanded] = useState(false);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -25,13 +28,16 @@ export const ProductsCard = () => {
     fetchData();
   }, []);
 
+    if (!t.products_card) {
+      return <LinearProgress />;
+    }
 
   return (
       <Card sx={{ maxWidth: '100%' }}>
-        <CardHeader title="Produkty"/>
+        <CardHeader title={`${t.products_card.title}`}/>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            Obsluga produktow
+            {t.products_card.product_support}
           </Typography>
         </CardContent>
 

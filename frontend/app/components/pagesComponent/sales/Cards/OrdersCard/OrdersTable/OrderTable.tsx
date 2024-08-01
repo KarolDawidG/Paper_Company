@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import OrderDetailsModal from './OrderDetailsModal';
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Box, Typography, TablePagination, Button} from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, LinearProgress, Box, Typography, TablePagination, Button} from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import { notify } from '@/app/components/notification/Notify';
+import useTranslation from "@/app/components/language/useTranslation";
 
 const OrderTable: React.FC<any> = () => {
   const [data, setData] = useState<any[]>([]);
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +50,10 @@ const OrderTable: React.FC<any> = () => {
     setSelectedOrder(null);
   };
 
+  if (!t.table) {
+    return <LinearProgress />;
+  }
+
   return (
     <Box padding={1}>
 
@@ -56,12 +63,12 @@ const OrderTable: React.FC<any> = () => {
         <Table size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Nr.</TableCell>
-              <TableCell>Id klienta</TableCell>
-              <TableCell>Id zamowienia</TableCell>
-              <TableCell>Data zamowienia</TableCell>
-              <TableCell>Usun</TableCell>
-              <TableCell>Szczegoly</TableCell>
+              <TableCell>{t.table.no}</TableCell>
+              <TableCell>{t.table.client_id}</TableCell>
+              <TableCell>{t.table.order_id}</TableCell>
+              <TableCell>{t.table.order_date}</TableCell>
+              <TableCell>{t.table.delete}</TableCell>
+              <TableCell>{t.table.details}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,13 +87,13 @@ const OrderTable: React.FC<any> = () => {
 
                 <TableCell>
                   <Button onClick={() => handleDeleteOrder(order.id)}>
-                    Usun
+                    {t.table.delete}
                   </Button>
                 </TableCell>
 
                 <TableRow>
                   <Button key={order.id} onClick={() => handleOpenDetails(order)}>
-                    Wyswietl
+                    {t.table.show}
                   </Button>
                 </TableRow>
 
@@ -104,6 +111,7 @@ const OrderTable: React.FC<any> = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={`${t.table.rows_per_page}`}
       />
 
       {(selectedOrder ) && (

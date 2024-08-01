@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button } from '@mui/material';
+import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button, LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
+import useTranslation from "@/app/components/language/useTranslation";
 
 export const CardThird = () => {
     const { cartItems, removeFromCart, increaseClickCount, decreaseClickCount, buyProducts }:any = useCart();
     const [expanded, setExpanded] = React.useState(false);
-    
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -29,12 +32,16 @@ export const CardThird = () => {
         buyProducts()
     };
 
+    if (!t.basket_card) {
+        return <LinearProgress />;
+      }
+
     return (
         <Card sx={{ maxWidth: '100%' }}>
-            <CardHeader title="Koszyk" />
+            <CardHeader title={`${t.basket_card.title}`} />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    Zawartosc koszyka
+                    {t.basket_card.cart_contents}
                 </Typography>
             </CardContent>
 
@@ -47,8 +54,8 @@ export const CardThird = () => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
 
                 <Grid container justifyContent="flex-end">
-                    <Typography variant="h6" color="text.secondary">Zloz zamowienie  </Typography>
-                    <Button onClick={() => handleBuyProducts()}>Buy</Button>
+                    <Typography variant="h6" color="text.secondary">{t.basket_card.submit}</Typography>
+                    <Button onClick={() => handleBuyProducts()}>{t.basket_card.buy}</Button>
                 </Grid>
 
                 <CardContent>
@@ -59,16 +66,16 @@ export const CardThird = () => {
                                     <CardContent>
                                         <Typography variant="h5" component="div">{item.name}</Typography>
                                         <Grid container justifyContent="flex-start">
-                                            <Typography variant="h6" color="text.secondary">Zmien ilosc:  </Typography>
+                                            <Typography variant="h6" color="text.secondary">{t.basket_card.change_quantity}:  </Typography>
                                             <Button onClick={() => handleDecreaseClickCount(index)}>-</Button>
                                             <Button onClick={() => handleIncreaseClickCount(index)}>+</Button>
                                         </Grid>
-                                        <Typography variant="body2" color="text.secondary">Ilosc: {item.clickCount}</Typography>
-                                        <Typography variant="body2" color="text.secondary">Cena: {(item.price * item.clickCount).toFixed(2)}</Typography>
+                                        <Typography variant="body2" color="text.secondary">{t.basket_card.quantity}: {item.clickCount}</Typography>
+                                        <Typography variant="body2" color="text.secondary">{t.basket_card.price}: {(item.price * item.clickCount).toFixed(2)}</Typography>
                                     </CardContent>
                                     <CardContent>
                                         <Grid container justifyContent="flex-end">
-                                            <Button onClick={() => handleDeleteItem(index)}>Delete</Button>
+                                            <Button onClick={() => handleDeleteItem(index)}>{t.basket_card.delete}</Button>
                                         </Grid>
                                     </CardContent>
 

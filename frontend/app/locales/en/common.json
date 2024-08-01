@@ -81,7 +81,42 @@
       "current_page": "Current page",
       "rows_per_page": "Rows per page",
       "create": "Create",
-      "clear": "Clear"
+      "clear": "Clear",
+      "details": "Details",
+      "client_id": "Client ID",
+      "order_id": "Order ID",
+      "order_date": "Order Date",
+      "show": "Show"
+    },
+    "products_card": {
+      "title": "Products",
+      "add_to_cart": "Add to Cart",
+      "price": "Price",
+      "quantity": "Quantity",
+      "add_to_basket": "Add to Basket",
+      "total": "Total for Product",
+      "product_support": "Explore our extensive range of premium copy paper, designed to meet the high-volume printing needs of large and medium-sized businesses."
+    },
+    "basket_card": {
+      "title": "Basket",
+      "cart_contents": "Check the items in your cart before placing the order.",
+      "submit": "Place Order",
+      "buy": "Buy",
+      "price": "Price",
+      "quantity": "Quantity",
+      "delete": "Delete",
+      "change_quantity": "Change Quantity"
+    },
+    "orders_card": {
+      "title": "Orders",
+      "cart_contents": "Before processing orders, review the individual customer orders.",
+      "order_detail": "Order Details",
+      "company_name": "Company Name",
+      "city": "City",
+      "postal_code": "Postal Code",
+      "address_no": "Building/Apartment Number",
+      "street": "Street",
+      "close": "Close"
     }
   }
 

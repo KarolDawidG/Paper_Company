@@ -81,10 +81,41 @@
     "current_page": "Page actuelle",
     "rows_per_page": "Lignes par page",
     "create": "Créer",
-    "clear": "Effacer"
+    "clear": "Effacer",
+    "details": "Détails",
+    "client_id": "Identifiant client",
+    "order_id": "Identifiant de commande",
+    "order_date": "Date de commande",
+    "show": "Afficher"
+  },
+  "products_card": {
+    "title": "Des produits",
+    "add_to_cart": "Ajouter au Panier",
+    "price": "Prix",
+    "quantity": "Quantité",
+    "add_to_basket": "Ajouter au Panier",
+    "total": "Total pour le Produit",
+    "product_support": "Découvrez notre large gamme de papier de haute qualité, conçue pour répondre aux besoins d'impression à grand volume des grandes et moyennes entreprises."
+  },
+  "basket_card": {
+    "title": "Panier",
+    "cart_contents": "Vérifiez les articles dans votre panier avant de passer la commande.",
+    "submit": "Passer la Commande",
+    "buy": "Acheter",
+    "price": "Prix",
+    "quantity": "Quantité",
+    "delete": "Supprimer",
+    "change_quantity": "Modifier la Quantité"
+  },
+  "orders_card": {
+    "title": "Commandes",
+    "cart_contents": "Avant de traiter les commandes, examinez les commandes individuelles des clients.",
+    "order_detail": "Détails de la commande",
+    "company_name": "Nom de l'entreprise",
+    "city": "Ville",
+    "postal_code": "Code postal",
+    "address_no": "Numéro du bâtiment/appartement",
+    "street": "Rue",
+    "close": "Fermer"
   }
-
-
-
-  
 }

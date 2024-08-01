@@ -1,11 +1,18 @@
 import * as React from 'react';
-import { Typography, Grid, CardContent, CardMedia, Card, Button } from '@mui/material';
+import { Typography, Grid, CardContent, CardMedia, Card, Button, LinearProgress } from '@mui/material';
 import {useState} from "react";
 import {useCart} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
+import useTranslation from "@/app/components/language/useTranslation";
 
 export const ProductCard = ({ id, name, description, price, stock }:any) => {
   const [clickCount, setClickCount] = useState(0);
-    const { addToCart }:any = useCart();
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+  const { addToCart }:any = useCart();
+
+  if (!t.products_card) {
+    return <LinearProgress />;
+  }
 
   const handleAddToCart = (product:any) => {
       setClickCount(prevCount => prevCount + 1);
@@ -33,26 +40,26 @@ export const ProductCard = ({ id, name, description, price, stock }:any) => {
 
                     <Grid item>
                       <Typography variant="body2" color="text.secondary">
-                        Cena: {price}
+                        {t.products_card.price}: {price}
                       </Typography>
                     </Grid>
 
                     <Grid item>
                       <Typography variant="body2" color="text.secondary">
-                        Ilosc: {stock}
+                        {t.products_card.quantity}: {stock}
                       </Typography>
                     </Grid>
 
                     <Grid item>
                       <Button onClick={() => handleAddToCart({ id, name, description, price, stock, clickCount })}>
-                        Dodaj do koszyka
+                        {t.products_card.add_to_basket}
                       </Button>
                     </Grid>
 
                   </Grid>
 
                   <Typography variant="body2" color="text.secondary">
-                    Razem za produkt: {(price * clickCount).toFixed(2)}
+                    {t.products_card.total}: {(price * clickCount).toFixed(2)}
                   </Typography>
             </Grid>
 

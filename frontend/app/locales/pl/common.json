@@ -81,7 +81,41 @@
       "current_page": "Bieżąca strona",
       "rows_per_page": "Wiersze na stronę",
       "create": "Utwórz",
-      "clear": "Wyczyść"
+      "clear": "Wyczyść",
+      "details": "Detale",
+      "client_id": "ID klienta",
+      "order_id": "ID zamowieni",
+      "order_date": "Data zamowienia",
+      "show": "Wyswietl"
+    },
+    "products_card": {
+      "title": "Produkty",
+      "price": "Cena",
+      "quantity": "Ilosc",
+      "add_to_basket": "Dodaj do koszyka",
+      "total": "Razem za produkt",
+      "product_support": "Zapoznaj się z naszą szeroką ofertą papieru ksero klasy premium, zaprojektowanego tak, aby sprostać potrzebom dużych i średnich przedsiębiorstw w zakresie druku dużych nakładów."
+    },
+    "basket_card": {
+      "title": "Koszyk",
+      "cart_contents": "Przed złożeniem zamówienia sprawdź pozycje w koszyku.",
+      "submit": "Zloz zamowienie",
+      "buy": "Kup",
+      "price": "Cena",
+      "quantity": "Ilosc",
+      "delete": "Usuń",
+      "change_quantity": "Zmien ilosc"
+    },
+    "orders_card": {
+      "title": "Zamowienia",
+      "cart_contents": "Przed realizacją zamowien przejrzyj indywidualne zamówienia klientów.",
+      "order_detail": "Szczegóły zamówienia",
+      "company_name": "Nazwa firmy",
+      "city": "Miasto",
+      "postal_code": "Kod pocztowy",
+      "address_no": "Nr budynku/mieszkania",
+      "street": "Ulica",
+      "close": "Zamknij"
     }
   }
   
