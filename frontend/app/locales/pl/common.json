@@ -15,9 +15,17 @@
     },
     "sales_and_orders": {
       "title": "Zarządzanie Sprzedażą i Zamówieniami",
-      "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień od klientów, zapewniając płynny przepływ od momentu złożenia zamówienia aż do dostawy.",
+      "card_sales_title": "Sprzedaż",
+      "intro": "Nasz system zarządzania sprzedażą i zamówieniami umożliwia efektywne przyjmowanie i przetwarzanie zamówień klientów, zapewniając płynny przepływ od złożenia zamówienia do dostawy.",
       "info": "Skontaktuj się z naszym zespołem.",
-      "mainInfo": "Komponent odpowiedzialny za zarządzanie klientem i adresami dostawy zamowionego towaru."
+      "mainInfo": "Komponent odpowiedzialny za zarządzanie adresami klientów i dostawy zamówionych towarów.",
+      "add_client": "Czy chcesz dodać nowego klienta?",
+      "add_client_button": "Dodaj Klienta",
+      "select_client": "Wybierz klienta",
+      "clear_client": "Wyczyść wybór",
+      "confirm_delete_client": "Czy na pewno chcesz usunąć tego klienta? Tej operacji nie można cofnąć.",
+      "add_address": "Czy chcesz dodać nowy adres?",
+      "add_address_button": "Dodaj Adres"
     },
     "accounting": {
       "title": "Finanse i Księgowość",
@@ -58,6 +66,56 @@
     "warning_page": {
       "permissions": "Nie masz uprawnien do dostepu do tego komponentu!",
       "user_list": "Ponizej znajduje sie lista pracownikow, z ktorymi mozesz sie skontaktowac w danej sprawie!"
+    },
+    "table": {
+      "search": "Szukaj",
+      "page": "Strona",
+      "no": "Lp.",
+      "first_name": "Imię",
+      "second_name": "Nazwisko",
+      "select": "Wybierz",
+      "delete": "Usuń",
+      "update": "Aktualizuj",
+      "city": "Miasto",
+      "company_name": "Nazwa Firmy",
+      "current_page": "Bieżąca strona",
+      "rows_per_page": "Wiersze na stronę",
+      "create": "Utwórz",
+      "clear": "Wyczyść",
+      "details": "Detale",
+      "client_id": "ID klienta",
+      "order_id": "ID zamowieni",
+      "order_date": "Data zamowienia",
+      "show": "Wyswietl"
+    },
+    "products_card": {
+      "title": "Produkty",
+      "price": "Cena",
+      "quantity": "Ilosc",
+      "add_to_basket": "Dodaj do koszyka",
+      "total": "Razem za produkt",
+      "product_support": "Zapoznaj się z naszą szeroką ofertą papieru ksero klasy premium, zaprojektowanego tak, aby sprostać potrzebom dużych i średnich przedsiębiorstw w zakresie druku dużych nakładów."
+    },
+    "basket_card": {
+      "title": "Koszyk",
+      "cart_contents": "Przed złożeniem zamówienia sprawdź pozycje w koszyku.",
+      "submit": "Zloz zamowienie",
+      "buy": "Kup",
+      "price": "Cena",
+      "quantity": "Ilosc",
+      "delete": "Usuń",
+      "change_quantity": "Zmien ilosc"
+    },
+    "orders_card": {
+      "title": "Zamowienia",
+      "cart_contents": "Przed realizacją zamowien przejrzyj indywidualne zamówienia klientów.",
+      "order_detail": "Szczegóły zamówienia",
+      "company_name": "Nazwa firmy",
+      "city": "Miasto",
+      "postal_code": "Kod pocztowy",
+      "address_no": "Nr budynku/mieszkania",
+      "street": "Ulica",
+      "close": "Zamknij"
     }
   }
   

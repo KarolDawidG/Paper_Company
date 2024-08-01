@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, LinearProgress, TextField, Typography } from '@mui/material';
+import useTranslation from "@/app/components/language/useTranslation";
 
 interface SearchBarProps {
     searchTerm: string;
@@ -7,13 +8,20 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm }) => {
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
+
+    if (!t.table) {
+        return <LinearProgress />;
+      }
+      
     return (
         <Box marginBottom={2} display='flex' alignItems='center'>
             <Typography variant="h6" style={{ marginRight: '16px' }}>
-                Search:
+                {t.table.search}:
             </Typography>
             <TextField
-                label="Search"
+                label={`${t.table.search}`}
                 variant="outlined"
                 size="small"
                 value={searchTerm}

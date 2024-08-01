@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {Modal, Backdrop, Fade, Typography, Box, Button} from '@mui/material';
+import {Modal, Backdrop, Fade, Typography, Box, LinearProgress} from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import { modalStyle } from '../../SalesCard/ClientData/Modals/ModalStyles/modalStyle';
 import { MainButton } from '@/app/components/layout/Buttons';
+import useTranslation from "@/app/components/language/useTranslation";
 
 const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: string  }> = ({open, onClose, order,}) => {
     const [data, setData] = useState<any>();
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
 
     const fetchData = async () => {
         try {
@@ -19,6 +22,10 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: s
     useEffect(() => {
         fetchData();
     }, [order]);
+
+    if (!t.orders_card) {
+        return <LinearProgress />;
+      }
 
     return (
         <Modal
@@ -39,32 +46,32 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: s
             <Fade in={open}>
                 <Box sx={modalStyle}>
                     <Typography variant="h6" id="order-details-modal-title" gutterBottom>
-                        Szczegóły zamówienia
+                        {t.orders_card.order_detail}
                     </Typography>
                     <Box>
                         {data && (
                             <>
                                 <Typography variant="subtitle1">
-                                    Nazwa firmy: {data[0].nazwa_firmy}
+                                {t.orders_card.company_name}: {data[0].nazwa_firmy}
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Miasto: {data[0].miasto}
+                                {t.orders_card.city}: {data[0].miasto}
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Kod: {data[0].kod}
+                                {t.orders_card.postal_code}: {data[0].kod}
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Ulica: {data[0].ulica}
+                                {t.orders_card.street}: {data[0].ulica}
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Nr budynku/mieszkania: {data[0].nr_budynku}/{data[0].nr_mieszkania}
+                                    {t.orders_card.address_no}: {data[0].nr_budynku}/{data[0].nr_mieszkania}
                                 </Typography>
                             </>
                         )}
                     </Box>
                     <Box sx={{ mt: 2 }}>
                         <MainButton onClick={onClose} >
-                            Close
+                            {t.orders_card.close}
                         </MainButton>
                     </Box>
                 </Box>

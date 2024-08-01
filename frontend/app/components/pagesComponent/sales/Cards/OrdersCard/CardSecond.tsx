@@ -8,20 +8,28 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import OrderTable from './OrdersTable/OrderTable';
+import useTranslation from "@/app/components/language/useTranslation";
+import { LinearProgress } from '@mui/material';
 
 export const CardSecond = () => {
   const [expanded, setExpanded] = useState(false);
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+    if (!t.orders_card) {
+      return <LinearProgress />;
+    }
+
   return (
   <Card sx={{ maxWidth: '100%' }}>
-      <CardHeader title="Zamowienia"/>
+      <CardHeader title={`${t.orders_card.title}`}/>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Obsluga zamowien
+        {t.orders_card.cart_contents}
         </Typography>
       </CardContent>
 
