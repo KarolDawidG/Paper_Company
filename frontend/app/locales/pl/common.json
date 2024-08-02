@@ -121,8 +121,13 @@
       "street": "Ulica",
       "close": "Zamknij"
     },
-    "notify": {
+    "notification": {
       "delete_avatar": "Avatar zostal usuniety",
+      "delete_avatar_error": "Błąd podczas usuwania obrazu",
+      "image_sent": "Obrazek przeslany",
+      "error": "Błąd",
+      "error_data": "Nie udało się pobrać danych użytkownika.",
+      "data_added": "Dane zostaly zaktualizowane",
       "": ""
     }
   }

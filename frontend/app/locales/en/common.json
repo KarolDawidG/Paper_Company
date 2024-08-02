@@ -122,8 +122,13 @@
       "street": "Street",
       "close": "Close"
     },
-    "notify": {
+    "notification": {
       "delete_avatar": "Avatar has been removed",
+      "delete_avatar_error": "Error deleting image",
+       "image_sent": "Image sent",
+       "error": "Error",
+       "error_data": "Failed to retrieve user data.",
+       "data_added": "Dane zostaly zaktualizowane",
       "": ""
     }
   }

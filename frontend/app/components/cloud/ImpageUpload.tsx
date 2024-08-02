@@ -2,7 +2,7 @@ import { useState } from "react";
 import { UploadDropzone } from "../utils/uploadthings";
 import { notify } from "../notification/Notify";
 import { useImage } from "../utils/context/ImageContext";
-import { Typography, Box, Button, LinearProgress } from "@mui/material";
+import { Typography, Box, LinearProgress } from "@mui/material";
 import DeleteImageButton from "./DeleteImageButton";
 import axiosInstance from "@/app/api/axiosInstance";
 import { ImageContextType } from "../utils/context/ImageContextType";
@@ -27,11 +27,11 @@ const ImpageUpload = () => {
       await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
         img_url: newImageUrl,
       });
-
-      notify("Obrazek przeslany");
+      //TODO: useTranslationStatus - there may be errors if it is not added
+      notify(`${t.notification.image_sent}`);
     } catch (error: any) {
       console.error("Error:", error);
-      notify(`ERROR! ${error.message}`);
+      notify(`${t.notification.error}! ${error.message}`);
     }
   };
 
@@ -61,7 +61,7 @@ const ImpageUpload = () => {
           endpoint="imageUploader"
           onClientUploadComplete={handleClientUploadComplete}
           onUploadError={(error: Error) => {
-            notify(`ERROR! ${error.message}`);
+            notify(`${t.notification.error}! ${error.message}`);
           }}
         />
       </Box>
