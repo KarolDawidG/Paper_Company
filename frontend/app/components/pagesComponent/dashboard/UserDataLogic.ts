@@ -9,10 +9,7 @@ const useUserData = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [id, setUserId] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [editedData, setEditedData] = useState({
-    username: "",
-    email: "",
-  });
+  const [editedData, setEditedData] = useState({username: "", email: "",});
 
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);

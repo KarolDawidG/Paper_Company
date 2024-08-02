@@ -128,6 +128,9 @@
       "error": "Błąd",
       "error_data": "Nie udało się pobrać danych użytkownika.",
       "data_added": "Dane zostaly zaktualizowane",
+      "number_missing": "Brakuje numeru zamówienia!",
+      "cart_missing": "Brakuje koszyka!",
+      "products_sent": "Products has been sented",
       "": ""
     }
   }

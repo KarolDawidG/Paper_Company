@@ -125,10 +125,13 @@
   "notification": {
     "delete_avatar": "L'avatar a été supprimé",
     "delete_avatar_error": "Erreur lors de la suppression de l'image",
-     "image_sent": "Image envoyée",
-     "error": "Erreur",
-     "error_data": "Échec de la récupération des données utilisateur.",
-     "data_added": "Les données ont été mises à jour",
+    "image_sent": "Image envoyée",
+    "error": "Erreur",
+    "error_data": "Échec de la récupération des données utilisateur.",
+    "data_added": "Les données ont été mises à jour",
+    "number_missing": "Il manque le numéro de commande!",
+    "cart_missing": "Il manque le panier !",
+    "products_sent": "Products has been sented",
     "": ""
   }
 }
