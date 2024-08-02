@@ -4,7 +4,8 @@
       "intro": "Our security and access control system offers advanced user permission and access management, ensuring protection against unauthorized access and potential threats.",
       "protocols": "With stringent security protocols and continuous system monitoring, we ensure the highest level of data security for our clients.",
       "tools": "Our threat response tools are constantly updated, allowing for quick identification and neutralization of potential threats, ensuring operational continuity and security.",
-      "warning": "Service under construction..."
+      "warning": "Service under construction...",
+      "unauthorized": "This view is only for admin"
     },
     "warehouse": {
       "title": "Warehouse management",
@@ -73,6 +74,8 @@
       "no": "No.",
       "first_name": "First Name",
       "second_name": "Second Name",
+      "first_last_name": "First and last name",
+      "role": "Role",
       "select": "Select",
       "delete": "Delete",
       "update": "Update",
@@ -86,6 +89,7 @@
       "client_id": "Client ID",
       "order_id": "Order ID",
       "order_date": "Order Date",
+      "date_employment": "Date of employment",
       "show": "Show"
     },
     "products_card": {
@@ -117,6 +121,10 @@
       "address_no": "Building/Apartment Number",
       "street": "Street",
       "close": "Close"
+    },
+    "notify": {
+      "delete_avatar": "Avatar has been removed",
+      "": ""
     }
   }
 

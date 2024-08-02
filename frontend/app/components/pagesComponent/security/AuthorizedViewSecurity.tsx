@@ -14,7 +14,7 @@ const AuthorizedViewSecurity = () => {
   return (
     <div className="p-4 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-center mb-4">
-        <p>This view is only for admin</p>
+        <p>{t.security.unauthorized}</p>
         <CustomTable />
       </h1>
     </div>

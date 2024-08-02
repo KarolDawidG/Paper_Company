@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, TablePagination, Button, Select, FormControl, InputLabel, MenuItem, IconButton} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, TablePagination, Button, Select, FormControl, InputLabel, MenuItem, IconButton, LinearProgress} from '@mui/material';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { TableProps } from './TableInterfaces';
 import { formatOnlyDate } from '../../../helpers/formDate';
@@ -8,8 +8,13 @@ import { Role } from './RolaEnum';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import SetPageComponent from '@/app/components/utils/tableUtils/SetPageComponent';
+import useTranslation from '@/app/components/language/useTranslation';
 
 const CustomTable: React.FC<TableProps> = () => {
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+
+
   const {
     page,
     setPage,
@@ -33,6 +38,11 @@ const CustomTable: React.FC<TableProps> = () => {
     </MenuItem>
   ));
 
+    if (!t.table) {
+      return <LinearProgress />;
+    }
+
+
   return (
     <Box padding={1}>
 
@@ -42,13 +52,13 @@ const CustomTable: React.FC<TableProps> = () => {
         <Table size="small" aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Nr.</TableCell>
-              <TableCell>Data zatrudnienia</TableCell>
-              <TableCell>Nazwa</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Rola</TableCell>
-              <TableCell>Usun</TableCell>
-              <TableCell>Zmien</TableCell>
+              <TableCell>{t.table.no}</TableCell>
+              <TableCell>{t.table.date_employment}</TableCell>
+              <TableCell>{t.table.first_last_name}</TableCell>
+              <TableCell>E-mail</TableCell>
+              <TableCell>{t.table.role}</TableCell>
+              <TableCell>{t.table.delete}</TableCell>
+              <TableCell>{t.table.update}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -68,7 +78,7 @@ const CustomTable: React.FC<TableProps> = () => {
 
                 <TableCell>
                   <Button onClick={() => handleDeleteUser(user.id)}>
-                    Usun
+                    {t.table.delete}
                   </Button>
                 </TableCell>
 
@@ -117,6 +127,7 @@ const CustomTable: React.FC<TableProps> = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={`${t.table.rows_per_page}`}
       />
     </Box>
   );

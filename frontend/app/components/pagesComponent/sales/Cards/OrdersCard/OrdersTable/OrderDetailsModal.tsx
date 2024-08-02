@@ -64,7 +64,7 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; order: s
                                 {t.orders_card.street}: {data[0].ulica}
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    {t.orders_card.address_no}: {data[0].nr_budynku}/{data[0].nr_mieszkania}
+                                {t.orders_card.address_no}: {data[0].nr_budynku}/{data[0].nr_mieszkania}
                                 </Typography>
                             </>
                         )}

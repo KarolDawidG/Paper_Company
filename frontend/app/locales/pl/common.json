@@ -4,7 +4,8 @@
       "intro": "Nasz system bezpieczeństwa i kontroli dostępu oferuje zaawansowane zarządzanie uprawnieniami i dostępem użytkowników, zapewniając ochronę przed nieautoryzowanym dostępem i potencjalnymi zagrożeniami.",
       "protocols": "Dzięki rygorystycznym protokołom bezpieczeństwa i ciągłemu monitorowaniu systemów, zapewniamy najwyższy poziom bezpieczeństwa danych naszych klientów.",
       "tools": "Nasze narzędzia do reagowania na zagrożenia są stale aktualizowane, co pozwala na szybką identyfikację i neutralizację potencjalnych zagrożeń, gwarantując ciągłość działania i bezpieczeństwo operacyjne.",
-      "warning": "Serwis w budowie.."
+      "warning": "Serwis w budowie..",
+      "unauthorized": "Widok tylko dla administratora."
     },
     "warehouse": {
       "title": "Zarządzanie Magazynem",
@@ -73,6 +74,8 @@
       "no": "Lp.",
       "first_name": "Imię",
       "second_name": "Nazwisko",
+      "first_last_name": "Imie i nazwisko",
+      "role": "Rola",
       "select": "Wybierz",
       "delete": "Usuń",
       "update": "Aktualizuj",
@@ -86,6 +89,7 @@
       "client_id": "ID klienta",
       "order_id": "ID zamowieni",
       "order_date": "Data zamowienia",
+      "date_employment": "Data zatrudnienia",
       "show": "Wyswietl"
     },
     "products_card": {
@@ -116,6 +120,10 @@
       "address_no": "Nr budynku/mieszkania",
       "street": "Ulica",
       "close": "Zamknij"
+    },
+    "notify": {
+      "delete_avatar": "Avatar zostal usuniety",
+      "": ""
     }
   }
   

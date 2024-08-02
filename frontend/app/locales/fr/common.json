@@ -4,7 +4,8 @@
     "intro": "Notre système de sécurité et de contrôle d'accès offre une gestion avancée des autorisations et des accès des utilisateurs, garantissant une protection contre les accès non autorisés et les menaces potentielles.",
     "protocols": "Grâce à des protocoles de sécurité rigoureux et à une surveillance continue des systèmes, nous garantissons le plus haut niveau de sécurité des données de nos clients.",
     "tools": "Nos outils de réponse aux menaces sont constamment mis à jour, permettant une identification et une neutralisation rapides des menaces potentielles, garantissant la continuité des opérations et la sécurité opérationnelle.",
-    "warning": "Service en construction..."
+    "warning": "Service en construction...",
+    "unauthorized": "Cette vue est réservée à l'administrateur"
   },
   "warehouse": {
     "title": "Gestion de l'Entrepôt",
@@ -73,6 +74,8 @@
     "no": "N°",
     "first_name": "Prénom",
     "second_name": "Nom",
+    "first_last_name": "Prénom et nom",
+    "role": "Rôle",
     "select": "Sélectionner",
     "delete": "Supprimer",
     "update": "Mettre à jour",
@@ -86,6 +89,7 @@
     "client_id": "Identifiant client",
     "order_id": "Identifiant de commande",
     "order_date": "Date de commande",
+    "date_employment": "Date d'embauche",
     "show": "Afficher"
   },
   "products_card": {
@@ -117,5 +121,9 @@
     "address_no": "Numéro du bâtiment/appartement",
     "street": "Rue",
     "close": "Fermer"
+  },
+  "notify": {
+    "delete_avatar": "L'avatar a été supprimé",
+    "": ""
   }
 }
