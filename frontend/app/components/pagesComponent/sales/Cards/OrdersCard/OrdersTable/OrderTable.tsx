@@ -8,14 +8,17 @@ import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import { notify } from '@/app/components/notification/Notify';
 import useTranslation from "@/app/components/language/useTranslation";
+import useTranslationStatus from '@/app/components/language/useTranslationStatus';
 
 const OrderTable: React.FC<any> = () => {
   const [data, setData] = useState<any[]>([]);
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
+  const isTranslationLoaded = useTranslationStatus(currentLocale);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +38,14 @@ const OrderTable: React.FC<any> = () => {
     try {
       await axiosInstance.delete(`/sales/${id}`);
       setData(data.filter((order) => order.id !== id));
-      notify('Usuwanie zakonczone sukcesem');
+        if (isTranslationLoaded) {
+          notify(`${t.notification.order_delete}`);
+        }
     } catch (error: any) {
       console.error(error);
-      notify('Nie mozna usunac procedowanego zamowienia!');
+        if (isTranslationLoaded) {
+          notify(`${t.notification.order_delete_error}`);
+        }
     }
   };
   

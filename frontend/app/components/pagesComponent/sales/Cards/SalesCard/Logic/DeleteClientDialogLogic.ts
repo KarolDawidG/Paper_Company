@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
+import useTranslation from "@/app/components/language/useTranslation";
+import useTranslationStatus from "@/app/components/language/useTranslationStatus";
 
 interface DeleteClientDialogLogicProps {
     fetchData: () => Promise<void>;
@@ -10,6 +12,10 @@ export const useDeleteClientDialogLogic = ({ fetchData }: DeleteClientDialogLogi
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
 
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
+    const isTranslationLoaded = useTranslationStatus(currentLocale);
+  
     const handleOpenDeleteDialog = (clientId: number) => {
         setSelectedClientId(clientId);
         setOpenDeleteDialog(true);
@@ -23,12 +29,18 @@ export const useDeleteClientDialogLogic = ({ fetchData }: DeleteClientDialogLogi
         if (selectedClientId) {
             try {
                 await axiosInstance.delete(`/client/${selectedClientId}`);
-                notify("Client successfully deleted.");
                 handleCloseDeleteDialog();
                 fetchData();
+                if (isTranslationLoaded) {
+                    notify(`${t.notification.correct}`);
+                    return;
+                }
             } catch (error: any) {
-                notify("An error occurred while trying to delete the client. Try again later.");
                 console.error(error);
+                    if (isTranslationLoaded) {
+                        notify(`${t.notification.deleting_error}`);
+                        return;
+                    }
             }
         }
     };

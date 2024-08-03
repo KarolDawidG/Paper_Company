@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { notify } from "@/app/components/notification/Notify";
-import { Box, Typography, Button, TextField } from "@mui/material";
+import { Box, Typography, Button, TextField, LinearProgress } from "@mui/material";
 import Image from "next/image";
 import logo from "../../public/logo.png";
 import Footer from "@/app/components/layout/Footer";
+import useTranslation from "@/app/components/language/useTranslation";
+import useTranslationStatus from "@/app/components/language/useTranslationStatus";
 
 export default function Reset() {
   const router = useRouter();
@@ -17,6 +19,10 @@ export default function Reset() {
   const handleMain = () => {
     router.push("/");
   };
+
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+  const isTranslationLoaded = useTranslationStatus(currentLocale);
 
   let id: any, token: any;
   if (router.query.slug && Array.isArray(router.query.slug)) {
@@ -56,21 +62,31 @@ export default function Reset() {
         });
 
         if (response.status === 200) {
-          notify("Password has been reset successfully.");
           setTimeout(() => router.push("/"), 2000);
+          if (isTranslationLoaded) {
+            notify(`${t.notification.correct}`);
+            return;
+        }
         }
       } catch (error) {
-        notify("Some error occured.");
+        if (isTranslationLoaded) {
+          notify(`${t.notification.error}`);
+          return;
+      }
       }
     }
   };
 
+  if (!t.notification) {
+    return <LinearProgress />;
+  }
+  
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Box flexGrow={1} textAlign="center" my={1}>
         <Image src={logo} alt="Logo" width={250} height={250} />
         <Typography variant="h4" gutterBottom>
-          Reset Password!
+          {t.notification.reser_password}
         </Typography>
         <form onSubmit={handleSubmit}>
           <Box
@@ -85,14 +101,14 @@ export default function Reset() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Nowe hasło"
+              placeholder={t.notification.new_password}
               required
             />
             <TextField
               type="password"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
-              placeholder="Potwierdź hasło"
+              placeholder={t.notification.confirm_password}
               required
             />
             <Button
@@ -101,10 +117,10 @@ export default function Reset() {
               variant="contained"
               sx={{ mt: 1 }}
             >
-              Zresetuj hasło
+              {t.notification.reser_password}
             </Button>
             <Button variant="contained" sx={{ mt: 1 }} onClick={handleMain}>
-              Strona Glowna
+              S{t.notification.main_page}
             </Button>
           </Box>
         </form>
