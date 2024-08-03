@@ -2,32 +2,38 @@ import { useState, useEffect } from "react";
 import { UserData } from "@/app/components/interface/userDataInterface";
 import { notify } from "@/app/components/notification/Notify";
 import axiosInstance from "@/app/api/axiosInstance";
+import useTranslationStatus from "../../language/useTranslationStatus";
+import useTranslation from "../../language/useTranslation";
 
 const useUserData = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [id, setUserId] = useState<string | null>();
+  const [id, setUserId] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [editedData, setEditedData] = useState({
-    username: "",
-    email: "",
-  });
+  const [editedData, setEditedData] = useState({username: "", email: "",});
+
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+  const isTranslationLoaded = useTranslationStatus(currentLocale);
 
   useEffect(() => {
-    const idUser: string | null = localStorage.getItem("idUser");
-    setUserId(idUser);
-
     const fetchUserData = async () => {
       try {
+        const idUser: string | null = localStorage.getItem("idUser");
+        setUserId(idUser);
+    
         const response = await axiosInstance.get(`/users/user/${idUser}`);
         setUserData(response.data);
       } catch (error) {
-        console.error("Nie udało się pobrać danych użytkownika.", error);
-        notify("Nie udało się pobrać danych użytkownika.");
+        if (isTranslationLoaded) {
+          notify(`${t.notification.error_data}`);
+        }
       }
     };
 
-    fetchUserData();
-  }, []);
+    if (isTranslationLoaded) {
+      fetchUserData();
+    }
+  }, [isTranslationLoaded]);
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -46,10 +52,13 @@ const useUserData = () => {
       }));
       const response = await axiosInstance.put(`/users/${id}`, editedData);
       setEditMode(false);
-      notify(response.data);
+      if (isTranslationLoaded) {
+        notify(`${t.notification.data_added}`);
+      }
     } catch (error) {
-      console.error("Nie udało się zapisać zmian.", error);
-      notify("Nie udało się zapisać zmian.");
+      if (isTranslationLoaded) {
+        notify(`${t.notification.error_data}`);
+      }
     }
   };
 

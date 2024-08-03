@@ -4,7 +4,8 @@
       "intro": "Our security and access control system offers advanced user permission and access management, ensuring protection against unauthorized access and potential threats.",
       "protocols": "With stringent security protocols and continuous system monitoring, we ensure the highest level of data security for our clients.",
       "tools": "Our threat response tools are constantly updated, allowing for quick identification and neutralization of potential threats, ensuring operational continuity and security.",
-      "warning": "Service under construction..."
+      "warning": "Service under construction...",
+      "unauthorized": "This view is only for admin"
     },
     "warehouse": {
       "title": "Warehouse management",
@@ -73,6 +74,8 @@
       "no": "No.",
       "first_name": "First Name",
       "second_name": "Second Name",
+      "first_last_name": "First and last name",
+      "role": "Role",
       "select": "Select",
       "delete": "Delete",
       "update": "Update",
@@ -86,6 +89,7 @@
       "client_id": "Client ID",
       "order_id": "Order ID",
       "order_date": "Order Date",
+      "date_employment": "Date of employment",
       "show": "Show"
     },
     "products_card": {
@@ -117,6 +121,49 @@
       "address_no": "Building/Apartment Number",
       "street": "Street",
       "close": "Close"
+    },
+    "notification": {
+      "delete_avatar": "Avatar has been removed",
+      "delete_avatar_error": "Error deleting image",
+      "image_sent": "Image sent",
+      "correct": "Task completed correctly",
+      "error": "The task could not be completed",
+      "error_data": "Failed to retrieve user data.",
+      "deleting_error": "An error occurred while deleting the data. Please check if it is linked to any existing orders and try again.",
+      "data_added": "Dane zostaly zaktualizowane",
+      "number_missing": "Order number is missing!",
+      "cart_missing": "The basket is missing!",
+      "products_sent": "Products has been sented",
+      "order_delete": "Removal completed successfully",
+      "order_delete_error": "An order in progress cannot be deleted!",
+      "add_client": "Add Client",
+      "added_client": "Customer added correctly",
+      "choose_client": "Choose your client first!",
+      "name": "First Name",
+      "second_name": "Last Name",
+      "email": "E-mail",
+      "save": "Save",
+      "close": "Close",
+      "email_require": "E-mail is required",
+      "name_require": "First name is required",
+      "second_require": "Last name is required",
+      "addres_added": "Your new delivery address has been saved!",
+      "new_addres_question": "Do you want to add new address to selected clients?",
+      "cliend_data_change": "Change of customer data",
+      "client_data_saved": "Customer details and delivery address have been saved!",
+      "reser_password": "Password reset!",
+      "new_password": "A new password",
+      "confirm_password": "Confirm password",
+      "main_page": "Main Page"
+    },
+      "address": {
+        "is_required": "is required",
+        "city": "City",
+        "street": "Street",
+        "building": "Building Number",
+        "no_apartment": "Apartment Number",
+        "code": "Postal Code",
+        "company_name": "Company Name"
     }
   }
 

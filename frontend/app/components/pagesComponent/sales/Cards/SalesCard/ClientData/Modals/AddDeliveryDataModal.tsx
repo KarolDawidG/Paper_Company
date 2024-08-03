@@ -3,13 +3,15 @@ import { useForm } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Box, Modal, Fade } from '@mui/material';
+import { Box, Modal, Fade, LinearProgress } from '@mui/material';
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
 import { modalStyle } from "./ModalStyles/modalStyle";
 import { MainButton } from "@/app/components/layout/Buttons";
+import useTranslation from "@/app/components/language/useTranslation";
+import useTranslationStatus from "@/app/components/language/useTranslationStatus";
 
-type FieldKeys = 'miasto' | 'ulica' | 'nr_budynku' | 'nr_mieszkania' | 'kod' | 'nazwa_firmy';
+type FieldKeys = 'city' | 'street' | 'building' | 'no_apartment' | 'code' | 'company_name';
 
 type FormData = {
     [key in FieldKeys]: string;
@@ -18,11 +20,17 @@ type FormData = {
 export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void, fetchAddressData: () => void}> = ({ open, onClose, fetchAddressData }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
 
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
+    const isTranslationLoaded = useTranslationStatus(currentLocale);
+  
     const onSubmit = async (data: FormData) => {
         const client_id = sessionStorage.getItem('clientId');
         if (!client_id) {
-            notify("Najpierw wybierz klienta!");
-            return;
+            if (isTranslationLoaded) {
+                notify(`${t.notification.choose_client}`);
+                return;
+            }
         }
         try {
             const orderData = { ...data, client_id };
@@ -30,15 +38,25 @@ export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void
                 headers: { 'Content-Type': 'application/json' }
             });
             localStorage.setItem("order_id", response.data.order_id);
-            notify("Nowy adres dostawy został zapisany!");
+            if (isTranslationLoaded) {
+                notify(`${t.notification.addres_added}`);
+                return;
+            }
             fetchAddressData();
             reset();
             onClose();
         } catch (error) {
             console.error('Request failed:', error);
-            notify("Nie udało się przekazać danych!");
+            if (isTranslationLoaded) {
+                notify(`${t.notification.error}`);
+                return;
+            }
         }
     };
+
+    if (!t.notification) {
+        return <LinearProgress />;
+      }
 
     return (
         <Modal open={open} onClose={onClose} closeAfterTransition>
@@ -46,19 +64,19 @@ export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void
                 <Box sx={modalStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Typography sx={{ mt: 1 }}>
-                            Do you want to add new address to selected clients?
+                            {t.notification.new_addres_question}
                         </Typography>
-                        {(["miasto", "ulica", "nr_budynku", "nr_mieszkania", "kod", "nazwa_firmy"] as FieldKeys[]).map(field => (
+                        {(["city", "street", "building", "no_apartment", "code", "company_name"] as FieldKeys[]).map(field => (
                             <TextField
                                 key={field}
-                                label={field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ')}
+                                label={t.address[field]}
                                 variant="outlined"
                                 margin="normal"
                                 size="small"
                                 fullWidth
                                 {...register(field, {
-                                    required: `${field.replace(/_/g, ' ')} jest wymagane`,
-                                    pattern: field === "kod" ? /^\d{2}-\d{3}$/ : undefined
+                                    required: `${t.address[field]} ${t.address.is_required}`,
+                                    pattern: field === "code" ? /^\d{2}-\d{3}$/ : undefined
                                 })}
                                 error={Boolean(errors[field])}
                                 helperText={errors[field]?.message || ''}
@@ -67,11 +85,11 @@ export const AddDeliveryDataModal: React.FC<{ open: boolean; onClose: () => void
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                             <MainButton type="submit">
-                                Save
+                                {t.notification.save}
                             </MainButton>
 
                             <MainButton onClick={onClose}>
-                                Close
+                                {t.notification.close}
                             </MainButton>
                         </Box>
                     </form>

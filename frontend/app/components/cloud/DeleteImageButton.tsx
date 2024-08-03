@@ -38,10 +38,11 @@ const DeleteImageButton = () => {
       await axiosInstance.delete(`${BACKEND}/url/${idUser}`);
       //ustawianie globalnego stanu dla glownego awatara
       setImageUrl(MAIN_AVATAR);
-      notify("Avatar zostal usuniety");
+      //TODO: useTranslationStatus - there may be errors if it is not added
+      notify(`${t.notification.delete_avatar}`);
     } catch (error: any) {
       console.error("Error deleting image:", error);
-      notify(`Error deleting image: ${error.message}`);
+      notify(`${t.notification.delete_avatar_error}: ${error.message}`);
     }
   };
 

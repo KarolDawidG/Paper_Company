@@ -4,7 +4,8 @@
       "intro": "Nasz system bezpieczeństwa i kontroli dostępu oferuje zaawansowane zarządzanie uprawnieniami i dostępem użytkowników, zapewniając ochronę przed nieautoryzowanym dostępem i potencjalnymi zagrożeniami.",
       "protocols": "Dzięki rygorystycznym protokołom bezpieczeństwa i ciągłemu monitorowaniu systemów, zapewniamy najwyższy poziom bezpieczeństwa danych naszych klientów.",
       "tools": "Nasze narzędzia do reagowania na zagrożenia są stale aktualizowane, co pozwala na szybką identyfikację i neutralizację potencjalnych zagrożeń, gwarantując ciągłość działania i bezpieczeństwo operacyjne.",
-      "warning": "Serwis w budowie.."
+      "warning": "Serwis w budowie..",
+      "unauthorized": "Widok tylko dla administratora."
     },
     "warehouse": {
       "title": "Zarządzanie Magazynem",
@@ -73,6 +74,8 @@
       "no": "Lp.",
       "first_name": "Imię",
       "second_name": "Nazwisko",
+      "first_last_name": "Imie i nazwisko",
+      "role": "Rola",
       "select": "Wybierz",
       "delete": "Usuń",
       "update": "Aktualizuj",
@@ -86,6 +89,7 @@
       "client_id": "ID klienta",
       "order_id": "ID zamowieni",
       "order_date": "Data zamowienia",
+      "date_employment": "Data zatrudnienia",
       "show": "Wyswietl"
     },
     "products_card": {
@@ -116,6 +120,50 @@
       "address_no": "Nr budynku/mieszkania",
       "street": "Ulica",
       "close": "Zamknij"
+    },
+    "notification": {
+      "delete_avatar": "Avatar zostal usuniety",
+      "delete_avatar_error": "Błąd podczas usuwania obrazu",
+      "image_sent": "Obrazek przeslany",
+      "correct": "Zadanie wykonanie poprawnie",
+      "error": "Nie udało sie zrealizowac zadania",
+      "error_data": "Nie udało się pobrać danych użytkownika.",
+      "deleting_error": "Wystąpił błąd podczas usuwania adresu. Sprawdź, czy jest on powiązany z istniejącymi zamówieniami i spróbuj ponownie.",
+      "data_added": "Dane zostaly zaktualizowane",
+      "number_missing": "Brakuje numeru zamówienia!",
+      "cart_missing": "Brakuje koszyka!",
+      "products_sent": "Products has been sented",
+      "order_delete": "Usuwanie zakonczone sukcesem",
+      "order_delete_error": "Nie mozna usunac procedowanego zamowienia!",
+      "add_client": "Dodawanie klienta",
+      "added_client": "Klient dodany prawidlowo",
+      "choose_client": "Najpierw wybierz klienta!",
+      "name": "Imie",
+      "second_name": "Nazwisko",
+      "email": "E-mail",
+      "save": "Zapisz",
+      "close": "Zamknij",
+      "email_require": "E-mail jest wymagany",
+      "name_require": "Imię jest wymagane",
+      "second_require": "Nazwisko jest wymagane",
+      "addres_added": "Nowy adres dostawy został zapisany!",
+      "new_addres_question": "Chcesz dodać nowy adres do wybranych klientów?",
+      "cliend_data_change": "Zmiana danych klienta",
+      "client_data_saved": "Dane klienta i adres dostawy, zostały zapisane!",
+      "reser_password": "Reset hasła!",
+      "new_password": "Nowe hasło",
+      "confirm_password": "Potwierdź hasło",
+      "main_page": "Strona główna"
+    },
+    "address": {
+      "is_required": "jest wymagane",
+      "city": "Miasto",
+      "street": "Ulica",
+      "building": "Numer budynku",
+      "no_apartment": "Numer mieszkania",
+      "code": "Kod pocztowy",
+      "company_name": "Nazwa firmy"
     }
+  
   }
   

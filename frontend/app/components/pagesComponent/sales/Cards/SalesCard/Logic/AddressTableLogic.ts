@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from "@/app/api/axiosInstance";
 import { notify } from "@/app/components/notification/Notify";
+import useTranslation from '@/app/components/language/useTranslation';
+import useTranslationStatus from '@/app/components/language/useTranslationStatus';
 
 interface AddressTableLogicProps {
   selectedClientId: number | null;
@@ -10,16 +12,21 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
   const [addressData, setAddressData] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
 
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
+  const isTranslationLoaded = useTranslationStatus(currentLocale);
+
   const fetchAddressData = async () => {
     if (selectedClientId) {
       try {
         const response = await axiosInstance.get(`/address/${selectedClientId}`);
         setAddressData(response.data.addressList);
-        console.log("Fetch AddressData");
-        console.log(response.data.addressList);
       } catch (error) {
         console.error('Error fetching data:', error);
-        notify("Failed to fetch address data.");
+          if (isTranslationLoaded) {
+            notify(`${t.notification.error}`);
+            return;
+        }
       }
     }
   };
@@ -27,11 +34,17 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
   const handleDeleteAddress = async (addressId: string) => {
     try {
       await axiosInstance.delete(`/address/${addressId}`);
-      notify("Address successfully deleted.");
+      if (isTranslationLoaded) {
+        notify(`${t.notification.correct}`);
+        return;
+    }
       fetchAddressData(); 
     } catch (error: any) {
-      notify("An error occurred while deleting the address. Please check if it is linked to any existing orders and try again.");
       console.error(error);
+      if (isTranslationLoaded) {
+        notify(`${t.notification.deleting_error}`);
+        return;
+    }
     }
   };
 
@@ -54,15 +67,18 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
           headers: {
               'Content-Type': 'application/json'
           }
-      });
-      console.log("Order ID: ");
-      console.log(response.data.order_id);
-      
+      });      
       localStorage.setItem("order_id", response.data.order_id);
-      notify("Dane klienta i adres dostawy, zostały zapisane!");
+      if (isTranslationLoaded) {
+        notify(`${t.notification.client_data_saved}`);
+        return;
+    }
     } catch (error) {
-        console.error("Błąd podczas tworzenia zamówienia:", error);
-        notify("Nie udało się złożyć zamówienia. Spróbuj ponownie.");
+        console.error("Error:", error);
+        if (isTranslationLoaded) {
+          notify(`${t.notification.error}`);
+          return;
+      }
     }
 };
   useEffect(() => {

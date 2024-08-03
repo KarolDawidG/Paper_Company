@@ -4,7 +4,8 @@
     "intro": "Notre système de sécurité et de contrôle d'accès offre une gestion avancée des autorisations et des accès des utilisateurs, garantissant une protection contre les accès non autorisés et les menaces potentielles.",
     "protocols": "Grâce à des protocoles de sécurité rigoureux et à une surveillance continue des systèmes, nous garantissons le plus haut niveau de sécurité des données de nos clients.",
     "tools": "Nos outils de réponse aux menaces sont constamment mis à jour, permettant une identification et une neutralisation rapides des menaces potentielles, garantissant la continuité des opérations et la sécurité opérationnelle.",
-    "warning": "Service en construction..."
+    "warning": "Service en construction...",
+    "unauthorized": "Cette vue est réservée à l'administrateur"
   },
   "warehouse": {
     "title": "Gestion de l'Entrepôt",
@@ -73,6 +74,8 @@
     "no": "N°",
     "first_name": "Prénom",
     "second_name": "Nom",
+    "first_last_name": "Prénom et nom",
+    "role": "Rôle",
     "select": "Sélectionner",
     "delete": "Supprimer",
     "update": "Mettre à jour",
@@ -86,6 +89,7 @@
     "client_id": "Identifiant client",
     "order_id": "Identifiant de commande",
     "order_date": "Date de commande",
+    "date_employment": "Date d'embauche",
     "show": "Afficher"
   },
   "products_card": {
@@ -117,5 +121,49 @@
     "address_no": "Numéro du bâtiment/appartement",
     "street": "Rue",
     "close": "Fermer"
-  }
+  },
+  "notification": {
+    "delete_avatar": "L'avatar a été supprimé",
+    "delete_avatar_error": "Erreur lors de la suppression de l'image",
+    "image_sent": "Image envoyée",
+    "correct": "Tâche terminée correctement",
+    "error": "La tâche n'a pas pu être terminée",
+    "error_data": "Échec de la récupération des données utilisateur.",
+    "deleting_error": "Une erreur s'est produite lors de la suppression de l'adresse. Veuillez vérifier si elle est liée à des commandes existantes et réessayer.",
+    "data_added": "Les données ont été mises à jour",
+    "number_missing": "Il manque le numéro de commande!",
+    "cart_missing": "Il manque le panier !",
+    "products_sent": "Products has been sented",
+    "order_delete": "Suppression terminée avec succès",
+    "order_delete_error": "Vous ne pouvez pas supprimer une commande en cours !",
+    "add_client": "Ajouter un client",
+    "added_client": "Le client a été ajouté correctement",
+    "choose_client": "Choisissez d'abord votre client!",
+    "name": "Prénom",
+    "second_name": "Nom",
+    "email": "E-mail",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "email_require": "E-mail est requis",
+    "name_require": "Prénom est requis",
+    "second_require": "Nom est requis",
+    "addres_added": "La nouvelle adresse de livraison a été enregistrée !",
+    "new_addres_question": "Voulez-vous ajouter une nouvelle adresse aux clients sélectionnés?",
+    "cliend_data_change": "Modification des données client",
+    "client_data_saved": "Les coordonnées du client et l'adresse de livraison ont été enregistrées!",
+    "reser_password": "Réinitialiser le mot de passe!",
+    "new_password": "Un nouveau mot de passe",
+    "confirm_password": "Confirmez le mot de passe",
+    "main_page": "Page d'accueil"
+  },
+    "address": {
+      "is_required": "est requis",
+      "city": "Ville",
+      "street": "Rue",
+      "building": "Numéro de bâtiment",
+      "no_apartment": "Numéro d'appartement",
+      "code": "Code postal",
+      "company_name": "Nom de l'entreprise"
+    }
+  
 }
