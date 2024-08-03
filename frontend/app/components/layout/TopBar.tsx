@@ -17,7 +17,7 @@ import { useImage } from "../utils/context/ImageContext";
 const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
   const { imageUrl, setImageUrl }: string | any = useImage();
   const router = useRouter();
-  const [currentLocale, setCurrentLocale] = useState("en");
+  const [currentLocale, setCurrentLocale] = useState(localStorage.getItem("locale") || "en");
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
   const [urlImg, setUrlImg] = useState<string>();
 
@@ -49,7 +49,6 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
       localStorage.removeItem("role");
       localStorage.removeItem("idUser");
       localStorage.removeItem("order_id");
-      // localStorage.removeItem("clientId");
       sessionStorage.removeItem("clientId");
       router.push("/");
     } catch (error) {
@@ -67,27 +66,21 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
         <Button
           color="inherit"
           onClick={() => handleChangeLanguage("pl")}
-          style={{
-            backgroundColor: currentLocale === "pl" ? "grey" : "transparent",
-          }}
+          style={{backgroundColor: currentLocale === "pl" ? "grey" : "transparent"}}
         >
           PL
         </Button>
         <Button
           color="inherit"
           onClick={() => handleChangeLanguage("en")}
-          style={{
-            backgroundColor: currentLocale === "en" ? "grey" : "transparent",
-          }}
+          style={{backgroundColor: currentLocale === "en" ? "grey" : "transparent"}}
         >
           EN
         </Button>
         <Button
           color="inherit"
           onClick={() => handleChangeLanguage("fr")}
-          style={{
-            backgroundColor: currentLocale === "fr" ? "grey" : "transparent",
-          }}
+          style={{backgroundColor: currentLocale === "fr" ? "grey" : "transparent"}}
         >
           FR
         </Button>
