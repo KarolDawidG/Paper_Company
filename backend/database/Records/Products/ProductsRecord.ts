@@ -1,5 +1,4 @@
 import { pool } from "../../pool";
-import {SELECT_PRODUCTS} from "./querryProductsRecord";
 
 interface Products {
   id: string;
@@ -14,9 +13,15 @@ interface Products {
 class ProductsRecord {
   constructor(private productsData: Products) {}
 
-  static async getAll() {
+  static async getAll(languageCode: string) {
     try {
-      const [results] = await pool.execute(SELECT_PRODUCTS) as any;
+      const [results] = await pool.execute(
+        `SELECT p.id, COALESCE(pt.name, p.name) AS name, 
+          COALESCE(pt.description, p.description) AS description, p.category, p.price, p.stock, p.created_at
+          FROM products p
+          LEFT JOIN product_translations pt ON p.id = pt.product_id 
+          AND pt.language_id = (SELECT id FROM languages WHERE code = ?);`
+      , [languageCode]) as any;
       return results.map((obj: any) => new ProductsRecord(obj));
     } catch (error) {
       console.error("Error in getAll:", error);

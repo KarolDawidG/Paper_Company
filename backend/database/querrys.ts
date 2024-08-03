@@ -84,6 +84,28 @@ const createProducts: string = `
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
+    const createLanguage: string = `
+    CREATE TABLE IF NOT EXISTS languages (
+      id varchar(36) NOT NULL,
+      code varchar(10) NOT NULL,
+      name varchar(50) NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE KEY (code)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
+    const createproductTranslations: string = `
+    CREATE TABLE IF NOT EXISTS product_translations (
+      product_id varchar(36) NOT NULL,
+      language_id varchar(36) NOT NULL,
+      name varchar(255) NOT NULL,
+      description text,
+      PRIMARY KEY (product_id, language_id),
+      FOREIGN KEY (product_id) REFERENCES products(id),
+      FOREIGN KEY (language_id) REFERENCES languages(id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
 const deleteNotActiveAccount: string = `
     CREATE EVENT IF NOT EXISTS delete_inactive_users
       ON SCHEDULE EVERY 15 MINUTE
@@ -124,4 +146,6 @@ export {
   createOrders,
   createProducts,
   createClients,
+  createLanguage,
+  createproductTranslations,
 };

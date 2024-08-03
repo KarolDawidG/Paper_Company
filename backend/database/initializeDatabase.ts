@@ -13,6 +13,8 @@ import {
   createClientsTable,
   createClientsAddressTable,
   createTransactionOrdersDetails,
+  createproductTranslationsTable,
+  createLanguageTable,
 } from "./dbCreator";
 
 const initializeDatabase = async () => {
@@ -28,6 +30,8 @@ const initializeDatabase = async () => {
       createTransactionOrders,
       createTransactionProducts,
       createTransactionOrdersDetails,
+      createLanguageTable,
+      createproductTranslationsTable,
     ];
     for await (const table of tables) {
       await table(pool);

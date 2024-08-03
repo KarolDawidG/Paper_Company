@@ -19,14 +19,19 @@ export const ProductsCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/products');
+        const response = await axios.get('http://localhost:3001/products', {
+          headers: {
+            'Accept-Language': currentLocale,
+          },
+        });
         setData(response.data.productsData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [currentLocale]);
+  
 
     if (!t.products_card) {
       return <LinearProgress />;

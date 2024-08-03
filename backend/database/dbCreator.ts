@@ -10,7 +10,25 @@ import {
   createOrders,
   createProducts,
   createClients,
+  createproductTranslations,
+  createLanguage,
 } from "./querrys";
+
+const createproductTranslationsTable = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createproductTranslations);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createLanguageTable = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createLanguage);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const createTransactionOrdersDetails = async (pool: Pool): Promise<void> => {
   try {
@@ -90,4 +108,15 @@ const createRoot = async (pool: Pool): Promise<void> => {
   }
 };
 
-export { createClientsTable, createClientsAddressTable, createTransactionOrdersDetails, createTransactionProducts, createAccountsTable, createTransactionOrders, createRoot, deleteAccount, eventSchedulerON };
+export { 
+  createClientsTable, 
+  createClientsAddressTable, 
+  createTransactionOrdersDetails, 
+  createTransactionProducts, 
+  createAccountsTable, 
+  createproductTranslationsTable,
+  createLanguageTable,
+  createTransactionOrders, 
+  createRoot, 
+  deleteAccount, 
+  eventSchedulerON };

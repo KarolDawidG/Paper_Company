@@ -5,13 +5,13 @@ import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
-import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter);
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-      const productsData = await ProductsRecord.getAll();
+      const locale = req.headers['accept-language'] || 'en';
+      const productsData = await ProductsRecord.getAll(locale);
       return res.json({ productsData });
     } catch (error: any) {
       logger.error(`Products Route: GET: ${error.message}`);

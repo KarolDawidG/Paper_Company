@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import Footer from "@/app/components/layout/Footer";
 import TopBar from "@/app/components/layout/TopBar";
 import { ToastContainer } from "react-toastify";
-import useTranslation from "../app/components/language/useTranslation";
 import "@uploadthing/react/styles.css";
 import { ImageProvider } from "@/app/components/utils/context/ImageContext";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -15,7 +14,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 function MyApp({ Component, pageProps }: AppProps) {
   const [locale, setLocale] = useState("en");
   const [mode, setMode] = useState<"light" | "dark">();
-  const t = useTranslation(locale);
   const router = useRouter();
   const isSidebarPage = !router.pathname.startsWith("/click-link");
   const isResetPasswordPage = router.asPath.startsWith("/reset/");
