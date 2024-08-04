@@ -51,7 +51,7 @@ export const ProductCard = ({ id, name, description, price, stock }:any) => {
                     </Grid>
 
                     <Grid item>
-                      <Button onClick={() => handleAddToCart({ id, name, description, price, stock, clickCount })}>
+                      <Button onClick={() => handleAddToCart({ id, price, clickCount })}>
                         {t.products_card.add_to_basket}
                       </Button>
                     </Grid>

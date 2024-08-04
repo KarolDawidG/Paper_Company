@@ -13,6 +13,18 @@ interface Products {
 class ProductsRecord {
   constructor(private productsData: Products) {}
 
+
+
+static async getById(productId: string, locale: string) {
+  const query = `
+    SELECT pt.* FROM product_translations pt JOIN languages l ON pt.language_id = l.id
+      WHERE pt.product_id = ?
+        AND l.code = ?;
+`;
+  const [results] = await pool.execute(query, [productId, locale]);
+  return results;
+}
+
   static async getAll(languageCode: string) {
     try {
       const [results] = await pool.execute(
