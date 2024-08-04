@@ -21,4 +21,21 @@ router.get("/", async (req: Request, res: Response) => {
     }
 });
 
+router.get("/cart/:id", async (req: Request, res: Response) => {
+
+  try {
+    const productId:string = req.params.id;
+    const locale:any = req.query.locale || 'en';
+
+    const productsData = await ProductsRecord.getById(productId, locale);
+    //console.log({productsData});
+    return res.json(productsData );
+  } catch (error: any) {
+    logger.error(`Products Route: GET: ${error.message}`);
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(`Products Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+  }
+});
+
 export default router;
