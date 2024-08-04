@@ -133,7 +133,7 @@
       "data_added": "Dane zostaly zaktualizowane",
       "number_missing": "Order number is missing!",
       "cart_missing": "The basket is missing!",
-      "products_sent": "Products has been sented",
+      "products_sent": "Products has been sented!",
       "order_delete": "Removal completed successfully",
       "order_delete_error": "An order in progress cannot be deleted!",
       "add_client": "Add Client",

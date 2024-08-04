@@ -133,7 +133,7 @@
     "data_added": "Les données ont été mises à jour",
     "number_missing": "Il manque le numéro de commande!",
     "cart_missing": "Il manque le panier !",
-    "products_sent": "Products has been sented",
+    "products_sent": "Les produits ont été envoyés!",
     "order_delete": "Suppression terminée avec succès",
     "order_delete_error": "Vous ne pouvez pas supprimer une commande en cours !",
     "add_client": "Ajouter un client",
