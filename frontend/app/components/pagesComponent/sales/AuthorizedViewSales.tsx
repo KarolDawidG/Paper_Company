@@ -2,9 +2,9 @@ import React from 'react';
 import useTranslation from "../../language/useTranslation";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Grid, Typography, Divider } from '@mui/material';
-import { CardOne } from './Cards/SalesCard/SalesCard';
-import { CardSecond } from './Cards/OrdersCard/CardSecond';
-import { CardThird } from './Cards/BasketCard/BasketCard';
+import { SalesCard } from './Cards/SalesCard/SalesCard';
+import { OrderCard } from './Cards/OrdersCard/OrderCard';
+import { BasketCard } from './Cards/BasketCard/BasketCard';
 import { ProductsCard } from './Cards/ProductsCard/ProductsCard';
 import {CartProvider} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 
@@ -27,11 +27,11 @@ const AuthorizedViewSales = () => {
             </Typography>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-              <CardOne/>
+              <SalesCard/>
             </Grid>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-              <CardSecond />
+              <OrderCard />
             </Grid>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
@@ -39,7 +39,7 @@ const AuthorizedViewSales = () => {
             </Grid>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-              <CardThird />
+              <BasketCard />
             </Grid>
 
           </Grid>

@@ -11,7 +11,7 @@ import OrderTable from './OrdersTable/OrderTable';
 import useTranslation from "@/app/components/language/useTranslation";
 import { LinearProgress } from '@mui/material';
 
-export const CardSecond = () => {
+export const OrderCard = () => {
   const [expanded, setExpanded] = useState(false);
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);

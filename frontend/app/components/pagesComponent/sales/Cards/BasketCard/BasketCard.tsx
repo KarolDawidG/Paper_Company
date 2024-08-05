@@ -6,7 +6,7 @@ import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 import useTranslation from "@/app/components/language/useTranslation";
 
-export const CardThird = () => {
+export const BasketCard = () => {
     const { cartItems, buyProducts, translateCartObject, removeFromCart, increaseClickCount, decreaseClickCount }: any = useCart();
     const [expanded, setExpanded] = React.useState(false);
     const currentLocale = localStorage.getItem("locale") || "en";

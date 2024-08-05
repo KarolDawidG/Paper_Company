@@ -12,7 +12,7 @@ import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/Sales
 import useTranslation from "@/app/components/language/useTranslation";
 import { LinearProgress } from "@mui/material";
 
-export const CardOne = () => {
+export const SalesCard = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const {handleExpandClick, expanded, formState: { errors }} = SalesCardLogic();
