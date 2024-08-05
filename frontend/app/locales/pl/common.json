@@ -26,7 +26,12 @@
       "clear_client": "Wyczyść wybór",
       "confirm_delete_client": "Czy na pewno chcesz usunąć tego klienta? Tej operacji nie można cofnąć.",
       "add_address": "Czy chcesz dodać nowy adres?",
-      "add_address_button": "Dodaj Adres"
+      "add_address_button": "Dodaj Adres",
+      "order_explementation": "Aby złożyć zamówienie dla klienta:",
+      "step_1": "1. Wybierz klienta, którego będziesz obsługiwać.",
+      "step_2": "2. Wybierz adres dostawy lub dodaj nowy.",
+      "step_3": "3. Wybierz produkty do zamówienia w zakładce Produkty.",
+      "step_4": "4. Potwierdź wszystkie dane w zakładce Koszyk."
     },
     "accounting": {
       "title": "Finanse i Księgowość",

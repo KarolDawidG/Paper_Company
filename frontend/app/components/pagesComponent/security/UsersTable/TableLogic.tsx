@@ -20,7 +20,6 @@ const TableLogic = () => {
       try {
         const response = await axios.get<UserData>('http://localhost:3001/admin');
         setData(response.data.usersList);
-        console.log(response.data.usersList);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

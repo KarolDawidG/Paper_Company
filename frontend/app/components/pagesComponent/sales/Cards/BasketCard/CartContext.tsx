@@ -41,7 +41,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             }));
 
             setTranslateCartObject(productDetails.flat());
-            console.log(productDetails);
+    
         } catch (error) {
             console.error('Failed to fetch product details:', error);
         }
@@ -110,7 +110,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             });
             localStorage.removeItem('cart');
-            localStorage.removeItem('order_id')
+            localStorage.removeItem('order_id');
+            sessionStorage.removeItem('clientId');
+            sessionStorage.removeItem('addressId');
             setCartItems([]);
 
             if (isTranslationLoaded) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import useTranslation from "../../language/useTranslation";
-import LinearProgress from "@mui/material/LinearProgress";
-import { Grid, Typography, Divider } from '@mui/material';
+import { Grid, Typography, LinearProgress } from '@mui/material';
 import { SalesCard } from './Cards/SalesCard/SalesCard';
 import { OrderCard } from './Cards/OrdersCard/OrderCard';
 import { BasketCard } from './Cards/BasketCard/BasketCard';
@@ -31,15 +30,15 @@ const AuthorizedViewSales = () => {
             </Grid>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
-              <OrderCard />
-            </Grid>
-
-            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
               <ProductsCard />
             </Grid>
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
               <BasketCard />
+            </Grid>
+
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <OrderCard />
             </Grid>
 
           </Grid>

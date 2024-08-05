@@ -1,7 +1,7 @@
 import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
-import {DELETE_CLIENT, INSERT_CLIENT, SELECT_CLIENT_BY_ID, SELECT_CLIENTS, UPDATE_CLIENT} from "./querryClientRecord";
+import {DELETE_CLIENT, CLIENT_ORDER_DATA, INSERT_CLIENT, SELECT_CLIENT_BY_ID, SELECT_CLIENTS, UPDATE_CLIENT} from "./querryClientRecord";
 
 interface Client {
   id: string;
@@ -69,6 +69,12 @@ class ClientRecord implements Client {
             return connection.execute(UPDATE_CLIENT, [first_name, second_name, email, id]);
         });
     }
+
+    static async getClientData(clientID: string, addressID:string) {
+
+      const [results] = await pool.execute(CLIENT_ORDER_DATA, [clientID, addressID]);
+      return results;
+  }
 }
 
 

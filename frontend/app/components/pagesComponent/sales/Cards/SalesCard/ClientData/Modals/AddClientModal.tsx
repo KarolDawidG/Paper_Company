@@ -32,9 +32,10 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: 
                 notify(`${t.notification.added_client}`);
                 return;
             }
-            fetchData(); 
+            
             reset();
             onClose();
+            fetchData(); 
         } catch (error) {
             console.error('Request failed:', error);
                 if (isTranslationLoaded) {

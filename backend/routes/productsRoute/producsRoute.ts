@@ -28,7 +28,7 @@ router.get("/cart/:id", async (req: Request, res: Response) => {
     const locale:any = req.query.locale || 'en';
 
     const productsData = await ProductsRecord.getById(productId, locale);
-    //console.log({productsData});
+
     return res.json(productsData );
   } catch (error: any) {
     logger.error(`Products Route: GET: ${error.message}`);

@@ -26,7 +26,12 @@
     "clear_client": "Effacer la sélection",
     "confirm_delete_client": "Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.",
     "add_address": "Voulez-vous ajouter une nouvelle adresse ?",
-    "add_address_button": "Ajouter une Adresse"
+    "add_address_button": "Ajouter une Adresse",
+    "order_explementation": "Pour passer une commande pour un client:",
+    "step_1": "1. Sélectionnez le client que vous allez servir.",
+    "step_2": "2. Sélectionnez l'adresse de livraison ou ajoutez-en une nouvelle.",
+    "step_3": "3. Sélectionnez les produits à commander dans l'onglet Produits.",
+    "step_4": "4. Confirmez toutes les données dans l'onglet Panier."
   },
   "accounting": {
     "title": "Finance et Comptabilité",

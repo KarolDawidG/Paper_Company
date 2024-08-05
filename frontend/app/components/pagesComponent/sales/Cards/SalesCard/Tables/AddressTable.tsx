@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel, IconButton } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
@@ -11,6 +11,9 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import SetPageComponent from "@/app/components/utils/tableUtils/SetPageComponent";
+import { useAddressTableLogic } from "../Logic/AddressTableLogic";
+
+// TODO - tlumaczenia
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
@@ -32,9 +35,15 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
 
     const handleConfirmDelete = () => {
         handleDeleteAddress(currentAddressId);
+        
         setOpenDialog(false);
     };
 
+    // useEffect(() => {
+    //     console.log('AddressTable updated with addressData:', addressData);
+    //   }, [addressData]);
+
+      
     return (
     <Box>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
