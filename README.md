@@ -84,72 +84,72 @@ UWAGA: Ponizsze przykladowe dane, to tylko przyklady, jak mniej wiecej realne zm
 ### Schemat bazy danych
 ## Tabele główne:
 ## accounts
-id (varchar(36), PK)
-username (varchar(50), UNIQUE)
-password (varchar(255))
-email (varchar(100), UNIQUE)
-role (varchar(20), DEFAULT 'user')
-img_url (varchar(100), DEFAULT 'https://utfs.io/f/0576a965-e83c-47aa-b5b1-31aeac3c55c0-kmjf4x.jpg')
-created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
-is_active (BOOLEAN, DEFAULT false)
-refresh_token (TEXT)
+- id (varchar(36), PK)
+- username (varchar(50), UNIQUE)
+- password (varchar(255))
+- email (varchar(100), UNIQUE)
+- role (varchar(20), DEFAULT 'user')
+- img_url (varchar(100), DEFAULT 'https://utfs.io/f/0576a965-e83c-47aa-b5b1-31aeac3c55c0-kmjf4x.jpg')
+- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+- is_active (BOOLEAN, DEFAULT false)
+- refresh_token (TEXT)
 
 ## clients
-id (varchar(36), PK)
-first_name (varchar(50))
-second_name (varchar(255))
-email (varchar(100), UNIQUE)
-created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+- id (varchar(36), PK)
+- first_name (varchar(50))
+- second_name (varchar(255))
+- email (varchar(100), UNIQUE)
+- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
 
 ## client_addresses
-id (varchar(36), PK)
-client_id (varchar(36), FK, references clients(id))
-miasto (varchar(100))
-ulica (varchar(100))
-nr_budynku (varchar(20))
-nr_mieszkania (varchar(20), nullable)
-kod (varchar(20))
-nazwa_firmy (varchar(100), nullable)
-created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+- id (varchar(36), PK)
+- client_id (varchar(36), FK, references clients(id))
+- miasto (varchar(100))
+- ulica (varchar(100))
+- nr_budynku (varchar(20))
+- nr_mieszkania (varchar(20), nullable)
+- kod (varchar(20))
+- nazwa_firmy (varchar(100), nullable)
+- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
 
 ## orders
-id (varchar(36), PK)
-client_id (varchar(36), FK, references clients(id))
-client_address_id (varchar(36), FK, references client_addresses(id))
-created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+- id (varchar(36), PK)
+- client_id (varchar(36), FK, references clients(id))
+- client_address_id (varchar(36), FK, references client_addresses(id))
+- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
 
 ## order_details
-id (varchar(36), PK)
-order_id (varchar(36), FK, references orders(id))
-product_id (varchar(36), FK, references products(id))
-quantity (int)
+- id (varchar(36), PK)
+- order_id (varchar(36), FK, references orders(id))
+- product_id (varchar(36), FK, references products(id))
+- quantity (int)
 
 ## products
-id (varchar(36), PK)
-name (varchar(255))
-category (varchar(50))
-description (text, nullable)
-price (decimal(10,2))
-stock (int, DEFAULT 0)
-created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+- id (varchar(36), PK)
+- name (varchar(255))
+- category (varchar(50))
+- description (text, nullable)
+- price (decimal(10,2))
+- stock (int, DEFAULT 0)
+- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
 
 ## languages
-id (varchar(36), PK)
-code (varchar(10), UNIQUE)
-name (varchar(50))
+- id (varchar(36), PK)
+- code (varchar(10), UNIQUE)
+- name (varchar(50))
 
 ## product_translations
-product_id (varchar(36), PK, FK, references products(id))
-language_id (varchar(36), PK, FK, references languages(id))
-name (varchar(255))
-description (text, nullable)
+- product_id (varchar(36), PK, FK, references products(id))
+- language_id (varchar(36), PK, FK, references languages(id))
+- name (varchar(255))
+- description (text, nullable)
 
 ## Relacje między tabelami:
-clients ma relację jeden-do-wielu z client_addresses (każdy klient może mieć wiele adresów).
-clients ma relację jeden-do-wielu z orders (każdy klient może mieć wiele zamówień).
-orders ma relację jeden-do-wielu z order_details (każde zamówienie może mieć wiele szczegółów zamówienia).
-products ma relację jeden-do-wielu z product_translations (każdy produkt może mieć wiele tłumaczeń).
-languages ma relację jeden-do-wielu z product_translations (każdy język może być przypisany do wielu tłumaczeń produktów).
+- clients ma relację jeden-do-wielu z client_addresses (każdy klient może mieć wiele adresów).
+- clients ma relację jeden-do-wielu z orders (każdy klient może mieć wiele zamówień).
+- orders ma relację jeden-do-wielu z order_details (każde zamówienie może mieć wiele szczegółów zamówienia).
+- products ma relację jeden-do-wielu z product_translations (każdy produkt może mieć wiele tłumaczeń).
+- languages ma relację jeden-do-wielu z product_translations (każdy język może być przypisany do wielu tłumaczeń produktów).
 
 ## Kluczowe relacje:
 - clients (id) ↔ client_addresses (client_id)
