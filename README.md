@@ -65,7 +65,7 @@ Ponizej zostaly wylistowane przykladowe dane:
 
 - JWT_CONFIRMED_TOKEN: Kolejny token JWT, używany do potwierdzenia e-maila lub innych bezpiecznych procesów: jyhtf9394jfid69hujgdgdgd53y8383iksn89pfifjfhchxmsk8344hy7f8f0fifjfhg.
 
-- UPLOADTHING_SECRET: Tajny klucz do Uploadthing: sk_live_dd5884jfj0acefa883hdo1050cfee36cygghgd087b6da8ujdy3cbe473ab0004c.
+- UPLOADTHING_SECRET: Tajny klucz do Uploadthing: dd5884jfj0acefa883hdo1050cfee36cygghgd087b6da8ujdy3cbe473ab0004c.
 
 - UPLOADTHING_APP_ID: Identyfikator aplikacji Uploadthing: r6fdwhyfdsjdj.
 
