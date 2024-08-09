@@ -23,17 +23,28 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
-  const formData = req.body;
+  let formData = req.body;
+
+  formData = {
+    miasto: formData.city || null,
+    ulica: formData.street || null,
+    nr_budynku: formData.building || null,
+    nr_mieszkania: formData.no_apartment || null,
+    kod: formData.code || null,
+    nazwa_firmy: formData.company_name || null,
+    client_id: formData.client_id || null
+  };
+
     try {
       await AddressRecord.insert(formData);
       return res
         .status(STATUS_CODES.SUCCESS)
         .send({ message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      logger.error(`Sales Route: POST: ${error.message}`);
+      logger.error(`Sales Route address: POST: ${error.message}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+        .send(`Sales Route address: POST: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 

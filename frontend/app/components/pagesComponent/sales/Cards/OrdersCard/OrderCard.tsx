@@ -31,7 +31,7 @@ export const OrderCard = () => {
         <Typography variant="body2" color="text.secondary">
         {t.orders_card.cart_contents}
         </Typography>
-      </CardContent>
+      </CardContent>  
 
       <CardActions disableSpacing>
         <ExpandMore

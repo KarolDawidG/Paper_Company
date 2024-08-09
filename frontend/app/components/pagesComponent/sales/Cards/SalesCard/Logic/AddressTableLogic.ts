@@ -38,13 +38,15 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
         notify(`${t.notification.correct}`);
         return;
     }
-      fetchAddressData(); 
+      
     } catch (error: any) {
       console.error(error);
       if (isTranslationLoaded) {
         notify(`${t.notification.deleting_error}`);
         return;
     }
+    } finally {
+      fetchAddressData(); 
     }
   };
 

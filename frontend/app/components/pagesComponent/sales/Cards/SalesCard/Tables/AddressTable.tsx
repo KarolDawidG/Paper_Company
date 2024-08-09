@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
-import { Box, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel, IconButton } from '@mui/material';
+import { Box, LinearProgress, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel, IconButton } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
 import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
@@ -11,6 +11,7 @@ import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUnc
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import SetPageComponent from "@/app/components/utils/tableUtils/SetPageComponent";
+import useTranslation from "@/app/components/language/useTranslation";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
@@ -20,7 +21,9 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
     const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('miasto');
     const sortedData = stableSort(filteredData, getComparator(order, orderBy));
     const paginatedData = sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
+    const currentLocale = localStorage.getItem("locale") || "en";
+    const t = useTranslation(currentLocale);
+    
     const handleOpenDialog = (id:any) => {
         setCurrentAddressId(id);
         setOpenDialog(true);
@@ -32,19 +35,24 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
 
     const handleConfirmDelete = () => {
         handleDeleteAddress(currentAddressId);
+        
         setOpenDialog(false);
     };
+
+    if (!t.table) {
+        return <LinearProgress />;
+      }
 
     return (
     <Box>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         <CardContent>
-            <Typography variant="h6">Tabela adresow</Typography>
+            <Typography variant="h6">{t.address.table_of_addresses}</Typography>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>No.</TableCell>
+                                <TableCell>{t.table.no}</TableCell>
                                 
                                 <TableCell>
                                     <TableSortLabel
@@ -52,7 +60,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                                         direction={order}
                                         onClick={(event) => handleRequestSort(event, 'nazwa_firmy')}
                                         >
-                                        Nazwa Firmy
+                                        {t.table.company_name}
                                     </TableSortLabel>
                                 </TableCell>
 
@@ -62,12 +70,12 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                                         direction={order}
                                         onClick={(event) => handleRequestSort(event, 'miasto')}
                                         >
-                                        Miasto
+                                        {t.table.city}
                                     </TableSortLabel>
                                 </TableCell>
 
-                                <TableCell>Select</TableCell>
-                                <TableCell>Delete</TableCell>
+                                <TableCell>{t.table.select}</TableCell>
+                                <TableCell>{t.table.delete}</TableCell>
                             </TableRow>
                         </TableHead>
                             <TableBody>
@@ -98,20 +106,20 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
                     
         </CardContent>
             <Typography>
-                Chcesz stworzyc zamowienie dla wybranych danych?
+                {t.address.confirm_message}
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                 <DisableButton onClick={() => handleOrder()} disabled={!selectedAddressId}>
-                    Tworz
+                    {t.table.create}
                 </DisableButton>
                 <DisableButton onClick={() => handleClearAddresSelect()} disabled={!selectedAddressId}>
-                    Czysc
+                    {t.table.clear}
                 </DisableButton>
             </Box>
                 
             <BaseDialog open={openDialog} onClose={handleCloseDialog} onConfirm={handleConfirmDelete} title="Confirm Deletion" confirmText="Delete" cancelText="Cancel">
-                Are you sure you want to delete this address? This action cannot be undone.
+                {t.address.confirm_delete_address}
             </BaseDialog>
 
             <SetPageComponent 

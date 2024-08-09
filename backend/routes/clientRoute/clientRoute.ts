@@ -21,6 +21,23 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
         .send(`Client Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
+router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
+  
+  try {
+    const clientid:string = req.params.clientid;
+    const addresid:string = req.params.addresid;
+
+    const clientData = await ClientRecord.getClientData(clientid, addresid);
+    
+    return res.json(clientData);
+  } catch (error: any) {
+    logger.error(`Client/client-data Route: GET: ${error.message}`);
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(`Client/client-data Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+  }
+});
+
 // uprzatnac ten syf xD
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.addressId;
@@ -197,9 +214,3 @@ router.put("/:id", async (req: Request, res: Response) => {
  *                   description: Komunikat błędu.
  */
 export default router;
-
-
-// ssh -o KexAlgorithms=diffie-hellman-group1-sha1 
-// -o HostKeyAlgorithms=+ssh-rsa 
-// -o Ciphers=+aes128-cbc 
-// -o MACs=+hmac-sha1 user@192.168.1.200

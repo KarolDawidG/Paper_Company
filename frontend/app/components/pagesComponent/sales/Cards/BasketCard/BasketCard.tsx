@@ -5,12 +5,44 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 import useTranslation from "@/app/components/language/useTranslation";
+import axiosInstance from '@/app/api/axiosInstance';
+import { useEffect, useState } from 'react';
+
+interface ClientDetails {
+    client_id: string;
+    first_name: string;
+    second_name: string;
+    email: string;
+    client_created_at: string;
+    address_id: string;
+    miasto: string;
+    ulica: string;
+    nr_budynku: string;
+    nr_mieszkania: string;
+    kod: string;
+    nazwa_firmy: string;
+    address_created_at: string;
+}
 
 export const BasketCard = () => {
     const { cartItems, buyProducts, translateCartObject, removeFromCart, increaseClickCount, decreaseClickCount }: any = useCart();
     const [expanded, setExpanded] = React.useState(false);
+    const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
     const currentLocale = localStorage.getItem("locale") || "en";
     const t = useTranslation(currentLocale);
+    const clientId = sessionStorage.getItem("clientId");
+    const clientAddresId = sessionStorage.getItem("addressId");
+    const [clientDetails, setClientDetails] = useState<ClientDetails | null>(null);
+
+    const fetchClientDetails = async () => {
+        try {
+            const response = await axiosInstance.get(`${BACKEND}/client/client-data/${clientId}/${clientAddresId}`);
+            setClientDetails(response.data[0]);
+
+        } catch (error) {
+            console.error('Failed to fetch client details:', error);
+        }
+    };
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -41,6 +73,10 @@ export const BasketCard = () => {
         };
     });
 
+    useEffect(()=>{
+        fetchClientDetails();
+    }, [clientId, clientAddresId])
+
     if (!t.basket_card) {
         return <LinearProgress />;
     }
@@ -67,6 +103,23 @@ export const BasketCard = () => {
                 </Grid>
 
                 <CardContent>
+
+                {clientDetails && (
+                    <>
+                        <Typography variant="body2" sx={{ fontSize: '1.4rem'}}>
+                            {`Imię i nazwisko: ${clientDetails.first_name} ${clientDetails.second_name}`}
+                        </Typography>
+
+                        <Typography variant="body2" sx={{ fontSize: '1.2rem'}}>
+                            {`Nazwa firmy: ${clientDetails.nazwa_firmy}`}
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontSize: '1.2rem', marginBottom: 2}}>
+                            {`Adres: ${clientDetails.ulica} ${clientDetails.nr_budynku}/${clientDetails.nr_mieszkania}, ${clientDetails.kod} ${clientDetails.miasto}`}
+                        </Typography>
+                    </>
+                )}
+
+
                     <Grid container spacing={2}>
                         {cartDetails.map((item: any, index: any) => (
                             <Grid item xs={12} key={index}>

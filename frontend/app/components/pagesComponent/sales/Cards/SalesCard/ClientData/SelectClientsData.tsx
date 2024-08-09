@@ -89,7 +89,10 @@ const handleConfirm = () => {
           {t.sales_and_orders.add_address}
         </Typography>
 
-        <MainButton  onClick={handleOpenAddAddress}>
+        <MainButton onClick={() => {
+            fetchAddressData();
+            handleOpenAddAddress();
+          }}>
           {t.sales_and_orders.add_address_button}
         </MainButton>
 
@@ -107,21 +110,21 @@ const handleConfirm = () => {
         {modals.addAddress && (
           <AddDeliveryDataModal
             open={true}
-            onClose={() => toggleModal("addAddress", false)}
-            fetchAddressData={fetchAddressData}
+            fetchAddressData={() => fetchAddressData()}
+            onClose={() => {toggleModal("addAddress", false);fetchAddressData()}}
           />
         )}
         {modals.addClient && (
           <AddClientModal
             open={true}
             fetchData={fetchData}
-            onClose={() => toggleModal("addClient", false)}
-          />
+            onClose={() => {toggleModal("addClient", false);fetchData();}}
+        />
         )}
         {modals.editClient && (
           <UpdateClientModal
             open={true}
-            onClose={() => toggleModal("editClient", false)}
+            onClose={() => {toggleModal("editClient", false);fetchData();}}
             updateData={updateData}
             fetchData={fetchData}
           />
