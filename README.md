@@ -8,12 +8,18 @@ Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kult
 ## Funkcjonalności
 System ERP składa się z sześciu głównych modułów, zaprojektowanych, aby pokryć wszystkie aspekty działalności firmy:
 
+### Funkcjonalnosci biznesowe
 1. **Zarządzanie Sprzedażą i Zamówieniami:** Ułatwia składanie zamówień, fakturację, i śledzenie dostaw.
 2. **Zarządzanie Magazynem:** Oferuje kontrolę zapasów i logistykę wewnętrzną.
 3. **Finanse i Księgowość:** Zapewnia przetwarzanie transakcji finansowych i raportowanie.
 4. **Zarządzanie Zasobami Ludzkimi:** Wspiera procesy rekrutacji, zarządzanie danymi pracowniczymi i szkolenia.
 5. **Analiza Danych i Raportowanie:** Oferuje narzędzia do analizy danych i wsparcia decyzji biznesowych.
 6. **Bezpieczeństwo i Kontrola Dostępu:** Zarządza uprawnieniami użytkowników i bezpieczeństwem danych.
+
+### Funkcjonalnosci uzytkowe
+1. Trzy wersje jezykowe - Polska, Angielska i Francuska. Dane dlumaczone sa zarowno po stronie bakendu jak i frontendu.
+2. Dwa tryby wysiwetoania: Nocny i dzienny.
+3. Mozliwosc zmiany awatara, dzieki chmurze UPLOADTHING
 
 ## Technologie
 System jest budowany z wykorzystaniem nowoczesnych technologii:
@@ -41,7 +47,8 @@ System jest budowany z wykorzystaniem nowoczesnych technologii:
 
 ## Ustawianie zmiennych środowiskowych
 W celu poprawnego dzialania aplikacji, musisz utworzyc zmienne srodowiskowe, ktore beda zapisane w pliku .env w folderze /backend oraz /frontend.
-Ponizej zostaly wylistowane przykladowe dane:
+Ponizej zostaly wylistowane przykladowe dane.
+UWAGA: Ponizsze przykladowe dane, to tylko przyklady, jak mniej wiecej realne zmienne powinny wygladac! Musisz skonfigurowac wlasne klucze i hasla!
 
 - PASS: Ustaw hasło dla aplikacji na stronie Google dla swojego konta Gmail: sbxuijfitkpldrhdjl.
 
@@ -72,3 +79,82 @@ Ponizej zostaly wylistowane przykladowe dane:
 - NEXT_PUBLIC_REACT_APP_SITE_KEY: Klucz strony do recaptcha używany po stronie frontend: 6LfeZQcoAAorjfkOsGl5iQj6j2NgfsaR02ABHIu.
 
 - NEXT_PUBLIC_BACKEND: Adres backendu: http://localhost:3001.
+
+
+### Schemat bazy danych
+## Tabele główne:
+## accounts
+id (varchar(36), PK)
+username (varchar(50), UNIQUE)
+password (varchar(255))
+email (varchar(100), UNIQUE)
+role (varchar(20), DEFAULT 'user')
+img_url (varchar(100), DEFAULT 'https://utfs.io/f/0576a965-e83c-47aa-b5b1-31aeac3c55c0-kmjf4x.jpg')
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+is_active (BOOLEAN, DEFAULT false)
+refresh_token (TEXT)
+
+## clients
+id (varchar(36), PK)
+first_name (varchar(50))
+second_name (varchar(255))
+email (varchar(100), UNIQUE)
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+## client_addresses
+id (varchar(36), PK)
+client_id (varchar(36), FK, references clients(id))
+miasto (varchar(100))
+ulica (varchar(100))
+nr_budynku (varchar(20))
+nr_mieszkania (varchar(20), nullable)
+kod (varchar(20))
+nazwa_firmy (varchar(100), nullable)
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+## orders
+id (varchar(36), PK)
+client_id (varchar(36), FK, references clients(id))
+client_address_id (varchar(36), FK, references client_addresses(id))
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+## order_details
+id (varchar(36), PK)
+order_id (varchar(36), FK, references orders(id))
+product_id (varchar(36), FK, references products(id))
+quantity (int)
+
+## products
+id (varchar(36), PK)
+name (varchar(255))
+category (varchar(50))
+description (text, nullable)
+price (decimal(10,2))
+stock (int, DEFAULT 0)
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+## languages
+id (varchar(36), PK)
+code (varchar(10), UNIQUE)
+name (varchar(50))
+
+## product_translations
+product_id (varchar(36), PK, FK, references products(id))
+language_id (varchar(36), PK, FK, references languages(id))
+name (varchar(255))
+description (text, nullable)
+
+## Relacje między tabelami:
+clients ma relację jeden-do-wielu z client_addresses (każdy klient może mieć wiele adresów).
+clients ma relację jeden-do-wielu z orders (każdy klient może mieć wiele zamówień).
+orders ma relację jeden-do-wielu z order_details (każde zamówienie może mieć wiele szczegółów zamówienia).
+products ma relację jeden-do-wielu z product_translations (każdy produkt może mieć wiele tłumaczeń).
+languages ma relację jeden-do-wielu z product_translations (każdy język może być przypisany do wielu tłumaczeń produktów).
+
+## Kluczowe relacje:
+- clients (id) ↔ client_addresses (client_id)
+- clients (id) ↔ orders (client_id)
+- client_addresses (id) ↔ orders (client_address_id)
+- orders (id) ↔ order_details (order_id)
+- products (id) ↔ product_translations (product_id)
+- languages (id) ↔ product_translations (language_id)
