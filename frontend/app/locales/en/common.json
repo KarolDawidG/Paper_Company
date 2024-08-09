@@ -165,11 +165,14 @@
         "is_required": "is required",
         "city": "City",
         "street": "Street",
-        "building": "Building Number",
-        "no_apartment": "Apartment Number",
-        "code": "Postal Code",
-        "company_name": "Company Name"
-    }
+        "building": "Building number",
+        "no_apartment": "Apartment number",
+        "code": "Postal code",
+        "company_name": "Company name",
+        "table_of_addresses": "Table of addresses",
+        "confirm_message": "Do you want to create an order for the selected data?",
+        "confirm_delete_address": "Are you sure you want to delete this address? This action cannot be undone."
+      } 
   }
 
   

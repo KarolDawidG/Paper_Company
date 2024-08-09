@@ -167,7 +167,10 @@
       "building": "Numer budynku",
       "no_apartment": "Numer mieszkania",
       "code": "Kod pocztowy",
-      "company_name": "Nazwa firmy"
+      "company_name": "Nazwa firmy",
+      "table_of_addresses": "Tabela adresow",
+      "confirm_message": "Chcesz stworzyc zamowienie dla wybranych danych?",
+      "confirm_delete_address": "Czy na pewno chcesz usunąć ten adres? Tej operacji nie można cofnąć."
     }
   
   }
