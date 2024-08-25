@@ -9,6 +9,7 @@ import {
   createTransactionProducts,
   createRoot,
   deleteAccount,
+  createEmployeeTable,
   eventSchedulerON,
   createClientsTable,
   createClientsAddressTable,
@@ -22,6 +23,7 @@ const initializeDatabase = async () => {
     await pool.query(`USE ${nameDB}`);
     const tables = [
       createAccountsTable,
+      createEmployeeTable,
       createRoot,
       deleteAccount,
       eventSchedulerON,

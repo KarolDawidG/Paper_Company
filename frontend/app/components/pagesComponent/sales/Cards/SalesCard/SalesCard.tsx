@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, LinearProgress, Collapse, Card, CardHeader, CardContent, CardActions, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import SalesCardLogic from "./SalesCardLogic";
 import SelectClientsData from "@/app/components/pagesComponent/sales/Cards/SalesCard/ClientData/SelectClientsData";
 import useTranslation from "@/app/components/language/useTranslation";

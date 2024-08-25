@@ -17,6 +17,8 @@ import producsRoute from "./routes/productsRoute/producsRoute";
 import basketRoute from "./routes/basketRoute/basketRoute";
 import clientRoute from "./routes/clientRoute/clientRoute";
 import addressRoute from "./routes/addressRoute/addressRoute";
+import employeeRoute from "./routes/employeeRoute/employeeRoute"
+import mailRoute from "./routes/mailRoute/mailRoute";
 
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -51,6 +53,8 @@ app.use("/products", producsRoute);
 app.use("/basket", basketRoute);
 app.use("/client", clientRoute);
 app.use("/address", addressRoute);
+app.use("/employee", employeeRoute);
+app.use("/mail", mailRoute);
 
 app.use(middleware);
 app.use(limiter);

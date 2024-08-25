@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Typography from '@mui/material/Typography';
+import { LinearProgress, CardActions, Collapse, Card, CardHeader, CardContent, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import OrderTable from './OrdersTable/OrderTable';
 import useTranslation from "@/app/components/language/useTranslation";
-import { LinearProgress } from '@mui/material';
 
 export const OrderCard = () => {
   const [expanded, setExpanded] = useState(false);

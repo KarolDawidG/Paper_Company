@@ -50,7 +50,17 @@
       "intro": "Nasz system HR umożliwia kompleksowe zarządzanie procesami rekrutacyjnymi, od selekcji kandydatów po onboardowanie, zapewniając efektywną integrację nowych pracowników z kulturą organizacji.",
       "protocols": "Oferujemy zaawansowany system wynagrodzeń i zarządzania dodatkami, który umożliwia personalizację pakietów pracowniczych oraz automatyzację procesów rozliczeniowych.",
       "tools": "System wspiera również planowanie i zarządzanie szkoleniami, promując rozwój kompetencji pracowników i zwiększając ich zaangażowanie oraz efektywność pracy.",
-      "warning": "Serwis w budowie......."
+      "warning": "Serwis w budowie.......",
+      "send_message_employee": "Wyślij wiadomość do pracownika",
+      "select_department": "Wybierz dział",
+      "all_department": "Wszystkie działy",
+      "select_employee": "Wybierz pracownika",
+      "all_employee": "Wszyscy pracownicy",
+      "send_message": "Wyślij wiadomość",
+      "subject": "Temat",
+      "message": "Wiadomość",
+      "list_of_employee": "Lista wszystkich pracownikow",
+      "employee_details": "Szczegóły pracownika"
     },
     "side_bar":{
       "dashboard":"Panel Glowny",
@@ -80,7 +90,7 @@
       "first_name": "Imię",
       "second_name": "Nazwisko",
       "first_last_name": "Imie i nazwisko",
-      "role": "Rola",
+      "role": "Pozycja",
       "select": "Wybierz",
       "delete": "Usuń",
       "update": "Aktualizuj",
@@ -95,7 +105,11 @@
       "order_id": "ID zamowieni",
       "order_date": "Data zamowienia",
       "date_employment": "Data zatrudnienia",
-      "show": "Wyswietl"
+      "show": "Wyswietl",
+      "position": "Stanowisko",
+      "department": "Departament",
+      "phone": "Telefon",
+      "all": "Wszystko"
     },
     "products_card": {
       "title": "Produkty",

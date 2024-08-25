@@ -3,6 +3,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import UnauthorizedViewSecurity from "@/app/components/pagesComponent/security/UnauthorizedView";
 import { Box, Typography } from "@mui/material";
 import WarningPage from "@/app/components/pagesComponent/dashboard/WarningPage";
+import AuthorizedViewHR from "@/app/components/pagesComponent/hr/AuthorizedViewHR";
 
 const HumanResources = () => {
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -31,9 +32,7 @@ const HumanResources = () => {
   }
   
   return (
-    <Box>
-      <Typography>Strona w budowie</Typography>
-    </Box>
+    <AuthorizedViewHR />
   );
 };
 

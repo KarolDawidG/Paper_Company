@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import middleware from "../../config/middleware";
 import { errorHandler } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
-import { sendResetPasswordEmail } from "../../config/emailSender";
+import { sendResetPasswordEmail } from "../../config/mails/emailSender";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import URL from "../../config/url";

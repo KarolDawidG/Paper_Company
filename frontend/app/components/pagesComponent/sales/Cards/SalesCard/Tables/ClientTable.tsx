@@ -101,7 +101,7 @@ const ClientTable = ({ data, handleIdClient, handleDelete, handleOpenEditClient,
       />
 
       <TablePagination
-        rowsPerPageOptions={[5, 10, 50, { label: 'All', value: -1 }]}
+        rowsPerPageOptions={[5, 10, 50, { label: `${t.table.all}`, value: -1 }]}
         labelRowsPerPage={`${t.table.rows_per_page}:`}
         component="div"
         count={sortedData.length}

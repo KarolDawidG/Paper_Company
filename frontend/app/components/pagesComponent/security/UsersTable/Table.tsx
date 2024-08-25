@@ -7,30 +7,14 @@ import TableLogic from './TableLogic';
 import { Role } from './RolaEnum';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
-import SetPageComponent from '@/app/components/utils/tableUtils/SetPageComponent';
 import useTranslation from '@/app/components/language/useTranslation';
+import SetPageComponent from '@/app/components/utils/tableUtils/SetPageComponent';
 
 const CustomTable: React.FC<TableProps> = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
-
-
-  const {
-    page,
-    setPage,
-    rowsPerPage,
-    handleChangePage,
-    handleChangeRowsPerPage
-} = usePaginationLogic();
-
-  const {
-    searchTerm,
-    setSearchTerm,
-    selectedRoles, setSelectedRoles,
-    handleChangeRole,
-    handleDeleteUser,
-    filteredData,
-  } = TableLogic();
+  const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
+  const {searchTerm, setSearchTerm, selectedRoles, setSelectedRoles, handleChangeRole, handleDeleteUser, filteredData} = TableLogic();
 
   const roleOptions = Object.values(Role).map((role) => (
     <MenuItem key={role} value={role.toLowerCase()}>
@@ -45,9 +29,7 @@ const CustomTable: React.FC<TableProps> = () => {
 
   return (
     <Box padding={1}>
-
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-
       <TableContainer component={Paper}>
         <Table size="small" aria-label="simple table">
           <TableHead>
@@ -75,13 +57,11 @@ const CustomTable: React.FC<TableProps> = () => {
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
-
                 <TableCell>
                   <Button onClick={() => handleDeleteUser(user.id)}>
                     {t.table.delete}
                   </Button>
                 </TableCell>
-
                 <TableCell>
                   <FormControl variant="outlined">
                     <InputLabel id={`role-label-${user.id}`}></InputLabel>
@@ -120,7 +100,7 @@ const CustomTable: React.FC<TableProps> = () => {
       />
 
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+        rowsPerPageOptions={[5, 10, 25, { label: `${t.table.all}`, value: -1 }]}
         component="div"
         count={filteredData.length}
         rowsPerPage={rowsPerPage}
