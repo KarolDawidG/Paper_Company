@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const usePaginationLogic = () => {
+const usePaginationLogic = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 

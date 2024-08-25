@@ -50,7 +50,17 @@
       "intro": "Our HR system enables comprehensive management of recruitment processes, from candidate selection to onboarding, ensuring effective integration of new employees with the organization's culture.",
       "protocols": "We offer an advanced remuneration and benefits management system that allows personalization of employee packages and automation of settlement processes.",
       "tools": "The system also supports the planning and management of training, promoting the development of employee competences and increasing their commitment and work efficiency.",
-      "warning": "Service under construction......"
+      "warning": "Service under construction......",
+      "send_message_employee": "Send Message To Employee",
+      "select_department": "Select Department",
+      "all_department": "All Departments",
+      "select_employee": "Select Employee",
+      "all_employee": "All Employees",
+      "send_message": "Send message",
+      "subject": "Subject",
+      "message": "Message",
+      "list_of_employee": "List of all employees",
+      "employee_details": "Employee Details"
     },
     "side_bar":{
       "dashboard":"Dashboard",
@@ -80,7 +90,7 @@
       "first_name": "First Name",
       "second_name": "Second Name",
       "first_last_name": "First and last name",
-      "role": "Role",
+      "role": "Position",
       "select": "Select",
       "delete": "Delete",
       "update": "Update",
@@ -95,7 +105,11 @@
       "order_id": "Order ID",
       "order_date": "Order Date",
       "date_employment": "Date of employment",
-      "show": "Show"
+      "show": "Show",
+      "position": "Position",
+      "department": "Department",
+      "phone": "Phone",
+      "all": "All"
     },
     "products_card": {
       "title": "Products",

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Grid, Typography, Collapse, CardActions, CardContent, CardHeader, Card, LinearProgress} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import axios from 'axios';
 import {ProductCard} from './ProductCard';
 import useTranslation from "@/app/components/language/useTranslation";

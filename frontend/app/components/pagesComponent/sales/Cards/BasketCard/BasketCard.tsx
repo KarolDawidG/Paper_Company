@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Collapse, Grid, CardActions, CardContent, CardHeader, Card, Button, LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ExpandMore } from '../../utils/ExpandUtils/ExpandMore';
+import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import { useCart } from './CartContext';
 import useTranslation from "@/app/components/language/useTranslation";
 import axiosInstance from '@/app/api/axiosInstance';

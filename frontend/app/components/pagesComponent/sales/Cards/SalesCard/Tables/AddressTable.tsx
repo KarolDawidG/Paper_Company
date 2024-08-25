@@ -3,15 +3,15 @@ import Typography from '@mui/material/Typography';
 import { Box, LinearProgress, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TablePagination, TableSortLabel, IconButton } from '@mui/material';
 import { DisableButton } from "@/app/components/layout/Buttons";
 import BaseDialog from "@/app/components/utils/BaseDialog";
-import { usePaginationLogic } from '../../../../../utils/tableUtils/PaginationControl';
 import SearchBar from "../../../../../utils/tableUtils/Search";
 import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import useSorting from "@/app/components/utils/tableUtils/SortingControl";
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
-import SetPageComponent from "@/app/components/utils/tableUtils/SetPageComponent";
 import useTranslation from "@/app/components/language/useTranslation";
+import usePaginationLogic from "@/app/components/utils/tableUtils/PaginationControl";
+import SetPageComponent from "@/app/components/utils/tableUtils/SetPageComponent";
 
 export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddress, handleIdAddress, handleOrder, handleClearAddresSelect}:any) => {
     const { page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
@@ -35,7 +35,6 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
 
     const handleConfirmDelete = () => {
         handleDeleteAddress(currentAddressId);
-        
         setOpenDialog(false);
     };
 
@@ -130,7 +129,7 @@ export const AddressTable = ({ selectedAddressId, addressData, handleDeleteAddre
             />
 
             <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                rowsPerPageOptions={[5, 10, 25, { label: `${t.table.all}`, value: -1 }]}
                 component="div"
                 count={sortedData.length}
                 rowsPerPage={rowsPerPage}

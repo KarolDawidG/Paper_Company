@@ -19,6 +19,21 @@ const createAccounts: string = `
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
+const createEmployee: string = `
+    CREATE TABLE IF NOT EXISTS employees (
+      id VARCHAR(36) PRIMARY KEY,
+      first_name VARCHAR(50),
+      last_name VARCHAR(255),
+      email VARCHAR(100) UNIQUE,
+      phone_number VARCHAR(20),
+      department VARCHAR(100),
+      position VARCHAR(100),
+      hire_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      account_id VARCHAR(36),  -- FK referencing accounts(id)
+      FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+    `;
+
 const createClients: string = `
     CREATE TABLE IF NOT EXISTS clients (
       id varchar(36) NOT NULL,
@@ -118,27 +133,12 @@ const deleteNotActiveAccount: string = `
 const event_schedulerON: string = `SET GLOBAL event_scheduler = ON;
 `;
 
-const calculateTotalCartValue: string = `SELECT SUM(products.price * order_details.quantity) AS total_value
-            FROM order_details
-            JOIN products ON order_details.product_id = products.id
-            WHERE order_details.order_id = '33e56799-8de0-490c-ad72-427571e6fb5d';
-            `;
-
-const calculateProductValues: string = `SELECT 
-            products.name AS product_name,
-            products.price * order_details.quantity AS product_value
-        FROM 
-            order_details
-        JOIN 
-            products ON order_details.product_id = products.id
-        WHERE 
-            order_details.order_id = '33e56799-8de0-490c-ad72-427571e6fb5d';
-        `;
 
 export {
   insertRoot,
   findRoot,
   createAccounts,
+  createEmployee,
   createClientAddresses,
   createOrderDetails,
   deleteNotActiveAccount,

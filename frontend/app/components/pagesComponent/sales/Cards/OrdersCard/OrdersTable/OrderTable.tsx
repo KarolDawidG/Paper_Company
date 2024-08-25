@@ -111,7 +111,7 @@ const OrderTable: React.FC<any> = () => {
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+        rowsPerPageOptions={[5, 10, 25, { label: `${t.table.all}`, value: -1 }]}
         component="div"
         count={filteredData.length}
         rowsPerPage={rowsPerPage}

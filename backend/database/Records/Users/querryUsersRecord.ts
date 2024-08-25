@@ -17,7 +17,7 @@ const SELECT_ALL: string = "SELECT * FROM accounts";
 const SELECT_BY_ROLE: string = "SELECT * FROM `accounts` WHERE `role` = ?";
 
 const SELECT_BY_EMAIL: string = "SELECT * FROM accounts WHERE email = ?";
-// the best bug ever xD
+
 const SELECT_BY_ID: string =
   "SELECT username, email, created_at, password, role FROM accounts WHERE id = ?";
 

@@ -3,6 +3,7 @@ import {
   insertRoot,
   findRoot,
   createAccounts,
+  createEmployee,
   createClientAddresses,
   createOrderDetails,
   deleteNotActiveAccount,
@@ -13,6 +14,14 @@ import {
   createproductTranslations,
   createLanguage,
 } from "./querrys";
+
+const createEmployeeTable = async (pool: Pool): Promise<void> => {
+  try {
+    await pool.query(createEmployee);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const createproductTranslationsTable = async (pool: Pool): Promise<void> => {
   try {
@@ -110,6 +119,7 @@ const createRoot = async (pool: Pool): Promise<void> => {
 
 export { 
   createClientsTable, 
+  createEmployeeTable,
   createClientsAddressTable, 
   createTransactionOrdersDetails, 
   createTransactionProducts, 

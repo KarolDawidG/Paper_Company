@@ -50,7 +50,17 @@
     "intro": "Notre système RH permet une gestion complète des processus de recrutement, de la sélection des candidats à l'intégration, assurant une intégration efficace des nouveaux employés dans la culture de l'organisation.",
     "protocols": "Nous offrons un système avancé de gestion des salaires et des avantages, permettant la personnalisation des packages des employés et l'automatisation des processus de paie.",
     "tools": "Le système prend également en charge la planification et la gestion des formations, favorisant le développement des compétences des employés et augmentant leur engagement et leur efficacité au travail.",
-    "warning": "Service en construction..."
+    "warning": "Service en construction...",
+    "send_message_employee": "Envoyer un message à l'employé",
+    "select_department": "Sélectionner un département",
+    "all_department": "Tous les départements",
+    "select_employee": "Sélectionner un employé",
+    "all_employee": "Tous les employés",
+    "send_message": "Envoyer un message",
+    "subject": "Sujet",
+    "message": "Message",
+    "list_of_employee": "Liste de tous les employés",
+    "employee_details": "Détails de l'employé"
   },
   "side_bar": {
     "dashboard": "Tableau de Bord",
@@ -95,7 +105,11 @@
     "order_id": "Identifiant de commande",
     "order_date": "Date de commande",
     "date_employment": "Date d'embauche",
-    "show": "Afficher"
+    "show": "Afficher",
+    "position": "Position",
+    "department": "Département",
+    "phone": "Téléphone",
+    "all": "Tout"
   },
   "products_card": {
     "title": "Des produits",
