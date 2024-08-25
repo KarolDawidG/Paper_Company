@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { MailDialogProps } from './Interfaces/MailDialogProps';
+import { MailDialogProps } from '../Interfaces/MailDialogProps';
 
 export const MailDialog: React.FC<MailDialogProps> = ({ open, email, onClose }) => {
   return (

@@ -5,7 +5,7 @@ import { Grid, Typography, LinearProgress } from '@mui/material';
 import {CartProvider} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 import { EmployeeProfiles } from './Cards/EmployeeProfiles';
 import { SendMessageToEmployee } from './Cards/SendMessageToEmployee';
-import { MailBox } from './Cards/MailBox';
+import { MailBox } from './Cards/MailBoxComponent/MailBox';
 
 const AuthorizedViewHR = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
