@@ -4,9 +4,9 @@ import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationCont
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import SetPageComponent from '@/app/components/utils/tableUtils/SetPageComponent';
 import useSearchLogic from '@/app/components/utils/tableUtils/SearchControl';
-import { fetchEmployeeData } from '../Api/FetchEmployeeData';
-import { EmployeeInterface } from '../Interfaces/EmployeeInterface';
 import useTranslation from '@/app/components/language/useTranslation';
+import { EmployeeInterface } from '../../Interfaces/EmployeeInterface';
+import { fetchEmployeeData } from '../../Api/FetchEmployeeData';
 
 export const EmployeeTable = () => {
   const [employeeData, setEmployeeData] = useState<EmployeeInterface[]>([]);

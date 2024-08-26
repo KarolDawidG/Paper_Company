@@ -60,7 +60,21 @@
     "subject": "Sujet",
     "message": "Message",
     "list_of_employee": "Liste de tous les employés",
-    "employee_details": "Détails de l'employé"
+    "employee_details": "Détails de l'employé",
+    "inbox_title": "Boîte de réception",
+    "refresh": "Rafraîchir",
+    "confirm_delete": "Confirmation de suppression.",
+    "confirm_delete_question": "Êtes-vous sûr de vouloir supprimer ce message ?",
+    "email_box": "Boîte e-mail :",
+    "email_box_description": "Cette boîte e-mail est utilisée pour recevoir des messages professionnels. Vérifiez ici tous les messages entrants et gérez-les conformément aux règles en vigueur.",
+    "no_new_emails": "Actuellement, il n'y a pas de nouveaux messages dans la boîte de réception. Veuillez vérifier plus tard ou contacter l'administrateur si vous pensez qu'il devrait y avoir des messages.",
+    "employee_title": "Liste de Tous les Employés",
+    "employee_description": "Le tableau contient une liste complète des employés ainsi que des informations de base telles que le prénom, le nom de famille, le département et le poste. Cela permet une vue d'ensemble rapide et un accès aux données clés concernant chaque employé de l'organisation.",
+    "employee_note": "Si vous avez besoin d'informations détaillées sur un employé spécifique ou si vous devez modifier des données, veuillez contacter le département des ressources humaines. La liste est régulièrement mise à jour pour garantir l'exactitude des informations.",
+    "employee_profiles": "Profil de l'employé",
+    "message_center_title": "Centre d'Envoi de Messages",
+    "message_center_description": "Le centre d'envoi de messages permet l'envoi en masse d'e-mails aux employés de différents départements, à des personnes sélectionnées individuellement ou à tout le monde dans l'organisation. Utilisez cette fonctionnalité pour gérer efficacement la communication et informer les employés des sujets importants.",
+    "message_center_note": "Si vous avez besoin d'aide pour créer des messages ou configurer les destinataires, consultez la documentation ou contactez le service d'assistance. Avant d'envoyer des messages importants, nous vous recommandons d'envoyer un e-mail de test pour vous assurer que tout fonctionne correctement."
   },
   "side_bar": {
     "dashboard": "Tableau de Bord",
@@ -109,7 +123,11 @@
     "position": "Position",
     "department": "Département",
     "phone": "Téléphone",
-    "all": "Tout"
+    "all": "Tout",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "from": "Depuis"
   },
   "products_card": {
     "title": "Des produits",

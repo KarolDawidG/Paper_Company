@@ -9,7 +9,7 @@ import URL from "../../config/url";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { validatePassword } from "../../config/config";
-import { sendRegisterEmail } from "../../config/mails/emailSender";
+import { sendRegisterEmail } from "../../config/mails/emailsSender";
 
 require("dotenv").config();
 const JWT_CONFIRMED_TOKEN = process.env.JWT_CONFIRMED_TOKEN;

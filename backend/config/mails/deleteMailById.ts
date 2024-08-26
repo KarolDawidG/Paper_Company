@@ -1,6 +1,6 @@
 import Imap from 'imap';
 import dotenv from 'dotenv';
-import { imapConfig } from './imapConfig';
+import { imapConfig } from './configs/imapConfig';
 dotenv.config();
 
 export const deleteMailById = (mailId: string): Promise<void> => {
@@ -27,7 +27,6 @@ export const deleteMailById = (mailId: string): Promise<void> => {
       });
   
       imap.once('end', () => {
-       // console.log('Connection ended');
       });
   
       imap.connect();

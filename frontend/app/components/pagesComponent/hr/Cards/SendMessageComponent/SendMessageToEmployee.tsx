@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import {LinearProgress, Collapse, Card, CardHeader, CardContent, Button, TextField, Select, FormControl, MenuItem, InputLabel, Typography } from '@mui/material';
+import {LinearProgress, Collapse, Card, CardHeader, CardContent, Button, TextField, Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { EmployeeInterface, EmployeeMessageInterface } from './Interfaces/EmployeeInterface';
-import { fetchEmployeeData } from './Api/FetchEmployeeData';
-import { notify } from '@/app/components/notification/Notify';
+import { EmployeeInterface, EmployeeMessageInterface } from '../Interfaces/EmployeeInterface';
+import { fetchEmployeeData } from '../Api/FetchEmployeeData';
 import useTranslation from '@/app/components/language/useTranslation';
-import axiosInstance from '@/app/api/axiosInstance';
-import axios from 'axios';
+import MessageCenterInfo from './MessageCardContent';
+import { sendMail } from '../Api/FetchMailsData';
 
 export const SendMessageToEmployee = () => {
   const [employees, setEmployeeData] = useState<EmployeeInterface[]>([]);
@@ -15,13 +14,11 @@ export const SendMessageToEmployee = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<string>('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
-  
   const departments = Array.from(new Set(employees.map(emp => emp.department)));
-
   const [expanded, setExpanded] = useState(false);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -53,19 +50,7 @@ export const SendMessageToEmployee = () => {
         message: message,
       }));
   
-      axios.post('http://localhost:3001/mail', emailData, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-      .then(response => {
-        console.log('Emails sent successfully:', response.data);
-        notify("Emails sent successfully");
-      })
-      .catch(error => {
-        console.error('Error sending emails:', error);
-        notify("Error sending emails");
-      });
+      sendMail(emailData);
     }
   };
 
@@ -104,19 +89,7 @@ export const SendMessageToEmployee = () => {
         }
       />
       
-      <CardContent>
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          Centrum Wysyłania Wiadomości
-        </Typography>
-        <Typography variant="body1" paragraph>
-          Centrum wysyłania wiadomości umożliwia masowe wysyłanie e-maili do pracowników różnych działów, pojedynczych wybranych osób lub wszystkich w organizacji. 
-          Skorzystaj z tej funkcji, aby efektywnie zarządzać komunikacją i informować pracowników o istotnych sprawach.
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Jeśli potrzebujesz pomocy przy tworzeniu wiadomości lub konfiguracji odbiorców, zapoznaj się z dokumentacją lub skontaktuj się z działem wsparcia. Przed wysłaniem ważnych wiadomości, zalecamy wysłanie testowego e-maila, aby upewnić się, że wszystko działa poprawnie.
-        </Typography>
-      </CardContent>
-
+      <MessageCenterInfo />
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

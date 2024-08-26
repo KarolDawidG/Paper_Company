@@ -3,8 +3,8 @@ import useTranslation from "../../language/useTranslation";
 import { Grid, Typography, LinearProgress } from '@mui/material';
 
 import {CartProvider} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
-import { EmployeeProfiles } from './Cards/EmployeeProfiles';
-import { SendMessageToEmployee } from './Cards/SendMessageToEmployee';
+import { EmployeeProfiles } from './Cards/EmployeeProfilesComponent/EmployeeProfiles';
+import { SendMessageToEmployee } from './Cards/SendMessageComponent/SendMessageToEmployee';
 import { MailBox } from './Cards/MailBoxComponent/MailBox';
 
 const AuthorizedViewHR = () => {

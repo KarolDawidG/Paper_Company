@@ -3,15 +3,7 @@ import { List, ListItem, ListItemText, Box, Typography, IconButton, Divider } fr
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
-import { Mail } from '../Interfaces/MailInterface';
-
-interface EmailListContentProps {
-  paginatedEmails: Mail[];
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  handleEmailClick: (email: Mail) => void;
-  handleDeleteClick: (emailId: string, event: React.MouseEvent) => void;
-}
+import { EmailListContentProps } from '../Interfaces/EmailListContentProps';
 
 const EmailListContent: React.FC<EmailListContentProps> = ({
   paginatedEmails,

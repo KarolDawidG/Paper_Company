@@ -7,8 +7,9 @@ import { MailDialog } from './MailDialog';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
 import useSearchLogic from '@/app/components/utils/tableUtils/SearchControl';
 import BaseDialog from '@/app/components/utils/BaseDialog';
-import MailBoxHeader from './MailBoxHeader'; 
+import MailBoxHeader from './MailBoxCardContent'; 
 import EmailListContent from './EmailListContent';
+import useTranslation from '@/app/components/language/useTranslation';
 
 export const MailBox = () => {
   const [expanded, setExpanded] = useState(false);
@@ -17,9 +18,10 @@ export const MailBox = () => {
   const [selectedEmail, setSelectedEmail] = useState<Mail | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [emailToDelete, setEmailToDelete] = useState<string | null>(null);
-
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData} = useSearchLogic({ data: emails }); 
+  const currentLocale = localStorage.getItem("locale") || "en";
+  const t = useTranslation(currentLocale);
 
   const loadEmails = async () => {
     setLoading(true);
@@ -73,10 +75,14 @@ export const MailBox = () => {
   const endIndex = startIndex + rowsPerPage;
   const paginatedEmails = filteredData.slice(startIndex, endIndex);
 
+  if (!t.human_resources) {
+    return <LinearProgress />;
+  }
+
   return (
     <Card sx={{ maxWidth: '100%' }}>
       <CardHeader
-        title="Mail Box"
+        title={t.human_resources.inbox_title}
         action={
           <>
             <Button
@@ -87,7 +93,7 @@ export const MailBox = () => {
             >
               <ExpandMoreIcon />
             </Button>
-            <Button onClick={handleRefresh} aria-label="refresh" sx={{ marginLeft: 1 }}>Odśwież</Button>
+            <Button onClick={handleRefresh} aria-label="refresh" sx={{ marginLeft: 1 }}>{t.human_resources.refresh}</Button>
           </>
         }
       />
@@ -116,6 +122,7 @@ export const MailBox = () => {
                 rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 rowsPerPageOptions={[5, 10, 25]}
+                labelRowsPerPage={`${t.table.rows_per_page}`}
               />
             </>
           )}
@@ -132,9 +139,9 @@ export const MailBox = () => {
         open={dialogOpen} 
         onClose={handleCancelDelete} 
         onConfirm={handleConfirmDelete} 
-        title="Potwierdzenie usunięcia"
+        title={t.human_resources.confirm_delete}
       >
-        Czy na pewno chcesz usunąć tę wiadomość?
+        {t.human_resources.confirm_delete_question}
       </BaseDialog>
     </Card>
   );
