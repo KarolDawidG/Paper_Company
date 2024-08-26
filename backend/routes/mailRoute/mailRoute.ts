@@ -4,12 +4,12 @@ import { limiter, errorHandler } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
-import { sendEmployeeEmail } from "../../config/mails/emailSender";
 import { EmployeeEmail } from "./helpers/EmployeeEmailInterface";
 import { validateEmail } from "./helpers/validateEmailData";
 import { handleResponse } from "./helpers/responseHandler";
 import { fetchAllMails } from "../../config/mails/receiveEmails"; 
 import { deleteMailById } from "../../config/mails/deleteMailById";
+import { sendEmployeeEmail } from "../../config/mails/emailsSender";
 
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);

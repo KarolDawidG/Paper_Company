@@ -60,7 +60,21 @@
       "subject": "Temat",
       "message": "Wiadomość",
       "list_of_employee": "Lista wszystkich pracownikow",
-      "employee_details": "Szczegóły pracownika"
+      "employee_details": "Szczegóły pracownika",
+      "inbox_title": "Skrzynka odbiorcza",
+      "refresh": "Odśwież",
+      "confirm_delete": "Potwierdzenie usunięcia.",
+      "confirm_delete_question": "Czy na pewno chcesz usunąć tę wiadomość?",
+      "email_box": "Skrzynka e-mail:",
+      "email_box_description": "Ta skrzynka e-mail jest używana do odbierania wiadomości służbowych. Sprawdź tutaj wszystkie przychodzące wiadomości i zarządzaj nimi zgodnie z obowiązującymi zasadami.",
+      "no_new_emails": "Obecnie brak nowych wiadomości w skrzynce. Sprawdź ponownie później lub skontaktuj się z administratorem, jeśli uważasz, że powinny być wiadomości.",
+      "employee_title": "Lista Wszystkich Pracowników",
+      "employee_description": "Tabela zawiera pełną listę pracowników wraz z podstawowymi informacjami, takimi jak imię, nazwisko, dział oraz stanowisko. Umożliwia to szybki przegląd i dostęp do kluczowych danych dotyczących każdego pracownika w organizacji.",
+      "employee_note": "W przypadku potrzeby szczegółowych informacji o konkretnym pracowniku lub edycji danych, skontaktuj się z działem HR. Lista jest aktualizowana regularnie, aby zapewnić dokładność informacji.",
+      "employee_profiles": "Profil pracownika",
+      "message_center_title": "Centrum Wysyłania Wiadomości",
+      "message_center_description": "Centrum wysyłania wiadomości umożliwia masowe wysyłanie e-maili do pracowników różnych działów, pojedynczych wybranych osób lub wszystkich w organizacji. Skorzystaj z tej funkcji, aby efektywnie zarządzać komunikacją i informować pracowników o istotnych sprawach.",
+      "message_center_note": "Jeśli potrzebujesz pomocy przy tworzeniu wiadomości lub konfiguracji odbiorców, zapoznaj się z dokumentacją lub skontaktuj się z działem wsparcia. Przed wysłaniem ważnych wiadomości, zalecamy wysłanie testowego e-maila, aby upewnić się, że wszystko działa poprawnie."
     },
     "side_bar":{
       "dashboard":"Panel Glowny",
@@ -109,7 +123,11 @@
       "position": "Stanowisko",
       "department": "Departament",
       "phone": "Telefon",
-      "all": "Wszystko"
+      "all": "Wszystko",
+      "confirm": "Potwierdź",
+      "cancel": "Anuluj",
+      "close": "Zamknij",
+      "from": "Od"
     },
     "products_card": {
       "title": "Produkty",

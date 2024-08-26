@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import middleware from "../../config/middleware";
 import { errorHandler } from "../../config/config";
-import { sendContactEmail } from "../../config/mails/emailSender";
+import { sendContactEmail } from "../../config/mails/configs/nodemoailerConfig";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";

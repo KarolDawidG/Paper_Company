@@ -60,7 +60,21 @@
       "subject": "Subject",
       "message": "Message",
       "list_of_employee": "List of all employees",
-      "employee_details": "Employee Details"
+      "employee_details": "Employee Details",
+      "inbox_title": "Inbox",
+      "refresh": "Refresh",
+      "confirm_delete": "Confirm deletion.",
+      "confirm_delete_question": "Are you sure you want to delete this message?",
+      "email_box": "Email box:",
+      "email_box_description": "This email box is used for receiving business messages. Check all incoming messages here and manage them according to applicable rules.",
+      "no_new_emails": "Currently, there are no new messages in the inbox. Please check back later or contact the administrator if you believe there should be messages.",
+      "employee_title": "List of All Employees",
+      "employee_description": "The table contains a full list of employees along with basic information such as first name, last name, department, and position. This allows for a quick overview and access to key data regarding each employee in the organization.",
+      "employee_note": "If you need detailed information about a specific employee or need to edit data, please contact the HR department. The list is regularly updated to ensure accuracy of the information.",
+      "employee_profiles": "Employee Profile",
+      "message_center_title": "Message Sending Center",
+      "message_center_description": "The message sending center allows mass emailing to employees of different departments, individual selected people, or everyone in the organization. Use this feature to efficiently manage communication and inform employees about important matters.",
+      "message_center_note": "If you need help creating messages or configuring recipients, refer to the documentation or contact the support department. Before sending important messages, we recommend sending a test email to ensure everything is working correctly."
     },
     "side_bar":{
       "dashboard":"Dashboard",
@@ -109,7 +123,11 @@
       "position": "Position",
       "department": "Department",
       "phone": "Phone",
-      "all": "All"
+      "all": "All",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close",
+      "from": "From"
     },
     "products_card": {
       "title": "Products",
