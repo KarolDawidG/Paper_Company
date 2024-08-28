@@ -9,14 +9,14 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-//todo: dokumentacja do zmiany
 router.get("/:role", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const role: string = req.params.role;
+
     try {
       const usersList = await UsersRecord.listByRole(role);
       return res.json({ usersList });
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Users Route: GET: Error fetching users with role ${role}. Error: ${error.message}, Stack: ${error.stack}`);
       return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
     }
   },
@@ -25,13 +25,13 @@ router.get("/:role", verifyToken, async (req: Request, res: Response, next: Next
 router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const {username, email} = req.body;
+
     try {
       await UsersRecord.updateUserData([username, email, userId]);
       return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("Dane ustawione poprawnie.");
+        .status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Users Route: PUT: Error updating user with ID ${userId}. Data: {username: ${username}, email: ${email}}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
@@ -43,10 +43,9 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
 
     try {
       const [userInfo]: any = await UsersRecord.selectById([id]);
-
       return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Users Route: GET: Error fetching user with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Users Route: GET: ${MESSAGES.UNKNOW_ERROR}`);

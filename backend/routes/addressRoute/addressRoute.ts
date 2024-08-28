@@ -15,7 +15,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
       const addressList = await AddressRecord.getListById(id);
       return res.json({ addressList });
     } catch (error: any) {
-      logger.error(`Address Route: GET: ${error.message}`);
+      logger.error(`Address Route: GET: Error retrieving address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Address Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -31,7 +31,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Address Route: DELETE: ${error.message}`);
+      logger.error(`Address Route: DELETE: Error deleting address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`); 
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Address Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
@@ -52,6 +52,13 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *     summary: Pobiera listę wszystkich adresow danego uzytkownika.
  *     description: Endpoint służący do pobierania adresow.
  *     tags: [Adres]
+ *     parameters:  * // Dodano parametry dla metody GET
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identyfikator użytkownika.
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Pomyślnie pobrano listę.
@@ -60,7 +67,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *             schema:
  *               type: object
  *               properties:
- *                 ordersList:
+ *                 addressList:  * // Zmieniono z ordersList na addressList
  *                   type: array
  *                   items:
  *                     type: object
@@ -75,7 +82,6 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *                   type: string
  *                   description: Komunikat błędu.
  */
-
 
 /**
  * @swagger

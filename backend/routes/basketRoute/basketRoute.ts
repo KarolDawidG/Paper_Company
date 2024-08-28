@@ -14,6 +14,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     try {
       const basketData = req.body;
       const orderId = basketData.order_id;
+
         for (const key in basketData) {
             if (key !== "order_id") {
                 const { id, name, description, price, stock, clickCount } = basketData[key];
@@ -24,16 +25,16 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                         product_id: id,
                         quantity: clickCount,
                     });
-                } catch (error) {
-                    logger.error(error);
+                } catch (error:any) {
+                    logger.error(`Basket Route: POST: Error inserting product with ID ${id} for order ${orderId}. Error: ${error.message}, Stack: ${error.stack}`);
                     res.status(STATUS_CODES.SERVER_ERROR).send(`Basket error: ${MESSAGES.SERVER_ERROR}`);
                     return;
                 }
             }
         }
-        res.status(STATUS_CODES.SUCCESS).send(MESSAGES.DATA_INSERTED);
-    } catch (error) {
-        logger.error(error);
+        res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error:any) {
+        logger.error(`Basket Route: POST: Error processing basket for order ${req.body.order_id}. Error: ${error.message}, Stack: ${error.stack}`);
         res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
     }
 });

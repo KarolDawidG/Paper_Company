@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LinearProgress, Collapse, Card, CardHeader, CardContent, Button, TablePagination } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Mail } from '../Interfaces/MailInterface';
@@ -20,9 +20,17 @@ export const MailBox = () => {
   const [emailToDelete, setEmailToDelete] = useState<string | null>(null);
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage} = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData} = useSearchLogic({ data: emails }); 
+
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
 
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const paginatedEmails = useMemo(() => {
+    return filteredData.slice(startIndex, endIndex);
+  }, [filteredData, startIndex, endIndex]);
+
+  
   const loadEmails = async () => {
     setLoading(true);
     try {
@@ -70,10 +78,6 @@ export const MailBox = () => {
     setDialogOpen(false);
     setEmailToDelete(null);
   };
-
-  const startIndex = page * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-  const paginatedEmails = filteredData.slice(startIndex, endIndex);
 
   if (!t.human_resources) {
     return <LinearProgress />;
