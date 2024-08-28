@@ -15,6 +15,13 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
       const basketData = req.body;
       const orderId = basketData.order_id;
 
+      if (!orderId) {
+        logger.warn("Basket Route: POST: Missing order_id in request.");
+        return res
+            .status(STATUS_CODES.BAD_REQUEST)
+            .send(MESSAGES.BAD_REQUEST);
+    }
+
         for (const key in basketData) {
             if (key !== "order_id") {
                 const { id, name, description, price, stock, clickCount } = basketData[key];
