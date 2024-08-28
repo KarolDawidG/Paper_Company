@@ -11,14 +11,23 @@ router.use(middleware, limiter);
 
 router.get("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
+
     try {
       const addressList = await AddressRecord.getListById(id);
-      return res.json({ addressList });
+        if (addressList.length === 0) {
+          logger.warn(`Address Route: GET: No address found for the given ID: ${id}.}.`);
+          return res
+            .status(STATUS_CODES.NOT_FOUND)
+            .json({message: MESSAGES.NOT_FOUND});
+        }
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .json({ addressList });
     } catch (error: any) {
       logger.error(`Address Route: GET: Error retrieving address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Address Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+        .send(`Address Route: GET: ${error.message}`);
     }
 });
 
@@ -26,7 +35,13 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
 
     try {
-      await AddressRecord.delete(id)
+      const [result] = await AddressRecord.delete(id);
+        if (result.affectedRows === 0) {
+          logger.warn(`Address Route: DELETE: No address found to delete for the given ID: ${id}.`);
+          return res
+            .status(STATUS_CODES.NOT_FOUND)
+            .json({ message: MESSAGES.NOT_FOUND });
+        }
       return res
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);

@@ -14,21 +14,38 @@ router.use(middleware, limiter, errorHandler);
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const usersList = await UsersRecord.listAll();
-    return res.json({ usersList });
+      if (usersList.length === 0) {
+        logger.warn("Admin Route: GET: No users found.");
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .send(MESSAGES.NOT_FOUND);
+      }
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .json({ usersList });
   } catch (error: any) {
-    logger.error(`Admin Route: GET: Error fetching users list. Error: ${error.message}, Stack: ${error.stack}`);  
-    return res.status(STATUS_CODES.SERVER_ERROR).send(`Admin Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    logger.error(`Admin Route: GET: Error fetching users list. Error: ${error.message}`);  
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(`Admin Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
   }
 },
 );
 
 router.put("/:id/:role", verifyToken, async (req, res) => {
-  const id = req.params.id;
-  const role = req.params.role;
+  const {id, role} = req.params;
 
   try {
-    await UsersRecord.updateRole(role, id);
-    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    const [result] = await UsersRecord.updateRole(role, id);
+      if (result.affectedRows === 0) {
+        logger.warn(`Admin Route: PUT: No user found with ID ${id} to update.`);
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .send(MESSAGES.NOT_FOUND);
+      }
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error:any) {
     logger.error(`Admin Route: PUT: Error updating role for user ID ${id} to ${role}. Error: ${error.message}, Stack: ${error.stack}`);
     return res
@@ -41,8 +58,16 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
   const id: string = req.params.id;
 
   try {
-    await UsersRecord.delete(id);
-      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    const [result] = await UsersRecord.delete(id);
+      if (result.affectedRows === 0) {
+        logger.warn(`Admin Route: DELETE: No user found to delete with ID ${id}.`);
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .send(MESSAGES.NOT_FOUND);
+      }
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
     logger.error(`Admin Route: DELETE: Error deleting user with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
     return res
