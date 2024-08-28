@@ -37,6 +37,7 @@ const MESSAGES: Record<string, string> = {
   FORBIDDEN:
     "Dostęp zabroniony. Niewystarczające uprawnienia do żądanego zasobu.",
   CAPTCHA_ERROR: "Nie udało się zweryfikować reCAPTCHA.",
+  NOT_FOUND: "No address found for the given ID.",
 
   // Authorization
   JWT_ERROR:
