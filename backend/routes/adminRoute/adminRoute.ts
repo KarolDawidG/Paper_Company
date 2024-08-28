@@ -16,7 +16,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     const usersList = await UsersRecord.listAll();
     return res.json({ usersList });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(`Admin Route: GET: Error fetching users list. Error: ${error.message}, Stack: ${error.stack}`);  
     return res.status(STATUS_CODES.SERVER_ERROR).send(`Admin Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
   }
 },
@@ -28,11 +28,11 @@ router.put("/:id/:role", verifyToken, async (req, res) => {
 
   try {
     await UsersRecord.updateRole(role, id);
-    return res.status(200).send("The operation has been successful.");
-  } catch (error) {
-    console.error(error);
+    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+  } catch (error:any) {
+    logger.error(`Admin Route: PUT: Error updating role for user ID ${id} to ${role}. Error: ${error.message}, Stack: ${error.stack}`);
     return res
-      .status(500)
+      .status(STATUS_CODES.SERVER_ERROR)
       .send(`Admin Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
   }
 });
@@ -42,17 +42,14 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
 
   try {
     await UsersRecord.delete(id);
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .send("The operation has been successful.");
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(`Admin Route: DELETE: Error deleting user with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
     return res
       .status(STATUS_CODES.SERVER_ERROR)
       .send(`Admin Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
   }
-},
-);
+});
 
 /**
  * @swagger
