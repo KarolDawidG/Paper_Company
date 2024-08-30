@@ -3,13 +3,1950 @@
   "info": {
     "title": "Paper Company",
     "version": "1.0.0",
-    "description": "Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial \"The Office\". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość."
+    "description": "Welcome to the ERP System API for Paper Company, inspired by the iconic TV show \"The Office.\" This system is designed to support and optimize key business processes within a paper distribution company, from inventory management to finance and accounting."
   },
   "paths": {
+    "/address/{id}": {
+      "get": {
+        "summary": "Retrieves the list of addresses for a given user ID.",
+        "description": "This endpoint retrieves a list of addresses based on the user ID.",
+        "tags": [
+          "Address"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "User ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of addresses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "addressList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "ab68bc7d-39f1-4d3d-9a57-ff11a08c0a29"
+                          },
+                          "client_id": {
+                            "type": "string",
+                            "example": "84b4a462-e420-48b2-ab41-da6cf59e0220"
+                          },
+                          "miasto": {
+                            "type": "string",
+                            "example": "Gdynia"
+                          },
+                          "ulica": {
+                            "type": "string",
+                            "example": "Swietojanska"
+                          },
+                          "nr_budynku": {
+                            "type": "string",
+                            "example": "22"
+                          },
+                          "nr_mieszkania": {
+                            "type": "string",
+                            "example": "2"
+                          },
+                          "kod": {
+                            "type": "string",
+                            "example": "22-111"
+                          },
+                          "nazwa_firmy": {
+                            "type": "string",
+                            "example": "Kompany name Gdynia"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No address found for the given ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No address found for the given ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error while retrieving the list of addresses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes an address by ID.",
+        "description": "This endpoint deletes an address based on its ID.",
+        "tags": [
+          "Address"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Address ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Operation completed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No address found to delete for the given ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No address found for the given ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error while deleting the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin": {
+      "get": {
+        "summary": "Pobiera listę wszystkich użytkowników.",
+        "description": "Endpoint służący do pobierania listy wszystkich użytkowników.",
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie pobrano listę użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "fa97c775-1613-4035-b93b-2fb852e37ec0"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "Alexis"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "brill_alexis@gmail.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "example": "hr"
+                          },
+                          "img_url": {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-03-21T15:14:55.000Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Błąd serwera podczas pobierania listy użytkowników.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu.",
+                      "example": "Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{id}/{role}": {
+      "put": {
+        "summary": "Aktualizuje rolę użytkownika.",
+        "description": "Endpoint służący do aktualizacji roli użytkownika na podstawie jego identyfikatora.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "role",
+            "required": true,
+            "description": "Nowa rola użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie zaktualizowano rolę użytkownika."
+          },
+          "500": {
+            "description": "Błąd serwera podczas aktualizacji roli użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu.",
+                      "example": "Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{id}": {
+      "delete": {
+        "summary": "Usuwa użytkownika.",
+        "description": "Endpoint służący do usuwania użytkownika na podstawie jego identyfikatora.",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identyfikator użytkownika.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomyślnie usunięto użytkownika."
+          },
+          "500": {
+            "description": "Błąd serwera podczas usuwania użytkownika.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Komunikat błędu.",
+                      "example": "Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{role}": {
+      "get": {
+        "summary": "Retrieve a list of users by role.",
+        "description": "Endpoint available only for users with \"admin\" role. Retrieves a list of users with the specified role.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "role",
+            "required": true,
+            "description": "The role of the users to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "fa97c775-1613-4035-b93b-2fb852e37ec0"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "Alexis"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "brill_alexis@gmail.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "example": "hr"
+                          },
+                          "img_url": {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-03-21T15:14:55.000Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Access denied. Insufficient permissions for the requested resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "summary": "Update user data.",
+        "description": "Endpoint for updating user data based on their ID.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the user whose data will be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "Alexis"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "brill_alexis@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated user data."
+          },
+          "403": {
+            "description": "Access denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Access denied. Insufficient permissions for the requested resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/user/{id}": {
+      "get": {
+        "summary": "Retrieve user information by ID.",
+        "description": "Endpoint for retrieving detailed information about a user based on their ID.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the user whose information will be retrieved.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "fa97c775-1613-4035-b93b-2fb852e37ec0"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "Alexis"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "brill_alexis@gmail.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "hr"
+                    },
+                    "img_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-03-21T15:14:55.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Access denied. Insufficient permissions for the requested resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/basket": {
+      "post": {
+        "summary": "Add products to the basket for a given order.",
+        "description": "Endpoint for adding products to the basket based on the order ID and product details.",
+        "tags": [
+          "Basket"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "type": "string",
+                    "example": "123456789",
+                    "description": "The ID of the order to which products are added."
+                  },
+                  "products": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "prod123",
+                          "description": "The ID of the product."
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Product Name",
+                          "description": "The name of the product."
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Product Description",
+                          "description": "A brief description of the product."
+                        },
+                        "price": {
+                          "type": "number",
+                          "format": "float",
+                          "example": 29.99,
+                          "description": "The price of the product."
+                        },
+                        "stock": {
+                          "type": "integer",
+                          "example": 50,
+                          "description": "The stock level of the product."
+                        },
+                        "clickCount": {
+                          "type": "integer",
+                          "example": 3,
+                          "description": "The quantity of the product added to the basket."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added products to the basket."
+          },
+          "400": {
+            "description": "Bad request due to missing or invalid data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Invalid request. Please check the data and try again."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cap": {
+      "post": {
+        "summary": "Verify CAPTCHA.",
+        "description": "Endpoint for verifying CAPTCHA for the user.",
+        "tags": [
+          "Captcha"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "CAPTCHA token for verification.",
+                    "example": "03AOLTBLTQIo19BzZ6oY8MTtk5O6z6IC4U_t8RyO7Vcld8XgF5O0FN0l3l7s1NmOCYyS7rU8VloM5SH9k0U9rY5GHxOjY4HQqI6BmgXqY9VwR2U9fGfGXBZ5zWcrkFQyWlEwFZ6VgTh9RYm8XUK0VpXk8XU_1LqZw1KrMjwP1dNpoGgFvRYz-K-ei_LH4h6oRd_D5g"
+                  },
+                  "inputVal": {
+                    "type": "string",
+                    "description": "Optional input value used for further verification.",
+                    "example": "someInputValue"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CAPTCHA verification successful - user is a human.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Confirmation message that the user is a human.",
+                  "example": "Human 👨 👩"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "CAPTCHA verification failed - user is a robot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Message indicating that the user is a robot.",
+                  "example": "Robot 🤖"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error during CAPTCHA verification.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client": {
+      "get": {
+        "summary": "Get list of all clients.",
+        "description": "Endpoint to fetch the list of all clients.",
+        "tags": [
+          "Clients"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of clients.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Client ID.",
+                            "example": "12345"
+                          },
+                          "first_name": {
+                            "type": "string",
+                            "description": "Client's first name.",
+                            "example": "John"
+                          },
+                          "second_name": {
+                            "type": "string",
+                            "description": "Client's second name.",
+                            "example": "Doe"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Client's email.",
+                            "example": "john.doe@example.com"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error during fetching the client list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new client.",
+        "description": "Endpoint to add a new client.",
+        "tags": [
+          "Clients"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "Client's first name.",
+                    "example": "John"
+                  },
+                  "second_name": {
+                    "type": "string",
+                    "description": "Client's second name.",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Client's email.",
+                    "example": "john.doe@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added new client."
+          },
+          "400": {
+            "description": "Bad request due to invalid input."
+          },
+          "401": {
+            "description": "Unauthorized access."
+          },
+          "500": {
+            "description": "Server error during client insertion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/{id}": {
+      "delete": {
+        "summary": "Delete a client.",
+        "description": "Endpoint to delete a client by ID.",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Client ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the client."
+          },
+          "500": {
+            "description": "Server error during client deletion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update client data.",
+        "description": "Endpoint to update client details by ID.",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Client ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "Client's first name.",
+                    "example": "John"
+                  },
+                  "second_name": {
+                    "type": "string",
+                    "description": "Client's second name.",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Client's email.",
+                    "example": "john.doe@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated client data."
+          },
+          "400": {
+            "description": "Bad request due to invalid input."
+          },
+          "500": {
+            "description": "Server error during client update.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server error encountered. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee": {
+      "get": {
+        "summary": "Retrieve a list of all employees.",
+        "description": "This endpoint returns a list of all employees and is only available to users with a valid authorization token.",
+        "tags": [
+          "Employee"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Employee identifier.",
+                        "example": "12345"
+                      },
+                      "first_name": {
+                        "type": "string",
+                        "description": "Employee's first name.",
+                        "example": "Jan"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Employee's last name.",
+                        "example": "Kowalski"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Employee's email address.",
+                        "example": "jan.kowalski@example.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No address found for the given ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No address found for the given ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error encountered. Please contact the administrator for support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mail": {
+      "get": {
+        "summary": "Retrieve a list of all emails.",
+        "description": "This endpoint retrieves all emails and is only available to authorized users.",
+        "tags": [
+          "Mail"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Email identifier.",
+                        "example": "12345"
+                      },
+                      "to": {
+                        "type": "string",
+                        "description": "Recipient's email address.",
+                        "example": "jan.kowalski@example.com"
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject of the email.",
+                        "example": "Meeting Reminder"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Body of the email.",
+                        "example": "This is a reminder for the meeting scheduled at 10 AM."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No emails found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No emails found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error encountered. Please contact the administrator for support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Send emails.",
+        "description": "This endpoint allows sending multiple emails. It processes an array of email objects and handles errors accordingly.",
+        "tags": [
+          "Mail"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "to": {
+                      "type": "string",
+                      "description": "Recipient's email address.",
+                      "example": "jan.kowalski@example.com"
+                    },
+                    "subject": {
+                      "type": "string",
+                      "description": "Subject of the email.",
+                      "example": "Meeting Reminder"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Body of the email.",
+                      "example": "This is a reminder for the meeting scheduled at 10 AM."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation completed successfully. Lists successfully sent emails and errors if any.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of successfully sent email addresses.",
+                      "example": [
+                        "jan.kowalski@example.com"
+                      ]
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of errors encountered.",
+                      "example": [
+                        "Failed to send email to jan.kowalski@example.com"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error encountered. Please contact the administrator for support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mail/{id}": {
+      "delete": {
+        "summary": "Delete an email by its ID.",
+        "description": "This endpoint allows the deletion of an email by its ID.",
+        "tags": [
+          "Mail"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the email to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Success message.",
+                      "example": "Operation completed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Email not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error encountered. Please contact the administrator for support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Retrieve a list of all products.",
+        "description": "This endpoint retrieves all products based on the locale specified in the 'Accept-Language' header.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "description": "Locale for the products data (e.g., 'en', 'pl', 'fr').",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "en",
+                "pl",
+                "fr"
+              ],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed successfully. Returns the list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productsData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Product identifier.",
+                            "example": "9"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Product name.",
+                            "example": "Copy Self-Adhesive Paper A4"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Detailed product description.",
+                            "example": "Self-adhesive paper, A4 format, pack of 100 sheets"
+                          },
+                          "category": {
+                            "type": "string",
+                            "description": "Product category.",
+                            "example": "Papier do drukarek"
+                          },
+                          "price": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Product price.",
+                            "example": 29.99
+                          },
+                          "stock": {
+                            "type": "integer",
+                            "description": "Available stock quantity.",
+                            "example": 50
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date and time when the product was created.",
+                            "example": "2024-03-21T14:45:29.000Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No products found for the specified locale.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No products found for the specified locale."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/cart/{id}": {
+      "get": {
+        "summary": "Retrieve a specific product by its ID.",
+        "description": "This endpoint retrieves a product by its ID. The locale can be specified as a query parameter.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the product to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "description": "Locale for the product data (e.g., 'en', 'pl', 'fr').",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "en",
+                "pl",
+                "fr"
+              ],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed successfully. Returns the product data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Product identifier.",
+                      "example": "9"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Product name.",
+                      "example": "Copy Self-Adhesive Paper A4"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Detailed product description.",
+                      "example": "Self-adhesive paper, A4 format, pack of 100 sheets"
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "Product category.",
+                      "example": "Papier do drukarek"
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Product price.",
+                      "example": 29.99
+                    },
+                    "stock": {
+                      "type": "integer",
+                      "description": "Available stock quantity.",
+                      "example": 50
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Date and time when the product was created.",
+                      "example": "2024-03-21T14:45:29.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the given ID not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No address found for the given ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales": {
+      "get": {
+        "summary": "Retrieve a list of all orders.",
+        "description": "This endpoint retrieves all orders assigned to the seller. Requires authentication.",
+        "tags": [
+          "Sales"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of orders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ordersList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Order identifier.",
+                            "example": "123"
+                          },
+                          "client_id": {
+                            "type": "string",
+                            "description": "Client identifier.",
+                            "example": "456"
+                          },
+                          "client_address_id": {
+                            "type": "string",
+                            "description": "Client address identifier.",
+                            "example": "789"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date and time when the order was created.",
+                            "example": "2024-03-21T14:45:29.000Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No orders found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No orders found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new address.",
+        "description": "This endpoint adds a new address. Requires authentication.",
+        "tags": [
+          "Sales"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "description": "City of the address.",
+                    "example": "Warsaw"
+                  },
+                  "street": {
+                    "type": "string",
+                    "description": "Street name of the address.",
+                    "example": "Main St"
+                  },
+                  "building": {
+                    "type": "string",
+                    "description": "Building number.",
+                    "example": "12A"
+                  },
+                  "no_apartment": {
+                    "type": "string",
+                    "description": "Apartment number.",
+                    "example": "5"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "Postal code.",
+                    "example": "00-123"
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "Name of the company.",
+                    "example": "Tech Solutions"
+                  },
+                  "client_id": {
+                    "type": "string",
+                    "description": "Client identifier.",
+                    "example": "456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added the address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Success message.",
+                      "example": "Operation completed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to missing required fields.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Bad request. Missing required address or client data."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales/new-order": {
+      "post": {
+        "summary": "Create a new order.",
+        "description": "This endpoint creates a new order. Requires authentication.",
+        "tags": [
+          "Sales"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "Client identifier.",
+                    "example": "456"
+                  },
+                  "client_address_id": {
+                    "type": "string",
+                    "description": "Client address identifier.",
+                    "example": "789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "order_id": {
+                      "type": "string",
+                      "description": "Identifier of the newly created order.",
+                      "example": "123"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message.",
+                      "example": "Operation completed successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to missing client or address ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Bad request. Missing client or address ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales/{id}": {
+      "delete": {
+        "summary": "Delete an order.",
+        "description": "This endpoint deletes an order by its identifier. Requires authentication.",
+        "tags": [
+          "Sales"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the order to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the order."
+          },
+          "404": {
+            "description": "No order found with the given ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "No order found with ID 123."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "An unknown server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/forgot": {
       "post": {
-        "summary": "Wysyła email resetujący hasło.",
-        "description": "Endpoint do wysyłania emaila z linkiem resetującym hasło użytkownika.",
+        "summary": "Send a password reset email.",
+        "description": "Endpoint for sending a password reset email with a link to reset the user's password.",
         "tags": [
           "Forgot Password"
         ],
@@ -22,7 +1959,9 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "description": "Adres email użytkownika."
+                    "format": "email",
+                    "description": "The email address of the user requesting a password reset.",
+                    "example": "user@example.com"
                   }
                 }
               }
@@ -31,7 +1970,7 @@
         },
         "responses": {
           "200": {
-            "description": "Pomyślnie wysłano email resetujący hasło.",
+            "description": "Successfully sent a password reset email.",
             "content": {
               "application/json": {
                 "schema": {
@@ -39,7 +1978,42 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat potwierdzający wysłanie emaila."
+                      "description": "Confirmation message for the reset email.",
+                      "example": "Password reset email sent successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to missing or invalid email.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message indicating missing or invalid email.",
+                      "example": "Invalid email address provided."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email not found in the system.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message indicating that the email was not found.",
+                      "example": "Email not found in the system."
                     }
                   }
                 }
@@ -47,7 +2021,7 @@
             }
           },
           "500": {
-            "description": "Błąd serwera.",
+            "description": "Server error during the password reset process.",
             "content": {
               "application/json": {
                 "schema": {
@@ -55,7 +2029,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating an unknown server error.",
+                      "example": "An unknown server error occurred."
                     }
                   }
                 }
@@ -67,8 +2042,8 @@
     },
     "/auth": {
       "post": {
-        "summary": "Logowanie użytkownika",
-        "description": "Loguje użytkownika i zwraca token dostępowy.",
+        "summary": "Login user",
+        "description": "Authenticates a user and returns an access token.",
         "tags": [
           "Auth"
         ],
@@ -81,11 +2056,13 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "description": "Nazwa użytkownika."
+                    "description": "Username of the user.",
+                    "example": "john_doe"
                   },
                   "password": {
                     "type": "string",
-                    "description": "Hasło użytkownika."
+                    "description": "Password of the user.",
+                    "example": "password123"
                   }
                 }
               }
@@ -94,7 +2071,7 @@
         },
         "responses": {
           "200": {
-            "description": "Pomyślnie zalogowano użytkownika.",
+            "description": "Successfully logged in the user.",
             "content": {
               "application/json": {
                 "schema": {
@@ -102,15 +2079,18 @@
                   "properties": {
                     "token": {
                       "type": "string",
-                      "description": "Token dostępowy."
+                      "description": "Access token for the user.",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                     },
                     "idUser": {
                       "type": "string",
-                      "description": "Identyfikator użytkownika."
+                      "description": "User's identifier.",
+                      "example": "123456"
                     },
                     "message": {
                       "type": "string",
-                      "description": "Komunikat powitalny."
+                      "description": "Success message.",
+                      "example": "Login successful."
                     }
                   }
                 }
@@ -118,7 +2098,7 @@
             }
           },
           "400": {
-            "description": "Błędne żądanie.",
+            "description": "Bad request due to invalid input.",
             "content": {
               "application/json": {
                 "schema": {
@@ -126,7 +2106,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating invalid input.",
+                      "example": "Invalid request data."
                     }
                   }
                 }
@@ -134,7 +2115,7 @@
             }
           },
           "401": {
-            "description": "Błędna nazwa użytkownika lub hasło.",
+            "description": "Incorrect username or password.",
             "content": {
               "application/json": {
                 "schema": {
@@ -142,7 +2123,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating incorrect credentials.",
+                      "example": "Invalid username or password."
                     }
                   }
                 }
@@ -150,7 +2132,7 @@
             }
           },
           "403": {
-            "description": "Konto nieaktywne lub zablokowane.",
+            "description": "Account inactive or locked.",
             "content": {
               "application/json": {
                 "schema": {
@@ -158,7 +2140,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating account status.",
+                      "example": "Account is inactive or locked."
                     }
                   }
                 }
@@ -166,7 +2149,7 @@
             }
           },
           "422": {
-            "description": "Nieprawidłowe dane wejściowe.",
+            "description": "Unprocessable entity due to missing or invalid data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -174,7 +2157,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating unprocessable entity.",
+                      "example": "Missing or invalid username or password."
                     }
                   }
                 }
@@ -182,7 +2166,7 @@
             }
           },
           "500": {
-            "description": "Błąd serwera.",
+            "description": "Internal server error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -190,7 +2174,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating a server error.",
+                      "example": "Internal server error occurred."
                     }
                   }
                 }
@@ -202,8 +2187,8 @@
     },
     "/auth/refresh": {
       "post": {
-        "summary": "Odśwież token dostępowy",
-        "description": "Odświeża token dostępowy użytkownika na podstawie tokena odświeżającego.",
+        "summary": "Refresh access token",
+        "description": "Refreshes the user's access token based on the refresh token.",
         "tags": [
           "Auth"
         ],
@@ -216,7 +2201,8 @@
                 "properties": {
                   "idUser": {
                     "type": "string",
-                    "description": "Identyfikator użytkownika."
+                    "description": "Identifier of the user requesting the token refresh.",
+                    "example": "123456"
                   }
                 }
               }
@@ -225,7 +2211,7 @@
         },
         "responses": {
           "200": {
-            "description": "Pomyślnie odświeżono token dostępowy.",
+            "description": "Successfully refreshed the access token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -233,7 +2219,8 @@
                   "properties": {
                     "token": {
                       "type": "string",
-                      "description": "Nowy token dostępowy."
+                      "description": "New access token.",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                     }
                   }
                 }
@@ -241,7 +2228,7 @@
             }
           },
           "401": {
-            "description": "Brak tokena odświeżającego lub błąd weryfikacji.",
+            "description": "Missing or invalid refresh token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -249,7 +2236,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating missing or invalid refresh token.",
+                      "example": "No refresh token provided or invalid token."
                     }
                   }
                 }
@@ -257,7 +2245,7 @@
             }
           },
           "403": {
-            "description": "Nieprawidłowy token odświeżający.",
+            "description": "Invalid refresh token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -265,7 +2253,87 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Error message indicating invalid refresh token.",
+                      "example": "Invalid refresh token."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message indicating that the user was not found.",
+                      "example": "User not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message indicating a server error.",
+                      "example": "Internal server error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "User logout",
+        "description": "Logs out the user and returns a success message.",
+        "tags": [
+          "Logout"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Success message indicating the user has been logged out.",
+                      "example": "User has been successfully logged out."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message indicating a server error.",
+                      "example": "Internal server error occurred."
                     }
                   }
                 }
@@ -316,7 +2384,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat potwierdzający rejestrację."
+                      "description": "Komunikat potwierdzający rejestrację.",
+                      "example": "Registration completed successfully. Welcome to our community."
                     }
                   }
                 }
@@ -332,7 +2401,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "The password must be between 8 and 16 characters long, and include one uppercase letter and a digit."
                     }
                   }
                 }
@@ -348,7 +2418,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "The email address is already in use. Please choose another."
                     }
                   }
                 }
@@ -364,7 +2435,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
                     }
                   }
                 }
@@ -394,12 +2466,13 @@
         ],
         "responses": {
           "302": {
-            "description": "Pomyślnie aktywowano konto użytkownika.",
+            "description": "Pomyślnie aktywowano konto użytkownika. Użytkownik jest przekierowywany do strony logowania.",
             "headers": {
               "Location": {
                 "schema": {
                   "type": "string",
-                  "description": "Przekierowanie do strony logowania."
+                  "description": "URL do strony logowania.",
+                  "example": "https://example.com/login"
                 }
               }
             }
@@ -413,7 +2486,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Authorization failed due to an invalid JsonWebToken signature."
                     }
                   }
                 }
@@ -429,7 +2503,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Server encountered an error. Please contact the administrator for support."
                     }
                   }
                 }
@@ -476,7 +2551,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat o pomyślnym resetowaniu hasła."
+                      "description": "Komunikat o pomyślnym resetowaniu hasła.",
+                      "example": "Password reset operation was successful."
                     }
                   }
                 }
@@ -520,11 +2596,13 @@
                 "properties": {
                   "password": {
                     "type": "string",
-                    "description": "Nowe hasło użytkownika."
+                    "description": "Nowe hasło użytkownika.",
+                    "example": "NewPassword123!"
                   },
                   "password2": {
                     "type": "string",
-                    "description": "Potwierdzenie nowego hasła użytkownika."
+                    "description": "Potwierdzenie nowego hasła użytkownika.",
+                    "example": "NewPassword123!"
                   }
                 }
               }
@@ -541,7 +2619,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat o pomyślnym zresetowaniu hasła."
+                      "description": "Komunikat o pomyślnym zresetowaniu hasła.",
+                      "example": "Password has been successfully reset."
                     }
                   }
                 }
@@ -557,7 +2636,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Passwords do not match or do not meet the requirements."
                     }
                   }
                 }
@@ -573,7 +2653,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu serwera."
+                      "description": "Komunikat błędu serwera.",
+                      "example": "Server encountered an error while resetting the password."
                     }
                   }
                 }
@@ -611,7 +2692,13 @@
                   "properties": {
                     "userInfo": {
                       "type": "object",
-                      "description": "Informacje dotyczące URL użytkownika."
+                      "description": "Informacje dotyczące URL użytkownika.",
+                      "properties": {
+                        "img_url": {
+                          "type": "string",
+                          "description": "URL obrazu użytkownika."
+                        }
+                      }
                     }
                   }
                 }
@@ -627,7 +2714,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Server encountered an error while fetching user URL information."
                     }
                   }
                 }
@@ -662,7 +2750,8 @@
                 "properties": {
                   "img_url": {
                     "type": "string",
-                    "description": "Nowy URL obrazu użytkownika."
+                    "description": "Nowy URL obrazu użytkownika.",
+                    "example": "https://example.com/new-avatar.png"
                   }
                 }
               }
@@ -679,7 +2768,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat potwierdzający aktualizację."
+                      "description": "Komunikat potwierdzający aktualizację.",
+                      "example": "User avatar URL has been successfully updated."
                     }
                   }
                 }
@@ -695,7 +2785,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Server encountered an error while updating the user avatar URL."
                     }
                   }
                 }
@@ -731,7 +2822,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat potwierdzający usunięcie."
+                      "description": "Komunikat potwierdzający usunięcie.",
+                      "example": "User avatar URL has been successfully deleted."
                     }
                   }
                 }
@@ -747,555 +2839,8 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cap": {
-      "post": {
-        "summary": "Weryfikuje Captcha.",
-        "description": "Endpoint do weryfikacji Captcha dla użytkownika.",
-        "tags": [
-          "Captcha"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "token": {
-                    "type": "string",
-                    "description": "Token Captcha do weryfikacji."
-                  },
-                  "inputVal": {
-                    "type": "string",
-                    "description": "Wartość wejściowa (opcjonalna) używana do dalszej weryfikacji."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Weryfikacja Captcha zakończona sukcesem - użytkownik jest człowiekiem.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "description": "Komunikat potwierdzający, że użytkownik jest człowiekiem."
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Weryfikacja Captcha nie powiodła się - użytkownik jest robotem.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "description": "Komunikat informujący, że użytkownik jest robotem."
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera podczas weryfikacji Captcha.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin": {
-      "get": {
-        "summary": "Pobiera listę wszystkich użytkowników.",
-        "description": "Endpoint służący do pobierania listy wszystkich użytkowników.",
-        "tags": [
-          "Admin"
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano listę użytkowników.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "usersList": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera podczas pobierania listy użytkowników.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/{id}/{role}": {
-      "put": {
-        "summary": "Aktualizuje rolę użytkownika.",
-        "description": "Endpoint służący do aktualizacji roli użytkownika na podstawie jego identyfikatora.",
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "role",
-            "required": true,
-            "description": "Nowa rola użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie zaktualizowano rolę użytkownika."
-          },
-          "500": {
-            "description": "Błąd serwera podczas aktualizacji roli użytkownika.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/{id}": {
-      "delete": {
-        "summary": "Usuwa użytkownika.",
-        "description": "Endpoint służący do usuwania użytkownika na podstawie jego identyfikatora.",
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie usunięto użytkownika."
-          },
-          "500": {
-            "description": "Błąd serwera podczas usuwania użytkownika.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "summary": "Pobiera listę wszystkich użytkowników.",
-        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
-        "tags": [
-          "nn"
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano listę użytkowników.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "usersList": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": "// Odpowiednie pola, takie jak id, username, email itp."
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Brak dostępu do zasobu.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "summary": "Pobiera informacje o użytkowniku.",
-        "description": "Endpoint dostępny tylko dla użytkowników o roli \"admin\".",
-        "tags": [
-          "nn"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano informacje o użytkowniku.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": "// Odpowiednie pola, takie jak id, username, email itp."
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Brak dostępu do zasobu.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/user/{id}": {
-      "get": {
-        "summary": "Pobiera informacje o użytkowniku.",
-        "description": "Pobiera informacje o użytkowniku na podstawie jego identyfikatora.",
-        "tags": [
-          "nn"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano informacje o użytkowniku.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Brak dostępu do zasobu.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/sales": {
-      "get": {
-        "summary": "Pobiera listę wszystkich zamowien nad ktorymi pracuje dany sprzedawca.",
-        "description": "Endpoint służący do pobierania listy wszystkich sprzedazy.",
-        "tags": [
-          "Sales"
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano listę sprzedazy.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ordersList": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera podczas pobierania listy użytkowników.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Dodaje nowe sprzedarze.",
-        "description": "Jak wyzej.",
-        "tags": [
-          "Sales"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "imie": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "produkt": {
-                    "type": "string"
-                  },
-                  "ilosc": {
-                    "type": "string"
-                  },
-                  "miasto": {
-                    "type": "string"
-                  },
-                  "ulica": {
-                    "type": "string"
-                  },
-                  "nr_budynku": {
-                    "type": "string"
-                  },
-                  "nr_mieszkania": {
-                    "type": "string"
-                  },
-                  "kod": {
-                    "type": "string"
-                  },
-                  "nazwa_firmy": {
-                    "type": "string"
-                  },
-                  "salesId": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Pomyślnie pobrano listę zamowien."
-          },
-          "400": {
-            "description": "Błąd w żądaniu."
-          },
-          "401": {
-            "description": "Nieautoryzowany dostęp."
-          },
-          "500": {
-            "description": "Wystąpił błąd serwera."
-          }
-        }
-      }
-    },
-    "/sales/{id}": {
-      "delete": {
-        "summary": "Usuwa zamowienia.",
-        "description": "Endpoint służący do usuwania zamowienia na podstawie jego identyfikatora.",
-        "tags": [
-          "Sales"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator zamowienia.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomyślnie usunięto zamowienie."
-          },
-          "500": {
-            "description": "Błąd serwera podczas usuwania użytkownika.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
+                      "description": "Komunikat błędu.",
+                      "example": "Server encountered an error while deleting the user avatar URL."
                     }
                   }
                 }
@@ -1309,16 +2854,52 @@
   "components": {},
   "tags": [
     {
+      "name": "Address",
+      "description": "Endpoints for managing user addresses."
+    },
+    {
+      "name": "Admin",
+      "description": "Endpointy do zarządzania użytkownikami."
+    },
+    {
+      "name": "Basket",
+      "description": "Endpointy do zarządzania koszykiem zakupów."
+    },
+    {
+      "name": "Captcha",
+      "description": "Endpoints for CAPTCHA verification."
+    },
+    {
+      "name": "Clients",
+      "description": "Endpoints for managing clients."
+    },
+    {
+      "name": "Employee",
+      "description": "Endpoints for managing employee data."
+    },
+    {
+      "name": "Mail",
+      "description": "Endpoints for managing email operations."
+    },
+    {
+      "name": "Products",
+      "description": "Endpoints for managing product data."
+    },
+    {
+      "name": "Sales",
+      "description": "Endpoints for managing sales and orders."
+    },
+    {
       "name": "Forgot Password",
-      "description": "Endpointy do obsługi przypomnienia hasła"
+      "description": "Endpoints for handling password reset requests."
     },
     {
       "name": "Auth",
-      "description": "Endpointy do obsługi logowania uzytkownika."
+      "description": "Endpoints for handling user authentication and token management."
     },
     {
-      "name": "Register",
-      "description": "Endpointy do rejestracji użytkowników."
+      "name": "Logout",
+      "description": "Endpoint to handle user logout."
     },
     {
       "name": "Password Reset",
@@ -1327,22 +2908,6 @@
     {
       "name": "URL",
       "description": "Endpointy do obsługi danych związanych z URL awatara użytkownika."
-    },
-    {
-      "name": "Captcha",
-      "description": "Endpointy do weryfikacji Captcha."
-    },
-    {
-      "name": "Admin",
-      "description": "Endpointy do zarządzania użytkownikami."
-    },
-    {
-      "name": "nn",
-      "description": "Endpointy do zarzadzania danymi uzytkownika."
-    },
-    {
-      "name": "Sales",
-      "description": "Endpointy do zarzadzania sprzedaza."
     }
   ]
 }

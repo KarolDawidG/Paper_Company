@@ -1,51 +1,40 @@
 const MESSAGES: Record<string, string> = {
   // Successful operations
-  SERVER_STARTED: "Serwer pomyślnie uruchomiony na porcie",
-  SUCCESSFUL_OPERATION: "Operacja zakończona sukcesem.",
-  SUCCESSFUL_LOGOUT: "Wylogowanie zakończone powodzeniem.",
-  SUCCESSFUL_RESET: "Hasło zostało pomyślnie zresetowane.",
-  SUCCESSFUL_SIGN_UP:
-    "Rejestracja zakończona sukcesem. Witamy w naszej społeczności.",
-  EMAIL_SUCCESS:
-    "Link do resetowania hasła został wysłany na podany adres email, o ile znajduje się on w naszych rekordach.",
+  SERVER_STARTED: "Server successfully started on port",
+  SUCCESSFUL_OPERATION: "Operation completed successfully.",
+  SUCCESSFUL_LOGOUT: "Logout completed successfully.",
+  SUCCESSFUL_RESET: "Password has been successfully reset.",
+  SUCCESSFUL_SIGN_UP: "Registration completed successfully. Welcome to our community.",
+  EMAIL_SUCCESS: "A password reset link has been sent to the provided email address, if it exists in our records.",
 
   // Errors and validation messages
-  INCORRECT_USERNAME: "Nazwa użytkownika musi zawierać przynajmniej 6 znaków.",
-  ERROR_GET_CONNECTION: "Napotkano błąd połączenia.",
-  SESSION_EXPIRED: "Sesja wygasła. Proszę zalogować się ponownie.",
-  USER_NOT_LOGGED_IN: "Działanie odrzucone. Wymagana autentykacja użytkownika.",
-  UNPROCESSABLE_ENTITY:
-    "Nieprawidłowe dane logowania. Proszę sprawdzić swoje dane logowania.",
-  INVALID_EMAIL:
-    "Adres email jest nieprawidłowy. Proszę podać prawidłowy adres email.",
-  INVALID_PASS:
-    "Hasło musi mieć od 8 do 16 znaków, zawierać jedną wielką literę i cyfrę.",
-  EMAIL_USER_EXIST:
-    "Email i nazwa użytkownika już zarejestrowane. Proszę wybrać inne dane logowania.",
-  EMAIL_EXIST: "Adres email jest już w użyciu. Proszę wybrać inny.",
-  USER_EXIST: "Nazwa użytkownika jest już zajęta. Proszę wybrać inną.",
-  SQL_INJECTION_ALERT:
-    "Ostrzeżenie bezpieczeństwa: Wykryto próbę ataku SQL Injection.",
-  INTERNET_DISCONNECTED:
-    "Utracono połączenie z internetem. Proszę sprawdzić ustawienia sieciowe.",
+  INCORRECT_USERNAME: "The username must be at least 6 characters long.",
+  ERROR_GET_CONNECTION: "Encountered a connection error.",
+  SESSION_EXPIRED: "Session expired. Please log in again.",
+  USER_NOT_LOGGED_IN: "Action rejected. User authentication is required.",
+  UNPROCESSABLE_ENTITY: "Invalid login credentials. Please check your login details.",
+  INVALID_EMAIL: "The email address is invalid. Please provide a valid email address.",
+  INVALID_PASS: "The password must be between 8 and 16 characters long, and include one uppercase letter and a digit.",
+  EMAIL_USER_EXIST: "Email and username are already registered. Please choose different login credentials.",
+  EMAIL_EXIST: "The email address is already in use. Please choose another.",
+  USER_EXIST: "The username is already taken. Please choose another.",
+  SQL_INJECTION_ALERT: "Security warning: SQL Injection attempt detected.",
+  INTERNET_DISCONNECTED: "Internet connection lost. Please check your network settings.",
 
   // Server errors and permissions
-  INVALID_REQUEST: "Żądanie jest nieprawidłowe.",
-  SERVER_ERROR:
-    "Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia.",
-  UNKNOW_ERROR: "Wystąpił nieznany błąd.",
-  FORBIDDEN:
-    "Dostęp zabroniony. Niewystarczające uprawnienia do żądanego zasobu.",
-  CAPTCHA_ERROR: "Nie udało się zweryfikować reCAPTCHA.",
+  INVALID_REQUEST: "The request is invalid.",
+  SERVER_ERROR: "Server encountered an error. Please contact the administrator for support.",
+  UNKNOW_ERROR: "An unknown error occurred.",
+  FORBIDDEN: "Access denied. Insufficient permissions for the requested resource.",
+  CAPTCHA_ERROR: "Failed to verify reCAPTCHA.",
   NOT_FOUND: "No address found for the given ID.",
-  BAD_REQUEST: "Nieprawidłowe żądanie. Sprawdź dane i spróbuj ponownie",
+  BAD_REQUEST: "Invalid request. Check the data and try again.",
 
   // Authorization
-  JWT_ERROR:
-    "Autoryzacja nie powiodła się z powodu nieprawidłowego podpisu JsonWebToken.",
-  NO_REFRESH_TOKEN: "Brak tokenu odświeżania.",
-  INVALID_REFRESH_TOKEN: "Token odświeżania jest nieprawidłowy.",
-  AUTHORIZATION_LVL: "Poziom autoryzacji: ",
+  JWT_ERROR: "Authorization failed due to an invalid JsonWebToken signature.",
+  NO_REFRESH_TOKEN: "No refresh token provided.",
+  INVALID_REFRESH_TOKEN: "The refresh token is invalid.",
+  AUTHORIZATION_LVL: "Authorization level: ",
 };
 
 export default MESSAGES;

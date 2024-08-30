@@ -69,16 +69,17 @@ router.post("/", async (req: Request, res: Response) => {
  * @swagger
  * tags:
  *   name: Forgot Password
- *   description: Endpointy do obsługi przypomnienia hasła
+ *   description: Endpoints for handling password reset requests.
  */
 
 /**
  * @swagger
  * /forgot:
  *   post:
- *     summary: Wysyła email resetujący hasło.
- *     description: Endpoint do wysyłania emaila z linkiem resetującym hasło użytkownika.
- *     tags: [Forgot Password]
+ *     summary: Send a password reset email.
+ *     description: Endpoint for sending a password reset email with a link to reset the user's password.
+ *     tags:
+ *       - Forgot Password
  *     requestBody:
  *       required: true
  *       content:
@@ -88,10 +89,12 @@ router.post("/", async (req: Request, res: Response) => {
  *             properties:
  *               email:
  *                 type: string
- *                 description: Adres email użytkownika.
+ *                 format: email
+ *                 description: The email address of the user requesting a password reset.
+ *                 example: "user@example.com"
  *     responses:
  *       200:
- *         description: Pomyślnie wysłano email resetujący hasło.
+ *         description: Successfully sent a password reset email.
  *         content:
  *           application/json:
  *             schema:
@@ -99,9 +102,32 @@ router.post("/", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat potwierdzający wysłanie emaila.
+ *                   description: Confirmation message for the reset email.
+ *                   example: "Password reset email sent successfully."
+ *       400:
+ *         description: Bad request due to missing or invalid email.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating missing or invalid email.
+ *                   example: "Invalid email address provided."
+ *       404:
+ *         description: Email not found in the system.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating that the email was not found.
+ *                   example: "Email not found in the system."
  *       500:
- *         description: Błąd serwera.
+ *         description: Server error during the password reset process.
  *         content:
  *           application/json:
  *             schema:
@@ -109,7 +135,8 @@ router.post("/", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating an unknown server error.
+ *                   example: "An unknown server error occurred."
  */
 
 export default router;

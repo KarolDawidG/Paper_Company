@@ -79,19 +79,12 @@ router.get("/:token", async (req: Request, res: Response) => {
       const id = decoded.userId;
       await UsersRecord.activateAccount(id);
 
-      return res.redirect(URL.URL_LOGIN);
+      return res.status(STATUS_CODES.REDIRECT).redirect(URL.URL_LOGIN);
     });
   } catch (error: any) {
     return handleError(res, error, "Register Route: GET", MESSAGES.SERVER_ERROR);
   }
 });
-
-/**
- * @swagger
- * tags:
- *   name: Register
- *   description: Endpointy do rejestracji użytkowników.
- */
 
 /**
  * @swagger
@@ -127,6 +120,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat potwierdzający rejestrację.
+ *                   example: "Registration completed successfully. Welcome to our community."
  *       400:
  *         description: Błędne żądanie.
  *         content:
@@ -137,6 +131,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "The password must be between 8 and 16 characters long, and include one uppercase letter and a digit."
  *       403:
  *         description: Adres email lub nazwa użytkownika już istnieją.
  *         content:
@@ -147,6 +142,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "The email address is already in use. Please choose another."
  *       500:
  *         description: Błąd serwera.
  *         content:
@@ -157,6 +153,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
  */
 
 /**
@@ -175,12 +172,13 @@ router.get("/:token", async (req: Request, res: Response) => {
  *           type: string
  *     responses:
  *       302:
- *         description: Pomyślnie aktywowano konto użytkownika.
+ *         description: Pomyślnie aktywowano konto użytkownika. Użytkownik jest przekierowywany do strony logowania.
  *         headers:
  *           Location:
  *             schema:
  *               type: string
- *               description: Przekierowanie do strony logowania.
+ *               description: URL do strony logowania.
+ *               example: "https://example.com/login"
  *       401:
  *         description: Błąd uwierzytelniania.
  *         content:
@@ -191,6 +189,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Authorization failed due to an invalid JsonWebToken signature."
  *       500:
  *         description: Błąd serwera.
  *         content:
@@ -201,6 +200,7 @@ router.get("/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
  */
 
 export default router;

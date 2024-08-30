@@ -53,24 +53,32 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
   },
 );
 
+
 /**
  * @swagger
  * tags:
- *   name: nn
- *   description: Endpointy do zarzadzania danymi uzytkownika.
+ *   name: Admin
+ *   description: Endpointy do zarządzania użytkownikami.
  */
 
 /**
  * @swagger
- * /users:
+ * /users/{role}:
  *   get:
- *     summary: Pobiera listę wszystkich użytkowników.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     summary: Retrieve a list of users by role.
+ *     description: Endpoint available only for users with "admin" role. Retrieves a list of users with the specified role.
  *     tags:
- *       - nn
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: role
+ *         required: true
+ *         description: The role of the users to retrieve.
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę użytkowników.
+ *         description: Successfully retrieved the list of users.
  *         content:
  *           application/json:
  *             schema:
@@ -81,9 +89,28 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *                   items:
  *                     type: object
  *                     properties:
- *                       // Odpowiednie pola, takie jak id, username, email itp.
+ *                       id:
+ *                         type: string
+ *                         example: 'fa97c775-1613-4035-b93b-2fb852e37ec0'
+ *                       username:
+ *                         type: string
+ *                         example: 'Alexis'
+ *                       email:
+ *                         type: string
+ *                         example: 'brill_alexis@gmail.com'
+ *                       role:
+ *                         type: string
+ *                         example: 'hr'
+ *                       img_url:
+ *                         type: string
+ *                         format: uri
+ *                         example: 'https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg'
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         example: '2024-03-21T15:14:55.000Z'
  *       403:
- *         description: Brak dostępu do zasobu.
+ *         description: Access denied.
  *         content:
  *           application/json:
  *             schema:
@@ -91,9 +118,10 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Access denied. Insufficient permissions for the requested resource.'
  *       500:
- *         description: Błąd serwera.
+ *         description: Server error.
  *         content:
  *           application/json:
  *             schema:
@@ -101,35 +129,43 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
 
 /**
  * @swagger
  * /users/{id}:
- *   get:
- *     summary: Pobiera informacje o użytkowniku.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *   put:
+ *     summary: Update user data.
+ *     description: Endpoint for updating user data based on their ID.
  *     tags:
- *       - nn
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identyfikator użytkownika.
+ *         description: The ID of the user whose data will be updated.
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: 'Alexis'
+ *               email:
+ *                 type: string
+ *                 example: 'brill_alexis@gmail.com'
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano informacje o użytkowniku.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                    // Odpowiednie pola, takie jak id, username, email itp.
+ *         description: Successfully updated user data.
  *       403:
- *         description: Brak dostępu do zasobu.
+ *         description: Access denied.
  *         content:
  *           application/json:
  *             schema:
@@ -137,9 +173,10 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Access denied. Insufficient permissions for the requested resource.'
  *       500:
- *         description: Błąd serwera.
+ *         description: Server error.
  *         content:
  *           application/json:
  *             schema:
@@ -147,32 +184,55 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
 
 /**
  * @swagger
  * /users/user/{id}:
  *   get:
- *     summary: Pobiera informacje o użytkowniku.
- *     description: Pobiera informacje o użytkowniku na podstawie jego identyfikatora.
- *     tags: [nn]
+ *     summary: Retrieve user information by ID.
+ *     description: Endpoint for retrieving detailed information about a user based on their ID.
+ *     tags:
+ *       - Users
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identyfikator użytkownika.
+ *         description: The ID of the user whose information will be retrieved.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano informacje o użytkowniku.
+ *         description: Successfully retrieved user information.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   example: 'fa97c775-1613-4035-b93b-2fb852e37ec0'
+ *                 username:
+ *                   type: string
+ *                   example: 'Alexis'
+ *                 email:
+ *                   type: string
+ *                   example: 'brill_alexis@gmail.com'
+ *                 role:
+ *                   type: string
+ *                   example: 'hr'
+ *                 img_url:
+ *                   type: string
+ *                   format: uri
+ *                   example: 'https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg'
+ *                 created_at:
+ *                   type: string
+ *                   format: date-time
+ *                   example: '2024-03-21T15:14:55.000Z'
  *       403:
- *         description: Brak dostępu do zasobu.
+ *         description: Access denied.
  *         content:
  *           application/json:
  *             schema:
@@ -180,9 +240,10 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Access denied. Insufficient permissions for the requested resource.'
  *       500:
- *         description: Błąd serwera.
+ *         description: Server error.
  *         content:
  *           application/json:
  *             schema:
@@ -190,7 +251,8 @@ router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: N
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
 
 export default router;

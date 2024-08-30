@@ -65,39 +65,6 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   }
 });
 
-// router.post("/:id/:token", async (req: Request, res: Response) => {
-//   const { id, token } = req.params;
-//   const { password, password2 } = req.body;
-//   let oldPassword = "";
-
-//   if (password !== password2 || !validatePassword(password)) {
-//     return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_PASS);
-//   }
-
-//   try {
-//     const [user]: any = await UsersRecord.selectById([id]);
-//     console.log("user Reset route", user)
-//       if (!user) {
-//         logger.warn(`Reset Route: POST: User not found. ID: ${id}`);
-//         return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.USER_NOT_FOUND);
-//       }
-
-//     oldPassword = user?.password || "";
-//     const secret = jwt_secret + oldPassword;
-
-//     const payload: any = jwt.verify(token, secret);
-
-//     const hashPassword = await bcrypt.hash(password, 10);
-
-//     await UsersRecord.updatePasswordById([hashPassword, id]);
-
-//     logger.info(MESSAGES.SUCCESSFUL_RESET);
-//     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.PASS_RESET);
-//   } catch (error: any) {
-//     return handleError(res, error, "Reset Route: POST", MESSAGES.SERVER_ERROR);
-//   }
-// });
-
 /**
  * @swagger
  * tags:
@@ -136,6 +103,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat o pomyślnym resetowaniu hasła.
+ *                   example: "Password reset operation was successful."
  */
 
 /**
@@ -168,9 +136,11 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  *               password:
  *                 type: string
  *                 description: Nowe hasło użytkownika.
+ *                 example: "NewPassword123!"
  *               password2:
  *                 type: string
  *                 description: Potwierdzenie nowego hasła użytkownika.
+ *                 example: "NewPassword123!"
  *     responses:
  *       200:
  *         description: Pomyślnie zresetowano hasło użytkownika.
@@ -182,6 +152,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat o pomyślnym zresetowaniu hasła.
+ *                   example: "Password has been successfully reset."
  *       400:
  *         description: Nieprawidłowe żądanie lub hasło nie spełnia wymagań.
  *         content:
@@ -192,6 +163,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Passwords do not match or do not meet the requirements."
  *       500:
  *         description: Błąd serwera podczas resetowania hasła.
  *         content:
@@ -202,6 +174,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu serwera.
- */
+ *                   example: "Server encountered an error while resetting the password."
+ */ 
 
 export default router;

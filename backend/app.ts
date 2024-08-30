@@ -3,6 +3,7 @@ import { createDatabaseIfNotExists } from "./database/createDatabaseIfNotExists"
 import { initializeDatabase } from "./database/initializeDatabase";
 import { limiter, errorHandler } from "./config/config";
 import middleware from "./config/middleware";
+
 import logRoute from "./routes/userRoute/loginRoute";
 import adminRoute from "./routes/adminRoute/adminRoute";
 import regRoute from "./routes/userRoute/registerRoute";

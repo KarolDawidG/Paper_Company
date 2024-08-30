@@ -80,6 +80,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *   description: Endpointy do zarządzania użytkownikami.
  */
 
+
 /**
  * @swagger
  * /admin:
@@ -99,6 +100,27 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                   type: array
  *                   items:
  *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: 'fa97c775-1613-4035-b93b-2fb852e37ec0'
+ *                       username:
+ *                         type: string
+ *                         example: 'Alexis'
+ *                       email:
+ *                         type: string
+ *                         example: 'brill_alexis@gmail.com'
+ *                       role:
+ *                         type: string
+ *                         example: 'hr'
+ *                       img_url:
+ *                         type: string
+ *                         format: uri
+ *                         example: 'https://utfs.io/f/0bdc1601-50e6-4862-8c05-bfb2e2a45f6f-hfzk01.jpg'
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         example: '2024-03-21T15:14:55.000Z'
  *       500:
  *         description: Błąd serwera podczas pobierania listy użytkowników.
  *         content:
@@ -109,6 +131,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: 'Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia.'
  */
 
 /**
@@ -144,6 +167,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: 'Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia.'
  */
 
 
@@ -174,6 +198,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: 'Napotkano błąd serwera. Proszę skontaktować się z administratorem w celu uzyskania wsparcia.'
  */
 
 export default router;

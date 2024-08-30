@@ -38,15 +38,15 @@ router.post("/", async (req: Request, res: Response) => {
  * @swagger
  * tags:
  *   name: Captcha
- *   description: Endpointy do weryfikacji Captcha.
+ *   description: Endpoints for CAPTCHA verification.
  */
 
 /**
  * @swagger
  * /cap:
  *   post:
- *     summary: Weryfikuje Captcha.
- *     description: Endpoint do weryfikacji Captcha dla użytkownika.
+ *     summary: Verify CAPTCHA.
+ *     description: Endpoint for verifying CAPTCHA for the user.
  *     tags: [Captcha]
  *     requestBody:
  *       required: true
@@ -57,27 +57,31 @@ router.post("/", async (req: Request, res: Response) => {
  *             properties:
  *               token:
  *                 type: string
- *                 description: Token Captcha do weryfikacji.
+ *                 description: CAPTCHA token for verification.
+ *                 example: '03AOLTBLTQIo19BzZ6oY8MTtk5O6z6IC4U_t8RyO7Vcld8XgF5O0FN0l3l7s1NmOCYyS7rU8VloM5SH9k0U9rY5GHxOjY4HQqI6BmgXqY9VwR2U9fGfGXBZ5zWcrkFQyWlEwFZ6VgTh9RYm8XUK0VpXk8XU_1LqZw1KrMjwP1dNpoGgFvRYz-K-ei_LH4h6oRd_D5g'
  *               inputVal:
  *                 type: string
- *                 description: Wartość wejściowa (opcjonalna) używana do dalszej weryfikacji.
+ *                 description: Optional input value used for further verification.
+ *                 example: 'someInputValue'
  *     responses:
  *       200:
- *         description: Weryfikacja Captcha zakończona sukcesem - użytkownik jest człowiekiem.
+ *         description: CAPTCHA verification successful - user is a human.
  *         content:
  *           application/json:
  *             schema:
  *               type: string
- *               description: Komunikat potwierdzający, że użytkownik jest człowiekiem.
+ *               description: Confirmation message that the user is a human.
+ *               example: 'Human 👨 👩'
  *       403:
- *         description: Weryfikacja Captcha nie powiodła się - użytkownik jest robotem.
+ *         description: CAPTCHA verification failed - user is a robot.
  *         content:
  *           application/json:
  *             schema:
  *               type: string
- *               description: Komunikat informujący, że użytkownik jest robotem.
+ *               description: Message indicating that the user is a robot.
+ *               example: 'Robot 🤖'
  *       500:
- *         description: Błąd serwera podczas weryfikacji Captcha.
+ *         description: Server error during CAPTCHA verification.
  *         content:
  *           application/json:
  *             schema:
@@ -85,7 +89,8 @@ router.post("/", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
 
 export default router;
