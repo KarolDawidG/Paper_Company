@@ -13,9 +13,11 @@ router.use(middleware, limiter);
 router.get("/", verifyToken, async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getListById();
-      return res.json({ ordersList });
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .json({ ordersList });
     } catch (error: any) {
-      logger.error(`Sales Route: GET: ${error.message}`);
+      logger.error(`Sales Route: GET: Failed to fetch order list. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -24,7 +26,6 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   let formData = req.body;
-
   formData = {
     miasto: formData.city || null,
     ulica: formData.street || null,
@@ -41,7 +42,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
         .status(STATUS_CODES.SUCCESS)
         .send({ message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      logger.error(`Sales Route address: POST: ${error.message}`);
+      logger.error(`Sales Route address: POST: Failed to insert address for client id: ${formData.client_id}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales Route address: POST: ${MESSAGES.UNKNOW_ERROR}`);
@@ -50,15 +51,15 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/new-order", verifyToken, async (req: Request, res: Response) => {
   const {client_id, client_address_id} = req.body;
+  
     try {
       const order_id = await OrdersRecord.insert(client_id, client_address_id );
-
       return res
         .status(STATUS_CODES.SUCCESS)
         .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      logger.error(`Sales/new-order Route: POST: ${error.message}`);
-      return res
+      logger.error(`Sales/new-order Route: POST: Failed to create new order for client id: ${client_id}. Error: ${error.message}, Stack: ${error.stack}`);
+    return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales/new-order Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
     }
@@ -72,8 +73,8 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Sales Route: DELETE: ${error.message}`);
-      return res
+      logger.error(`Sales Route: DELETE: Failed to delete order with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
+    return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Sales Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
     }

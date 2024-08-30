@@ -9,12 +9,15 @@ const router = express.Router();
 router.use(middleware, limiter);
 
 router.get("/", async (req: Request, res: Response) => {
+  const locale = req.headers['accept-language'] || 'en';
+
     try {
-      const locale = req.headers['accept-language'] || 'en';
       const productsData = await ProductsRecord.getAll(locale);
-      return res.json({ productsData });
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .json({ productsData });
     } catch (error: any) {
-      logger.error(`Products Route: GET: ${error.message}`);
+      logger.error(`Products Route: GET: Failed to fetch products list for locale: ${locale}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Products Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -22,17 +25,18 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.get("/cart/:id", async (req: Request, res: Response) => {
+  const productId:string = req.params.id;
+  const locale:any = req.query.locale || 'en';
 
   try {
-    const productId:string = req.params.id;
-    const locale:any = req.query.locale || 'en';
-
     const productsData = await ProductsRecord.getById(productId, locale);
 
-    return res.json(productsData );
-  } catch (error: any) {
-    logger.error(`Products Route: GET: ${error.message}`);
     return res
+      .status(STATUS_CODES.SUCCESS)
+      .json(productsData );
+  } catch (error: any) {
+    logger.error(`Products/cart/id Route: GET: Failed for productId: ${productId}. Error: ${error.message}, Stack: ${error.stack}`);
+      return res
       .status(STATUS_CODES.SERVER_ERROR)
       .send(`Products Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
   }

@@ -9,18 +9,21 @@ import { EmployeeRecord } from "../../database/Records/Employee/EmployeeRecord";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-//todo: dokumentacja do zmiany, DODAC verifyToken
+//todo: dokumentacja do zmiany
 router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const usersList = await EmployeeRecord.selectAll();
-      return res.json(usersList );
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .json(usersList );
     } catch (error: any) {
-      logger.error(error.message);
-      return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+      logger.error(`Employee Route: GET: Failed to fetch employee list. Error: ${error.message}, Stack: ${error.stack}`);
+      return res
+        .status(STATUS_CODES.SERVER_ERROR)
+        .send(MESSAGES.SERVER_ERROR);
     }
   },
 );
-
 
 
 /**

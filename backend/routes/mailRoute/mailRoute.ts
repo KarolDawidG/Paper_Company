@@ -18,10 +18,14 @@ router.use(express.json());
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const emails = await fetchAllMails();
-    return res.status(STATUS_CODES.SUCCESS).json(emails); 
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .json(emails); 
   } catch (error: any) {
-    logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    logger.error(`Mail Route: GET: Failed to fetch mail list. Error: ${error.message}, Stack: ${error.stack}`);
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -30,11 +34,14 @@ router.delete("/:id", async (req: Request, res: Response, next: NextFunction) =>
 
   try {
     await deleteMailById(id);
-    return res.status(STATUS_CODES.SUCCESS).send('Mail deleted successfully');
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
-    logger.error(error.message);
-    console.log('Failed to delete mail');
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    logger.error(`Mail Route: DELETE: Failed to delete mail with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
+    return res
+      .status(STATUS_CODES.SERVER_ERROR)
+      .send(MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -58,7 +65,8 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 
     return handleResponse(res, errors, successEmails);
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(`Mail Route: POST: Failed to send mails. Error: ${error.message}, Stack: ${error.stack}`);
+    
     return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
   }
 });

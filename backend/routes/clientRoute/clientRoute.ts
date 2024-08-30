@@ -12,26 +12,29 @@ router.use(middleware, limiter);
 router.get("/", verifyToken, async (req: Request, res: Response) => {
     try {
       const clientList = await ClientRecord.getList();
-
-      return res.json({ clientList });
+      return res
+        .status(STATUS_CODES.SUCCESS)
+        .json({ clientList });
     } catch (error: any) {
-      logger.error(`Client Route: GET: ${error.message}`);
+      logger.error(`Client Route: GET: Failed to fetch client list. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Client Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
-router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
-  
-  try {
-    const clientid:string = req.params.clientid;
-    const addresid:string = req.params.addresid;
 
+router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
+  const clientid:string = req.params.clientid;
+  const addresid:string = req.params.addresid;
+
+  try {
     const clientData = await ClientRecord.getClientData(clientid, addresid);
-    
-    return res.json(clientData);
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .json(clientData);
   } catch (error: any) {
-    logger.error(`Client/client-data Route: GET: ${error.message}`);
+    logger.error(`Client/client-data Route: GET: Failed to fetch data for client ${clientid} and address ${addresid}. Error: ${error.message}, Stack: ${error.stack}`);
+
     return res
       .status(STATUS_CODES.SERVER_ERROR)
       .send(`Client/client-data Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -41,11 +44,14 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
 // uprzatnac ten syf xD
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.addressId;
+
   try {
     const clientAddress = await ClientRecord.getAddress([id]);
-    return res.json({ clientAddress });
+    return res
+      .status(STATUS_CODES.SUCCESS)
+      .json({ clientAddress });
   } catch (error: any) {
-    logger.error(`Client Route Get Address: GET: ${error.message}`);
+    logger.error(`Client Route Get Address: GET: Failed to fetch address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
     return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Client Route Get Address: GET: ${MESSAGES.UNKNOW_ERROR}`);
@@ -54,13 +60,14 @@ router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
+
     try {
       await ClientRecord.insert(formData)
       return res
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Client Route: POST: ${error.message}`);
+      logger.error(`Client Route: POST: Failed to insert client data: ${JSON.stringify(formData)}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Client Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
@@ -69,13 +76,14 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.clientId;
+
     try {
       await ClientRecord.delete(id)
       return res
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Client Route: DELETE: ${error.message}`);
+      logger.error(`Client Route: DELETE: Failed to delete client with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Client Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
@@ -92,29 +100,13 @@ router.put("/:id", async (req: Request, res: Response) => {
         .status(STATUS_CODES.SUCCESS)
         .send("Dane ustawione poprawnie.");
     } catch (error: any) {
-      logger.error(error.message);
+      logger.error(`Users Route: PUT: Failed to update client with ID ${id}. Data: ${JSON.stringify(req.body)}. Error: ${error.message}, Stack: ${error.stack}`);
       return res
         .status(STATUS_CODES.SERVER_ERROR)
         .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 
-
-// router.put("/:id", verifyToken, async (req: Request, res: Response) => {
-//   const id: string = req.params.id;
-//   const {first_name, second_name, email} = req.body;
-//     try {
-//       await ClientRecord.updateClient(first_name, second_name, email, id);
-//       return res
-//         .status(STATUS_CODES.SUCCESS)
-//         .send("Dane ustawione poprawnie.");
-//     } catch (error: any) {
-//       logger.error(error.message);
-//       return res
-//         .status(STATUS_CODES.SERVER_ERROR)
-//         .send(`nn Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
-//     }
-// });
 
 /**
  * @swagger
