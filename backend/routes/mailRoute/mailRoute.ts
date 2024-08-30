@@ -64,4 +64,184 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Mail
+ *   description: Endpoints for managing email operations.
+ */
+
+/**
+ * @swagger
+ * /mail:
+ *   get:
+ *     summary: Retrieve a list of all emails.
+ *     description: This endpoint retrieves all emails and is only available to authorized users.
+ *     tags:
+ *       - Mail
+ *     responses:
+ *       200:
+ *         description: Operation completed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: Email identifier.
+ *                     example: "12345"
+ *                   to:
+ *                     type: string
+ *                     description: Recipient's email address.
+ *                     example: "jan.kowalski@example.com"
+ *                   subject:
+ *                     type: string
+ *                     description: Subject of the email.
+ *                     example: "Meeting Reminder"
+ *                   message:
+ *                     type: string
+ *                     description: Body of the email.
+ *                     example: "This is a reminder for the meeting scheduled at 10 AM."
+ *       404:
+ *         description: No emails found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "No emails found."
+ *       500:
+ *         description: Server error encountered. Please contact the administrator for support.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
+ */
+
+/**
+ * @swagger
+ * /mail/{id}:
+ *   delete:
+ *     summary: Delete an email by its ID.
+ *     description: This endpoint allows the deletion of an email by its ID.
+ *     tags:
+ *       - Mail
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the email to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Email deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: "Operation completed successfully."
+ *       404:
+ *         description: Email not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Email not found."
+ *       500:
+ *         description: Server error encountered. Please contact the administrator for support.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
+ */
+
+/**
+ * @swagger
+ * /mail:
+ *   post:
+ *     summary: Send emails.
+ *     description: This endpoint allows sending multiple emails. It processes an array of email objects and handles errors accordingly.
+ *     tags:
+ *       - Mail
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 to:
+ *                   type: string
+ *                   description: Recipient's email address.
+ *                   example: "jan.kowalski@example.com"
+ *                 subject:
+ *                   type: string
+ *                   description: Subject of the email.
+ *                   example: "Meeting Reminder"
+ *                 message:
+ *                   type: string
+ *                   description: Body of the email.
+ *                   example: "This is a reminder for the meeting scheduled at 10 AM."
+ *     responses:
+ *       200:
+ *         description: Operation completed successfully. Lists successfully sent emails and errors if any.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: List of successfully sent email addresses.
+ *                   example: ["jan.kowalski@example.com"]
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: List of errors encountered.
+ *                   example: ["Failed to send email to jan.kowalski@example.com"]
+ *       500:
+ *         description: Server error encountered. Please contact the administrator for support.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
+ */
+
 export default router;

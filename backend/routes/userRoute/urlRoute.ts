@@ -44,7 +44,6 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
     }
   },
 );
-
 /**
  * @swagger
  * tags:
@@ -77,6 +76,10 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 userInfo:
  *                   type: object
  *                   description: Informacje dotyczące URL użytkownika.
+ *                   properties:
+ *                     img_url:
+ *                       type: string
+ *                       description: URL obrazu użytkownika.
  *       500:
  *         description: Błąd serwera.
  *         content:
@@ -87,6 +90,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Server encountered an error while fetching user URL information."
  */
 
 /**
@@ -113,6 +117,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *               img_url:
  *                 type: string
  *                 description: Nowy URL obrazu użytkownika.
+ *                 example: "https://example.com/new-avatar.png"
  *     responses:
  *       200:
  *         description: Pomyślnie zaktualizowano URL użytkownika.
@@ -124,6 +129,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat potwierdzający aktualizację.
+ *                   example: "User avatar URL has been successfully updated."
  *       500:
  *         description: Błąd serwera.
  *         content:
@@ -134,6 +140,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Server encountered an error while updating the user avatar URL."
  */
 
 /**
@@ -161,6 +168,7 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat potwierdzający usunięcie.
+ *                   example: "User avatar URL has been successfully deleted."
  *       500:
  *         description: Błąd serwera.
  *         content:
@@ -171,6 +179,8 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
  *                 message:
  *                   type: string
  *                   description: Komunikat błędu.
+ *                   example: "Server encountered an error while deleting the user avatar URL."
  */
+
 
 export default router;

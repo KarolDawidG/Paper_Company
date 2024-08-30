@@ -100,30 +100,47 @@ router.put("/:id", async (req: Request, res: Response) => {
  * @swagger
  * tags:
  *   name: Clients
- *   description: Endpointy do zarzadzania klientami.
+ *   description: Endpoints for managing clients.
  */
 
 /**
  * @swagger
  * /client:
  *   get:
- *     summary: Pobiera listę wszystkich klientow.
- *     description: Endpoint służący do pobierania listy wszystkich klientow.
+ *     summary: Get list of all clients.
+ *     description: Endpoint to fetch the list of all clients.
  *     tags: [Clients]
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę klientow.
+ *         description: Successfully retrieved the list of clients.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 ordersList:
+ *                 clientList:
  *                   type: array
  *                   items:
  *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Client ID.
+ *                         example: '12345'
+ *                       first_name:
+ *                         type: string
+ *                         description: Client's first name.
+ *                         example: 'John'
+ *                       second_name:
+ *                         type: string
+ *                         description: Client's second name.
+ *                         example: 'Doe'
+ *                       email:
+ *                         type: string
+ *                         description: Client's email.
+ *                         example: 'john.doe@example.com'
  *       500:
- *         description: Błąd serwera podczas pobierania listy.
+ *         description: Server error during fetching the client list.
  *         content:
  *           application/json:
  *             schema:
@@ -131,15 +148,16 @@ router.put("/:id", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
 
 /**
  * @swagger
  * /client:
  *   post:
- *     summary: Dodaje nowego klienta.
- *     description: Jak wyzej.
+ *     summary: Add a new client.
+ *     description: Endpoint to add a new client.
  *     tags: [Clients]
  *     requestBody:
  *       required: true
@@ -150,40 +168,25 @@ router.put("/:id", async (req: Request, res: Response) => {
  *             properties:
  *               first_name:
  *                 type: string
+ *                 description: Client's first name.
+ *                 example: 'John'
  *               second_name:
  *                 type: string
+ *                 description: Client's second name.
+ *                 example: 'Doe'
  *               email:
  *                 type: string
- *     responses:
- *       '200':
- *         description: Pomyślnie pobrano listę.
- *       '400':
- *         description: Błąd w żądaniu.
- *       '401':
- *         description: Nieautoryzowany dostęp.
- *       '500':
- *         description: Wystąpił błąd serwera.
- */
-
-/**
- * @swagger
- * /client/{id}:
- *   delete:
- *     summary: Usuwa danego klienta.
- *     description: Endpoint służący do usuwania danego klienta.
- *     tags: [Clients]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator.
- *         schema:
- *           type: string
+ *                 description: Client's email.
+ *                 example: 'john.doe@example.com'
  *     responses:
  *       200:
- *         description: Pomyślnie usunięto klienta.
+ *         description: Successfully added new client.
+ *       400:
+ *         description: Bad request due to invalid input.
+ *       401:
+ *         description: Unauthorized access.
  *       500:
- *         description: Błąd serwera podczas usuwania.
+ *         description: Server error during client insertion.
  *         content:
  *           application/json:
  *             schema:
@@ -191,6 +194,89 @@ router.put("/:id", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
  */
+
+/**
+ * @swagger
+ * /client/{id}:
+ *   delete:
+ *     summary: Delete a client.
+ *     description: Endpoint to delete a client by ID.
+ *     tags: [Clients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Client ID.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the client.
+ *       500:
+ *         description: Server error during client deletion.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
+ */
+
+/**
+ * @swagger
+ * /client/{id}:
+ *   put:
+ *     summary: Update client data.
+ *     description: Endpoint to update client details by ID.
+ *     tags: [Clients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Client ID.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               first_name:
+ *                 type: string
+ *                 description: Client's first name.
+ *                 example: 'John'
+ *               second_name:
+ *                 type: string
+ *                 description: Client's second name.
+ *                 example: 'Doe'
+ *               email:
+ *                 type: string
+ *                 description: Client's email.
+ *                 example: 'john.doe@example.com'
+ *     responses:
+ *       200:
+ *         description: Successfully updated client data.
+ *       400:
+ *         description: Bad request due to invalid input.
+ *       500:
+ *         description: Server error during client update.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
+ */
+
 export default router;

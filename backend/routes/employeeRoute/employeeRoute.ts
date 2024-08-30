@@ -24,38 +24,49 @@ router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunct
   },
 );
 
-
 /**
  * @swagger
  * tags:
- *   name: nn
- *   description: Endpointy do zarzadzania danymi pracownikow.
+ *   name: Employee
+ *   description: Endpoints for managing employee data.
  */
 
 /**
  * @swagger
- * /users:
+ * /employee:
  *   get:
- *     summary: Pobiera listę wszystkich użytkowników.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
+ *     summary: Retrieve a list of all employees.
+ *     description: This endpoint returns a list of all employees and is only available to users with a valid authorization token.
  *     tags:
- *       - nn
+ *       - Employee
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę użytkowników.
+ *         description: Operation completed successfully.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 usersList:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       // Odpowiednie pola, takie jak id, username, email itp.
- *       403:
- *         description: Brak dostępu do zasobu.
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: Employee identifier.
+ *                     example: "12345"
+ *                   first_name:
+ *                     type: string
+ *                     description: Employee's first name.
+ *                     example: "Jan"
+ *                   last_name:
+ *                     type: string
+ *                     description: Employee's last name.
+ *                     example: "Kowalski"
+ *                   email:
+ *                     type: string
+ *                     description: Employee's email address.
+ *                     example: "jan.kowalski@example.com"
+ *       404:
+ *         description: No address found for the given ID.
  *         content:
  *           application/json:
  *             schema:
@@ -63,9 +74,10 @@ router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunct
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: "No address found for the given ID."
  *       500:
- *         description: Błąd serwera.
+ *         description: Server error encountered. Please contact the administrator for support.
  *         content:
  *           application/json:
  *             schema:
@@ -73,96 +85,8 @@ router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunct
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
- */
-
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Pobiera informacje o użytkowniku.
- *     description: Endpoint dostępny tylko dla użytkowników o roli "admin".
- *     tags:
- *       - nn
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator użytkownika.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Pomyślnie pobrano informacje o użytkowniku.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                    // Odpowiednie pola, takie jak id, username, email itp.
- *       403:
- *         description: Brak dostępu do zasobu.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
- *       500:
- *         description: Błąd serwera.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
- */
-
-/**
- * @swagger
- * /users/user/{id}:
- *   get:
- *     summary: Pobiera informacje o użytkowniku.
- *     description: Pobiera informacje o użytkowniku na podstawie jego identyfikatora.
- *     tags: [nn]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator użytkownika.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Pomyślnie pobrano informacje o użytkowniku.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *       403:
- *         description: Brak dostępu do zasobu.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
- *       500:
- *         description: Błąd serwera.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: "Server encountered an error. Please contact the administrator for support."
  */
 
 export default router;

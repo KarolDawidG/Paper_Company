@@ -53,41 +53,66 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-/**
+ /**
  * @swagger
  * tags:
- *   name: Adres
- *   description: Endpointy do zarzadzania sprzedaza.
+ *   name: Address
+ *   description: Endpoints for managing user addresses.
  */
 
 /**
  * @swagger
  * /address/{id}:
  *   get:
- *     summary: Pobiera listę wszystkich adresow danego uzytkownika.
- *     description: Endpoint służący do pobierania adresow.
- *     tags: [Adres]
- *     parameters:  * // Dodano parametry dla metody GET
+ *     summary: Retrieves the list of addresses for a given user ID.
+ *     description: This endpoint retrieves a list of addresses based on the user ID.
+ *     tags: [Address]
+ *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identyfikator użytkownika.
+ *         description: User ID.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę.
+ *         description: Successfully retrieved the list of addresses.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 addressList:  * // Zmieniono z ordersList na addressList
+ *                 addressList:
  *                   type: array
  *                   items:
  *                     type: object
- *       500:
- *         description: Błąd serwera podczas pobierania listy.
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "ab68bc7d-39f1-4d3d-9a57-ff11a08c0a29"
+ *                       client_id:
+ *                         type: string
+ *                         example: "84b4a462-e420-48b2-ab41-da6cf59e0220"
+ *                       miasto:
+ *                         type: string
+ *                         example: "Gdynia"
+ *                       ulica:
+ *                         type: string
+ *                         example: "Swietojanska"
+ *                       nr_budynku:
+ *                         type: string
+ *                         example: "22"
+ *                       nr_mieszkania:
+ *                         type: string
+ *                         example: "2"
+ *                       kod:
+ *                         type: string
+ *                         example: "22-111"
+ *                       nazwa_firmy:
+ *                         type: string
+ *                         example: "Kompany name Gdynia"
+ *       404:
+ *         description: No address found for the given ID.
  *         content:
  *           application/json:
  *             schema:
@@ -95,28 +120,37 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   example: "No address found for the given ID."
+ *       500:
+ *         description: Server error while retrieving the list of addresses.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server encountered an error. Please contact the administrator for support."
  */
+
 
 /**
  * @swagger
  * /address/{id}:
  *   delete:
- *     summary: Usuwa adres.
- *     description: Endpoint służący do usuwania adresu na podstawie jego identyfikatora.
- *     tags: [Adres]
+ *     summary: Deletes an address by ID.
+ *     description: This endpoint deletes an address based on its ID.
+ *     tags: [Address]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identyfikator zamowienia.
+ *         description: Address ID.
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Pomyślnie usunięto zamowienie.
- *       500:
- *         description: Błąd serwera podczas usuwania.
+ *         description: Successfully deleted the address.
  *         content:
  *           application/json:
  *             schema:
@@ -124,6 +158,27 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   example: "Operation completed successfully."
+ *       404:
+ *         description: No address found to delete for the given ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No address found for the given ID."
+ *       500:
+ *         description: Server error while deleting the address.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server encountered an error. Please contact the administrator for support."
  */
+
 export default router;

@@ -45,4 +45,87 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Basket
+ *   description: Endpointy do zarządzania koszykiem zakupów.
+ */
+
+/**
+ * @swagger
+ * /basket:
+ *   post:
+ *     summary: Add products to the basket for a given order.
+ *     description: Endpoint for adding products to the basket based on the order ID and product details.
+ *     tags:
+ *       - Basket
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               order_id:
+ *                 type: string
+ *                 example: '123456789'
+ *                 description: The ID of the order to which products are added.
+ *               products:
+ *                 type: object
+ *                 additionalProperties:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 'prod123'
+ *                       description: The ID of the product.
+ *                     name:
+ *                       type: string
+ *                       example: 'Product Name'
+ *                       description: The name of the product.
+ *                     description:
+ *                       type: string
+ *                       example: 'Product Description'
+ *                       description: A brief description of the product.
+ *                     price:
+ *                       type: number
+ *                       format: float
+ *                       example: 29.99
+ *                       description: The price of the product.
+ *                     stock:
+ *                       type: integer
+ *                       example: 50
+ *                       description: The stock level of the product.
+ *                     clickCount:
+ *                       type: integer
+ *                       example: 3
+ *                       description: The quantity of the product added to the basket.
+ *     responses:
+ *       200:
+ *         description: Successfully added products to the basket.
+ *       400:
+ *         description: Bad request due to missing or invalid data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: 'Invalid request. Please check the data and try again.'
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: 'Server error encountered. Please contact the administrator for support.'
+ */
+
 export default router;

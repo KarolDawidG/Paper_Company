@@ -42,25 +42,22 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 
   try {
     const users = await UsersRecord.selectByUsername([user]) as UserInterface[];
-
-    if (!Array.isArray(users) || users.length === 0) {
-      logger.warn(`Login Route: POST: User not found. Username: ${user}`);
-      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
-    }
+      if (!Array.isArray(users) || users.length === 0) {
+        logger.warn(`Login Route: POST: User not found. Username: ${user}`);
+        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
+      }
 
     const userRecord = users[0];
-
-    if (!userRecord.is_active) {
-      logger.warn(`Login Route: POST: User is inactive. Username: ${user}`);
-      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
-    }
+      if (!userRecord.is_active) {
+        logger.warn(`Login Route: POST: User is inactive. Username: ${user}`);
+        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
+      }
 
     const isPasswordValid = await bcrypt.compare(password, userRecord.password);
-
-    if (!isPasswordValid) {
-      logger.warn(`Login Route: POST: Wrong password. Username: ${user}`);
-      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
-    }
+      if (!isPasswordValid) {
+        logger.warn(`Login Route: POST: Wrong password. Username: ${user}`);
+        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
+      }
 
     const token = generateToken(user, userRecord.role);
     const refreshToken = generateRefreshToken(user, userRecord.role);
@@ -125,15 +122,15 @@ router.post("/refresh", async (req: Request, res: Response) => {
  * @swagger
  * tags:
  *   name: Auth
- *   description: Endpointy do obsługi logowania uzytkownika.
+ *   description: Endpoints for handling user authentication and token management.
  */
 
 /**
  * @swagger
  * /auth:
  *   post:
- *     summary: Logowanie użytkownika
- *     description: Loguje użytkownika i zwraca token dostępowy.
+ *     summary: Login user
+ *     description: Authenticates a user and returns an access token.
  *     tags:
  *       - Auth
  *     requestBody:
@@ -145,13 +142,15 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *             properties:
  *               username:
  *                 type: string
- *                 description: Nazwa użytkownika.
+ *                 description: Username of the user.
+ *                 example: "john_doe"
  *               password:
  *                 type: string
- *                 description: Hasło użytkownika.
+ *                 description: Password of the user.
+ *                 example: "password123"
  *     responses:
  *       200:
- *         description: Pomyślnie zalogowano użytkownika.
+ *         description: Successfully logged in the user.
  *         content:
  *           application/json:
  *             schema:
@@ -159,15 +158,18 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 token:
  *                   type: string
- *                   description: Token dostępowy.
+ *                   description: Access token for the user.
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *                 idUser:
  *                   type: string
- *                   description: Identyfikator użytkownika.
+ *                   description: User's identifier.
+ *                   example: "123456"
  *                 message:
  *                   type: string
- *                   description: Komunikat powitalny.
+ *                   description: Success message.
+ *                   example: "Login successful."
  *       400:
- *         description: Błędne żądanie.
+ *         description: Bad request due to invalid input.
  *         content:
  *           application/json:
  *             schema:
@@ -175,9 +177,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating invalid input.
+ *                   example: "Invalid request data."
  *       401:
- *         description: Błędna nazwa użytkownika lub hasło.
+ *         description: Incorrect username or password.
  *         content:
  *           application/json:
  *             schema:
@@ -185,9 +188,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating incorrect credentials.
+ *                   example: "Invalid username or password."
  *       403:
- *         description: Konto nieaktywne lub zablokowane.
+ *         description: Account inactive or locked.
  *         content:
  *           application/json:
  *             schema:
@@ -195,9 +199,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating account status.
+ *                   example: "Account is inactive or locked."
  *       422:
- *         description: Nieprawidłowe dane wejściowe.
+ *         description: Unprocessable entity due to missing or invalid data.
  *         content:
  *           application/json:
  *             schema:
@@ -205,9 +210,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating unprocessable entity.
+ *                   example: "Missing or invalid username or password."
  *       500:
- *         description: Błąd serwera.
+ *         description: Internal server error.
  *         content:
  *           application/json:
  *             schema:
@@ -215,15 +221,16 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating a server error.
+ *                   example: "Internal server error occurred."
  */
 
 /**
  * @swagger
  * /auth/refresh:
  *   post:
- *     summary: Odśwież token dostępowy
- *     description: Odświeża token dostępowy użytkownika na podstawie tokena odświeżającego.
+ *     summary: Refresh access token
+ *     description: Refreshes the user's access token based on the refresh token.
  *     tags:
  *       - Auth
  *     requestBody:
@@ -235,10 +242,11 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *             properties:
  *               idUser:
  *                 type: string
- *                 description: Identyfikator użytkownika.
+ *                 description: Identifier of the user requesting the token refresh.
+ *                 example: "123456"
  *     responses:
  *       200:
- *         description: Pomyślnie odświeżono token dostępowy.
+ *         description: Successfully refreshed the access token.
  *         content:
  *           application/json:
  *             schema:
@@ -246,9 +254,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 token:
  *                   type: string
- *                   description: Nowy token dostępowy.
+ *                   description: New access token.
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *       401:
- *         description: Brak tokena odświeżającego lub błąd weryfikacji.
+ *         description: Missing or invalid refresh token.
  *         content:
  *           application/json:
  *             schema:
@@ -256,9 +265,10 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating missing or invalid refresh token.
+ *                   example: "No refresh token provided or invalid token."
  *       403:
- *         description: Nieprawidłowy token odświeżający.
+ *         description: Invalid refresh token.
  *         content:
  *           application/json:
  *             schema:
@@ -266,7 +276,31 @@ router.post("/refresh", async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message indicating invalid refresh token.
+ *                   example: "Invalid refresh token."
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating that the user was not found.
+ *                   example: "User not found."
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating a server error.
+ *                   example: "Internal server error occurred."
  */
+
 
 export default router;

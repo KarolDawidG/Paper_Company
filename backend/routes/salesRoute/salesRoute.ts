@@ -85,19 +85,20 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  * @swagger
  * tags:
  *   name: Sales
- *   description: Endpointy do zarzadzania sprzedaza.
+ *   description: Endpoints for managing sales and orders.
  */
 
 /**
  * @swagger
  * /sales:
  *   get:
- *     summary: Pobiera listę wszystkich zamowien nad ktorymi pracuje dany sprzedawca.
- *     description: Endpoint służący do pobierania listy wszystkich sprzedazy.
- *     tags: [Sales]
+ *     summary: Retrieve a list of all orders.
+ *     description: This endpoint retrieves all orders assigned to the seller. Requires authentication.
+ *     tags:
+ *       - Sales
  *     responses:
  *       200:
- *         description: Pomyślnie pobrano listę sprzedazy.
+ *         description: Successfully retrieved the list of orders.
  *         content:
  *           application/json:
  *             schema:
@@ -107,8 +108,26 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *                   type: array
  *                   items:
  *                     type: object
- *       500:
- *         description: Błąd serwera podczas pobierania listy użytkowników.
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Order identifier.
+ *                         example: "123"
+ *                       client_id:
+ *                         type: string
+ *                         description: Client identifier.
+ *                         example: "456"
+ *                       client_address_id:
+ *                         type: string
+ *                         description: Client address identifier.
+ *                         example: "789"
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Date and time when the order was created.
+ *                         example: "2024-03-21T14:45:29.000Z"
+ *       404:
+ *         description: No orders found.
  *         content:
  *           application/json:
  *             schema:
@@ -116,16 +135,29 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Error message.
+ *                   example: "No orders found."
+ *       500:
+ *         description: An unknown server error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "An unknown server error occurred."
  */
 
 /**
  * @swagger
  * /sales:
  *   post:
- *     summary: Dodaje nowe sprzedarze.
- *     description: Jak wyzej.
- *     tags: [Sales]
+ *     summary: Add a new address.
+ *     description: This endpoint adds a new address. Requires authentication.
+ *     tags:
+ *       - Sales
  *     requestBody:
  *       required: true
  *       content:
@@ -133,58 +165,37 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *           schema:
  *             type: object
  *             properties:
- *               imie:
+ *               city:
  *                 type: string
- *               email:
+ *                 description: City of the address.
+ *                 example: "Warsaw"
+ *               street:
  *                 type: string
- *               produkt:
+ *                 description: Street name of the address.
+ *                 example: "Main St"
+ *               building:
  *                 type: string
- *               ilosc:
+ *                 description: Building number.
+ *                 example: "12A"
+ *               no_apartment:
  *                 type: string
- *               miasto:
+ *                 description: Apartment number.
+ *                 example: "5"
+ *               code:
  *                 type: string
- *               ulica:
+ *                 description: Postal code.
+ *                 example: "00-123"
+ *               company_name:
  *                 type: string
- *               nr_budynku:
+ *                 description: Name of the company.
+ *                 example: "Tech Solutions"
+ *               client_id:
  *                 type: string
- *               nr_mieszkania:
- *                 type: string
- *               kod:
- *                 type: string
- *               nazwa_firmy:
- *                 type: string
- *               salesId:
- *                 type: string
- *     responses:
- *       '200':
- *         description: Pomyślnie pobrano listę zamowien.
- *       '400':
- *         description: Błąd w żądaniu.
- *       '401':
- *         description: Nieautoryzowany dostęp.
- *       '500':
- *         description: Wystąpił błąd serwera.
- */
-
-/**
- * @swagger
- * /sales/{id}:
- *   delete:
- *     summary: Usuwa zamowienia.
- *     description: Endpoint służący do usuwania zamowienia na podstawie jego identyfikatora.
- *     tags: [Sales]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator zamowienia.
- *         schema:
- *           type: string
+ *                 description: Client identifier.
+ *                 example: "456"
  *     responses:
  *       200:
- *         description: Pomyślnie usunięto zamowienie.
- *       500:
- *         description: Błąd serwera podczas usuwania użytkownika.
+ *         description: Successfully added the address.
  *         content:
  *           application/json:
  *             schema:
@@ -192,6 +203,136 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Komunikat błędu.
+ *                   description: Success message.
+ *                   example: "Operation completed successfully."
+ *       400:
+ *         description: Bad request due to missing required fields.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Bad request. Missing required address or client data."
+ *       500:
+ *         description: An unknown server error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "An unknown server error occurred."
  */
+
+/**
+ * @swagger
+ * /sales/new-order:
+ *   post:
+ *     summary: Create a new order.
+ *     description: This endpoint creates a new order. Requires authentication.
+ *     tags:
+ *       - Sales
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               client_id:
+ *                 type: string
+ *                 description: Client identifier.
+ *                 example: "456"
+ *               client_address_id:
+ *                 type: string
+ *                 description: Client address identifier.
+ *                 example: "789"
+ *     responses:
+ *       200:
+ *         description: Successfully created a new order.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 order_id:
+ *                   type: string
+ *                   description: Identifier of the newly created order.
+ *                   example: "123"
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: "Operation completed successfully."
+ *       400:
+ *         description: Bad request due to missing client or address ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Bad request. Missing client or address ID."
+ *       500:
+ *         description: An unknown server error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "An unknown server error occurred."
+ */
+
+/**
+ * @swagger
+ * /sales/{id}:
+ *   delete:
+ *     summary: Delete an order.
+ *     description: This endpoint deletes an order by its identifier. Requires authentication.
+ *     tags:
+ *       - Sales
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the order to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the order.
+ *       404:
+ *         description: No order found with the given ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "No order found with ID 123."
+ *       500:
+ *         description: An unknown server error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "An unknown server error occurred."
+ */
+
+
 export default router;
