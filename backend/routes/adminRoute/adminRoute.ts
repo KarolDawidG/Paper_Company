@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter, errorHandler, handleError } from "../../config/config";
 import { verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -24,10 +24,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
       .status(STATUS_CODES.SUCCESS)
       .json({ usersList });
   } catch (error: any) {
-    logger.error(`Admin Route: GET: Error fetching users list. Error: ${error.message}`);  
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Admin Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    return handleError(res, error, "Admin Route: GET", MESSAGES.UNKNOW_ERROR);
   }
 },
 );

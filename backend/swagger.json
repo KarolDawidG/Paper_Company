@@ -6,77 +6,6 @@
     "description": "Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial \"The Office\". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość."
   },
   "paths": {
-    "/contact": {
-      "post": {
-        "summary": "Wysyła e-mail z formularza kontaktowego.",
-        "description": "Endpoint do wysyłania wiadomości e-mail z formularza kontaktowego.",
-        "tags": [
-          "Contact"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Imię i nazwisko osoby kontaktującej się."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Adres e-mail osoby kontaktującej się."
-                  },
-                  "subject": {
-                    "type": "string",
-                    "description": "Temat wiadomości."
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "Treść wiadomości."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Pomyślnie wysłano e-mail.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Potwierdzenie wysłania e-maila."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Błąd serwera podczas wysyłania e-maila.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat błędu."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/forgot": {
       "post": {
         "summary": "Wysyła email resetujący hasło.",
@@ -1379,10 +1308,6 @@
   },
   "components": {},
   "tags": [
-    {
-      "name": "Contact",
-      "description": "Endpointy do obsługi formularza kontaktowego"
-    },
     {
       "name": "Forgot Password",
       "description": "Endpointy do obsługi przypomnienia hasła"

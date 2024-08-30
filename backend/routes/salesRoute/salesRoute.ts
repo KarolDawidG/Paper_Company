@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter } from "../../config/config";
+import { handleError, limiter } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -13,14 +13,13 @@ router.use(middleware, limiter);
 router.get("/", verifyToken, async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getListById();
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json({ ordersList });
+        if (!ordersList || ordersList.length === 0) {
+          logger.warn("Sales Route: GET: No orders found.");
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).json({ ordersList });
     } catch (error: any) {
-      logger.error(`Sales Route: GET: Failed to fetch order list. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+      return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOW_ERROR);
     }
 });
 
@@ -36,47 +35,49 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     client_id: formData.client_id || null
   };
 
+    if (!formData.client_id || !formData.miasto || !formData.ulica) {
+      logger.warn("Sales Route: POST: Missing required address or client data.");
+      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+    }
     try {
       await AddressRecord.insert(formData);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send({ message: MESSAGES.SUCCESSFUL_OPERATION });
+      return res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      logger.error(`Sales Route address: POST: Failed to insert address for client id: ${formData.client_id}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route address: POST: ${MESSAGES.UNKNOW_ERROR}`);
+      logger.error(`Sales Route address: POST: Failed to insert address for client id: ${formData.client_id}. Error: ${error.message}`);
+      return res.status(STATUS_CODES.SERVER_ERROR).send(`Sales Route address: POST: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 
 router.post("/new-order", verifyToken, async (req: Request, res: Response) => {
   const {client_id, client_address_id} = req.body;
-  
+
+    if (!client_id || !client_address_id) {
+      logger.warn("Sales/new-order Route: POST: Missing client or address ID.");
+      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+    }
+
     try {
       const order_id = await OrdersRecord.insert(client_id, client_address_id );
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
+      return res.status(STATUS_CODES.SUCCESS).send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      logger.error(`Sales/new-order Route: POST: Failed to create new order for client id: ${client_id}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales/new-order Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
+      logger.error(`Sales/new-order Route: POST: Failed to create new order for client id: ${client_id}. Error: ${error.message}`);
+    return res.status(STATUS_CODES.SERVER_ERROR).send(`Sales/new-order Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 
 router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
-      await OrdersRecord.delete(id)
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
+      const [result] = await OrdersRecord.delete(id);
+        if (result.affectedRows === 0) {
+          logger.warn(`Sales Route: DELETE: No order found with ID ${id}.`);
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+  
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Sales Route: DELETE: Failed to delete order with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Sales Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+      logger.error(`Sales Route: DELETE: Failed to delete order with ID ${id}. Error: ${error.message}`);
+    return res.status(STATUS_CODES.SERVER_ERROR).send(`Sales Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
     }
 });
 

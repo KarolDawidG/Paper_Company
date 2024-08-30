@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import {
   errorHandler,
+  handleError,
   limiterLogin,
   queryParameterize,
 } from "../../config/config";
@@ -23,116 +24,101 @@ const router: Router = express.Router();
 router.use(middleware);
 router.use(errorHandler);
 
+
+interface UserInterface {
+  id: string,
+  is_active: number,
+  role: string,
+  password: string
+}
+
 router.post("/", limiterLogin, async (req: Request, res: Response) => {
-  let idUser: string | undefined;
+  const { username: user, password } = req.body;
+
+  if (!user || !password) {
+    logger.warn("Login Route: POST: Missing username or password.");
+    return res.status(STATUS_CODES.UNPROCESSABLE_ENTITY).send(MESSAGES.UNPROCESSABLE_ENTITY);
+  }
 
   try {
-    const user: string = req.body.username;
-    const password: string = req.body.password;
+    const users = await UsersRecord.selectByUsername([user]) as UserInterface[];
 
-    if (!user || !password) {
-      return res
-        .status(STATUS_CODES.UNPROCESSABLE_ENTITY)
-        .send(MESSAGES.UNPROCESSABLE_ENTITY);
-    }
-    // if (!user.match(queryParameterize)) {
-    //   return res
-    //     .status(STATUS_CODES.BAD_REQUEST)
-    //     .send(MESSAGES.SQL_INJECTION_ALERT);
-    // }
-
-    const ifUser = await UsersRecord.selectByUsername([user]);
-
-    if (Array.isArray(ifUser)) {
-      if (ifUser.length === 0) {
-        return res
-          .status(STATUS_CODES.UNAUTHORIZED)
-          .send(MESSAGES.UNPROCESSABLE_ENTITY);
-      }
-      if ("id" in ifUser[0]) {
-        idUser = ifUser[0]?.id;
-      } else {
-        return res
-          .status(STATUS_CODES.UNAUTHORIZED)
-          .send(MESSAGES.UNPROCESSABLE_ENTITY);
-      }
+    if (!Array.isArray(users) || users.length === 0) {
+      logger.warn(`Login Route: POST: User not found. Username: ${user}`);
+      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
 
-    if (!idUser) {
-      return res
-        .status(STATUS_CODES.UNAUTHORIZED)
-        .send(MESSAGES.UNPROCESSABLE_ENTITY);
+    const userRecord = users[0];
+
+    if (!userRecord.is_active) {
+      logger.warn(`Login Route: POST: User is inactive. Username: ${user}`);
+      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
     }
 
-    if (
-      Array.isArray(ifUser) &&
-      ifUser.length > 0 &&
-      "is_active" in ifUser[0]
-    ) {
-      if (!ifUser[0].is_active) {
-        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.FORBIDDEN);
-      }
-    } else {
-      return res
-        .status(STATUS_CODES.UNAUTHORIZED)
-        .send(MESSAGES.UNPROCESSABLE_ENTITY);
-    }
-
-    const hashedPassword: string = ifUser[0].password;
-    const isPasswordValid: boolean = await bcrypt.compare(
-      password,
-      hashedPassword,
-    );
+    const isPasswordValid = await bcrypt.compare(password, userRecord.password);
 
     if (!isPasswordValid) {
-      return res
-        .status(STATUS_CODES.UNAUTHORIZED)
-        .send(MESSAGES.UNPROCESSABLE_ENTITY);
+      logger.warn(`Login Route: POST: Wrong password. Username: ${user}`);
+      return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.UNPROCESSABLE_ENTITY);
     }
 
-    const rola: string = ifUser[0].role;
-    logger.info(`Logged in user: ${user}, access level: ${rola}`);
+    const token = generateToken(user, userRecord.role);
+    const refreshToken = generateRefreshToken(user, userRecord.role);
 
-    const token: string = generateToken(user, rola);
-    const refreshToken: string = generateRefreshToken(user, rola);
+    await UsersRecord.updateRefreshTokenById([refreshToken, userRecord.id]);
 
-    await UsersRecord.updateRefreshTokenById([refreshToken, idUser]);
-
+    logger.info(`Logged in user: ${user}, access level: ${userRecord.role}`);
     return res.status(STATUS_CODES.SUCCESS).json({
-      token: token,
-      idUser: idUser,
+      token,
+      idUser: userRecord.id,
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
-  } catch (error: any) {
-    logger.error(`Login Route: POST: ${error.message}`);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Login Route: POST: ${MESSAGES.INTERNET_DISCONNECTED}`);
+  } catch (error) {
+    return handleError(res, error, "Login Route: POST", MESSAGES.SERVER_ERROR);
   }
 });
 
 router.post("/refresh", async (req: Request, res: Response) => {
-  const idUser: string = req.body.idUser;
-
-  const userInfo: any = await UsersRecord.selectTokenById([idUser]);
-  const refreshToken = userInfo[0]?.refresh_token;
-
-  if (!refreshToken) {
-    return res.status(401).json({ message: MESSAGES.NO_REFRESH_TOKEN });
-  }
-  jwt.verify(refreshToken, SECRET_REFRESH_TOKEN, (err: any, decoded: any) => {
-    if (err) {
-      return res.status(403).json({ message: MESSAGES.INVALID_REFRESH_TOKEN });
+  const { idUser } = req.body;
+    if (!idUser) {
+      return res.status(STATUS_CODES.UNPROCESSABLE_ENTITY).send(MESSAGES.MISSING_ID_USER);
     }
-    const username: string = decoded.user;
-    const role: string = decoded.role;
-    const newToken: string = generateToken(username, role);
-    const newRefreshToken: string = generateRefreshToken(username, role);
+  try {
+    const userInfo: any = await UsersRecord.selectTokenById([idUser]);
+      if (userInfo.length === 0) {
+        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.USER_NOT_FOUND);
+      }
 
-    UsersRecord.updateRefreshTokenById([newRefreshToken, idUser]);
+    const refreshToken = userInfo[0]?.refresh_token;
+      if (!refreshToken) {
+        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.NO_REFRESH_TOKEN);
+      }
 
-    return res.json({ token: newToken });
-  });
+    jwt.verify(refreshToken, SECRET_REFRESH_TOKEN, (err: any, decoded: any) => {
+      if (err) {
+        return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.INVALID_REFRESH_TOKEN);
+      }
+
+      const { user: username, role } = decoded;
+      const newToken: string = generateToken(username, role);
+      const newRefreshToken: string = generateRefreshToken(username, role);
+    
+      UsersRecord.updateRefreshTokenById([newRefreshToken, idUser])
+        .then(() => {
+          return res.json({ token: newToken });
+        })
+        .catch((error) => {
+          logger.error(`Refresh Route: POST: Error updating refresh token for user ID: ${idUser}`, error);
+          return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+        });
+    });
+
+  } catch (error:any) {
+      return handleError(res, error, "Refresh Route: POST", MESSAGES.SERVER_ERROR);
+  }
+
+
+
 });
 
 /**

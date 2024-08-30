@@ -6,6 +6,7 @@ import middleware from "../../config/middleware";
 import dotenv from "dotenv";
 import logger from "../../logs/logger";
 import STATUS_CODES from "../../config/status-codes";
+import { handleError } from "../../config/config";
 dotenv.config();
 const REACT_APP_SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
 
@@ -13,6 +14,7 @@ const router: Router = express.Router();
 
 router.use(middleware);
 
+// TODO upgrade frontend
 
 router.post("/", async (req: Request, res: Response) => {
   const { token, inputVal } = req.body as { token: string; inputVal: string };
@@ -28,10 +30,7 @@ router.post("/", async (req: Request, res: Response) => {
           .send("Robot 🤖");
       }
   } catch (error:any) {
-    logger.error(`CAPTCHA Verification Error: ${error.message}, Stack: ${error.stack}`);
-    res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(MESSAGES.CAPTCHA_ERROR);
+    return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOW_ERROR);
   }
 });
 

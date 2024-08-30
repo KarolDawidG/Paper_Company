@@ -7,7 +7,7 @@ import STATUS_CODES from "../../config/status-codes";
 const router = express.Router();
 router.use(middleware);
 
-router.get("/", (req: Request, res: Response) => {
+router.get("/", (req: Request, res: Response): Response => {
   logger.info(MESSAGES.SUCCESSFUL_LOGOUT);
   return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_LOGOUT);
 });

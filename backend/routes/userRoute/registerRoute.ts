@@ -3,7 +3,7 @@ import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import middleware from "../../config/middleware";
-import { errorHandler } from "../../config/config";
+import { errorHandler, handleError } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import URL from "../../config/url";
 import STATUS_CODES from "../../config/status-codes";
@@ -63,13 +63,13 @@ router.post("/", async (req: Request, res: Response) => {
     logger.info(MESSAGES.SUCCESSFUL_SIGN_UP);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_SIGN_UP);
   } catch (error: any) {
-    logger.error(error.message);
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Register Route: POST", MESSAGES.SERVER_ERROR);
   }
 });
 
 router.get("/:token", async (req: Request, res: Response) => {
   const { token } = req.params;
+
   try {
     jwt.verify(token, JWT_CONFIRMED_TOKEN!, async (err: any, decoded: any) => {
       if (err) {
@@ -82,8 +82,7 @@ router.get("/:token", async (req: Request, res: Response) => {
       return res.redirect(URL.URL_LOGIN);
     });
   } catch (error: any) {
-    logger.error(`Server error: ${error.message}`);
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Register Route: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
