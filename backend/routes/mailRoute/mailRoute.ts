@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter, errorHandler, handleError } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -18,14 +18,13 @@ router.use(express.json());
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const emails = await fetchAllMails();
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .json(emails); 
+      if (emails.length === 0) {
+        logger.warn("Mail Route: GET: No emails found.");
+        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      }
+    return res.status(STATUS_CODES.SUCCESS).json(emails); 
   } catch (error: any) {
-    logger.error(`Mail Route: GET: Failed to fetch mail list. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Mail Route: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -34,14 +33,9 @@ router.delete("/:id", async (req: Request, res: Response, next: NextFunction) =>
 
   try {
     await deleteMailById(id);
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .send(MESSAGES.SUCCESSFUL_OPERATION);
+    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
-    logger.error(`Mail Route: DELETE: Failed to delete mail with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Mail Route: DELETE", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -57,7 +51,8 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
       try {
         await sendEmployeeEmail(email.to, email.subject, email.message);
         successEmails.push(email.to);
-      } catch (error) {
+      } catch (error:any) {
+        logger.error(`Mail Route: POST: Failed to send email to ${email.to}. Error: ${error.message}`);
         errors.push(`Failed to send email to ${email.to}`);
       }
     });
@@ -65,9 +60,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 
     return handleResponse(res, errors, successEmails);
   } catch (error: any) {
-    logger.error(`Mail Route: POST: Failed to send mails. Error: ${error.message}, Stack: ${error.stack}`);
-    
-    return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Mail Route: POST", MESSAGES.SERVER_ERROR);
   }
 });
 

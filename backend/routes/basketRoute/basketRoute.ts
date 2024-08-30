@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter } from "../../config/config";
+import { handleError, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -41,8 +41,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
         }
         res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error:any) {
-        logger.error(`Basket Route: POST: Error processing basket for order ${req.body.order_id}. Error: ${error.message}, Stack: ${error.stack}`);
-        res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+        return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR);
     }
 });
 

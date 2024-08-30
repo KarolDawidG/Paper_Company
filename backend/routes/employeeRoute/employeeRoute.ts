@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter, errorHandler, handleError } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -13,15 +13,14 @@ router.use(middleware, limiter, errorHandler);
 router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const usersList = await EmployeeRecord.selectAll();
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json(usersList );
+        if (usersList.length === 0) {
+          logger.warn("Employee Route: GET: No employees found.");
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).json(usersList );
     } catch (error: any) {
-      logger.error(`Employee Route: GET: Failed to fetch employee list. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(MESSAGES.SERVER_ERROR);
-    }
+      return handleError(res, error, "Employee Route: GET", MESSAGES.SERVER_ERROR);
+  }
   },
 );
 

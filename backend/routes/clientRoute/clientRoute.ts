@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter } from "../../config/config";
+import { handleError, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -10,34 +10,30 @@ const router = express.Router();
 router.use(middleware, limiter);
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
-    try {
-      const clientList = await ClientRecord.getList();
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json({ clientList });
-    } catch (error: any) {
-      logger.error(`Client Route: GET: Failed to fetch client list. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Client Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+  try {
+    const clientList = await ClientRecord.getList();
+    if (clientList.length === 0) {
+      logger.warn("Client Route: GET: No clients found.");
+      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
     }
+    return res.status(STATUS_CODES.SUCCESS).json({ clientList });
+  } catch (error: any) {
+    return handleError(res, error, "Client Route: GET", MESSAGES.UNKNOW_ERROR);
+  }
 });
 
 router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
-  const clientid:string = req.params.clientid;
-  const addresid:string = req.params.addresid;
+  const { clientid, addresid } = req.params;
 
   try {
     const clientData = await ClientRecord.getClientData(clientid, addresid);
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .json(clientData);
+      if (!clientData) {
+        logger.warn(`Client Route: GET: No data found for client ${clientid} and address ${addresid}.`);
+        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      }
+    return res.status(STATUS_CODES.SUCCESS).json(clientData);
   } catch (error: any) {
-    logger.error(`Client/client-data Route: GET: Failed to fetch data for client ${clientid} and address ${addresid}. Error: ${error.message}, Stack: ${error.stack}`);
-
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Client/client-data Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    return handleError(res, error, "Client/client-data Route: GET", MESSAGES.UNKNOW_ERROR);
   }
 });
 
@@ -47,14 +43,13 @@ router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
 
   try {
     const clientAddress = await ClientRecord.getAddress([id]);
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .json({ clientAddress });
+      if (!clientAddress) {
+        logger.warn(`Client Route: GET: No address found with ID ${id}.`);
+        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      }
+    return res.status(STATUS_CODES.SUCCESS).json({ clientAddress });
   } catch (error: any) {
-    logger.error(`Client Route Get Address: GET: Failed to fetch address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Client Route Get Address: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
   }
 });
 
@@ -63,31 +58,25 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
     try {
       await ClientRecord.insert(formData)
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Client Route: POST: Failed to insert client data: ${JSON.stringify(formData)}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Client Route: POST: ${MESSAGES.UNKNOW_ERROR}`);
-    }
+      return handleError(res, error, "Client Route: POST", MESSAGES.UNKNOW_ERROR);
+  }
 });
 
 router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
-  const id:string = req.params.clientId;
+  const { clientId } = req.params;
 
-    try {
-      await ClientRecord.delete(id)
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
-    } catch (error: any) {
-      logger.error(`Client Route: DELETE: Failed to delete client with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Client Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+  try {
+    const [result] = await ClientRecord.delete(clientId);
+    if (result.affectedRows === 0) {
+      logger.warn(`Client Route: DELETE: No client found with ID ${clientId} to delete.`);
+      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
     }
+    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+  } catch (error: any) {
+    return handleError(res, error, "Client Route: DELETE", MESSAGES.UNKNOW_ERROR);
+  }
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
@@ -95,15 +84,14 @@ router.put("/:id", async (req: Request, res: Response) => {
   const { first_name, second_name, email } = req.body;
 
     try {
-      await ClientRecord.updateClient([id, first_name, second_name, email ]);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("Dane ustawione poprawnie.");
+      const result = await ClientRecord.updateClient([id, first_name, second_name, email ]);
+        if (result.affectedRows === 0) {
+          logger.warn(`Client Route: PUT: No client found with ID ${id} to update.`);
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Users Route: PUT: Failed to update client with ID ${id}. Data: ${JSON.stringify(req.body)}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+      return handleError(res, error, "Client Route: PUT", MESSAGES.UNKNOW_ERROR);
     }
 });
 

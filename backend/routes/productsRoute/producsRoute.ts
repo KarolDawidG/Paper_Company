@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter } from "../../config/config";
+import { handleError, limiter } from "../../config/config";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -13,15 +13,14 @@ router.get("/", async (req: Request, res: Response) => {
 
     try {
       const productsData = await ProductsRecord.getAll(locale);
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json({ productsData });
+        if (!productsData || productsData.length === 0) {
+          logger.warn(`Products Route: GET: No products found for locale: ${locale}`);
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).json({ productsData });
     } catch (error: any) {
-      logger.error(`Products Route: GET: Failed to fetch products list for locale: ${locale}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Products Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
-    }
+      return handleError(res, error, "Products Route: GET", MESSAGES.UNKNOW_ERROR);
+  }
 });
 
 router.get("/cart/:id", async (req: Request, res: Response) => {
@@ -30,15 +29,13 @@ router.get("/cart/:id", async (req: Request, res: Response) => {
 
   try {
     const productsData = await ProductsRecord.getById(productId, locale);
-
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .json(productsData );
+      if (!productsData) {
+        logger.warn(`Products/cart/id Route: GET: No product found with ID ${productId}`);
+        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      }
+    return res.status(STATUS_CODES.SUCCESS).json(productsData );
   } catch (error: any) {
-    logger.error(`Products/cart/id Route: GET: Failed for productId: ${productId}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Products Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+    return handleError(res, error, "Products/cart/id Route: GET", MESSAGES.UNKNOW_ERROR);
   }
 });
 
