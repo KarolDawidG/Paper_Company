@@ -162,7 +162,7 @@ class UsersRecord implements IUserRecord {
 
   static async deleteUrl(id: string) {
     const standardUrl =
-      "https://utfs.io/f/bca7e335-8a46-4ffa-9186-81d51e65c875-kmjf4x.jpg";
+      "https://utfs.io/f/0576a965-e83c-47aa-b5b1-31aeac3c55c0-kmjf4x.jpg";
     return performTransaction(async (connection) => {
       const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [
         standardUrl,
