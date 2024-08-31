@@ -9,31 +9,27 @@ import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
       const addressList = await AddressRecord.getListById(id);
         if (addressList.length === 0) {
           return handleWarning(res, "Address Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .json({ addressList });
+      return res.status(STATUS_CODES.SUCCESS).json({ addressList });
     } catch (error: any) {
       return handleError(res, error, "Address Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
       const [result] = await AddressRecord.delete(id);
         if (result.affectedRows === 0) {
           return handleWarning(res, "Address Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) { 
       return handleError(res, error, "Address Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }

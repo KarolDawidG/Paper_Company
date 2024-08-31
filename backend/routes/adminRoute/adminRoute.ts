@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
 import { verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -15,62 +15,38 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const usersList = await UsersRecord.listAll();
       if (usersList.length === 0) {
-        logger.warn("Admin Route: GET: No users found.");
-        return res
-          .status(STATUS_CODES.NOT_FOUND)
-          .send(MESSAGES.NOT_FOUND);
+        return handleWarning(res, "Admin Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
       }
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .json({ usersList });
+    return res.status(STATUS_CODES.SUCCESS).json({ usersList });
   } catch (error: any) {
-    return handleError(res, error, "Admin Route: GET", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "Admin Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
   }
-},
-);
+});
 
 router.put("/:id/:role", verifyToken, async (req, res) => {
   const {id, role} = req.params;
-
-  try {
-    const [result] = await UsersRecord.updateRole(role, id);
-      if (result.affectedRows === 0) {
-        logger.warn(`Admin Route: PUT: No user found with ID ${id} to update.`);
-        return res
-          .status(STATUS_CODES.NOT_FOUND)
-          .send(MESSAGES.NOT_FOUND);
-      }
-    return res
-      .status(STATUS_CODES.SUCCESS)
-      .send(MESSAGES.SUCCESSFUL_OPERATION);
-  } catch (error:any) {
-    logger.error(`Admin Route: PUT: Error updating role for user ID ${id} to ${role}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Admin Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
-  }
+    try {
+      const [result] = await UsersRecord.updateRole(role, id);
+        if (result.affectedRows === 0) {
+          return handleWarning(res, "Admin Route: PUT", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+        }
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error:any) {
+      return handleError(res, error, "Admin Route: PUT", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+    }
 });
 
 router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
-
-  try {
-    const [result] = await UsersRecord.delete(id);
-      if (result.affectedRows === 0) {
-        logger.warn(`Admin Route: DELETE: No user found to delete with ID ${id}.`);
-        return res
-          .status(STATUS_CODES.NOT_FOUND)
-          .send(MESSAGES.NOT_FOUND);
-      }
-      return res
-        .status(STATUS_CODES.SUCCESS)
-        .send(MESSAGES.SUCCESSFUL_OPERATION);
-  } catch (error: any) {
-    logger.error(`Admin Route: DELETE: Error deleting user with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-    return res
-      .status(STATUS_CODES.SERVER_ERROR)
-      .send(`Admin Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
-  }
+    try {
+      const [result] = await UsersRecord.delete(id);
+        if (result.affectedRows === 0) {
+          return handleWarning(res, "Admin Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+        }
+        return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error: any) {
+      return handleError(res, error, "Admin Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+    }
 });
 
 /**

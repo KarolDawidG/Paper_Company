@@ -1,23 +1,23 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter, errorHandler, handleWarning, handleError } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
 router.get("/:role", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const role: string = req.params.role;
-
     try {
       const usersList = await UsersRecord.listByRole(role);
-      return res.json({ usersList });
+        if (usersList.length === 0) {
+          return handleWarning(res, `Users Route: GET for role ${role}`, MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).json({ usersList });
     } catch (error: any) {
-      logger.error(`Users Route: GET: Error fetching users with role ${role}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res.status(STATUS_CODES.SERVER_ERROR).send(MESSAGES.SERVER_ERROR);
+      return handleError(res, error, `Users Route: GET for role ${role}`, MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
     }
   },
 );
@@ -26,29 +26,27 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const {username, email} = req.body;
 
+  if (!username || !email) {
+    return handleWarning(res, `Users Route: PUT Missing required fields: username: ${username}, or email: ${email}`, MESSAGES.NOT_FOUND, STATUS_CODES.BAD_REQUEST);
+  }
     try {
       await UsersRecord.updateUserData([username, email, userId]);
-      return res
-        .status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+        return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      logger.error(`Users Route: PUT: Error updating user with ID ${userId}. Data: {username: ${username}, email: ${email}}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: PUT: ${MESSAGES.UNKNOW_ERROR}`);
+      return handleError(res, error, `Users Route: PUT: Error updating user with ID ${userId}`, MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
     }
 });
 
 router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-    const id: string = req.params.id;
-
+  const id: string = req.params.id;
     try {
       const [userInfo]: any = await UsersRecord.selectById([id]);
+      if (!userInfo) {
+        return handleWarning(res, "Users/user Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+      }
       return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
-      logger.error(`Users Route: GET: Error fetching user with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Users Route: GET: ${MESSAGES.UNKNOW_ERROR}`);
+      return handleError(res, error, "Users/user Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
   },
 );
