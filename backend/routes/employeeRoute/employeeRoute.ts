@@ -1,28 +1,25 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 import { EmployeeRecord } from "../../database/Records/Employee/EmployeeRecord";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
 //todo: dokumentacja do zmiany
-router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const usersList = await EmployeeRecord.selectAll();
         if (usersList.length === 0) {
-          logger.warn("Employee Route: GET: No employees found.");
-          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+          return handleWarning(res, "Employee Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
         }
       return res.status(STATUS_CODES.SUCCESS).json(usersList );
     } catch (error: any) {
-      return handleError(res, error, "Employee Route: GET", MESSAGES.SERVER_ERROR);
+      return handleError(res, error, "Employee Route: GET", MESSAGES.SERVER_ERROR,  STATUS_CODES.NOT_FOUND);
   }
-  },
-);
+});
 
 /**
  * @swagger

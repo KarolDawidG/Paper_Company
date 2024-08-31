@@ -4,7 +4,6 @@ import MESSAGES from "../../config/messages";
 import URL from "../../config/url";
 import middleware from "../../config/middleware";
 import dotenv from "dotenv";
-import logger from "../../logs/logger";
 import STATUS_CODES from "../../config/status-codes";
 import { handleError } from "../../config/config";
 dotenv.config();
@@ -21,13 +20,9 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const response = await axios.post(`${URL.RECAPTCHA}${REACT_APP_SECRET_KEY}&response=${token}`,);
       if (response.data.success) {
-        return res
-        .status(STATUS_CODES.SUCCESS)
-        .send("Human 👨 👩");
+        return res.status(STATUS_CODES.SUCCESS).send("Human 👨 👩");
       } else {
-        return res
-          .status(STATUS_CODES.FORBIDDEN)
-          .send("Robot 🤖");
+        return res.status(STATUS_CODES.FORBIDDEN).send("Robot 🤖");
       }
   } catch (error:any) {
     return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOW_ERROR);

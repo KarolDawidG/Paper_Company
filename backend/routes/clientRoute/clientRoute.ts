@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, limiter } from "../../config/config";
+import { handleError, handleNoRecordsModified, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -37,25 +37,23 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
   }
 });
 
-// uprzatnac ten syf xD
+// uprzatnac ten syf
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.addressId;
-
-  try {
-    const clientAddress = await ClientRecord.getAddress([id]);
-      if (!clientAddress) {
-        logger.warn(`Client Route: GET: No address found with ID ${id}.`);
-        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
-      }
-    return res.status(STATUS_CODES.SUCCESS).json({ clientAddress });
-  } catch (error: any) {
-    return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
-  }
+    try {
+      const clientAddress = await ClientRecord.getAddress([id]);
+        if (!clientAddress) {
+          logger.warn(`Client Route: GET: No address found with ID ${id}.`);
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
+      return res.status(STATUS_CODES.SUCCESS).json({ clientAddress });
+    } catch (error: any) {
+      return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
+    }
 });
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
-
     try {
       await ClientRecord.insert(formData)
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
@@ -66,28 +64,24 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
   const { clientId } = req.params;
-
-  try {
-    const [result] = await ClientRecord.delete(clientId);
-    if (result.affectedRows === 0) {
-      logger.warn(`Client Route: DELETE: No client found with ID ${clientId} to delete.`);
-      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+    try {
+      const [result] = await ClientRecord.delete(clientId);
+        if (handleNoRecordsModified(res, "Client Route: DELETE", clientId, result)) {
+          return; 
+        }
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+    } catch (error: any) {
+      return handleError(res, error, "Client Route: DELETE", MESSAGES.UNKNOW_ERROR);
     }
-    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
-  } catch (error: any) {
-    return handleError(res, error, "Client Route: DELETE", MESSAGES.UNKNOW_ERROR);
-  }
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const { first_name, second_name, email } = req.body;
-
     try {
       const result = await ClientRecord.updateClient([id, first_name, second_name, email ]);
-        if (result.affectedRows === 0) {
-          logger.warn(`Client Route: PUT: No client found with ID ${id} to update.`);
-          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        if (handleNoRecordsModified(res, "Client Route: PUT", id, result)) {
+          return; 
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {

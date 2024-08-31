@@ -142,18 +142,30 @@ class UsersRecord implements IUserRecord {
     return results;
   }
 
-  static async updateImgUrl(id: string, img_url: string): Promise<void> {
+  static async updateImgUrl(id: string, img_url: string): Promise<any> {
     try {
-      await performTransaction(async (connection) => {
-        const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [
-          img_url,
-          id,
-        ]);
+      return await performTransaction(async (connection) => {
+        const [results] = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
+        return results;
       });
     } catch (error) {
       throw error;
     }
   }
+
+  
+  // static async updateImgUrl(id: string, img_url: string): Promise<void> {
+  //   try {
+  //     await performTransaction(async (connection) => {
+  //       const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [
+  //         img_url,
+  //         id,
+  //       ]);
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
   static async selectUrlById(id: string[]) {
     const [results] = await pool.execute(SELECT_URL_BY_ID, id);

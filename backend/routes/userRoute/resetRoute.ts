@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import logger from "../../logs/logger";
 import MESSAGES from "../../config/messages";
@@ -21,7 +21,7 @@ router.get("/:id/:token", (req: Request, res: Response) => {
   try {
     res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error) {
-    return handleError(res, error, "Reset Route: GET", MESSAGES.SERVER_ERROR);
+    return handleError(res, error, "Reset Route /:id/:token: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -29,19 +29,23 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   const { id, token } = req.params;
   const { password, password2 } = req.body;
 
-  if (password !== password2) {
-    return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.PASSWORDS_DO_NOT_MATCH);
+  if (!password || !password2) {
+    return handleWarning(res, `Reset Route: POST`, MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
   }
+
+  if (password !== password2) {
+    return handleWarning(res, `Reset Route: POST`, MESSAGES.PASSWORDS_DO_NOT_MATCH, STATUS_CODES.BAD_REQUEST);
+  }
+
   if (!validatePassword(password)) {
-    return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_PASS);
+    return handleWarning(res, `Reset Route: POST`, MESSAGES.INVALID_PASS, STATUS_CODES.BAD_REQUEST);
   }
 
   try {
     const [user]: any = await UsersRecord.selectById([id]);
 
     if (!user) {
-      logger.warn(`Reset Route: POST: User not found. ID: ${id}`);
-      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.USER_NOT_FOUND);
+      return handleWarning(res, `Reset Route: POST: User not found. ID: ${id}`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND);
     }
 
     const oldPassword = user.password || "";
@@ -49,16 +53,14 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
 
     jwt.verify(token, secret, async (err: any, decoded: any) => {
       if (err) {
-        logger.warn(`Reset Route: POST: Token verification failed. ID: ${id}`);
-        return res.status(STATUS_CODES.UNAUTHORIZED).send(MESSAGES.INVALID_TOKEN);
+        return handleError(res, err, `Reset Route: POST: Token verification failed. ID: ${id}`, MESSAGES.INVALID_TOKEN, STATUS_CODES.UNAUTHORIZED);
       }
 
       const hashPassword = await bcrypt.hash(password, 10);
-
       await UsersRecord.updatePasswordById([hashPassword, id]);
 
       logger.info(MESSAGES.SUCCESSFUL_RESET);
-      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.PASS_RESET);
+      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_RESET);
     });
   } catch (error: any) {
     return handleError(res, error, "Reset Route: POST", MESSAGES.SERVER_ERROR);

@@ -64,11 +64,13 @@ class ClientRecord implements Client {
       });
   }
 
-    static async updateClient([id, first_name, second_name, email]: [string, string, string, string]) {
-        return performTransaction(async (connection) => {
-            return connection.execute(UPDATE_CLIENT, [first_name, second_name, email, id]);
-        });
-    }
+    static async updateClient([id, first_name, second_name, email]: [string, string, string, string]): Promise<any> {
+      return performTransaction(async (connection) => {
+          const [result] = await connection.execute(UPDATE_CLIENT, [first_name, second_name, email, id]);
+          return result;
+      });
+  }
+  
 
     static async getClientData(clientID: string, addressID:string) {
 
