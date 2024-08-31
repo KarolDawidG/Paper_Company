@@ -27,7 +27,7 @@ const MESSAGES: Record<string, string> = {
   UNKNOW_ERROR: "An unknown error occurred.",
   FORBIDDEN: "Access denied. Insufficient permissions for the requested resource.",
   CAPTCHA_ERROR: "Failed to verify reCAPTCHA.",
-  NOT_FOUND: "No address found for the given ID.",
+  NOT_FOUND: "Resource not found.",
   BAD_REQUEST: "Invalid request. Check the data and try again.",
 
   // Authorization

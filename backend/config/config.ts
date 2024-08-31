@@ -101,10 +101,46 @@ const validateUserName = (e: string) => {
   }
 };
 
-const handleError = (res: Response, error: any, route: string, message: string) => {
-  logger.error(`${route}: ${message}. Error: ${error.message}, Stack: ${error.stack}`);
-  return res.status(STATUS_CODES.SERVER_ERROR).send(message);
+// const handleError = (res: Response, error: any, route: string, message: string) => {
+//   logger.error(`${route}: ${message}. Error: ${error.message}, Stack: ${error.stack}`);
+//   return res.status(STATUS_CODES.SERVER_ERROR).send(message);
+// };
+
+const handleError = (
+  res: Response,
+  error: any,
+  route: string,
+  message: string,
+  statusCode: number = STATUS_CODES.SERVER_ERROR,
+  id?: string
+) => {
+  if (id) {
+    logger.error(`${route}: Error with ID ${id}. Error: ${error.message}`);
+    return res.status(statusCode).send(`${message} (ID: ${id})`);
+  } else {
+    logger.error(`${route}: ${message}. Error: ${error.message}`);
+    return res.status(statusCode).send(message);
+  }
 };
+
+const handleWarning = (
+  res: Response,
+  route: string,
+  message: string,
+  statusCode: number = STATUS_CODES.NOT_FOUND,
+  id?: string
+) => {
+  if (id) {
+    logger.warn(`${route}: Warning with ID ${id}. Message: ${message}`);
+  } else {
+    logger.warn(`${route}: ${message}`);
+  }
+
+  return res.status(statusCode).json({ message });
+};
+
+
+
 
 export {
   errorHandler,
@@ -116,4 +152,5 @@ export {
   validateUserName,
   verifyToken,
   handleError,
+  handleWarning,
 };

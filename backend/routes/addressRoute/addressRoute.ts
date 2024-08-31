@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { limiter } from "../../config/config";
+import { handleError, handleWarning, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -9,47 +9,33 @@ import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+router.get("/:id", async (req: Request, res: Response) => {
   const id:string = req.params.id;
-
     try {
       const addressList = await AddressRecord.getListById(id);
         if (addressList.length === 0) {
-          logger.warn(`Address Route: GET: No address found for the given ID: ${id}.}.`);
-          return res
-            .status(STATUS_CODES.NOT_FOUND)
-            .json({message: MESSAGES.NOT_FOUND});
+          return handleWarning(res, "Address Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
       return res
         .status(STATUS_CODES.SUCCESS)
         .json({ addressList });
     } catch (error: any) {
-      logger.error(`Address Route: GET: Error retrieving address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`);
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Address Route: GET: ${error.message}`);
+      return handleError(res, error, "Address Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+router.delete("/:id", async (req: Request, res: Response) => {
   const id:string = req.params.id;
-
     try {
       const [result] = await AddressRecord.delete(id);
         if (result.affectedRows === 0) {
-          logger.warn(`Address Route: DELETE: No address found to delete for the given ID: ${id}.`);
-          return res
-            .status(STATUS_CODES.NOT_FOUND)
-            .json({ message: MESSAGES.NOT_FOUND });
+          return handleWarning(res, "Address Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
       return res
         .status(STATUS_CODES.SUCCESS)
         .send(MESSAGES.SUCCESSFUL_OPERATION);
-    } catch (error: any) {
-      logger.error(`Address Route: DELETE: Error deleting address with ID ${id}. Error: ${error.message}, Stack: ${error.stack}`); 
-      return res
-        .status(STATUS_CODES.SERVER_ERROR)
-        .send(`Address Route: DELETE: ${MESSAGES.UNKNOW_ERROR}`);
+    } catch (error: any) { 
+      return handleError(res, error, "Address Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 
