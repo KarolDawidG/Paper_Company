@@ -101,11 +101,6 @@ const validateUserName = (e: string) => {
   }
 };
 
-// const handleError = (res: Response, error: any, route: string, message: string) => {
-//   logger.error(`${route}: ${message}. Error: ${error.message}, Stack: ${error.stack}`);
-//   return res.status(STATUS_CODES.SERVER_ERROR).send(message);
-// };
-
 const handleError = (
   res: Response,
   error: any,

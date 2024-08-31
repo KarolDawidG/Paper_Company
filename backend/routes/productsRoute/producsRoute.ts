@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, limiter } from "../../config/config";
+import { handleError, handleWarning, limiter, verifyToken } from "../../config/config";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -10,14 +10,10 @@ router.use(middleware, limiter);
 
 router.get("/", async (req: Request, res: Response) => {
   const locale = req.headers['accept-language'] || 'en';
-
     try {
       const productsData = await ProductsRecord.getAll(locale);
-        console.log(productsData);
-
         if (!productsData || productsData.length === 0) {
-          logger.warn(`Products Route: GET: No products found for locale: ${locale}`);
-          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+          return handleWarning(res, `Products Route: GET: No products found for locale: ${locale}`, MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
         }
       return res.status(STATUS_CODES.SUCCESS).json({ productsData });
     } catch (error: any) {
@@ -32,8 +28,8 @@ router.get("/cart/:id", async (req: Request, res: Response) => {
   try {
     const productsData = await ProductsRecord.getById(productId, locale);
       if (!productsData) {
-        logger.warn(`Products/cart/id Route: GET: No product found with ID ${productId}`);
-        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        return handleWarning(res, "Products/cart/id Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, productId);
+
       }
     return res.status(STATUS_CODES.SUCCESS).json(productsData );
   } catch (error: any) {

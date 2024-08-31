@@ -20,6 +20,9 @@ const MESSAGES: Record<string, string> = {
   USER_EXIST: "The username is already taken. Please choose another.",
   SQL_INJECTION_ALERT: "Security warning: SQL Injection attempt detected.",
   INTERNET_DISCONNECTED: "Internet connection lost. Please check your network settings.",
+  EMAIL_NOT_FOUND: "E-mail not found.",
+  MISSING_ID_USER: "Missing ID user",
+  USER_NOT_FOUND: "User not found",
 
   // Server errors and permissions
   INVALID_REQUEST: "The request is invalid.",

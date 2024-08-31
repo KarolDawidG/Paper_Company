@@ -3,7 +3,6 @@ import middleware from "../../config/middleware";
 import { handleError, handleWarning, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
