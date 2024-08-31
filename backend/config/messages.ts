@@ -4,9 +4,9 @@ const MESSAGES: Record<string, string> = {
   SUCCESSFUL_OPERATION: "Operation completed successfully.",
   SUCCESSFUL_LOGOUT: "Logout completed successfully.",
   SUCCESSFUL_RESET: "Password has been successfully reset.",
-  SUCCESSFUL_SIGN_UP: "Registration completed successfully. Welcome to our community.",
+  SUCCESSFUL_SIGN_UP: "Registration completed successfully.",
   EMAIL_SUCCESS: "A password reset link has been sent to the provided email address, if it exists in our records.",
-
+ 
   // Errors and validation messages
   INCORRECT_USERNAME: "The username must be at least 6 characters long.",
   ERROR_GET_CONNECTION: "Encountered a connection error.",
@@ -23,6 +23,9 @@ const MESSAGES: Record<string, string> = {
   EMAIL_NOT_FOUND: "E-mail not found.",
   MISSING_ID_USER: "Missing ID user",
   USER_NOT_FOUND: "User not found",
+  USER_INACTIVE: "User is inactive. Check your email to complete your registration.",
+  PASSWORDS_DO_NOT_MATCH: "Passwords do not match.",
+  ADDRESS_NOT_FOUND: "Remember to update your address details.",
 
   // Server errors and permissions
   INVALID_REQUEST: "The request is invalid.",
@@ -32,6 +35,7 @@ const MESSAGES: Record<string, string> = {
   CAPTCHA_ERROR: "Failed to verify reCAPTCHA.",
   NOT_FOUND: "Resource not found.",
   BAD_REQUEST: "Invalid request. Check the data and try again.",
+  NO_RECORDS_MODIFIED: "No records were updated/deleted.",
 
   // Authorization
   JWT_ERROR: "Authorization failed due to an invalid JsonWebToken signature.",

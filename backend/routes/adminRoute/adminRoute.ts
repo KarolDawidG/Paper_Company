@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified } from "../../config/config";
 import { verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -27,8 +27,8 @@ router.put("/:id/:role", verifyToken, async (req, res) => {
   const {id, role} = req.params;
     try {
       const [result] = await UsersRecord.updateRole(role, id);
-        if (result.affectedRows === 0) {
-          return handleWarning(res, "Admin Route: PUT", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+        if (handleNoRecordsModified(res, "Admin Route: PUT", id, result)) {
+          return; 
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error:any) {
@@ -40,9 +40,9 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
   const id: string = req.params.id;
     try {
       const [result] = await UsersRecord.delete(id);
-        if (result.affectedRows === 0) {
-          return handleWarning(res, "Admin Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
-        }
+      if (handleNoRecordsModified(res, "Admin Route: DELETE", id, result)) {
+        return; 
+      }
         return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
       return handleError(res, error, "Admin Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);

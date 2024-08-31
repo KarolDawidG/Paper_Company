@@ -40,9 +40,9 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
       }
 
     const userRecord = users[0];
-      if (!userRecord.is_active) {
-        return handleWarning(res, `Login Route: POST: User is inactive. Username: ${user}`, MESSAGES.FORBIDDEN, STATUS_CODES.UNAUTHORIZED);
-      }
+    if (!userRecord.is_active) {
+      return handleWarning(res, `Login Route: POST: User: ${user} is inactive.`, MESSAGES.USER_INACTIVE, STATUS_CODES.FORBIDDEN);
+    }
 
     const isPasswordValid = await bcrypt.compare(password, userRecord.password);
       if (!isPasswordValid) {
@@ -67,7 +67,6 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 
 router.post("/refresh", async (req: Request, res: Response) => {
   const { idUser } = req.body;
-  console.log("ID do testow: ", idUser)
     if (!idUser) {
       return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.MISSING_ID_USER, STATUS_CODES.UNPROCESSABLE_ENTITY);
     }

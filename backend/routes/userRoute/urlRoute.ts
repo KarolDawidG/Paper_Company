@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
@@ -9,7 +9,7 @@ import MESSAGES from "../../config/messages";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
 
     try {
@@ -21,23 +21,28 @@ router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFu
   },
 );
 
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const img_url: string = req.body.img_url;
 
   try {
-    await UsersRecord.updateImgUrl(id, img_url);
+    const result = await UsersRecord.updateImgUrl(id, img_url);
+      if (handleNoRecordsModified(res, "URL Route: PUT", id, result)) {
+        return; 
+      }
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
     return handleError(res, error, "URL Route: PUT", MESSAGES.SERVER_ERROR);
   }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
-  
     try {
-      await UsersRecord.deleteUrl(id);
+     const [result] = await UsersRecord.deleteUrl(id);
+      if (handleNoRecordsModified(res, "URL Route: DELETE", id, result)) {
+        return;
+      }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
       return handleError(res, error, "URL Route: DELETE", MESSAGES.SERVER_ERROR);

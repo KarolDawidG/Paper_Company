@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter } from "../../config/config";
+import { handleError, handleNoRecordsModified, handleWarning, limiter } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -60,9 +60,9 @@ router.post("/new-order", async (req: Request, res: Response) => {
 router.delete("/:id", async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
-      const [result] = await OrdersRecord.delete(id);
-        if (result.affectedRows === 0) {
-          return handleWarning(res, "Sales Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+      const [result] = await OrdersRecord.delete(id); 
+        if (handleNoRecordsModified(res, "Sales Route: DELETE", id, result)) {
+          return; 
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {

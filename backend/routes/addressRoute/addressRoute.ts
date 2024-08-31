@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter } from "../../config/config";
+import { handleError, handleNoRecordsModified, handleWarning, limiter } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
@@ -13,7 +13,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
     try {
       const addressList = await AddressRecord.getListById(id);
         if (addressList.length === 0) {
-          return handleWarning(res, "Address Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+          return handleWarning(res, "Address Route: GET", MESSAGES.ADDRESS_NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
       return res.status(STATUS_CODES.SUCCESS).json({ addressList });
     } catch (error: any) {
@@ -25,8 +25,8 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
       const [result] = await AddressRecord.delete(id);
-        if (result.affectedRows === 0) {
-          return handleWarning(res, "Address Route: DELETE", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+        if (handleNoRecordsModified(res, "Address Route: DELETE", id, result)) {
+          return; 
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) { 

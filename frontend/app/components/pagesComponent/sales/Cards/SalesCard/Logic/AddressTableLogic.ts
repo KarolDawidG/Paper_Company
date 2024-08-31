@@ -21,10 +21,10 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
       try {
         const response = await axiosInstance.get(`/address/${selectedClientId}`);
         setAddressData(response.data.addressList);
-      } catch (error) {
+      } catch (error:any) {
         console.error('Error fetching data:', error);
           if (isTranslationLoaded) {
-            notify(`${t.notification.error}`);
+            notify(error.response.data);
             return;
         }
       }

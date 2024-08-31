@@ -118,6 +118,13 @@ const handleError = (
   }
 };
 
+function handleNoRecordsModified(res: Response, route: string, id: string, result: any): Response | void {
+  if (result.affectedRows === 0) {
+    return handleWarning(res, `${route}`, MESSAGES.NO_RECORDS_MODIFIED, STATUS_CODES.NOT_FOUND, id);
+  }
+}
+
+
 const handleWarning = (
   res: Response,
   route: string,
@@ -131,7 +138,7 @@ const handleWarning = (
     logger.warn(`${route}: ${message}`);
   }
 
-  return res.status(statusCode).json({ message });
+  return res.status(statusCode).send(message);
 };
 
 
@@ -148,4 +155,5 @@ export {
   verifyToken,
   handleError,
   handleWarning,
+  handleNoRecordsModified,
 };
