@@ -38,7 +38,7 @@ export const BasketCard = () => {
         try {
             const response = await axiosInstance.get(`${BACKEND}/client/client-data/${clientId}/${clientAddresId}`);
             setClientDetails(response.data[0]);
-
+            console.log(`${BACKEND}/client/client-data/${clientId}/${clientAddresId}`)
         } catch (error) {
             console.error('Failed to fetch client details:', error);
         }
