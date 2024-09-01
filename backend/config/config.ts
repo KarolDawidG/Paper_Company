@@ -33,7 +33,7 @@ const limiterLogin = rateLimit({
   max: 50,
 });
 
-const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+export const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
   modulusLength: 2048,
   publicKeyEncoding: {
     type: "spki",
@@ -141,8 +141,7 @@ const handleWarning = (
   return res.status(statusCode).send(message);
 };
 
-
-
+const generateTokenForUnitTest = (role: string) => jwt.sign({ role }, privateKey, { algorithm: 'RS256' });
 
 export {
   errorHandler,
@@ -156,4 +155,5 @@ export {
   handleError,
   handleWarning,
   handleNoRecordsModified,
+  generateTokenForUnitTest,
 };
