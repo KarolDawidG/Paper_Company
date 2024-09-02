@@ -9,7 +9,7 @@ import MESSAGES from "../../config/messages";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
 
     try {
@@ -21,7 +21,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   },
 );
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const img_url: string = req.body.img_url;
 
@@ -36,7 +36,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
      const [result] = await UsersRecord.deleteUrl(id);

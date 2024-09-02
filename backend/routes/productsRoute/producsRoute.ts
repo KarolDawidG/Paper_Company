@@ -1,10 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter, verifyToken } from "../../config/config";
+import { handleError, handleWarning, limiter } from "../../config/config";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import logger from "../../logs/logger";
 const router = express.Router();
 router.use(middleware, limiter);
 

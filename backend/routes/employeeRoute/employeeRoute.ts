@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
 //todo: dokumentacja do zmiany
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const usersList = await EmployeeRecord.selectAll();
         if (usersList.length === 0) {
@@ -17,7 +17,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
         }
       return res.status(STATUS_CODES.SUCCESS).json(usersList );
     } catch (error: any) {
-      return handleError(res, error, "Employee Route: GET", MESSAGES.SERVER_ERROR,  STATUS_CODES.NOT_FOUND);
+      return handleError(res, error, "Employee Route: GET", MESSAGES.SERVER_ERROR,  STATUS_CODES.SERVER_ERROR);
   }
 });
 

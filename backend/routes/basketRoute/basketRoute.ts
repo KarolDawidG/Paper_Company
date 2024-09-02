@@ -28,7 +28,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                     });
                 } catch (error:any) {
                     logger.error(`Error inserting product with ID ${id} for order ${orderId}`);
-                    return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+                    return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
                 }
             }
         }

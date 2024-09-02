@@ -26,8 +26,9 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
   const { clientid, addresid } = req.params;
 
   try {
-    const clientData = await ClientRecord.getClientData(clientid, addresid);
-      if (!clientData) {
+    const queryResult = await ClientRecord.getClientData(clientid, addresid);
+    const clientData = queryResult as any[]; 
+      if (clientData.length === 0) {
         logger.warn(`Client Route: GET: No data found for client ${clientid} and address ${addresid}.`);
         return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
       }
@@ -36,6 +37,7 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
     return handleError(res, error, "Client/client-data Route: GET", MESSAGES.UNKNOW_ERROR);
   }
 });
+
 
 // uprzatnac ten syf
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {

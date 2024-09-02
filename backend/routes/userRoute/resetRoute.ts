@@ -42,7 +42,7 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   }
 
   try {
-    const [user]: any = await UsersRecord.selectById([id]);
+    const [user]: any = await UsersRecord.selectById(id);
 
     if (!user) {
       return handleWarning(res, `Reset Route: POST: User not found. ID: ${id}`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND);

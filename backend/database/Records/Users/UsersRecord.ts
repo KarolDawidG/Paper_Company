@@ -127,9 +127,14 @@ class UsersRecord implements IUserRecord {
     return results;
   }
 
-  static async selectById(id: string[]) {
-    const [results] = await pool.execute(SELECT_BY_ID, id);
-    return results;
+  static async selectById(id:string) {
+    try {
+      const [results] = await pool.execute(SELECT_BY_ID, [id]) as any;
+      return results.map((obj: any) => new UsersRecord(obj));
+    } catch (error) {
+      console.error("Error in selectById:", error);
+      throw error;
+    }
   }
 
   static async selectByUsername(username: string[]) {
@@ -152,20 +157,6 @@ class UsersRecord implements IUserRecord {
       throw error;
     }
   }
-
-  
-  // static async updateImgUrl(id: string, img_url: string): Promise<void> {
-  //   try {
-  //     await performTransaction(async (connection) => {
-  //       const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [
-  //         img_url,
-  //         id,
-  //       ]);
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 
   static async selectUrlById(id: string[]) {
     const [results] = await pool.execute(SELECT_URL_BY_ID, id);
