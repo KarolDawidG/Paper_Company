@@ -60,9 +60,10 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
       .send(MESSAGES.USER_NOT_LOGGED_IN);
   }
   const token = authHeader.split(" ")[1];
+
   jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
     if (err) {
-      logger.info(MESSAGES.JWT_ERROR);
+      logger.info("New error in verify: ", MESSAGES.JWT_ERROR);
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
         .send(MESSAGES.SESSION_EXPIRED);

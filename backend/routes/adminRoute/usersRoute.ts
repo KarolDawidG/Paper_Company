@@ -40,7 +40,7 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
 router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
-      const [userInfo]: any = await UsersRecord.selectById(id);
+      const [userInfo]: any = await UsersRecord.selectById([id]);
       if (!userInfo) {
         return handleWarning(res, "Users/user Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
       }

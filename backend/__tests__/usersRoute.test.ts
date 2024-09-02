@@ -5,6 +5,7 @@ import { generateTokenForUnitTest } from '../config/config';
 import { UsersRecord } from '../database/Records/Users/UsersRecord';
 import STATUS_CODES from '../config/status-codes';
 import MESSAGES from '../config/messages';
+import { RowDataPacket } from 'mysql2';
 
 const app = express();
 app.use(express.json()); 
@@ -98,15 +99,17 @@ describe('Users API', () => {
   //////////////////////////////////////////////////////
 
   it('should retrieve user information by ID', async () => {
-    jest.spyOn(UsersRecord, 'selectById').mockResolvedValue([{
-      id: 'id1',
-      username: 'Alexis',
-      email: 'alexis@example.com',
-      role: 'hr',
-      img_url: 'https://example.com/image.jpg',
-      created_at: new Date().toISOString(),
-    }]);
-
+    jest.spyOn(UsersRecord, 'selectById').mockResolvedValue([
+      {
+        id: 'id1',
+        username: 'john_doe',
+        email: 'john@example.com',
+        created_at: '2023-01-01',
+        password: 'hashedPassword',
+        role: 'user'
+      } as RowDataPacket
+    ]);
+    
     const response = await request(app)
       .get('/users/user/id1')
       .set('Authorization', `Bearer ${token}`);

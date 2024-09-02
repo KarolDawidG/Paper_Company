@@ -24,11 +24,23 @@ import {
 interface IUserRecord {
   id: string;
   username: string;
+  password: string;
   email: string;
   role: string;
   img_url: string;
   created_at: string;
+  is_active: string;
+  refresh_token: string; 
 }
+
+// interface IUserRecord {
+//   id: string;
+//   username: string;
+//   email: string;
+//   role: string;
+//   img_url: string;
+//   created_at: string;
+// }
 
 interface IQueryResult {
   affectedRows: number;
@@ -37,18 +49,24 @@ interface IQueryResult {
 class UsersRecord implements IUserRecord {
   id: string;
   username: string;
+  password: string;
   email: string;
   role: string;
   img_url: string;
   created_at: string;
+  is_active: string;
+  refresh_token: string; 
 
   constructor(obj: IUserRecord) {
     this.id = obj.id;
+    this.password = obj.password
     this.username = obj.username;
     this.email = obj.email;
     this.role = obj.role;
     this.img_url = obj.img_url;
     this.created_at = obj.created_at;
+    this.is_active = obj.is_active;
+    this.refresh_token = obj.refresh_token;
   }
 
   static async insert(username: string, hashPassword: string, email: string) {
@@ -126,16 +144,20 @@ class UsersRecord implements IUserRecord {
     const [results] = await pool.execute(SELECT_BY_EMAIL, email);
     return results;
   }
-
-  static async selectById(id:string) {
-    try {
-      const [results] = await pool.execute(SELECT_BY_ID, [id]) as any;
-      return results.map((obj: any) => new UsersRecord(obj));
-    } catch (error) {
-      console.error("Error in selectById:", error);
-      throw error;
-    }
+  static async selectById(id: string[]) {
+    const [results] = await pool.execute("SELECT username, email, created_at, password, role FROM accounts WHERE id = ?", id);
+    return results;
   }
+
+  // static async selectById2(id:string) {
+  //   try {
+  //     const [results] = await pool.execute(SELECT_BY_ID, [id]) as any;
+  //     return results.map((obj: any) => new UsersRecord(obj));
+  //   } catch (error) {
+  //     console.error("Error in selectById:", error);
+  //     throw error;
+  //   }
+  // }
 
   static async selectByUsername(username: string[]) {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
