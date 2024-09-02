@@ -17,14 +17,6 @@ router.use(middleware);
 router.use(limiter);
 router.use(errorHandler);
 
-router.get("/:id/:token", (req: Request, res: Response) => {
-  try {
-    res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
-  } catch (error) {
-    return handleError(res, error, "Reset Route /:id/:token: GET", MESSAGES.SERVER_ERROR);
-  }
-});
-
 router.post("/:id/:token", async (req: Request, res: Response) => {
   const { id, token } = req.params;
   const { password, password2 } = req.body;
@@ -42,18 +34,19 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   }
 
   try {
-    const [user]: any = await UsersRecord.selectById(id);
-
+    const [user]: any = await UsersRecord.selectById([id]);
+    console.log(user)
     if (!user) {
       return handleWarning(res, `Reset Route: POST: User not found. ID: ${id}`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND);
     }
 
     const oldPassword = user.password || "";
     const secret = jwt_secret + oldPassword;
-
+    console.log("reset password: ", jwt_secret)
+    console.log(oldPassword)
     jwt.verify(token, secret, async (err: any, decoded: any) => {
       if (err) {
-        return handleError(res, err, `Reset Route: POST: Token verification failed. ID: ${id}`, MESSAGES.INVALID_TOKEN, STATUS_CODES.UNAUTHORIZED);
+        return handleError(res, err, `Reset Route: POST: Token verification failed. ID: ${id}`, MESSAGES.JWT_ERROR, STATUS_CODES.UNAUTHORIZED);
       }
 
       const hashPassword = await bcrypt.hash(password, 10);
@@ -72,40 +65,6 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
  * tags:
  *   name: Password Reset
  *   description: Endpointy do resetowania hasła użytkownika
- */
-
-/**
- * @swagger
- * /reset/{id}/{token}:
- *   get:
- *     summary: Zwraca informacje o resetowaniu hasła.
- *     description: Zwraca informacje o tym, że resetowanie hasła przebiegło pomyślnie.
- *     tags: [Password Reset]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Identyfikator użytkownika.
- *         schema:
- *           type: string
- *       - in: path
- *         name: token
- *         required: true
- *         description: Token resetujący hasło.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Informacje o pomyślnym resetowaniu hasła.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Komunikat o pomyślnym resetowaniu hasła.
- *                   example: "Password reset operation was successful."
  */
 
 /**

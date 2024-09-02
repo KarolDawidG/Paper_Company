@@ -2515,52 +2515,6 @@
       }
     },
     "/reset/{id}/{token}": {
-      "get": {
-        "summary": "Zwraca informacje o resetowaniu hasła.",
-        "description": "Zwraca informacje o tym, że resetowanie hasła przebiegło pomyślnie.",
-        "tags": [
-          "Password Reset"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identyfikator użytkownika.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "token",
-            "required": true,
-            "description": "Token resetujący hasło.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Informacje o pomyślnym resetowaniu hasła.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Komunikat o pomyślnym resetowaniu hasła.",
-                      "example": "Password reset operation was successful."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "summary": "Resetuje hasło użytkownika.",
         "description": "Resetuje hasło użytkownika na podstawie otrzymanego tokenu resetującego.",

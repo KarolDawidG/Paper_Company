@@ -10,10 +10,12 @@ const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
 router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-    const id: string = req.params.id;
-
+  const id: string = req.params.id;
     try {
       const [userInfo]: any = await UsersRecord.selectUrlById([id]);
+        if (userInfo === undefined){
+          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+        }
       return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
       return handleError(res, error, "URL Route: GET", MESSAGES.SERVER_ERROR);
@@ -40,9 +42,10 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response, next: Nex
   const id: string = req.params.id;
     try {
      const [result] = await UsersRecord.deleteUrl(id);
-      if (handleNoRecordsModified(res, "URL Route: DELETE", id, result)) {
-        return;
-      }
+     console.log(result.affectedRows)
+     if (result.affectedRows === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NO_RECORDS_MODIFIED);
+    }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
       return handleError(res, error, "URL Route: DELETE", MESSAGES.SERVER_ERROR);
