@@ -4,10 +4,9 @@ import { handleError, handleNoRecordsModified, handleWarning, limiter } from "..
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import { verifyToken } from "../../config/config";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
-router.use(middleware, limiter);
+// router.use(middleware, limiter);
 
 router.get("/", async (req: Request, res: Response) => {
     try {
