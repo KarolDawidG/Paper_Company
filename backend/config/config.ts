@@ -118,13 +118,6 @@ const handleError = (
   }
 };
 
-function handleNoRecordsModified(res: Response, route: string, id: string, result: any): Response | void {
-  if (result.affectedRows === 0) {
-    return handleWarning(res, `${route}`, MESSAGES.NO_RECORDS_MODIFIED, STATUS_CODES.NOT_FOUND, id);
-  }
-}
-
-
 const handleWarning = (
   res: Response,
   route: string,
@@ -140,6 +133,12 @@ const handleWarning = (
 
   return res.status(statusCode).send(message);
 };
+
+function handleNoRecordsModified(res: Response, route: string, id: string, result: any): Response | void {
+  if (result.affectedRows === 0) {
+    return handleWarning(res, `${route}`, MESSAGES.NO_RECORDS_MODIFIED, STATUS_CODES.NOT_FOUND, id);
+  }
+}
 
 const generateTokenForUnitTest = (role: string) => jwt.sign({ role }, privateKey, { algorithm: 'RS256' });
 
