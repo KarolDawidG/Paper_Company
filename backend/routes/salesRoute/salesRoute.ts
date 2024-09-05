@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleNoRecordsModified, handleWarning, limiter } from "../../config/config";
+import { handleError, handleNoRecordsModified, handleWarning } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
-// router.use(middleware, limiter);
+
+router.use(middleware);
 
 router.get("/", async (req: Request, res: Response) => {
     try {
@@ -14,6 +15,7 @@ router.get("/", async (req: Request, res: Response) => {
         if (!ordersList || ordersList.length === 0) {
           return handleWarning(res, "Sales Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
         }
+
       return res.status(STATUS_CODES.SUCCESS).json({ ordersList });
     } catch (error: any) {
       return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOW_ERROR);

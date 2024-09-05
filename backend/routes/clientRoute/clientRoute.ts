@@ -39,7 +39,7 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
 });
 
 
-// uprzatnac ten syf
+// uprzatnac ten ggggggg
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.addressId;
     try {

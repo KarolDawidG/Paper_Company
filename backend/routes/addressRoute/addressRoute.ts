@@ -5,15 +5,19 @@ import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
+import logger from "../../logs/logger";
 const router = express.Router();
 router.use(middleware, limiter);
 
 router.get("/:id", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
+
+      
       const addressList = await AddressRecord.getListById(id);
         if (addressList.length === 0) {
-          return handleWarning(res, "Address Route: GET", MESSAGES.ADDRESS_NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
+          logger.warn(`The client has no address: ${id}.}.`);
+          return res.status(STATUS_CODES.SUCCESS).json({ addressList: [] });
         }
       return res.status(STATUS_CODES.SUCCESS).json({ addressList });
     } catch (error: any) {

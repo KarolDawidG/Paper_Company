@@ -4,6 +4,7 @@ import { AddressRecord } from '../database/Records/Address/AddressRecord';
 import router from '../routes/addressRoute/addressRoute';
 import MESSAGES from '../config/messages';
 import { generateTokenForUnitTest } from '../config/config';
+import STATUS_CODES from '../config/status-codes';
 
 const app = express();
 app.use('/address', router);
@@ -40,14 +41,14 @@ describe('Address API', () => {
     expect(response.body.addressList).toBeInstanceOf(Array);
   });
 
-  it('should return 404 if no addresses found', async () => {
+  it('should return 200 and empty [] if no addresses found', async () => {
     jest.spyOn(AddressRecord, 'getListById').mockResolvedValue([]);
   
     const response = await request(app)
       .get('/address/invalid-id')
       .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
-    expect(response.status).toBe(404);
-    expect(response.text).toBe(MESSAGES.ADDRESS_NOT_FOUND);
+    expect(response.status).toBe(STATUS_CODES.SUCCESS);
+    expect(response.body.addressList).toEqual([]);
   });
 
   it('should return 500 if there is a server error', async () => {
@@ -100,7 +101,7 @@ describe('Address API', () => {
     const response = await request(app)
       .delete('/address/valid-id')
       .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR} (ID: valid-id)`);
   });
 
