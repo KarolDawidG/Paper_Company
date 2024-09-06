@@ -2,17 +2,17 @@ import request from 'supertest';
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import router from '../routes/userRoute/registerRoute';
-import { UsersRecord } from '../database/Records/Users/UsersRecord';
-import MESSAGES from '../config/messages';
-import STATUS_CODES from '../config/status-codes';
-import URL from '../config/url';
-import { sendRegisterEmail } from '../config/mails/emailsSender';
+import router from '../../routes/userRoute/registerRoute';
+import { UsersRecord } from '../../database/Records/Users/UsersRecord';
+import MESSAGES from '../../config/messages';
+import STATUS_CODES from '../../config/status-codes';
+import URL from '../../config/url';
+import { sendRegisterEmail } from '../../config/mails/emailsSender';
 
-jest.mock('../database/Records/Users/UsersRecord');
+jest.mock('../../database/Records/Users/UsersRecord');
 jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
-jest.mock('../config/mails/emailsSender');
+jest.mock('../../config/mails/emailsSender');
 
 const app = express();
 app.use(express.json());

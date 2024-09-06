@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../routes/basketRoute/basketRoute';
-import { generateTokenForUnitTest } from '../config/config';
-import { BasketRecord } from '../database/Records/Basket/BasketRecord';
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
+import router from '../../routes/basketRoute/basketRoute';
+import { generateTokenForUnitTest } from '../../config/config';
+import { BasketRecord } from '../../database/Records/Basket/BasketRecord';
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
 
 const app = express();
 app.use(express.json());

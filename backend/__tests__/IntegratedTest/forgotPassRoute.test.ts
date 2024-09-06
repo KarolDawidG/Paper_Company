@@ -1,13 +1,13 @@
 import request from "supertest";
 import express from "express";
-import MESSAGES from "../config/messages";
-import STATUS_CODES from "../config/status-codes";
-import { UsersRecord } from "../database/Records/Users/UsersRecord";
-import { sendResetPasswordEmail } from "../config/mails/emailsSender";
-import router from "../routes/userRoute/forgotPassRoute";
+import MESSAGES from "../../config/messages";
+import STATUS_CODES from "../../config/status-codes";
+import { UsersRecord } from "../../database/Records/Users/UsersRecord";
+import { sendResetPasswordEmail } from "../../config/mails/emailsSender";
+import router from "../../routes/userRoute/forgotPassRoute";
 
-jest.mock("../database/Records/Users/UsersRecord");
-jest.mock("../config/mails/emailsSender");
+jest.mock("../../database/Records/Users/UsersRecord");
+jest.mock("../../config/mails/emailsSender");
 
 const app = express();
 app.use(express.json());

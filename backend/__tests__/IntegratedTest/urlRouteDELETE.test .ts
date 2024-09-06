@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../routes/userRoute/urlRoute'; // Ścieżka do routera URL
-import { generateTokenForUnitTest, handleNoRecordsModified } from '../config/config';
-import { UsersRecord } from '../database/Records/Users/UsersRecord';
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
+import router from '../../routes/userRoute/urlRoute';
+import { generateTokenForUnitTest, handleNoRecordsModified } from '../../config/config';
+import { UsersRecord } from '../../database/Records/Users/UsersRecord';
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
 import { RowDataPacket } from 'mysql2';
 
 // Aplikacja
@@ -18,8 +18,8 @@ const createApp = () => {
 const token = generateTokenForUnitTest('user');
 
 // Zamockowanie funkcji handleNoRecordsModified na poziomie importu
-jest.mock('../config/config', () => ({
-  ...jest.requireActual('../config/config'),
+jest.mock('../../config/config', () => ({
+  ...jest.requireActual('../../config/config'),
   handleNoRecordsModified: jest.fn(), // Zamockowanie handleNoRecordsModified jako funkcji
 }));
 

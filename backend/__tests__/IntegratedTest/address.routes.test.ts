@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import { AddressRecord } from '../database/Records/Address/AddressRecord';
-import router from '../routes/addressRoute/addressRoute';
-import MESSAGES from '../config/messages';
-import { generateTokenForUnitTest } from '../config/config';
-import STATUS_CODES from '../config/status-codes';
+import { AddressRecord } from '../../database/Records/Address/AddressRecord';
+import router from '../../routes/addressRoute/addressRoute';
+import MESSAGES from '../../config/messages';
+import { generateTokenForUnitTest } from '../../config/config';
+import STATUS_CODES from '../../config/status-codes';
 
 const app = express();
 app.use('/address', router);

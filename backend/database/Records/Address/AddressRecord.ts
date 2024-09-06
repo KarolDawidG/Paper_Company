@@ -1,18 +1,10 @@
 import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
-import {DELETE_ADDRESS, INSERT_ADDRESS, SELECT_BY_CLIENT_ID} from "./querryAddressRecord";
+import {DELETE_ADDRESS_FROM_ORDERS, DELETE_CLIENT_ADDRESS, INSERT_ADDRESS, SELECT_BY_CLIENT_ID} from "./querryAddressRecord";
+import { Address } from "./InterfaceAddress";
 
-interface Address {
-  id: string;
-  client_id: string;
-  miasto: string;
-  ulica: string;
-  nr_budynku: string;
-  nr_mieszkania: string;
-  kod: string;
-  nazwa_firmy: string;
-}
+
 
 class AddressRecord implements Address {
   id: string;
@@ -68,12 +60,10 @@ class AddressRecord implements Address {
 
   static async delete(id: string) {
     return performTransaction(async (connection) => {
-        await connection.execute("DELETE FROM `orders` WHERE client_address_id = ?", [id]);
-        return connection.execute("DELETE FROM `client_addresses` WHERE id = ?", [id]);
+        await connection.execute(DELETE_ADDRESS_FROM_ORDERS, [id]);
+        return connection.execute(DELETE_CLIENT_ADDRESS, [id]);
     });
 }
-
-
 }
 
 export { AddressRecord };

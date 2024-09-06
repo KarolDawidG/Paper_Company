@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../routes/clientRoute/clientRoute';
-import { ClientRecord } from '../database/Records/Client/ClientRecord';
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
-import { generateTokenForUnitTest } from '../config/config';
+import router from '../../routes/clientRoute/clientRoute';
+import { ClientRecord } from '../../database/Records/Client/ClientRecord';
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
+import { generateTokenForUnitTest } from '../../config/config';
 import { RowDataPacket } from 'mysql2';
 
 const app = express();

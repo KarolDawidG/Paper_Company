@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../routes/employeeRoute/employeeRoute';
-import { EmployeeRecord } from '../database/Records/Employee/EmployeeRecord';
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
-import { generateTokenForUnitTest } from '../config/config';
+import router from '../../routes/employeeRoute/employeeRoute';
+import { EmployeeRecord } from '../../database/Records/Employee/EmployeeRecord';
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
+import { generateTokenForUnitTest } from '../../config/config';
 
 const app = express();
 app.use('/employee', router);

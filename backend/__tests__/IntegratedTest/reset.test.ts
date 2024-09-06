@@ -2,12 +2,12 @@ import request from "supertest";
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import router from "../routes//userRoute/resetRoute"; // assuming the router is in routes/resetRoute
-import { UsersRecord } from "../database/Records/Users/UsersRecord";
-import MESSAGES from "../config/messages";
-import STATUS_CODES from "../config/status-codes";
+import router from "../../routes/userRoute/resetRoute"; // assuming the router is in routes/resetRoute
+import { UsersRecord } from "../../database/Records/Users/UsersRecord";
+import MESSAGES from "../../config/messages";
+import STATUS_CODES from "../../config/status-codes";
 
-jest.mock("../database/Records/Users/UsersRecord");
+jest.mock("../../database/Records/Users/UsersRecord");
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
 

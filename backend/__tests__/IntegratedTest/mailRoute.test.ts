@@ -1,27 +1,27 @@
 import request from 'supertest';
 import express from 'express';
-import router from '../routes/mailRoute/mailRoute'; 
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
-import { fetchAllMails } from '../config/mails/receiveEmails';
-import { deleteMailById } from '../config/mails/deleteMailById';
-import { sendEmployeeEmail } from '../config/mails/emailsSender';
-import { validateEmail } from '../routes/mailRoute/helpers/validateEmailData';
-import { EmployeeEmail } from '../routes/mailRoute/helpers/EmployeeEmailInterface';
+import router from '../../routes/mailRoute/mailRoute'; 
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
+import { fetchAllMails } from '../../config/mails/receiveEmails';
+import { deleteMailById } from '../../config/mails/deleteMailById';
+import { sendEmployeeEmail } from '../../config/mails/emailsSender';
+import { validateEmail } from '../../routes/mailRoute/helpers/validateEmailData';
+import { EmployeeEmail } from '../../routes/mailRoute/helpers/EmployeeEmailInterface';
 
-jest.mock('../config/mails/receiveEmails', () => ({
+jest.mock('../../config/mails/receiveEmails', () => ({
   fetchAllMails: jest.fn()
 }));
 
-jest.mock('../config/mails/deleteMailById', () => ({
+jest.mock('../../config/mails/deleteMailById', () => ({
     deleteMailById: jest.fn()
   }));
 
-  jest.mock('../config/mails/emailsSender', () => ({
+  jest.mock('../../config/mails/emailsSender', () => ({
     sendEmployeeEmail: jest.fn()
   }));
   
-  jest.mock('../routes/mailRoute/helpers/validateEmailData', () => ({
+  jest.mock('../../routes/mailRoute/helpers/validateEmailData', () => ({
     validateEmail: jest.fn()
   }));
 

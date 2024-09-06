@@ -1,14 +1,14 @@
 import request from 'supertest';
 import express from 'express';
-import { ProductsRecord } from '../database/Records/Products/ProductsRecord';
-import STATUS_CODES from '../config/status-codes';
-import router from '../routes/productsRoute/producsRoute';
-import MESSAGES from '../config/messages';
+import { ProductsRecord } from '../../database/Records/Products/ProductsRecord';
+import STATUS_CODES from '../../config/status-codes';
+import router from '../../routes/productsRoute/producsRoute';
+import MESSAGES from '../../config/messages';
 
 const app = express();
 app.use('/products', router);
 
-jest.mock('../database/Records/Products/ProductsRecord');
+jest.mock('../../database/Records/Products/ProductsRecord');
 
 describe('GET /products', () => {
   it('should return products data when products are found', async () => {

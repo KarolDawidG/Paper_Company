@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express from 'express';
 import axios from 'axios';
-import STATUS_CODES from '../config/status-codes';
-import MESSAGES from '../config/messages';
-import router from '../routes/captchaRoute/capRoute';
+import STATUS_CODES from '../../config/status-codes';
+import MESSAGES from '../../config/messages';
+import router from '../../routes/captchaRoute/capRoute';
 
 jest.mock('axios');
 

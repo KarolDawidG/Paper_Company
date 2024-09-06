@@ -1,19 +1,19 @@
 import request from 'supertest';
 import express from 'express';
-import { OrdersRecord } from '../../database/Records/Orders/OrdersRecord';
-import STATUS_CODES from '../../config/status-codes';
-import MESSAGES from '../../config/messages';
-import router from '../../routes/salesRoute/salesRoute';
-import { handleError, handleWarning } from '../../config/config';
-import { AddressRecord } from '../../database/Records/Address/AddressRecord';
+import { OrdersRecord } from '../../../database/Records/Orders/OrdersRecord';
+import STATUS_CODES from '../../../config/status-codes';
+import MESSAGES from '../../../config/messages';
+import router from '../../../routes/salesRoute/salesRoute';
+import { handleError, handleWarning } from '../../../config/config';
+import { AddressRecord } from '../../../database/Records/Address/AddressRecord';
 
 const app = express();
 app.use(express.json());
 app.use('/sales', router);
 
-jest.mock('../../database/Records/Address/AddressRecord');
-jest.mock('../../database/Records/Orders/OrdersRecord');
-jest.mock('../../config/config', () => ({
+jest.mock('../../../database/Records/Address/AddressRecord');
+jest.mock('../../../database/Records/Orders/OrdersRecord');
+jest.mock('../../../config/config', () => ({
   handleError: jest.fn(),
   handleWarning: jest.fn(),
 }));
