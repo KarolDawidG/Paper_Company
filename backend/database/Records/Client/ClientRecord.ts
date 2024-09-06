@@ -2,14 +2,7 @@ import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
 import {DELETE_CLIENT, CLIENT_ORDER_DATA, INSERT_CLIENT, SELECT_CLIENT_BY_ID, SELECT_CLIENTS, UPDATE_CLIENT} from "./querryClientRecord";
-
-interface Client {
-  id: string;
-  first_name: string;
-  second_name: string;
-  email: string;
-  created_at: string;
-}
+import { Client } from "./InterfaceClient";
 
 class ClientRecord implements Client {
   id: string;
@@ -70,10 +63,8 @@ class ClientRecord implements Client {
           return result;
       });
   }
-  
-
+    
     static async getClientData(clientID: string, addressID:string) {
-
       const [results] = await pool.execute(CLIENT_ORDER_DATA, [clientID, addressID]);
       return results;
   }

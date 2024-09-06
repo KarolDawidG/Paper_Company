@@ -33,15 +33,6 @@ interface IUserRecord {
   refresh_token: string; 
 }
 
-// interface IUserRecord {
-//   id: string;
-//   username: string;
-//   email: string;
-//   role: string;
-//   img_url: string;
-//   created_at: string;
-// }
-
 interface IQueryResult {
   affectedRows: number;
 }
@@ -144,20 +135,11 @@ class UsersRecord implements IUserRecord {
     const [results] = await pool.execute(SELECT_BY_EMAIL, email);
     return results;
   }
+  
   static async selectById(id: string[]) {
     const [results] = await pool.execute("SELECT username, email, created_at, password, role FROM accounts WHERE id = ?", id);
     return results;
   }
-
-  // static async selectById2(id:string) {
-  //   try {
-  //     const [results] = await pool.execute(SELECT_BY_ID, [id]) as any;
-  //     return results.map((obj: any) => new UsersRecord(obj));
-  //   } catch (error) {
-  //     console.error("Error in selectById:", error);
-  //     throw error;
-  //   }
-  // }
 
   static async selectByUsername(username: string[]) {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
@@ -172,7 +154,7 @@ class UsersRecord implements IUserRecord {
   static async updateImgUrl(id: string, img_url: string): Promise<any> {
     try {
       return await performTransaction(async (connection) => {
-        const [results] = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
+        const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
         return results;
       });
     } catch (error) {

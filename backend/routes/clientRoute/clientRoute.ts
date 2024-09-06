@@ -38,8 +38,6 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
   }
 });
 
-
-// uprzatnac ten ggggggg
 router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
   const id:string = req.params.addressId;
     try {
@@ -56,16 +54,21 @@ router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
-    try {
-      await ClientRecord.insert(formData)
-      return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
-    } catch (error: any) {
-      return handleError(res, error, "Client Route: POST", MESSAGES.UNKNOW_ERROR);
+    if (!formData.first_name || !formData.second_name || !formData.email ) {
+      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+    }
+  try {
+    console.log(formData);
+    await ClientRecord.insert(formData);
+    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
+  } catch (error: any) {
+    return handleError(res, error, "Client Route: POST", MESSAGES.UNKNOW_ERROR);
   }
 });
 
 router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
   const { clientId } = req.params;
+  
     try {
       const [result] = await ClientRecord.delete(clientId);
         if (handleNoRecordsModified(res, "Client Route: DELETE", clientId, result)) {
@@ -80,6 +83,10 @@ router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => 
 router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const { first_name, second_name, email } = req.body;
+
+      if (!first_name || !second_name || !email ) {
+        return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+      }
     try {
       const result = await ClientRecord.updateClient([id, first_name, second_name, email ]);
         if (handleNoRecordsModified(res, "Client Route: PUT", id, result)) {

@@ -8,6 +8,8 @@
         "dev": "npx ts-node-dev app.ts",
         "test": "jest",
         "test:coverage": "jest --coverage",
+        "test:unit": "jest _tests__/UnitTest",
+        "test:integration": "jest _tests__/IntegratedTest",
         "dump": "cd database && ts-node mysqldump.ts",
         "load": "cd database && ts-node loadBackup.ts"
     },

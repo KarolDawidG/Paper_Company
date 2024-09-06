@@ -1,13 +1,7 @@
 import { performTransaction } from "../performTransaction";
 import { v4 as uuidv4 } from "uuid";
 import {INSERT_BASKET} from "./querryBasketRecord";
-
-interface Basket {
-  id: string;
-  order_id: string;
-  product_id: string;
-  quantity: string;
-}
+import { Basket } from "./InterfaceBasket";
 
 class BasketRecord {
   constructor(private orderData: Basket) {}
