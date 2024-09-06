@@ -7,6 +7,10 @@ const sendResetPasswordEmail = async (
   username: string,
   link: string,
 ) => {
+  if (!process.env.user) {
+    throw new Error("Environment variable 'user' is not set");
+  }
+
   const transporter = createTransporter();
 
   const mailOptions = {
@@ -29,11 +33,41 @@ const sendResetPasswordEmail = async (
   await transporter.sendMail(mailOptions);
 };
 
+
+// const sendResetPasswordEmail = async (
+//   email: string,
+//   username: string,
+//   link: string,
+// ) => {
+//   const transporter = createTransporter();
+
+//   const mailOptions = {
+//     from: process.env.user,
+//     to: email,
+//     subject: `Password Reset Request`,
+//     html: `
+//     <div style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
+//       <h2 style="color: #3b5998; font-size: 24px;">Hello ${username},</h2>
+//       <p style="color: #444; font-size: 16px;">We have received a request to reset your password. Please click on the button below to reset your password:</p>
+//       <a href="${link}" style="display: inline-block; background-color: #3b5998; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; margin-bottom: 20px;">Reset Password</a>
+//       <p style="color: #777; font-size: 14px;">If you did not request a password reset, please ignore this email. Your account is secure.</p>
+//       <br>
+//       <p style="color: #666; font-size: 16px;">Best regards,</p>
+//       <p style="color: #3b5998; font-size: 18px;">The Team at Paper Company</p>
+//     </div>
+//   `,
+//   };
+
+//   await transporter.sendMail(mailOptions);
+// };
+
 const sendRegisterEmail = async (
   email: string,
   username: string,
   link: string,
 ) => {
+
+
   const transporter = createTransporter();
 
   const mailRegisOptions = {

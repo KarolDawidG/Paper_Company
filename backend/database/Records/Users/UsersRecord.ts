@@ -135,6 +135,7 @@ class UsersRecord implements IUserRecord {
     const [results] = await pool.execute(SELECT_BY_EMAIL, email);
     return results;
   }
+  
   static async selectById(id: string[]) {
     const [results] = await pool.execute("SELECT username, email, created_at, password, role FROM accounts WHERE id = ?", id);
     return results;
@@ -153,7 +154,7 @@ class UsersRecord implements IUserRecord {
   static async updateImgUrl(id: string, img_url: string): Promise<any> {
     try {
       return await performTransaction(async (connection) => {
-        const [results] = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
+        const results = await connection.execute(UPDATE_IMG_URL_BY_ID, [img_url, id]);
         return results;
       });
     } catch (error) {

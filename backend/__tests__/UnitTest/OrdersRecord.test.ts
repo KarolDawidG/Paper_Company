@@ -27,7 +27,7 @@ describe('OrdersRecord', () => {
         created_at: '2024-01-01T00:00:00Z',
       };
       
-      describe('insert', () => {
+  describe('insert', () => {
         it('should insert a new employee and return the id', async () => {
           const mockConnection = { execute: jest.fn() };
           (performTransaction as jest.Mock).mockImplementation((callback) => callback(mockConnection));
@@ -53,8 +53,8 @@ describe('OrdersRecord', () => {
       
           expect(result).toBe('mocked-uuid');
         });
-      });
     });
+  });
 
   describe('getListById', () => {
     it('should retrieve all orders and return OrdersRecord instances', async () => {
