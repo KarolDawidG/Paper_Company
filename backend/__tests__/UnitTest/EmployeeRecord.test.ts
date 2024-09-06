@@ -20,7 +20,6 @@ jest.mock('uuid', () => ({
 }));
 
 describe('EmployeeRecord', () => {
-///test
 
 const mockEmploy: EmployeeInterface = {
   id: 'mocked-uuid',

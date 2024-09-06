@@ -2,13 +2,7 @@ import {performTransaction} from "../performTransaction";
 import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
 import {DELETE_ORDER, INSERT_ORDER, SELECT_ORDERS} from "./querryOrderRecord";
-
-interface Order {
-    id: string;
-    client_id: string;
-    client_address_id: string;
-    created_at: string;
-}
+import { Order } from "./InterfaceOrder";
 
 class OrdersRecord implements Order {
   id: string;
