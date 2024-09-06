@@ -33,15 +33,6 @@ interface IUserRecord {
   refresh_token: string; 
 }
 
-// interface IUserRecord {
-//   id: string;
-//   username: string;
-//   email: string;
-//   role: string;
-//   img_url: string;
-//   created_at: string;
-// }
-
 interface IQueryResult {
   affectedRows: number;
 }
@@ -148,16 +139,6 @@ class UsersRecord implements IUserRecord {
     const [results] = await pool.execute("SELECT username, email, created_at, password, role FROM accounts WHERE id = ?", id);
     return results;
   }
-
-  // static async selectById2(id:string) {
-  //   try {
-  //     const [results] = await pool.execute(SELECT_BY_ID, [id]) as any;
-  //     return results.map((obj: any) => new UsersRecord(obj));
-  //   } catch (error) {
-  //     console.error("Error in selectById:", error);
-  //     throw error;
-  //   }
-  // }
 
   static async selectByUsername(username: string[]) {
     const [results] = await pool.execute(SELECT_BY_USERNAME, username);
