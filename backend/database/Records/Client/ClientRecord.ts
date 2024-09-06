@@ -71,9 +71,7 @@ class ClientRecord implements Client {
       });
   }
   
-
     static async getClientData(clientID: string, addressID:string) {
-
       const [results] = await pool.execute(CLIENT_ORDER_DATA, [clientID, addressID]);
       return results;
   }
