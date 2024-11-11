@@ -11,7 +11,7 @@ import "@uploadthing/react/styles.css";
 import { ImageProvider } from "@/app/components/utils/context/ImageContext";
 import LinearProgress from "@mui/material/LinearProgress";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const [locale, setLocale] = useState("en");
   const [mode, setMode] = useState<"light" | "dark">();
   const router = useRouter();

@@ -2,7 +2,6 @@ import express, { Router } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
-import URL from "./url";
 
 const middleware: Router = express.Router();
 

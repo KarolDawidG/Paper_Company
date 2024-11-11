@@ -15,10 +15,11 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
 
       
       const addressList = await AddressRecord.getListById(id);
-        if (addressList.length === 0) {
-          logger.warn(`The client has no address: ${id}.}.`);
-          return res.status(STATUS_CODES.SUCCESS).json({ addressList: [] });
-        }
+      //generuje niepotrzeny log, gdy brakuje adresow dostaw
+        // if (addressList.length === 0) {
+        //   logger.warn(`The client has no address: ${id}.}.`);
+        //   return res.status(STATUS_CODES.SUCCESS).json({ addressList: [] });
+        // }
       return res.status(STATUS_CODES.SUCCESS).json({ addressList });
     } catch (error: any) {
       return handleError(res, error, "Address Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);

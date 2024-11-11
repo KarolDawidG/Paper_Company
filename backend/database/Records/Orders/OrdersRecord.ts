@@ -48,6 +48,24 @@ class OrdersRecord implements Order {
     });
   }
 
+  static async quantityAndItems(orderId: string) {
+    const query = `
+      SELECT 
+        p.id AS product_id, p.name AS product_name, p.price, od.quantity
+      FROM order_details od
+      JOIN products p ON od.product_id = p.id
+      WHERE od.order_id = ?;
+    `;
+
+    try {
+      const [results] = await pool.execute(query, [orderId]) as any;
+      return results;
+    } catch (error) {
+      console.error("Error in quantityAndItems:", error);
+      throw error;
+    }
+  }
+
 }
 
 export { OrdersRecord };

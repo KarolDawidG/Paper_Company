@@ -14,6 +14,7 @@ const OrderTable: React.FC<any> = () => {
   const [data, setData] = useState<any[]>([]);
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
+  const [selectedOrderAddress, setSelectedOrderAddress] = useState<any>(null);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -50,11 +51,12 @@ const OrderTable: React.FC<any> = () => {
   };
   
   const handleOpenDetails = (order: any) => {
-   setSelectedOrder(order.client_address_id);
+    setSelectedOrderAddress(order.client_address_id);
+    setSelectedOrder(order.id);
   };
 
   const handleCloseDetails = () => {
-    setSelectedOrder(null);
+    setSelectedOrderAddress(null);
   };
 
   if (!t.table) {
@@ -121,11 +123,12 @@ const OrderTable: React.FC<any> = () => {
         labelRowsPerPage={`${t.table.rows_per_page}`}
       />
 
-      {(selectedOrder ) && (
+      {(selectedOrderAddress ) && (
         <OrderDetailsModal
           open={true}
           onClose={handleCloseDetails}
-          order={selectedOrder}
+          orderAdressId={selectedOrderAddress}
+          orderId={selectedOrder}
         />
       )}
 

@@ -6,6 +6,7 @@ import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 import {ClientRecord} from "../../database/Records/Client/ClientRecord";
+import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 const router = express.Router();
 router.use(middleware, limiter);
 
@@ -28,25 +29,34 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
   try {
     const queryResult = await ClientRecord.getClientData(clientid, addresid);
     const clientData = queryResult as any[]; 
-      if (clientData.length === 0) {
-        logger.warn(`Client Route: GET: No data found for client ${clientid} and address ${addresid}.`);
-        return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
-      }
+    //generuje niepotrzeny log, gdy brakuje klientow i adresow dostaw
+      // if (clientData.length === 0) {
+      //   logger.warn(`Client Route: GET: No data found for client ${clientid} and address ${addresid}.`);
+      //   return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      // }
+      // TODO: Jesli clientData.length === 0 nie wysyłac json
     return res.status(STATUS_CODES.SUCCESS).json(clientData);
   } catch (error: any) {
     return handleError(res, error, "Client/client-data Route: GET", MESSAGES.UNKNOW_ERROR);
   }
 });
 
-router.get("/:addressId", verifyToken, async (req: Request, res: Response) => {
-  const id:string = req.params.addressId;
+router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
+  const addressId:string = req.params.addressId;
+  const orderId:string = req.params.orderId;
+
     try {
-      const clientAddress = await ClientRecord.getAddress([id]);
-        if (!clientAddress) {
-          logger.warn(`Client Route: GET: No address found with ID ${id}.`);
-          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
-        }
-      return res.status(STATUS_CODES.SUCCESS).json({ clientAddress });
+      //pobieranie adresów poszczególnego zamówienia
+      const clientAddress = await ClientRecord.getAddress([addressId]);
+      // pobieranie danych produktów z poszczególnego zamówienia
+      const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
+      
+      const orderDetails = {
+        clientAddress: clientAddress,
+        products: quantityAndItems,
+      };
+     // console.log(orderDetails);
+      return res.status(STATUS_CODES.SUCCESS).json({ orderDetails });
     } catch (error: any) {
       return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
     }

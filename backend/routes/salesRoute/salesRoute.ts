@@ -13,6 +13,7 @@ router.get("/", async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getListById();
         if (!ordersList || ordersList.length === 0) {
+          console.log("Zamowienie!");
           return handleWarning(res, "Sales Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
         }
 
