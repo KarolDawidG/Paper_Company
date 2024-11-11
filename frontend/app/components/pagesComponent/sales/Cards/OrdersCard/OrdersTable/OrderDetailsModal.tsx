@@ -4,14 +4,15 @@ import axiosInstance from "@/app/api/axiosInstance";
 import { modalStyle } from '../../SalesCard/ClientData/Modals/ModalStyles/modalStyle';
 import { MainButton } from '@/app/components/layout/Buttons';
 import useTranslation from "@/app/components/language/useTranslation";
+import { notify } from '@/app/components/notification/Notify';
 
 interface Product {
     product_name: string;
     quantity: number;
     price: number;
 }
-  
-const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderAdressId: string; orderId: string }> = ({ open, onClose, orderId, orderAdressId }) => {
+
+const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderId: string; orderAdressId: string }> = ({ open, onClose, orderId, orderAdressId }) => {
     const [productsData, setProductsData] = useState<Product[]>([]);
     const [addressData, setAddressData] = useState<any>();
     const currentLocale = localStorage.getItem("locale") || "en";
@@ -31,8 +32,17 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderAdr
         fetchData();
     }, [orderAdressId, orderId]);
 
-    // Obliczanie sumy całkowitej
     const totalPrice = productsData.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    
+    const handleSave = async () => {
+        try {
+            await axiosInstance.post(`/client/save/${orderId}`, { addressId: orderAdressId });
+            notify("Order details saved successfully!");
+        } catch (error) {
+            console.error("Error saving order details:", error);
+            notify("Failed to save order details.");
+        }
+    };
 
     if (!t.orders_card) {
         return <LinearProgress />;
@@ -85,7 +95,7 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderAdr
 
                     <Divider sx={{ marginBottom: 3 }} />
 
-                    {/* Sekcja produktów z przewijaniem */}
+                    {/* Sekcja produktów */}
                     <Box>
                         <Typography variant="h6" align="center" gutterBottom>{t.orders_card.products}</Typography>
                         <Box sx={{ maxHeight: 300, overflowY: 'auto', paddingRight: 1 }}>
@@ -102,7 +112,6 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderAdr
                         </Box>
                     </Box>
 
-                    {/* Sekcja sumy całkowitej */}
                     <Divider sx={{ marginY: 2 }} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 1 }}>
                         <Typography variant="h6">Łącznie:</Typography>
@@ -110,6 +119,9 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderAdr
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+                        <MainButton onClick={handleSave}>
+                            Zapisz
+                        </MainButton>
                         <MainButton onClick={onClose}>
                             {t.orders_card.close}
                         </MainButton>

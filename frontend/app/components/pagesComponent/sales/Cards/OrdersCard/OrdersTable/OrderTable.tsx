@@ -21,19 +21,19 @@ const OrderTable: React.FC<any> = () => {
   const t = useTranslation(currentLocale);
   const isTranslationLoaded = useTranslationStatus(currentLocale);
 
+  const fetchData = async () => {
+    const idUser:any = localStorage.getItem('idUser');
+    try {
+      const response = await axiosInstance.get('/sales', { params: { idUser } });
+      setData(response.data.ordersList);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const idUser:any = localStorage.getItem('idUser');
-      try {
-        const response = await axiosInstance.get('/sales', { params: { idUser } });
-        setData(response.data.ordersList);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
- 
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleDeleteOrder = async (id:string) => {
     try {

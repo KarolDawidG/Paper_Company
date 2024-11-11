@@ -7,6 +7,8 @@ import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 import {ClientRecord} from "../../database/Records/Client/ClientRecord";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
+import { saveOrderDetailsToFile } from "../../config/fileUtils";
+
 const router = express.Router();
 router.use(middleware, limiter);
 
@@ -44,23 +46,41 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
 router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
   const addressId:string = req.params.addressId;
   const orderId:string = req.params.orderId;
-
     try {
-      //pobieranie adresów poszczególnego zamówienia
       const clientAddress = await ClientRecord.getAddress([addressId]);
-      // pobieranie danych produktów z poszczególnego zamówienia
       const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
-      
       const orderDetails = {
         clientAddress: clientAddress,
         products: quantityAndItems,
       };
-     // console.log(orderDetails);
+    
       return res.status(STATUS_CODES.SUCCESS).json({ orderDetails });
     } catch (error: any) {
       return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
     }
 });
+
+// Nowy endpoint zapisujący szczegóły zamówienia do pliku JSON po naciśnięciu przycisku "Zapisz" na froncie
+router.post("/save/:orderId", async (req: Request, res: Response) => {
+  const orderId: string = req.params.orderId;
+    try {
+      const clientAddress = await ClientRecord.getAddress([req.body.addressId]);
+      const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
+      const orderDetails = {
+        clientAddress: clientAddress,
+        products: quantityAndItems,
+      };
+
+      // Zapis danych zamówienia do pliku JSON
+      saveOrderDetailsToFile(orderDetails, orderId);
+      await OrdersRecord.updateStatusToShipped(orderId);
+      
+      return res.status(STATUS_CODES.SUCCESS).json({ message: "Order details saved to file." });
+    } catch (error: any) {
+      return handleError(res, error, "Error saving order details", MESSAGES.UNKNOW_ERROR);
+    }
+});
+
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;

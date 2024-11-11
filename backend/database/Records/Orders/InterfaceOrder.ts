@@ -3,4 +3,7 @@ export interface Order {
     client_id: string;
     client_address_id: string;
     created_at: string;
+    status: string;
+    payment_status: string;
+    payment_date: string;
 }

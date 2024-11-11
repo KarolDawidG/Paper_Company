@@ -62,11 +62,26 @@ const createClientAddresses: string = `
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
 
+// const createOrders: string = `
+//     CREATE TABLE IF NOT EXISTS orders (
+//       id varchar(36) NOT NULL,
+//       client_id varchar(36) NOT NULL,
+//       client_address_id varchar(36) NOT NULL,
+//       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//       PRIMARY KEY (id),
+//       FOREIGN KEY (client_id) REFERENCES clients(id),
+//       FOREIGN KEY (client_address_id) REFERENCES client_addresses(id)
+//     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+//     `;
+
 const createOrders: string = `
     CREATE TABLE IF NOT EXISTS orders (
       id varchar(36) NOT NULL,
       client_id varchar(36) NOT NULL,
       client_address_id varchar(36) NOT NULL,
+      status ENUM('pending', 'shipped', 'delivered') NOT NULL DEFAULT 'pending', -- dodano 'delivered' do statusu
+      payment_status ENUM('unpaid', 'paid') NOT NULL DEFAULT 'unpaid', -- status płatności
+      payment_date TIMESTAMP NULL, -- data płatności, null dopóki zamówienie nie jest opłacone
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       FOREIGN KEY (client_id) REFERENCES clients(id),
