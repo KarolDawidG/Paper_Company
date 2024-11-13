@@ -38,15 +38,34 @@ class OrdersRecord implements Order {
         });
     }
     
-  static async getPendingList() {
-    try {
-      const [results] = await pool.execute(SELECT_PENDING_ORDERS) as any;
-      return results.map((obj: any) => new OrdersRecord(obj));
-    } catch (error) {
-      console.error("Error in getList:", error);
-      throw error;
+    static async getPendingList(): Promise<any[]> {
+      const query = `
+        SELECT 
+          orders.id,
+          orders.client_id,
+          orders.client_address_id,
+          orders.created_at,
+          orders.status,
+          orders.payment_status,
+          orders.payment_date,
+          clients.company_name
+        FROM 
+          orders
+        JOIN 
+          clients ON orders.client_id = clients.id
+        WHERE 
+          orders.status = 'pending';
+      `;
+  
+      try {
+        const [rows] = await pool.execute(query);
+        return rows as any[];
+      } catch (error) {
+        console.error("Error fetching pending orders:", error);
+        throw new Error("Could not fetch orders.");
+      }
     }
-  }
+
   static async getList() {
     try {
       const [results] = await pool.execute(SELECT_ORDERS) as any;

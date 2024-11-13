@@ -40,12 +40,13 @@ const createClients: string = `
       first_name varchar(50) NOT NULL,
       second_name varchar(255) NOT NULL,
       email varchar(100) NOT NULL,
+      company_name VARCHAR(100) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       UNIQUE KEY (email)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-/// new table
+
 const createClientAddresses: string = `
     CREATE TABLE IF NOT EXISTS client_addresses (
       id varchar(36) NOT NULL,
@@ -61,18 +62,6 @@ const createClientAddresses: string = `
       FOREIGN KEY (client_id) REFERENCES clients(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-
-// const createOrders: string = `
-//     CREATE TABLE IF NOT EXISTS orders (
-//       id varchar(36) NOT NULL,
-//       client_id varchar(36) NOT NULL,
-//       client_address_id varchar(36) NOT NULL,
-//       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//       PRIMARY KEY (id),
-//       FOREIGN KEY (client_id) REFERENCES clients(id),
-//       FOREIGN KEY (client_address_id) REFERENCES client_addresses(id)
-//     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-//     `;
 
 const createOrders: string = `
     CREATE TABLE IF NOT EXISTS orders (

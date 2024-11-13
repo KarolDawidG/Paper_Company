@@ -84,7 +84,7 @@ router.post("/save/:orderId", async (req: Request, res: Response) => {
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const formData = req.body;
-    if (!formData.first_name || !formData.second_name || !formData.email ) {
+    if (!formData.first_name || !formData.second_name || !formData.email || !formData.company_name ) {
       return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
     }
   try {

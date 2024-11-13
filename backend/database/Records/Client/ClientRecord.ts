@@ -9,6 +9,7 @@ class ClientRecord implements Client {
   first_name: string;
   second_name: string;
   email: string;
+  company_name: string;
   created_at: string;
 
   constructor(obj: Client) {
@@ -16,6 +17,7 @@ class ClientRecord implements Client {
     this.first_name = obj.first_name;
     this.second_name = obj.second_name;
     this.email = obj.email;
+    this.company_name = obj.company_name;
     this.created_at = obj.created_at;
   }
 
@@ -43,7 +45,8 @@ class ClientRecord implements Client {
             id,
             formData.first_name,
             formData.second_name,
-            formData.email
+            formData.email,
+            formData.company_name
           ]
         );
         return id;
