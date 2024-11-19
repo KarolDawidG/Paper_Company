@@ -12,9 +12,10 @@ interface Product {
     price: number;
 }
 
-const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderId: string; orderAdressId: string }> = ({ open, onClose, orderId, orderAdressId }) => {
+const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderId: string; orderAdressId: string; clientId: string }> = ({ open, onClose, orderId, orderAdressId, clientId }) => {
     const [productsData, setProductsData] = useState<Product[]>([]);
     const [addressData, setAddressData] = useState<any>();
+
     const currentLocale = localStorage.getItem("locale") || "en";
     const t = useTranslation(currentLocale);
 
@@ -36,7 +37,7 @@ const OrderDetailsModal: React.FC<{ open: boolean; onClose: () => void; orderId:
     
     const handleSave = async () => {
         try {
-            await axiosInstance.post(`/client/save/${orderId}`, { addressId: orderAdressId });
+            await axiosInstance.post(`/client/save/${orderId}`, { addressId: orderAdressId, clientId: clientId });
             notify("Order details saved successfully!");
         } catch (error) {
             console.error("Error saving order details:", error);

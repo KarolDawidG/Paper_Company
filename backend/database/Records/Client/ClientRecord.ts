@@ -71,6 +71,13 @@ class ClientRecord implements Client {
       const [results] = await pool.execute(CLIENT_ORDER_DATA, [clientID, addressID]);
       return results;
   }
+
+
+  static async getClientDataById(id: string[]) {
+    const [results] = await pool.execute(`select * from clients WHERE id = ?;
+`, id);
+    return results;
+}
 }
 
 

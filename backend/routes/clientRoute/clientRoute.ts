@@ -66,10 +66,9 @@ router.post("/save/:orderId", async (req: Request, res: Response) => {
     try {
       const clientAddress = await ClientRecord.getAddress([req.body.addressId]);
       const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
-      const orderDetails = {
-        clientAddress: clientAddress,
-        products: quantityAndItems,
-      };
+      const clientData = await ClientRecord.getClientDataById([req.body.clientId])
+    
+      const orderDetails = { clientAddress: clientAddress, clientData: clientData, products: quantityAndItems,};
 
       // Zapis danych zamówienia do pliku JSON
       saveOrderDetailsToFile(orderDetails, orderId);
@@ -88,7 +87,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
       return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
     }
   try {
-    console.log(formData);
+    
     await ClientRecord.insert(formData);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {

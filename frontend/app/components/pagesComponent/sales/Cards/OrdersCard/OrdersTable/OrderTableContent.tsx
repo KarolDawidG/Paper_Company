@@ -21,7 +21,6 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
   if (!t.table) {
     return <LinearProgress />;
   }
-
   
   return (
     <Box padding={1}>

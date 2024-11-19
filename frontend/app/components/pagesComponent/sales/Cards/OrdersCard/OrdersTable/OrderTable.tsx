@@ -16,15 +16,17 @@ const OrderTable: React.FC = () => {
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });
   const [selectedOrderAddress, setSelectedOrderAddress] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+  const [selectedClientId, setClientId] = useState<string | null>(null);
   
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const isTranslationLoaded = useTranslationStatus(currentLocale);
 
   const fetchData = useCallback(async () => {
-    const idUser = localStorage.getItem('idUser');
+    const idUser = localStorage.getItem('idUser'); //id zalogowanego uzytkownika
     try {
       const response = await axiosInstance.get('/sales', { params: { idUser } });
+     // console.log(response.data.ordersList);
       setData(response.data.ordersList);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -51,8 +53,10 @@ const OrderTable: React.FC = () => {
   };
   
   const handleOpenDetails = (order: Order) => {
+    //console.log("Selected order:", order);
     setSelectedOrderAddress(order.client_address_id);
     setSelectedOrder(order.id);
+    setClientId(order.client_id);
   };
 
   const handleCloseDetails = () => {
@@ -88,12 +92,13 @@ const OrderTable: React.FC = () => {
         labelRowsPerPage={`${t.table.rows_per_page}`}
       />
 
-      {(selectedOrderAddress && selectedOrder) && (
+      {(selectedOrderAddress && selectedOrder && selectedClientId) && (
         <OrderDetailsModal
           open={true}
           onClose={handleCloseDetails}
           orderAdressId={selectedOrderAddress}
           orderId={selectedOrder}
+          clientId={selectedClientId}
         />
       )}
     </Box>
