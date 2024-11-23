@@ -14,6 +14,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: 
             email: "",
             first_name: "",
             second_name: "",
+            company_name: "",
         }
     });
     
@@ -23,6 +24,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: 
   
     const onSubmit = async (data:any) => {
         try {
+            console.log(data);
             const response = await axiosInstance.post('/client', data, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -83,6 +85,15 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void, fetchData: 
                             {...register("second_name", { required: `${t.notification.second_require}`  })}
                             error={Boolean(errors.second_name)}
                             helperText={errors.second_name?.message}
+                        />
+                        <TextField
+                            label="Company Name"
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            {...register("company_name", { required: `${t.notification.second_require}  `  })}
+                            error={Boolean(errors.company_name)}
+                            helperText={errors.company_name?.message}
                         />
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
                             <MainButton type="submit">

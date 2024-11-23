@@ -9,6 +9,7 @@ class ClientRecord implements Client {
   first_name: string;
   second_name: string;
   email: string;
+  company_name: string;
   created_at: string;
 
   constructor(obj: Client) {
@@ -16,6 +17,7 @@ class ClientRecord implements Client {
     this.first_name = obj.first_name;
     this.second_name = obj.second_name;
     this.email = obj.email;
+    this.company_name = obj.company_name;
     this.created_at = obj.created_at;
   }
 
@@ -31,7 +33,7 @@ class ClientRecord implements Client {
     }
 
     static async getAddress(id: string[]) {
-        const [results] = await pool.execute(SELECT_CLIENT_BY_ID, id);
+        const [results] = await pool.execute(`SELECT nazwa_firmy, miasto, kod, ulica, nr_budynku, nr_mieszkania FROM \`client_addresses\` WHERE id = ?;`, id);
         return results;
     }
 
@@ -43,7 +45,8 @@ class ClientRecord implements Client {
             id,
             formData.first_name,
             formData.second_name,
-            formData.email
+            formData.email,
+            formData.company_name
           ]
         );
         return id;
@@ -68,6 +71,13 @@ class ClientRecord implements Client {
       const [results] = await pool.execute(CLIENT_ORDER_DATA, [clientID, addressID]);
       return results;
   }
+
+
+  static async getClientDataById(id: string[]) {
+    const [results] = await pool.execute(`select * from clients WHERE id = ?;
+`, id);
+    return results;
+}
 }
 
 

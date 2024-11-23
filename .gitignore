@@ -9,6 +9,7 @@ mysql_data/
 .pnp.js
 /backend/klucze
 backend/klucze
+backend/orderDocuments
 *.pem
 # testing
 /coverage

@@ -7,22 +7,7 @@ import { useCart } from './CartContext';
 import useTranslation from "@/app/components/language/useTranslation";
 import axiosInstance from '@/app/api/axiosInstance';
 import { useEffect, useState } from 'react';
-
-interface ClientDetails {
-    client_id: string;
-    first_name: string;
-    second_name: string;
-    email: string;
-    client_created_at: string;
-    address_id: string;
-    miasto: string;
-    ulica: string;
-    nr_budynku: string;
-    nr_mieszkania: string;
-    kod: string;
-    nazwa_firmy: string;
-    address_created_at: string;
-}
+import { ClientDetails } from './Interfaces/ClientDetails';
 
 export const BasketCard = () => {
     const { cartItems, buyProducts, translateCartObject, removeFromCart, increaseClickCount, decreaseClickCount }: any = useCart();
@@ -38,7 +23,6 @@ export const BasketCard = () => {
         try {
             const response = await axiosInstance.get(`${BACKEND}/client/client-data/${clientId}/${clientAddresId}`);
             setClientDetails(response.data[0]);
-            console.log(`${BACKEND}/client/client-data/${clientId}/${clientAddresId}`)
         } catch (error) {
             console.error('Failed to fetch client details:', error);
         }

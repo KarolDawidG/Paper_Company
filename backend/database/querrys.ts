@@ -40,12 +40,13 @@ const createClients: string = `
       first_name varchar(50) NOT NULL,
       second_name varchar(255) NOT NULL,
       email varchar(100) NOT NULL,
+      company_name VARCHAR(100) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       UNIQUE KEY (email)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
     `;
-/// new table
+
 const createClientAddresses: string = `
     CREATE TABLE IF NOT EXISTS client_addresses (
       id varchar(36) NOT NULL,
@@ -67,6 +68,9 @@ const createOrders: string = `
       id varchar(36) NOT NULL,
       client_id varchar(36) NOT NULL,
       client_address_id varchar(36) NOT NULL,
+      status ENUM('pending', 'shipped', 'delivered') NOT NULL DEFAULT 'pending', -- dodano 'delivered' do statusu
+      payment_status ENUM('unpaid', 'paid') NOT NULL DEFAULT 'unpaid', -- status płatności
+      payment_date TIMESTAMP NULL, -- data płatności, null dopóki zamówienie nie jest opłacone
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       FOREIGN KEY (client_id) REFERENCES clients(id),
