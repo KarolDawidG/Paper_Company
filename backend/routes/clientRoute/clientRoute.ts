@@ -64,17 +64,19 @@ router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
 router.post("/save/:orderId", async (req: Request, res: Response) => {
   const orderId: string = req.params.orderId;
   const addressId: string = req.body.addressId;
+  const clientId: string = req.body.clientId;
 
     try {
-      const clientAddress = await ClientRecord.getAddress([req.body.addressId]);
+      const clientAddress = await ClientRecord.getAddress([addressId]);
       const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
-      const clientData = await ClientRecord.getClientDataById([req.body.clientId])
+      const clientData = await ClientRecord.getClientDataById([clientId])
     
       const orderDetails = { clientAddress: clientAddress, clientData: clientData, products: quantityAndItems,};
 
       // Zapis danych zamówienia do pliku JSON
       saveOrderDetailsToFile(orderDetails, orderId);
-      await OrdersRecord.updateStatusToShipped(orderId);
+
+      await OrdersRecord.updateStatus(orderId, 'shipped');
 
       return res.status(STATUS_CODES.SUCCESS).json({ message: "Order details saved to file." });
     } catch (error: any) {

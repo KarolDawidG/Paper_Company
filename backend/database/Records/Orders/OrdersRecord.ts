@@ -100,20 +100,49 @@ class OrdersRecord implements Order {
     }
   }
 
-  static async updateStatusToShipped(orderId: string): Promise<void> {
+  static async updateStatus(orderId: string, newStatus: string): Promise<void> {
     const query = `
       UPDATE orders
-      SET status = 'shipped'
+      SET status = ?
       WHERE id = ?;
     `;
     
     try {
-      await pool.execute(query, [orderId]);
+      await pool.execute(query, [newStatus, orderId]);
     } catch (error) {
-      console.error("Error updating order status to shipped:", error);
+      console.error(`Error updating order status to ${newStatus}:`, error);
       throw new Error("Could not update order status.");
     }
   }
+
+  static async getOrdersByStatus(status: string): Promise<any[]> {
+    const query = `
+      SELECT 
+        orders.id,
+        orders.client_id,
+        orders.client_address_id,
+        orders.created_at,
+        orders.status,
+        orders.payment_status,
+        orders.payment_date,
+        clients.company_name
+      FROM 
+        orders
+      JOIN 
+        clients ON orders.client_id = clients.id
+      WHERE 
+        orders.status = ?;
+    `;
+
+    try {
+      const [rows] = await pool.execute(query, [status]);
+      return rows as any[];
+    } catch (error) {
+      console.error(`Error fetching orders with status ${status}:`, error);
+      throw new Error("Could not fetch orders.");
+    }
+  }
+  
 
 }
 
