@@ -33,7 +33,7 @@ class ClientRecord implements Client {
     }
 
     static async getAddress(id: string[]) {
-        const [results] = await pool.execute(SELECT_CLIENT_BY_ID, id);
+        const [results] = await pool.execute(`SELECT nazwa_firmy, miasto, kod, ulica, nr_budynku, nr_mieszkania FROM \`client_addresses\` WHERE id = ?;`, id);
         return results;
     }
 

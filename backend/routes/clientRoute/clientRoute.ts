@@ -63,6 +63,8 @@ router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
 // Nowy endpoint zapisujący szczegóły zamówienia do pliku JSON po naciśnięciu przycisku "Zapisz" na froncie
 router.post("/save/:orderId", async (req: Request, res: Response) => {
   const orderId: string = req.params.orderId;
+  const addressId: string = req.body.addressId;
+
     try {
       const clientAddress = await ClientRecord.getAddress([req.body.addressId]);
       const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
@@ -73,7 +75,7 @@ router.post("/save/:orderId", async (req: Request, res: Response) => {
       // Zapis danych zamówienia do pliku JSON
       saveOrderDetailsToFile(orderDetails, orderId);
       await OrdersRecord.updateStatusToShipped(orderId);
-      
+
       return res.status(STATUS_CODES.SUCCESS).json({ message: "Order details saved to file." });
     } catch (error: any) {
       return handleError(res, error, "Error saving order details", MESSAGES.UNKNOW_ERROR);
