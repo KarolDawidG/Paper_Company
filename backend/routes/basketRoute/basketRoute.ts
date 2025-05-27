@@ -6,6 +6,7 @@ import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { verifyToken } from "../../config/config";
 import { BasketRecord } from "../../database/Records/Basket/BasketRecord";
+import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 
 const router = express.Router();
 router.use(middleware, limiter);
@@ -26,12 +27,26 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                         product_id: id,
                         quantity: clickCount,
                     });
+                    
                 } catch (error:any) {
                     logger.error(`Error inserting product with ID ${id} for order ${orderId}`);
-                    return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+                    return handleError(res, error, "Basket Route: POST - insert", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
                 }
             }
         }
+
+        //zmniejszenie ilosci produktu
+
+        try {
+            await ProductsRecord.decreaseQuantitiesForOrder(orderId);
+            
+        } catch (error:any) {
+                logger.error("Basket route: stock");
+                return handleError(res, error, "Basket Route: POST: decrease", MESSAGES.UNKNOW_ERROR, 409);
+        }
+
+
+
         res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error:any) {
         return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
