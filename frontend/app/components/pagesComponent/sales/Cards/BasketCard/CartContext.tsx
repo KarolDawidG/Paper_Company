@@ -29,9 +29,16 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart') || '[]'));
     const [translateCartObject, setTranslateCartObject] = useState<ProductDetail[]>([]);
 
+    // trigger
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+
     const currentLocale = localStorage.getItem("locale") || "en";
     const t = useTranslation(currentLocale);
     const isTranslationLoaded = useTranslationStatus(currentLocale);
+
+    const triggerRefresh = () => {
+        setRefreshTrigger(prev => prev +1);
+    };
 
     const fetchProductDetails = async () => {
         try {
@@ -59,6 +66,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
         localStorage.setItem('cart', JSON.stringify(existingProducts));
         setCartItems(existingProducts);
+        triggerRefresh();
     };
 
     const removeFromCart = (index: number) => {
@@ -114,6 +122,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             sessionStorage.removeItem('clientId');
             sessionStorage.removeItem('addressId');
             setCartItems([]);
+            triggerRefresh();
+           // setTranslateCartObject([]); // <-- teoretycznie poprawia
 
             if (isTranslationLoaded) {
                 notify(`${t.notification.products_sent}`);
@@ -130,7 +140,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }, [currentLocale, cartItems]);
 
     return (
-        <CartContext.Provider value={{ cartItems, buyProducts, addToCart, removeFromCart, increaseClickCount, decreaseClickCount, fetchProductDetails, translateCartObject }}>
+        <CartContext.Provider value={{ cartItems, buyProducts, addToCart, removeFromCart, increaseClickCount, decreaseClickCount, fetchProductDetails, translateCartObject, triggerRefresh, refreshTrigger }}>
             {children}
         </CartContext.Provider>
     );

@@ -3,20 +3,30 @@ import { Typography, Grid, CardContent, CardMedia, Card, Button, LinearProgress 
 import {useState} from "react";
 import {useCart} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 import useTranslation from "@/app/components/language/useTranslation";
+import { notify } from '@/app/components/notification/Notify';
 
 export const ProductCard = ({ id, name, description, price, stock }:any) => {
-  const [clickCount, setClickCount] = useState(0);
+  //const [clickCount, setClickCount] = useState(0);
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
-  const { addToCart }:any = useCart();
+  const { addToCart, cartItems }:any = useCart();
+  // zmiana stanu produktu po dodaniu do koszyka:
+  const cartItem = cartItems.find((item:any) => item.id === id);
+  const itemsInCart = cartItem?.clickCount || 0;
+  const availableStock = stock - itemsInCart;
+
 
   if (!t.products_card) {
     return <LinearProgress />;
   }
 
-  const handleAddToCart = (product:any) => {
-      setClickCount(prevCount => prevCount + 1);
-      addToCart(product)
+    const handleAddToCart = () => {
+      if (availableStock <= 0){
+        notify("Koniec towaru!!");
+        return;
+      }
+      addToCart({id, price});
+
   };
 
   return (
@@ -44,14 +54,20 @@ export const ProductCard = ({ id, name, description, price, stock }:any) => {
                       </Typography>
                     </Grid>
 
-                    <Grid item>
+                    {/* <Grid item>
                       <Typography variant="body2" color="text.secondary">
                         {t.products_card.quantity}: {stock}
+                      </Typography>
+                    </Grid> */}
+
+                    <Grid item>
+                      <Typography variant="body2" color="text.secondary">
+                        {t.products_card.quantity}: {availableStock}
                       </Typography>
                     </Grid>
 
                     <Grid item>
-                      <Button onClick={() => handleAddToCart({ id, price, clickCount })}>
+                      <Button onClick={() => handleAddToCart()}>
                         {t.products_card.add_to_basket}
                       </Button>
                     </Grid>
@@ -59,7 +75,7 @@ export const ProductCard = ({ id, name, description, price, stock }:any) => {
                   </Grid>
 
                   <Typography variant="body2" color="text.secondary">
-                    {t.products_card.total}: {(price * clickCount).toFixed(2)}
+                    {t.products_card.total}: {(price * itemsInCart).toFixed(2)}
                   </Typography>
             </Grid>
 

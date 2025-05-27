@@ -5,12 +5,14 @@ import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import axios from 'axios';
 import {ProductCard} from './ProductCard';
 import useTranslation from "@/app/components/language/useTranslation";
+import { useCart } from '../BasketCard/CartContext';
 
 export const ProductsCard = () => {
   const [data, setData] = useState<any[]>([]);
   const [expanded, setExpanded] = useState(false);
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
+  const {refreshTrigger} = useCart();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -30,7 +32,7 @@ export const ProductsCard = () => {
       }
     };
     fetchData();
-  }, [currentLocale]);
+  }, [currentLocale, refreshTrigger]);
   
 
     if (!t.products_card) {
