@@ -12,7 +12,7 @@ router.use(middleware);
 router.get("/", async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getPendingList();
-    
+     // console.log(ordersList);
       return res.status(STATUS_CODES.SUCCESS).json({ ordersList });
     } catch (error: any) {
       return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOW_ERROR);

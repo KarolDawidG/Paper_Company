@@ -26,7 +26,8 @@ const OrderTable: React.FC = () => {
     const idUser = localStorage.getItem('idUser'); //id zalogowanego uzytkownika
     try {
       const response = await axiosInstance.get('/sales', { params: { idUser } });
-     // console.log(response.data.ordersList);
+      // console.log(response.data.ordersList);
+      // only orders.status = 'pending'
       setData(response.data.ordersList);
     } catch (error) {
       console.error('Error fetching data:', error);

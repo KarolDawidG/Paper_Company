@@ -27,6 +27,7 @@ const currentDate = getCurrentDate();
 const backupFileName = `backup_${currentDate}.sql`;
 
 const command = `mysqldump -h ${host} -u ${user} -p${password} ${database} > ${backupFileName}`;
+//const command = `mysqldump -h ${host} -u ${user} -p${password} dw_erp_papier > dw_erp_papier_dump.sql`;
 
 exec(command, (error, stdout, stderr) => {
   if (error) {
@@ -35,3 +36,6 @@ exec(command, (error, stdout, stderr) => {
     console.log(`Backup wykonany poprawnie. Zapisano do pliku: ${backupFileName}`);
   }
 });
+
+// mysqldump -u root -p \ --databases dw_erp_papier \ --routines --triggers \ > dw_erp_papier_dump.sql
+
