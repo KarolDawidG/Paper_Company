@@ -1,4 +1,4 @@
-const INSERT_ORDER:string = "INSERT INTO orders (id, client_id, client_address_id ) VALUES (?, ?, ?)";
+const INSERT_ORDER:string = "INSERT INTO orders (id, client_id, client_address_id, account_id ) VALUES (?, ?, ?, ?)";
 
 const SELECT_ORDERS:string = "SELECT * FROM `orders`";
 

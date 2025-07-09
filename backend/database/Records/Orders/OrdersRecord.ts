@@ -12,6 +12,7 @@ class OrdersRecord implements Order {
   status: string;
   payment_status: string;
   payment_date: string;
+  account_id: string;
 
   constructor(obj: Order) {
     this.id = obj.id;
@@ -21,9 +22,10 @@ class OrdersRecord implements Order {
     this.status = obj.status;
     this.payment_status = obj.payment_status;
     this.payment_date = obj.payment_date;
+    this.account_id = obj.account_id;
   }
 
-    static async insert(client_id: string, client_address_id: string) {
+    static async insert(client_id: string, client_address_id: string, account_id:string) {
         const id: string = uuidv4();
 
         return performTransaction(async (connection) => {
@@ -32,6 +34,7 @@ class OrdersRecord implements Order {
                     id,
                     client_id,
                     client_address_id,
+                    account_id,
                 ]
             );
             return id;

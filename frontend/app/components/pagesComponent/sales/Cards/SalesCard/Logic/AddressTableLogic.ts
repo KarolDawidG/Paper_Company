@@ -62,9 +62,11 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
 
   const handleOrder = async () => {
     try {
+      const account_id = localStorage.getItem('idUser'); 
       const client_id = sessionStorage.getItem('clientId');
       const client_address_id = sessionStorage.getItem('addressId');
-      const orderData = { client_id, client_address_id };
+      const orderData = { client_id, client_address_id, account_id };
+      
       const response = await axiosInstance.post('/sales/new-order', orderData, {
           headers: {
               'Content-Type': 'application/json'
@@ -83,6 +85,8 @@ export const useAddressTableLogic = ({ selectedClientId }: AddressTableLogicProp
       }
     }
 };
+
+
   useEffect(() => {
     fetchAddressData();
   }, [selectedClientId]);

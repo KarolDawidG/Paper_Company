@@ -10,7 +10,7 @@ import {
   createRoot,
   deleteAccount,
   createEmployeeTable,
-  eventSchedulerON,
+  
   createClientsTable,
   createClientsAddressTable,
   createTransactionOrdersDetails,
@@ -26,7 +26,7 @@ const initializeDatabase = async () => {
       createEmployeeTable,
       createRoot,
       deleteAccount,
-      eventSchedulerON,
+      
       createClientsTable,
       createClientsAddressTable,
       createTransactionOrders,

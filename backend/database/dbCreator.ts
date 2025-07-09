@@ -7,7 +7,6 @@ import {
   createClientAddresses,
   createOrderDetails,
   deleteNotActiveAccount,
-  event_schedulerON,
   createOrders,
   createProducts,
   createClients,
@@ -94,13 +93,13 @@ const deleteAccount = async (pool: Pool): Promise<void> => {
   }
 };
 
-const eventSchedulerON = async (pool: Pool): Promise<void> => {
-  try {
-    await pool.query(event_schedulerON);
-  } catch (err) {
-    console.error(err);
-  }
-};
+// const eventSchedulerON = async (pool: Pool): Promise<void> => {
+//   try {
+//     await pool.query(event_schedulerON);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 const createRoot = async (pool: Pool): Promise<void> => {
   try {
@@ -128,5 +127,4 @@ export {
   createLanguageTable,
   createTransactionOrders, 
   createRoot, 
-  deleteAccount, 
-  eventSchedulerON };
+  deleteAccount };

@@ -43,12 +43,13 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.post("/new-order", async (req: Request, res: Response) => {
-  const {client_id, client_address_id} = req.body;
+  const {client_id, client_address_id, account_id} = req.body;
     if (!client_id || !client_address_id) {
       return handleWarning(res, "Sales/new-order Route: POST: Missing client or address ID", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
     }
     try {
-      const order_id = await OrdersRecord.insert(client_id, client_address_id );
+
+      const order_id = await OrdersRecord.insert(client_id, client_address_id, account_id );
       return res.status(STATUS_CODES.SUCCESS).send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
       return handleError(res, error, "Sales/new-order Route: POST: Failed to create new order for client id", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, client_id);

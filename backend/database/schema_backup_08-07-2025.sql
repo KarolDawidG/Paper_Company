@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS `accounts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `accounts` (
   `id` varchar(36) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -15,12 +13,8 @@ CREATE TABLE `accounts` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-DROP TABLE IF EXISTS `client_addresses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `client_addresses` (
   `id` varchar(36) NOT NULL,
   `client_id` varchar(36) NOT NULL,
@@ -35,12 +29,8 @@ CREATE TABLE `client_addresses` (
   KEY `client_id` (`client_id`),
   CONSTRAINT `client_addresses_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-DROP TABLE IF EXISTS `clients`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clients` (
   `id` varchar(36) NOT NULL,
   `first_name` varchar(50) NOT NULL,
@@ -51,13 +41,8 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-
-DROP TABLE IF EXISTS `employees`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employees` (
   `id` varchar(36) NOT NULL,
   `first_name` varchar(50) DEFAULT NULL,
@@ -73,12 +58,8 @@ CREATE TABLE `employees` (
   KEY `account_id` (`account_id`),
   CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-DROP TABLE IF EXISTS `languages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `languages` (
   `id` varchar(36) NOT NULL,
   `code` varchar(10) NOT NULL,
@@ -86,13 +67,8 @@ CREATE TABLE `languages` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-
-DROP TABLE IF EXISTS `order_details`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_details` (
   `id` varchar(36) NOT NULL,
   `order_id` varchar(36) NOT NULL,
@@ -104,12 +80,8 @@ CREATE TABLE `order_details` (
   CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
-DROP TABLE IF EXISTS `orders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `id` varchar(36) NOT NULL,
   `client_id` varchar(36) NOT NULL,
@@ -118,17 +90,17 @@ CREATE TABLE `orders` (
   `status` varchar(20) DEFAULT 'pending',
   `payment_status` varchar(20) DEFAULT 'unpaid',
   `payment_date` timestamp NULL DEFAULT NULL,
+  `account_id` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `client_id` (`client_id`),
   KEY `client_address_id` (`client_address_id`),
+  KEY `fk_orders_account` (`account_id`),
+  CONSTRAINT `fk_orders_account` FOREIGN KEY (`account_id`) REFERENCES `employees` (`account_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`client_address_id`) REFERENCES `client_addresses` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `product_translations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `product_translations` (
   `product_id` varchar(36) NOT NULL,
   `language_id` varchar(36) NOT NULL,
@@ -139,11 +111,8 @@ CREATE TABLE `product_translations` (
   CONSTRAINT `product_translations_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   CONSTRAINT `product_translations_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `products` (
   `id` varchar(36) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -154,5 +123,116 @@ CREATE TABLE `products` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
+
+-- https://dbdiagram.io/d
+
+/*
+Table accounts {
+  id varchar [primary key]
+  username varchar
+  password varchar
+  email varchar
+  role varchar
+  img_url varchar
+  created_at timestamp
+  is_active boolean
+  refresh_token text
+}
+
+Table clients {
+  id varchar [primary key]
+  first_name varchar
+  second_name varchar
+  email varchar
+  created_at timestamp
+  company_name varchar
+}
+
+Table client_addresses {
+  id varchar [primary key]
+  client_id varchar
+  miasto varchar
+  ulica varchar
+  nr_budynku varchar
+  nr_mieszkania varchar
+  kod varchar
+  nazwa_firmy varchar
+  created_at timestamp
+}
+
+Table employees {
+  id varchar [primary key]
+  first_name varchar
+  last_name varchar
+  email varchar
+  phone_number varchar
+  department varchar
+  position varchar
+  hire_date timestamp
+  account_id varchar
+}
+
+Table languages {
+  id varchar [primary key]
+  code varchar
+  name varchar
+}
+
+Table orders {
+  id varchar [primary key]
+  client_id varchar
+  client_address_id varchar
+  created_at timestamp
+  status varchar
+  payment_status varchar
+  payment_date timestamp
+  account_id varchar // sprzedawca, ID konta z employees.account_id
+}
+
+Table order_details {
+  id varchar [primary key]
+  order_id varchar
+  product_id varchar
+  quantity int
+}
+
+Table products {
+  id varchar [primary key]
+  name varchar
+  category varchar
+  description text
+  price decimal
+  stock int
+  created_at timestamp
+}
+
+Table product_translations {
+  product_id varchar
+  language_id varchar
+  name varchar
+  description text
+  // PRIMARY KEY (product_id, language_id)
+  primary key (product_id, language_id)
+}
+
+// RELACJE
+
+Ref: employees.account_id > accounts.id
+
+Ref: client_addresses.client_id > clients.id
+
+Ref: orders.client_id > clients.id
+Ref: orders.client_address_id > client_addresses.id
+
+// Najważniejsze: łączenie zamówienia z employee.account_id:
+Ref: orders.account_id > employees.account_id
+
+Ref: order_details.order_id > orders.id
+Ref: order_details.product_id > products.id
+
+Ref: product_translations.product_id > products.id
+Ref: product_translations.language_id > languages.id
+
+
+*/
