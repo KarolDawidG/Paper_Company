@@ -10,7 +10,6 @@ export interface OrderTableContentProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   sortDirection: 'asc' | 'desc';
-  setSortDirection: React.Dispatch<React.SetStateAction<'asc' | 'desc'>>;
-  sortColumn: 'company_name' | 'created_at';
-  setSortColumn: React.Dispatch<React.SetStateAction<'company_name' | 'created_at'>>;
+  toggleSort: (column: keyof Order) => void;
+  sortColumn: keyof Order | null;
 }
