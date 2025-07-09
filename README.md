@@ -1,237 +1,102 @@
-# System ERP dla Papier Company
-![Logo](/img/logo.png)
-## Wprowadzenie
-Witaj w repozytorium Systemu ERP dla Papier Company - zainspirowanego przez kultowy serial "The Office". Nasz system jest zaprojektowany, aby wspierać i optymalizować kluczowe procesy biznesowe w firmie zajmującej się dystrybucją papieru, od zarządzania zapasami po finanse i księgowość.
+Skip to content
+Navigation Menu
+KarolDawidG
+Paper_Company
 
-## [Dokumentacja API](https://karoldawidg.github.io/Paper_Company_Documentation/)
+Type / to search
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Paper_Company
+/
+README.md
+in
+main
 
-## Funkcjonalności
-System ERP składa się z sześciu głównych modułów, zaprojektowanych, aby pokryć wszystkie aspekty działalności firmy:
+Edit
 
-### Funkcjonalnosci biznesowe
-1. **Zarządzanie Sprzedażą i Zamówieniami:** Ułatwia składanie zamówień, fakturację, i śledzenie dostaw.
-2. **Zarządzanie Magazynem:** Oferuje kontrolę zapasów i logistykę wewnętrzną.
-3. **Finanse i Księgowość:** Zapewnia przetwarzanie transakcji finansowych i raportowanie.
-4. **Zarządzanie Zasobami Ludzkimi:** Wspiera procesy rekrutacji, zarządzanie danymi pracowniczymi i szkolenia.
-5. **Analiza Danych i Raportowanie:** Oferuje narzędzia do analizy danych i wsparcia decyzji biznesowych.
-6. **Bezpieczeństwo i Kontrola Dostępu:** Zarządza uprawnieniami użytkowników i bezpieczeństwem danych.
+Preview
+Indent mode
 
-### Funkcjonalnosci uzytkowe
-1. Trzy wersje jezykowe - Polska, Angielska i Francuska. Dane dlumaczone sa zarowno po stronie bakendu jak i frontendu.
-2. Dwa tryby wysiwetoania: Nocny i dzienny.
-3. Mozliwosc zmiany awatara, dzieki chmurze UPLOADTHING
+Spaces
+Indent size
 
-## Technologie
-System jest budowany z wykorzystaniem nowoczesnych technologii:
-- **Backend i Frontend:** TypeScript, zapewniający bezpieczeństwo typów i nowoczesne podejście do tworzenia aplikacji.
-- **Baza danych:** MySQL, dla niezawodnego przechowywania danych.
-- **Serwer aplikacji:** Express.js, lekki i elastyczny framework.
-- **Frontend:** Next.js, umożliwiający server-side rendering i optymalizację aplikacji webowych.
-- **Konteneryzacja:** Docker Compose, ułatwiający budowanie, uruchamianie i zarządzanie aplikacjami.
+2
+Line wrap mode
 
-## Rozpoczęcie pracy
-1. Pobierz repozytorium uzywajac komendy 
-   ### `git clone https://github.com/KarolDawidG/Paper_Company.git`
-2. Wykonaj ponizsza komende aby przejsc do folderu backend
-    ### `cd backend`
-3. Zainstaluj wymagane biblioteki
-    ### `npm i`
-4. Wykonaj ponizsza komenda aby ustawic przykladowa baze danych
-    ### `npm run load`
-5. Otworz nowy terminal i przejdz do katalogu frontend oraz zainstaluj niezbedne komponenty
-    ### `cd frontend && npm i`
-6. W celu poprawnego korzystania z aplikacji, musisz pozyskac niezbedne dane typu klucze i hasla do serwisow, ktore nalezy zapisac w pliku .env w folderze /backend oraz /frontend
-7. Aby wystartowac aplikacje uruchom ponizsza komende zarowno w folderze /frontend jak i /backend
-    ### `npm run dev`
-8. W razie problemow, zbadaj komunikaty pokazujace sie w terminalu.
-
-## Ustawianie zmiennych środowiskowych
-W celu poprawnego dzialania aplikacji, musisz utworzyc zmienne srodowiskowe, ktore beda zapisane w pliku .env w folderze /backend oraz /frontend.
-Ponizej zostaly wylistowane przykladowe dane.
-UWAGA: Ponizsze przykladowe dane, to tylko przyklady, jak mniej wiecej realne zmienne powinny wygladac! Musisz skonfigurowac wlasne klucze i hasla!
-
-- PASS: Ustaw hasło dla aplikacji na stronie Google dla swojego konta Gmail: sbxuijfitkpldrhdjl.
-
-- USER: To Twój adres email: twoj.email@gmail.com.
-
-- HOST_DB: Ustaw na localhost, jeśli baza danych działa lokalnie. W przeciwnym razie podaj adres hosta bazy danych.
-
-- NAME_DB: Nazwa Twojej bazy danych: erp.
-
-- USER_DB: Nazwa użytkownika bazy danych: twoja_nazwa.
-
-- PASS_DB: Hasło do bazy danych: przykladowe_haslo.
-
-- PORT: Port, na którym będzie działać Twój lokalny serwer: 3001.
-
-- JWT_SECRET: Tajny klucz do JWT (JSON Web Token) używany do zabezpieczania tokenów: przykladowy_sekretny_klucz.
-
-- service: Dostawca usług e-mail: gmail dla poczty Google.
-
-- REACT_APP_SECRET_KEY i REACT_APP_SITE_KEY: To tajne klucze używane w recaptcha. Użyj klucza strony: 6LfeZQcoAA8u7y6OsGl5iQj9ijhyP1MwR02ABHIu i tajnego klucza: 6LfeZQco84jfnjfkzX8djsuOSnx8zWxLmvqqns4J. Klucz witryny musisz użyć po stronie frontend w folderze: \frontend\.env.
-
-- JWT_CONFIRMED_TOKEN: Kolejny token JWT, używany do potwierdzenia e-maila lub innych bezpiecznych procesów: jyhtf9394jfid69hujgdgdgd53y8383iksn89pfifjfhchxmsk8344hy7f8f0fifjfhg.
-
-- UPLOADTHING_SECRET: Tajny klucz do Uploadthing: dd5884jfj0acefa883hdo1050cfee36cygghgd087b6da8ujdy3cbe473ab0004c.
-
-- UPLOADTHING_APP_ID: Identyfikator aplikacji Uploadthing: r6fdwhyfdsjdj.
-
-- NEXT_PUBLIC_REACT_APP_SITE_KEY: Klucz strony do recaptcha używany po stronie frontend: 6LfeZQcoAAorjfkOsGl5iQj6j2NgfsaR02ABHIu.
-
-- NEXT_PUBLIC_BACKEND: Adres backendu: http://localhost:3001.
-
-
-### Schemat bazy danych
-# 🗄️ Struktura Bazy Danych ERP – Dystrybucja Papieru
-
-System korzysta z relacyjnej bazy danych **MySQL**, silnik **InnoDB**, kodowanie **UTF-8**.
-
----
-
-## 📘 Tabele i Relacje
-
-### 🔐 accounts
-Przechowuje dane kont użytkowników systemu.
-- `id` (PK, `varchar(36)`)
-- `username` (UNIQUE)
-- `email` (UNIQUE)
-- `password`
-- `role` – np. `admin`, `sales`, `warehouse`
-- `img_url`
-- `created_at`
-- `is_active` – `BOOLEAN`
-- `refresh_token`
-
-🔗 **Relacje:**
-- 1–1 z `employees` (przez `account_id`)
-
----
-
-### 👨‍💼 employees
-Zawiera dane pracowników.
-- `id` (PK, `varchar(36)`)
-- `first_name`, `last_name`
-- `email`
-- `phone_number`
-- `department`
-- `position`
-- `hire_date`
-- `account_id` (FK → `accounts.id`)
-
-🔗 **Relacje:**
-- Powiązany z `orders.account_id` jako osoba realizująca zamówienie
-
----
-
-### 🧑‍💼 clients
-Dane klientów.
-- `id` (PK, `varchar(36)`)
-- `first_name`, `second_name`
-- `email`
-- `company_name`
-- `created_at`
-
-🔗 **Relacje:**
-- 1–N z `client_addresses`
-- 1–N z `orders`
-
----
-
-### 🏠 client_addresses
-Adresy dostawy klienta.
-- `id` (PK)
-- `client_id` (FK → `clients.id`)
-- `miasto`, `ulica`, `nr_budynku`, `nr_mieszkania`, `kod`
-- `nazwa_firmy`
-- `created_at`
-
----
-
-### 📦 products
-Produkty oferowane przez firmę.
-- `id` (PK)
-- `name`, `category`, `description`
-- `price`, `stock`
-- `created_at`
-
-🔗 **Relacje:**
-- 1–N z `order_details`
-- 1–N z `product_translations`
-
----
-
-### 🌐 languages
-Obsługa wielu języków.
-- `id` (PK)
-- `code` (UNIQUE) – np. `pl`, `en`, `de`
-- `name`
-
----
-
-### 🈹 product_translations
-Tłumaczenia produktów.
-- PK: `(product_id, language_id)` (klucz złożony)
-- `product_id` (FK → `products.id`)
-- `language_id` (FK → `languages.id`)
-- `name`, `description` (tłumaczenia)
-
----
-
-### 📑 orders
-Zamówienia składane przez klientów.
-- `id` (PK)
-- `client_id` (FK → `clients.id`)
-- `client_address_id` (FK → `client_addresses.id`)
-- `account_id` (FK → `employees.account_id`)
-- `status` (`pending`, `shipped`, `delivered`)
-- `payment_status` (`unpaid`, `paid`)
-- `payment_date`
-- `created_at`
-
----
-
-### 🧾 order_details
-Szczegóły zamówień (produkty i ilości).
-- `id` (PK)
-- `order_id` (FK → `orders.id`)
-- `product_id` (FK → `products.id`)
-- `quantity`
-
----
-
-## ⚙️ Uwagi techniczne
-
-- Wszystkie tabele mają:
-  - Klucze główne (`PRIMARY KEY`)
-  - Ograniczenia `UNIQUE`, `NOT NULL`, wartości domyślne
-- Silnik **InnoDB**:
-  - Obsługa transakcji
-  - Wymuszanie integralności referencyjnej (`FOREIGN KEY`)
-- Kodowanie **UTF-8**:
-  - Obsługa wielojęzyczności
-- Strategia usuwania:
-  - `ON DELETE SET NULL` – np. usunięcie pracownika nie usuwa zamówień
-
----
-
-## 🔄 Przykładowe rozszerzenia w przyszłości
-- `invoices` – faktury
-- `logs` – logi systemowe i audytowe
-- `permissions` – szczegółowe uprawnienia użytkowników
-
-
-
-# ✅ ERP: System Zarządzania Dla Dystrybucji Papieru – Lista TODO
-
-## 📦 1. Moduł Sprzedaży
-- [x] Wybór klienta i adresu dostawy
-- [x] Dodawanie produktów do zamówienia
-- [x] Podgląd koszyka i potwierdzanie zamówienia
-- [ ] Historia zamówień klienta
-- [ ] Rabaty i kupony rabatowe
-- [ ] Konfiguracja warunków płatności
-- [ ] Przypisanie handlowca do zamówienia
-- [ ] Powiadomienia e-mail dla zamówień oczekujących
+Soft wrap
+Editing README.md file contents
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
 - [ ] Widok zaległych płatności (z integracją z księgowością)
 
 ---
@@ -294,3 +159,10 @@ Szczegóły zamówień (produkty i ilości).
 - [ ] Tryb demonstracyjny (dla testów/nowych pracowników)
 - [ ] Swagger UI – dokumentacja API aktualna i kompletna
 
+
+
+---
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+No file chosen
+Attach files by dragging & dropping, selecting or pasting them.
+Editing Paper_Company/README.md at main · KarolDawidG/Paper_Company
