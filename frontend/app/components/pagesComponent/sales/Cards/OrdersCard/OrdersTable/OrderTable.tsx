@@ -17,13 +17,17 @@ const OrderTable: React.FC = () => {
   const [selectedOrderAddress, setSelectedOrderAddress] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
   const [selectedClientId, setClientId] = useState<string | null>(null);
-  
+  const [sortColumn, setSortColumn] = useState<'company_name' | 'created_at'>('created_at');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const isTranslationLoaded = useTranslationStatus(currentLocale);
+ 
+
 
   const fetchData = useCallback(async () => {
-    const idUser = localStorage.getItem('idUser'); //id zalogowanego uzytkownika
+    const idUser = localStorage.getItem('idUser');
     try {
       const response = await axiosInstance.get('/sales', { params: { idUser } });
       // console.log(response.data.ordersList);
@@ -33,6 +37,24 @@ const OrderTable: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   }, []); 
+
+  const getSortedData = () => {
+    return [...filteredData].sort((a, b) => {
+      const valA = sortColumn === 'created_at'
+        ? new Date(a.created_at).getTime()
+        : a.company_name.toLowerCase();
+
+      const valB = sortColumn === 'created_at'
+        ? new Date(b.created_at).getTime()
+        : b.company_name.toLowerCase();
+
+      if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  };
+
+
 
   useEffect(() => {
     fetchData();
@@ -54,7 +76,6 @@ const OrderTable: React.FC = () => {
   };
   
   const handleOpenDetails = (order: Order) => {
-    //console.log("Selected order:", order);
     setSelectedOrderAddress(order.client_address_id);
     setSelectedOrder(order.id);
     setClientId(order.client_id);
@@ -71,15 +92,21 @@ const OrderTable: React.FC = () => {
 
   return (
     <Box>
+
+
       <OrderTableContent
         data={data}
         page={page}
         rowsPerPage={rowsPerPage}
-        filteredData={filteredData}
-        handleDeleteOrder={handleDeleteOrder}
-        handleOpenDetails={handleOpenDetails}
+        filteredData={getSortedData()}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        handleDeleteOrder={handleDeleteOrder}
+        handleOpenDetails={handleOpenDetails}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+        setSortColumn={setSortColumn}
+        setSortDirection={setSortDirection}
       />
 
       <TablePagination

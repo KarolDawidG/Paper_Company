@@ -6,6 +6,7 @@ import { MainButton } from '@/app/components/layout/Buttons';
 import useTranslation from "@/app/components/language/useTranslation";
 import { notify } from '@/app/components/notification/Notify';
 
+
 interface Product {
     product_name: string;
     quantity: number;

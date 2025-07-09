@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.11",
     "@uploadthing/react": "^6.3.2",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.13",
     "jose": "^5.2.2",
     "next": "14.1.0",
     "react": "^18",

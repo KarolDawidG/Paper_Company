@@ -14,6 +14,10 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
   handleOpenDetails,
   searchTerm,
   setSearchTerm,
+  setSortDirection,
+  sortDirection,
+  setSortColumn,
+  sortColumn,
 }) => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
@@ -22,6 +26,8 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
     return <LinearProgress />;
   }
   
+
+
   return (
     <Box padding={1}>
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -31,9 +37,35 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
           <TableHead>
             <TableRow>
               <TableCell>{t.table.no}</TableCell>
-              <TableCell>{t.table.company_name}</TableCell>
+
+              <TableCell
+                onClick={() => {
+                  setSortColumn('company_name');
+                  setSortDirection(prev => (sortColumn === 'company_name' && prev === 'asc') ? 'desc' : 'asc');
+                }}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                {t.table.company_name}{' '}
+                {sortColumn === 'company_name'
+                  ? (sortDirection === 'asc' ? '🔼' : '🔽')
+                  : '⬍'}
+              </TableCell>
+
               <TableCell>{t.table.order_id}</TableCell>
-              <TableCell>{t.table.order_date}</TableCell>
+
+              <TableCell
+                onClick={() => {
+                  setSortColumn('created_at');
+                  setSortDirection(prev => (sortColumn === 'created_at' && prev === 'asc') ? 'desc' : 'asc');
+                }}
+                sx={{ cursor: 'pointer', userSelect: 'none' }}
+              >
+                {t.table.order_date}{' '}
+                {sortColumn === 'created_at'
+                  ? (sortDirection === 'asc' ? '🔼' : '🔽')
+                  : '⬍'}
+              </TableCell>
+
               <TableCell>{t.table.delete}</TableCell>
               <TableCell>{t.table.details}</TableCell>
             </TableRow>
