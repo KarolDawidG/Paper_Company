@@ -82,79 +82,215 @@ UWAGA: Ponizsze przykladowe dane, to tylko przyklady, jak mniej wiecej realne zm
 
 
 ### Schemat bazy danych
-## Tabele główne:
-## accounts
-- id (varchar(36), PK)
-- username (varchar(50), UNIQUE)
-- password (varchar(255))
-- email (varchar(100), UNIQUE)
-- role (varchar(20), DEFAULT 'user')
-- img_url (varchar(100), DEFAULT 'https://utfs.io/f/0576a965-e83c-47aa-b5b1-31aeac3c55c0-kmjf4x.jpg')
-- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
-- is_active (BOOLEAN, DEFAULT false)
-- refresh_token (TEXT)
+# 🗄️ Struktura Bazy Danych ERP – Dystrybucja Papieru
 
-## clients
-- id (varchar(36), PK)
-- first_name (varchar(50))
-- second_name (varchar(255))
-- email (varchar(100), UNIQUE)
-- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+System korzysta z relacyjnej bazy danych **MySQL**, silnik **InnoDB**, kodowanie **UTF-8**.
 
-## client_addresses
-- id (varchar(36), PK)
-- client_id (varchar(36), FK, references clients(id))
-- miasto (varchar(100))
-- ulica (varchar(100))
-- nr_budynku (varchar(20))
-- nr_mieszkania (varchar(20), nullable)
-- kod (varchar(20))
-- nazwa_firmy (varchar(100), nullable)
-- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+---
 
-## orders
-- id (varchar(36), PK)
-- client_id (varchar(36), FK, references clients(id))
-- client_address_id (varchar(36), FK, references client_addresses(id))
-- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+## 📘 Tabele i Relacje
 
-## order_details
-- id (varchar(36), PK)
-- order_id (varchar(36), FK, references orders(id))
-- product_id (varchar(36), FK, references products(id))
-- quantity (int)
+### 🔐 accounts
+Przechowuje dane kont użytkowników systemu.
+- `id` (PK, `varchar(36)`)
+- `username` (UNIQUE)
+- `email` (UNIQUE)
+- `password`
+- `role` – np. `admin`, `sales`, `warehouse`
+- `img_url`
+- `created_at`
+- `is_active` – `BOOLEAN`
+- `refresh_token`
 
-## products
-- id (varchar(36), PK)
-- name (varchar(255))
-- category (varchar(50))
-- description (text, nullable)
-- price (decimal(10,2))
-- stock (int, DEFAULT 0)
-- created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+🔗 **Relacje:**
+- 1–1 z `employees` (przez `account_id`)
 
-## languages
-- id (varchar(36), PK)
-- code (varchar(10), UNIQUE)
-- name (varchar(50))
+---
 
-## product_translations
-- product_id (varchar(36), PK, FK, references products(id))
-- language_id (varchar(36), PK, FK, references languages(id))
-- name (varchar(255))
-- description (text, nullable)
+### 👨‍💼 employees
+Zawiera dane pracowników.
+- `id` (PK, `varchar(36)`)
+- `first_name`, `last_name`
+- `email`
+- `phone_number`
+- `department`
+- `position`
+- `hire_date`
+- `account_id` (FK → `accounts.id`)
 
-## Relacje między tabelami:
-- clients ma relację jeden-do-wielu z client_addresses (każdy klient może mieć wiele adresów).
-- clients ma relację jeden-do-wielu z orders (każdy klient może mieć wiele zamówień).
-- orders ma relację jeden-do-wielu z order_details (każde zamówienie może mieć wiele szczegółów zamówienia).
-- products ma relację jeden-do-wielu z product_translations (każdy produkt może mieć wiele tłumaczeń).
-- languages ma relację jeden-do-wielu z product_translations (każdy język może być przypisany do wielu tłumaczeń produktów).
+🔗 **Relacje:**
+- Powiązany z `orders.account_id` jako osoba realizująca zamówienie
 
-## Kluczowe relacje:
-- clients (id) ↔ client_addresses (client_id)
-- clients (id) ↔ orders (client_id)
-- client_addresses (id) ↔ orders (client_address_id)
-- orders (id) ↔ order_details (order_id)
-- products (id) ↔ product_translations (product_id)
-- languages (id) ↔ product_translations (language_id)
+---
+
+### 🧑‍💼 clients
+Dane klientów.
+- `id` (PK, `varchar(36)`)
+- `first_name`, `second_name`
+- `email`
+- `company_name`
+- `created_at`
+
+🔗 **Relacje:**
+- 1–N z `client_addresses`
+- 1–N z `orders`
+
+---
+
+### 🏠 client_addresses
+Adresy dostawy klienta.
+- `id` (PK)
+- `client_id` (FK → `clients.id`)
+- `miasto`, `ulica`, `nr_budynku`, `nr_mieszkania`, `kod`
+- `nazwa_firmy`
+- `created_at`
+
+---
+
+### 📦 products
+Produkty oferowane przez firmę.
+- `id` (PK)
+- `name`, `category`, `description`
+- `price`, `stock`
+- `created_at`
+
+🔗 **Relacje:**
+- 1–N z `order_details`
+- 1–N z `product_translations`
+
+---
+
+### 🌐 languages
+Obsługa wielu języków.
+- `id` (PK)
+- `code` (UNIQUE) – np. `pl`, `en`, `de`
+- `name`
+
+---
+
+### 🈹 product_translations
+Tłumaczenia produktów.
+- PK: `(product_id, language_id)` (klucz złożony)
+- `product_id` (FK → `products.id`)
+- `language_id` (FK → `languages.id`)
+- `name`, `description` (tłumaczenia)
+
+---
+
+### 📑 orders
+Zamówienia składane przez klientów.
+- `id` (PK)
+- `client_id` (FK → `clients.id`)
+- `client_address_id` (FK → `client_addresses.id`)
+- `account_id` (FK → `employees.account_id`)
+- `status` (`pending`, `shipped`, `delivered`)
+- `payment_status` (`unpaid`, `paid`)
+- `payment_date`
+- `created_at`
+
+---
+
+### 🧾 order_details
+Szczegóły zamówień (produkty i ilości).
+- `id` (PK)
+- `order_id` (FK → `orders.id`)
+- `product_id` (FK → `products.id`)
+- `quantity`
+
+---
+
+## ⚙️ Uwagi techniczne
+
+- Wszystkie tabele mają:
+  - Klucze główne (`PRIMARY KEY`)
+  - Ograniczenia `UNIQUE`, `NOT NULL`, wartości domyślne
+- Silnik **InnoDB**:
+  - Obsługa transakcji
+  - Wymuszanie integralności referencyjnej (`FOREIGN KEY`)
+- Kodowanie **UTF-8**:
+  - Obsługa wielojęzyczności
+- Strategia usuwania:
+  - `ON DELETE SET NULL` – np. usunięcie pracownika nie usuwa zamówień
+
+---
+
+## 🔄 Przykładowe rozszerzenia w przyszłości
+- `invoices` – faktury
+- `logs` – logi systemowe i audytowe
+- `permissions` – szczegółowe uprawnienia użytkowników
+
+
+
+# ✅ ERP: System Zarządzania Dla Dystrybucji Papieru – Lista TODO
+
+## 📦 1. Moduł Sprzedaży
+- [x] Wybór klienta i adresu dostawy
+- [x] Dodawanie produktów do zamówienia
+- [x] Podgląd koszyka i potwierdzanie zamówienia
+- [ ] Historia zamówień klienta
+- [ ] Rabaty i kupony rabatowe
+- [ ] Konfiguracja warunków płatności
+- [ ] Przypisanie handlowca do zamówienia
+- [ ] Powiadomienia e-mail dla zamówień oczekujących
+- [ ] Widok zaległych płatności (z integracją z księgowością)
+
+---
+
+## 🏷 2. Magazyn
+- [x] Lista produktów z paginacją i wyszukiwarką
+- [ ] Obsługa dokumentów PZ/WZ
+- [ ] Alerty przy niskich stanach magazynowych
+- [ ] Historia zmian stanów magazynowych
+- [ ] Lokalizacja produktów w magazynie (regał, strefa)
+- [ ] Import/eksport produktów (CSV/Excel)
+- [ ] Kody kreskowe dla produktów (opcjonalnie)
+
+---
+
+## 👥 3. Zasoby Ludzkie (HR)
+- [x] Lista wszystkich pracowników
+- [x] Wysyłanie wiadomości do pracowników
+- [x] Skrzynka odbiorcza (IMAP)
+- [ ] Profil pracownika z historią zatrudnienia i certyfikatami
+- [ ] Rejestr urlopów i nieobecności
+- [ ] Grafik zmian
+- [ ] Powiadomienia o kończących się umowach
+- [ ] Wewnętrzne zgłoszenia pracownicze (wnioski, awarie)
+
+---
+
+## 🛡 4. Ochrona i Administracja
+- [x] Lista użytkowników i aktualizacja ról
+- [ ] Historia logowań i aktywności
+- [ ] System blokowania kont (ręczny lub automatyczny)
+- [ ] Zgłoszenia naruszeń (alerty bezpieczeństwa)
+- [ ] Log audytu zmian (kto co zmienił)
+
+---
+
+## 💰 5. Księgowość
+- [ ] Generowanie faktur PDF
+- [ ] Historia płatności i zaległości
+- [ ] Eksport danych do systemów księgowych (np. Symfonia)
+- [ ] Raporty sprzedaży wg klientów/miesięcy
+- [ ] Obsługa VAT i zwolnień podatkowych
+- [ ] Ręczne księgowanie kosztów i przychodów
+
+---
+
+## 📈 6. Analiza
+- [ ] Dashboard z KPI (przychody, zamówienia, klienci, top produkty)
+- [ ] Wykresy sprzedaży wg działu, czasu, klienta
+- [ ] Analiza błędów i skuteczności pracowników
+- [ ] Eksport danych do CSV/PDF
+- [ ] Integracja z narzędziami BI (np. Google Analytics, BigQuery)
+
+---
+
+## 🌐 Dodatki globalne
+- [ ] Powiadomienia Web Push lub e-mail
+- [ ] Wsparcie dla wielu języków (Next.js i18n)
+- [ ] Backup bazy danych i logów systemowych
+- [ ] Tryb demonstracyjny (dla testów/nowych pracowników)
+- [ ] Swagger UI – dokumentacja API aktualna i kompletna
+
