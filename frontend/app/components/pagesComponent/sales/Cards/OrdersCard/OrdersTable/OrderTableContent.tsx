@@ -1,47 +1,32 @@
 import React from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Box,
-  LinearProgress
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, Button, Box, LinearProgress, TableSortLabel
 } from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useTranslation from "@/app/components/language/useTranslation";
 import { OrderTableContentProps } from './Interfaces/OrderTableContentProps';
+import useSorting from '@/app/components/utils/tableUtils/SortingControl';
 
 const OrderTableContent: React.FC<OrderTableContentProps> = ({
-  data,
+  filteredData,
   page,
   rowsPerPage,
-  filteredData,
   handleDeleteOrder,
   handleOpenDetails,
   searchTerm,
-  setSearchTerm,
-  sortDirection,
-  sortColumn,
-  toggleSort,
+  setSearchTerm
 }) => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
 
+  const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('company_name');
+  const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+
   if (!t.table) {
     return <LinearProgress />;
   }
-
-  const getSortIcon = (column: string) => {
-    if (sortColumn === column) {
-      return sortDirection === 'asc' ? ' 🔼' : ' 🔽';
-    }
-    return ' ⬍';
-  };
 
   return (
     <Box padding={1}>
@@ -53,16 +38,36 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
             <TableRow>
               <TableCell>{t.table.no}</TableCell>
 
-              <TableCell onClick={() => toggleSort('company_name')} sx={{ cursor: 'pointer' }}>
-                {t.table.company_name}
-                {getSortIcon('company_name')}
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'company_name'}
+                  direction={orderBy === 'company_name' ? order : 'asc'}
+                  onClick={(event) => handleRequestSort(event, 'company_name')}
+                >
+                  {t.table.company_name}
+                </TableSortLabel>
               </TableCell>
 
-              <TableCell>{t.table.order_id}</TableCell>
 
-              <TableCell onClick={() => toggleSort('created_at')} sx={{ cursor: 'pointer' }}>
-                {t.table.order_date}
-                {getSortIcon('created_at')}
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'id'}
+                  direction={orderBy === 'id' ? order : 'asc'}
+                  onClick={(event) => handleRequestSort(event, 'id')}
+                >
+                  {t.table.order_id}
+                </TableSortLabel>
+              </TableCell>
+
+
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'created_at'}
+                  direction={orderBy === 'created_at' ? order : 'asc'}
+                  onClick={(event) => handleRequestSort(event, 'created_at')}
+                >
+                  {t.table.order_date}
+                </TableSortLabel>
               </TableCell>
 
               <TableCell>{t.table.delete}</TableCell>
@@ -72,8 +77,8 @@ const OrderTableContent: React.FC<OrderTableContentProps> = ({
 
           <TableBody>
             {(rowsPerPage > 0
-              ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : filteredData
+              ? sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : sortedData
             ).map((order, index) => (
               <TableRow key={order.id}>
                 <TableCell>{page * rowsPerPage + index + 1}</TableCell>

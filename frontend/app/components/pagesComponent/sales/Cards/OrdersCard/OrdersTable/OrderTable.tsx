@@ -4,12 +4,11 @@ import OrderTableContent from './OrderTableContent';
 import { LinearProgress, Box, TablePagination } from '@mui/material';
 import axiosInstance from '@/app/api/axiosInstance';
 import usePaginationLogic from '@/app/components/utils/tableUtils/PaginationControl';
-import useSearchLogic from '../../../../../utils/tableUtils/SearchControl';
+import useSearchLogic from "../../../../../utils/tableUtils/SearchControl";
 import { notify } from '@/app/components/notification/Notify';
-import useTranslation from '@/app/components/language/useTranslation';
+import useTranslation from "@/app/components/language/useTranslation";
 import useTranslationStatus from '@/app/components/language/useTranslationStatus';
 import { Order } from './Interfaces/InterfaceOrder';
-import { useTableSort } from '@/app/components/utils/tableUtils/TableSort';
 
 const OrderTable: React.FC = () => {
   const [data, setData] = useState<Order[]>([]);
@@ -18,23 +17,22 @@ const OrderTable: React.FC = () => {
   const [selectedOrderAddress, setSelectedOrderAddress] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
   const [selectedClientId, setClientId] = useState<string | null>(null);
-
-  const { sortColumn, sortDirection, toggleSort, sortData } = useTableSort<Order>();
-  const sortedData = sortData(filteredData);
-
+  
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const isTranslationLoaded = useTranslationStatus(currentLocale);
 
   const fetchData = useCallback(async () => {
-    const idUser = localStorage.getItem('idUser');
+    const idUser = localStorage.getItem('idUser'); //id zalogowanego uzytkownika
     try {
       const response = await axiosInstance.get('/sales', { params: { idUser } });
+      // console.log(response.data.ordersList);
+      // only orders.status = 'pending'
       setData(response.data.ordersList);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }, []);
+  }, []); 
 
   useEffect(() => {
     fetchData();
@@ -43,7 +41,7 @@ const OrderTable: React.FC = () => {
   const handleDeleteOrder = async (id: string) => {
     try {
       await axiosInstance.delete(`/sales/${id}`);
-      fetchData();
+      fetchData(); 
       if (isTranslationLoaded) {
         notify(`${t.notification.order_delete}`);
       }
@@ -54,8 +52,9 @@ const OrderTable: React.FC = () => {
       }
     }
   };
-
+  
   const handleOpenDetails = (order: Order) => {
+    //console.log("Selected order:", order);
     setSelectedOrderAddress(order.client_address_id);
     setSelectedOrder(order.id);
     setClientId(order.client_id);
@@ -76,14 +75,11 @@ const OrderTable: React.FC = () => {
         data={data}
         page={page}
         rowsPerPage={rowsPerPage}
-        filteredData={sortedData}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+        filteredData={filteredData}
         handleDeleteOrder={handleDeleteOrder}
         handleOpenDetails={handleOpenDetails}
-        sortColumn={sortColumn}
-        sortDirection={sortDirection}
-        toggleSort={toggleSort}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
       />
 
       <TablePagination
@@ -97,7 +93,7 @@ const OrderTable: React.FC = () => {
         labelRowsPerPage={`${t.table.rows_per_page}`}
       />
 
-      {selectedOrderAddress && selectedOrder && selectedClientId && (
+      {(selectedOrderAddress && selectedOrder && selectedClientId) && (
         <OrderDetailsModal
           open={true}
           onClose={handleCloseDetails}

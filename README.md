@@ -61,7 +61,7 @@ npm run dev
 
 **Przykład pliku `.env` (backend):**
 ```
-PASS=sbxuijfitkpldrhdjl
+PASS=asdasdafkfokfodjl
 USER=twoj.email@gmail.com
 HOST_DB=localhost
 NAME_DB=erp
