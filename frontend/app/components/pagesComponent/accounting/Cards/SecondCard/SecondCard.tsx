@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import useTranslation from "@/app/components/language/useTranslation";
 import SalesCardLogic from "../../../sales/Cards/SalesCard/SalesCardLogic";
-import { ExportInvoicePdf } from "./PdfCard";
+import PdfTable from "./PdfTable";
 
 
 export const SecondCard = () => {
@@ -21,7 +21,7 @@ export const SecondCard = () => {
       <CardHeader title={t.accounting.title} />
       <CardContent>
         <Typography variant="body2"  sx={{ pl: 1, fontSize: '1.5rem'}}>
-          {'Second Card'}
+          {'Generator faktur'}
         </Typography>
       </CardContent>
 
@@ -29,7 +29,7 @@ export const SecondCard = () => {
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <ListItem>
             <ListItemText
-              primary={'Cos tam cos tam'}
+              primary={'Wygeneruj i wyspil fakture PDF do klienta'}
             />
           </ListItem>
         </List>
@@ -46,7 +46,7 @@ export const SecondCard = () => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <ExportInvoicePdf/>
+          <PdfTable/>
         </CardContent>
       </Collapse>
     </Card>

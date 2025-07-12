@@ -1,80 +1,84 @@
-import React, { useState } from "react";
-import {Page, Text, View, Document} from "@react-pdf/renderer";
-import { styles } from "./stylesPdf";
-import { InvoiceItem } from "./InvoiceItem";
+// GeneratorPDF.tsx
+import React from "react";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
+interface Product {
+  product_name: string;
+  quantity: number;
+  price: number;
+}
 
-export const sampleData: InvoiceItem[] = [
-  { productName: "Papier ksero A4", quantity: 10, unitPrice: 12.5 },
-  { productName: "Segregator biurowy", quantity: 5, unitPrice: 7.99 },
-  { productName: "Teczka kartonowa", quantity: 20, unitPrice: 1.45 },
-];
+interface Address {
+  nazwa_firmy: string;
+  miasto: string;
+  kod: string;
+  ulica: string;
+  nr_budynku: string;
+  nr_mieszkania: string;
+}
 
-// Komponent PDF
-export const GeneratorPDF = ({ items }: { items: InvoiceItem[] }) => {
-  const totalAmount = items.reduce(
-    (sum, item) => sum + item.quantity * item.unitPrice,
-    0
-  );
+interface GeneratorPDFProps {
+  items?: any[]; // <-- teraz opcjonalne
+  address?: Address | null;
+  total?: any;
+}
 
+const styles = StyleSheet.create({
+  page: { padding: 40, fontSize: 12 },
+  heading: { fontSize: 16, marginBottom: 20, textAlign: "center" },
+  section: { marginBottom: 10 },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 4,
+    borderBottom: "1px solid #ccc",
+  },
+  bold: { fontWeight: "bold" },
+  total: { marginTop: 20, fontSize: 14, textAlign: "right", fontWeight: "bold" },
+});
+
+export const GeneratorPDF: React.FC<GeneratorPDFProps> = ({
+                                                            items = [],
+                                                            address = null,
+                                                            total = 0
+                                                          }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.heading}>Faktura VAT</Text>
-        <View style={styles.itemRow}>
-          <Text style={styles.bold}>Produkt</Text>
-          <Text style={styles.bold}>Ilość x Cena</Text>
-        </View>
-        {items.map((item, idx) => (
-          <View key={idx} style={styles.itemRow}>
-            <Text>{item.productName}</Text>
+        {/* <Text style={styles.heading}>Szczegóły zamówienia</Text> */}
+
+        {/* {address && (
+          <View style={styles.section}>
+            <Text style={styles.bold}>Dane firmy:</Text>
+            <Text>{address.nazwa_firmy}</Text>
             <Text>
-              {item.quantity} x {item.unitPrice.toFixed(2)} zł
+              {address.ulica} {address.nr_budynku}/{address.nr_mieszkania}
+            </Text>
+            <Text>CIPA
+              ddddddddddddddddddddddddddddd
             </Text>
           </View>
-        ))}
-        <Text style={styles.total}>Razem: {totalAmount.toFixed(2)} zł</Text>
+        )} */}
+
+        {/* <View style={styles.section}>
+          <Text style={styles.bold}>Produkty:</Text>
+          {items.length > 0 ? (
+            items.map((item, idx) => (
+              <View key={idx} style={styles.row}>
+                <Text>{item.product_name}</Text>
+                <Text>
+                  {item.quantity} x {item.price.toFixed(2)} PLN
+                </Text>
+              </View>
+            ))
+          ) : (
+            <Text>Brak produktów</Text>
+          )}
+        </View> */}
+
+
+        {/* <Text style={styles.total}>Razem: {total.toFixed(2)} PLN</Text> */}
       </Page>
     </Document>
   );
 };
-
-// Komponent React z Tailwindem
-// export const ExportInvoicePdf: React.FC = () => {
-//   const [fileName, setFileName] = useState("faktura.pdf");
-
-//   return (
-//     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-//       <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
-//         <h2 className="text-xl font-semibold mb-4 text-center">Generator faktury PDF</h2>
-
-//         <label className="block text-sm font-medium text-gray-700 mb-1">
-//           Nazwa pliku:
-//         </label>
-//         <input
-//           type="text"
-//           value={fileName}
-//           onChange={(e) => setFileName(e.target.value)}
-//           className="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         />
-
-//         <PDFDownloadLink
-//           document={<InvoiceDocument items={sampleData} />}
-//           fileName={fileName}
-//         >
-//           {({ loading }) =>
-//             loading ? (
-//               <button className="w-full bg-blue-300 text-white py-2 rounded">
-//                 Generowanie PDF...
-//               </button>
-//             ) : (
-//               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
-//                 Pobierz fakturę PDF
-//               </button>
-//             )
-//           }
-//         </PDFDownloadLink>
-//       </div>
-//     </div>
-//   );
-// };
