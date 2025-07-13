@@ -167,7 +167,53 @@ static async updatePaymentStatus(orderId: string, newStatus: 'unpaid' | 'paid' |
   }
 }
 
-  
+static async getOrderDetails(orderId: string): Promise<any> {
+  const query = `
+    SELECT 
+      o.id AS order_id,
+      o.created_at,
+      o.status,
+      o.payment_status,
+      o.payment_date,
+      o.account_id,
+      
+      c.id AS client_id,
+      c.company_name,
+      c.first_name,
+      c.second_name,
+      c.email,
+
+      ca.ulica,
+      ca.miasto,
+      ca.kod,
+      ca.nr_budynku,
+      ca.nr_mieszkania,
+      ca.nazwa_firmy,
+
+      od.product_id,
+      p.name AS product_name,
+      pt.name AS translated_name,
+      p.price,
+      od.quantity
+
+    FROM orders o
+    JOIN clients c ON o.client_id = c.id
+    JOIN client_addresses ca ON o.client_address_id = ca.id
+    JOIN order_details od ON o.id = od.order_id
+    JOIN products p ON od.product_id = p.id
+    LEFT JOIN product_translations pt ON pt.product_id = p.id AND pt.language_id = 'pl'
+    WHERE o.id = ?;
+  `;
+
+  try {
+    const [results] = await pool.execute(query, [orderId]);
+    return results;
+  } catch (error) {
+    console.error("Error in getOrderDetails:", error);
+    throw new Error("Could not fetch order details.");
+  }
+}
+
 
 }
 

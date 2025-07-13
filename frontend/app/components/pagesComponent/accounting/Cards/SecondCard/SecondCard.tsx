@@ -18,7 +18,6 @@ export const SecondCard = () => {
 
   return (
     <Card sx={{ maxWidth: '100%' }}>
-      <CardHeader title={t.accounting.title} />
       <CardContent>
         <Typography variant="body2"  sx={{ pl: 1, fontSize: '1.5rem'}}>
           {'Generator faktur'}

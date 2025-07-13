@@ -1,4 +1,3 @@
-// PdfTable.tsx
 import React, { useCallback, useEffect, useState } from 'react';
 import { LinearProgress, Box, TablePagination } from '@mui/material';
 import axiosInstance from '@/app/api/axiosInstance';

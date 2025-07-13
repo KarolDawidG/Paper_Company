@@ -4,9 +4,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import useTranslation from "@/app/components/language/useTranslation";
 import SalesCardLogic from "../../../sales/Cards/SalesCard/SalesCardLogic";
-import InvoicesPage from "./InvoicesPage";
+import PaymentsHistoryPage from "./PaymentsHistoryPage";
 
-export const FirstCard = () => {
+
+export const ThirdCard = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const { handleExpandClick, expanded, formState: { errors } } = SalesCardLogic();
@@ -19,7 +20,7 @@ export const FirstCard = () => {
     <Card sx={{ maxWidth: '100%' }}>
       <CardContent>
         <Typography variant="body2"  sx={{ pl: 1, fontSize: '1.5rem'}}>
-          {'Lista faktur'}
+          {'Historia faktur'}
         </Typography>
       </CardContent>
 
@@ -44,7 +45,7 @@ export const FirstCard = () => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <InvoicesPage/>
+          <PaymentsHistoryPage/>
         </CardContent>
       </Collapse>
     </Card>

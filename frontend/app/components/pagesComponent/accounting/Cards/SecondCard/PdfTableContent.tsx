@@ -9,7 +9,6 @@ const PdfTableContent: React.FC<any> = ({
   filteredData,
   page,
   rowsPerPage,
-  handleDeleteOrder,
   handleShowDetails,
   searchTerm,
   setSearchTerm
@@ -63,10 +62,8 @@ const PdfTableContent: React.FC<any> = ({
                   {t.table.order_date}
                 </TableSortLabel>
               </TableCell>
-              
 
               <TableCell>{t.table.payment}</TableCell>
-              {/* <TableCell>{t.table.delete}</TableCell> */}
               <TableCell>{t.table.details}</TableCell>
             </TableRow>
           </TableHead>
@@ -82,13 +79,6 @@ const PdfTableContent: React.FC<any> = ({
                 <TableCell>{order.id}</TableCell>
                 <TableCell>{formatDate(order.created_at)}</TableCell>
                 <TableCell>{order.payment_status}</TableCell>
-
-                {/* <TableCell>
-                  <Button onClick={() => handleDeleteOrder(order.id)}>
-                    {t.table.delete}
-                  </Button>
-                </TableCell> */}
-
                 <TableCell>
                   <Button onClick={() => handleShowDetails(order)}>
                     {t.table.show}

@@ -5,7 +5,7 @@ import { MainButton } from '@/app/components/layout/Buttons';
 import useTranslation from "@/app/components/language/useTranslation";
 import { notify } from '@/app/components/notification/Notify';
 import { modalStyle } from '../../../sales/Cards/SalesCard/ClientData/Modals/ModalStyles/modalStyle';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import {  PDFViewer } from '@react-pdf/renderer';
 import { GeneratorPDF } from './GeneratorPDF';
 import { Product } from './Interface/ProductInterface';
 import { pdf } from '@react-pdf/renderer';
