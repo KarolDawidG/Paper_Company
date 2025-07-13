@@ -127,7 +127,8 @@
       "confirm": "Potwierdź",
       "cancel": "Anuluj",
       "close": "Zamknij",
-      "from": "Od"
+      "from": "Od",
+      "payment": "Status opłaty"
     },
     "products_card": {
       "title": "Produkty",
@@ -203,7 +204,24 @@
       "table_of_addresses": "Tabela adresow",
       "confirm_message": "Chcesz stworzyc zamowienie dla wybranych danych?",
       "confirm_delete_address": "Czy na pewno chcesz usunąć ten adres? Tej operacji nie można cofnąć."
+    },
+    "pdf": {
+      "title": "Faktura / Szczegóły zamówienia",
+      "order_number": "Numer zamówienia",
+      "client_id": "ID klienta",
+      "issue_date": "Data wystawienia",
+      "company_data": "Dane firmy",
+      "product_list": "Lista produktów",
+      "no_products": "Brak produktów",
+      "item_count": "Liczba pozycji",
+      "total_quantity": "Łączna liczba sztuk",
+      "net": "Wartość netto",
+      "vat": "Podatek VAT (23%)",
+      "gross": "Do zapłaty (brutto)",
+      "signature": "Podpis osoby wystawiającej dokument",
+      "page": "Strona"
     }
+
   
   }
   

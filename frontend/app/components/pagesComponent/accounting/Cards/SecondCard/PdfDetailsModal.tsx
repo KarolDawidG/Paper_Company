@@ -8,19 +8,68 @@ import { modalStyle } from '../../../sales/Cards/SalesCard/ClientData/Modals/Mod
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { GeneratorPDF } from './GeneratorPDF';
 import { Product } from './Interface/ProductInterface';
+import { pdf } from '@react-pdf/renderer';
 
-
-const PdfDetailsModal: React.FC<{open: boolean; onClose: () => void; orderId: string; orderAdressId: string; clientId: string; }> = ({ open, onClose, orderId, orderAdressId, clientId }) => {
+const PdfDetailsModal: React.FC<{onSuccess: () => void; open: boolean; onClose: () => void; orderId: string; orderAdressId: string; clientId: string; }> = ({ onSuccess, open, onClose, orderId, orderAdressId, clientId }) => {
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [addressData, setAddressData] = useState<any>();
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
+  const [signedMap, setSignedMap] = useState<Record<string, boolean>>({});
+
+const handleSendToBackend = async () => {
+  try {
+    if (!productsData.length || !addressData) return;
+
+    const doc = (
+      <GeneratorPDF
+        items={productsData}
+        address={addressData[0]}
+        total={totalPrice}
+        clientId={clientId}
+        orderId={orderId}
+        signed={true}
+      />
+    );
+
+    const blob = await pdf(doc).toBlob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = Array.from(new Uint8Array(arrayBuffer));
+
+    await axiosInstance.post("/invoice", {
+      pdf: uint8Array,
+      clientId,
+      clientAddressId: orderAdressId,
+      orderId,
+    });
+      notify("Faktura została wysłana do klienta.");
+      onSuccess();
+      onClose();
+  } catch (err) {
+    console.error("Błąd przy wysyłaniu faktury:", err);
+    notify("Błąd przy wysyłaniu faktury.");
+  }
+};
+
+
+const handleSignAndSend = () => {
+  if (!productsData.length || !addressData) return;
+
+  setSignedMap(prev => ({ ...prev, [orderId]: true }));
+  notify("Faktura została podpisana.");
+};
+
+
 
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(`/client/${orderAdressId}/${orderId}`);
       setAddressData(response.data.orderDetails.clientAddress);
       setProductsData(response.data.orderDetails.products);
+      
+      console.log(response.data.orderDetails.clientAddress);
+      console.log(response.data.orderDetails.products);
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -55,23 +104,21 @@ const PdfDetailsModal: React.FC<{open: boolean; onClose: () => void; orderId: st
           {productsData.length > 0 && addressData && (
             <>
               <PDFViewer style={{ width: '100%', height: '600px', marginTop: '20px' }}>
-                <GeneratorPDF items={productsData} address={addressData[0]} total={totalPrice} />
+                <GeneratorPDF signed={signedMap[orderId]} items={productsData} address={addressData[0]} total={totalPrice} clientId={''} orderId={''} />
               </PDFViewer>
-
-              <Box sx={{ marginTop: 3 }}>
-                <PDFDownloadLink
-                  document={<GeneratorPDF items={productsData} address={addressData[0]} total={totalPrice} />}
-                  fileName={`zamowienie_${orderId}.pdf`}
-                >
-                  {({ loading }) =>
-                    loading ? (
-                      <MainButton>Generowanie PDF..</MainButton>
-                    ) : (
-                      <MainButton>Pobierz PDF</MainButton>
-                    )
-                  }
-                </PDFDownloadLink>
-              </Box>
+                <Box sx={{ marginTop: 3, display: 'flex', justifyContent: 'center' }}>
+                  <MainButton onClick={handleSignAndSend}>
+                    {t.orders_card.sign_and_send || 'Podpisz'}
+                  </MainButton>
+                </Box>
+                  {signedMap[orderId] && (
+                    <MainButton
+                      onClick={handleSendToBackend}
+                      sx={{ ml: 2 }}
+                    >
+                      Wyślij do klienta
+                    </MainButton>
+                  )}
             </>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>

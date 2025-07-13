@@ -118,4 +118,37 @@ const sendEmployeeEmail = async (
   await transporter.sendMail(mailContactOptions);
 };
 
-export { sendResetPasswordEmail, sendRegisterEmail, sendEmployeeEmail };
+
+  const sendInvoiceEmail = async (
+    email: string,
+    orderId: string,
+    pdfBuffer: Buffer
+  ) => {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: process.env.user,
+      to: email,
+      subject: `Faktura za zamówienie ${orderId}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
+          <h2 style="color: #3b5998;">Szanowni Państwo,</h2>
+          <p style="font-size: 16px; color: #333;">W załączniku przesyłamy fakturę dotyczącą zamówienia nr <strong>${orderId}</strong>.</p>
+          <p style="font-size: 16px; color: #333;">Dziękujemy za współpracę.</p>
+          <br>
+          <p style="font-size: 16px; color: #666;">Z poważaniem,</p>
+          <p style="font-size: 18px; color: #3b5998;">Zespół Paper Company</p>
+        </div>
+      `,
+      attachments: [
+        {
+          filename: `faktura_${orderId}.pdf`,
+          content: pdfBuffer,
+        },
+      ],
+    };
+
+    await transporter.sendMail(mailOptions);
+  };
+
+export { sendResetPasswordEmail, sendRegisterEmail, sendEmployeeEmail, sendInvoiceEmail };

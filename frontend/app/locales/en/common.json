@@ -127,7 +127,8 @@
       "confirm": "Confirm",
       "cancel": "Cancel",
       "close": "Close",
-      "from": "From"
+      "from": "From",
+      "payment": "Fee status"
     },
     "products_card": {
       "title": "Products",
@@ -204,7 +205,24 @@
         "table_of_addresses": "Table of addresses",
         "confirm_message": "Do you want to create an order for the selected data?",
         "confirm_delete_address": "Are you sure you want to delete this address? This action cannot be undone."
-      } 
+      },
+      "pdf": {
+        "title": "Invoice / Order Details",
+        "order_number": "Order Number",
+        "client_id": "Client ID",
+        "issue_date": "Issue Date",
+        "company_data": "Company Information",
+        "product_list": "Product List",
+        "no_products": "No products",
+        "item_count": "Item Count",
+        "total_quantity": "Total Quantity",
+        "net": "Net Amount",
+        "vat": "VAT (23%)",
+        "gross": "Total Amount (Gross)",
+        "signature": "Issuer's Signature",
+        "page": "Page"
+      }
+
   }
 
   

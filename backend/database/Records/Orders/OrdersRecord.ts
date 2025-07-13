@@ -145,6 +145,28 @@ class OrdersRecord implements Order {
       throw new Error("Could not fetch orders.");
     }
   }
+
+
+
+static async updatePaymentStatus(orderId: string, newStatus: 'unpaid' | 'paid' | 'waiting'): Promise<void> {
+  const query = `
+    UPDATE orders
+    SET payment_status = ?, 
+        payment_date = CASE 
+          WHEN ? = 'paid' THEN CURRENT_TIMESTAMP
+          ELSE NULL 
+        END
+    WHERE id = ?;
+  `;
+
+  try {
+    await pool.execute(query, [newStatus, newStatus, orderId]);
+  } catch (error) {
+    console.error(`Error updating payment status to ${newStatus} for order ${orderId}:`, error);
+    throw new Error("Could not update payment status.");
+  }
+}
+
   
 
 }

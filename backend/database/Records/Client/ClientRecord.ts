@@ -78,6 +78,14 @@ class ClientRecord implements Client {
 `, id);
     return results;
 }
+
+  static async getEmailById(id: string): Promise<{ email: any } | null> {
+      const [rows] = await pool.execute("SELECT email FROM clients WHERE id = ?", [id]) as any[];
+      const client = rows[0] as { email: string } | undefined;
+    return client || null;
+  }
+
+
 }
 
 

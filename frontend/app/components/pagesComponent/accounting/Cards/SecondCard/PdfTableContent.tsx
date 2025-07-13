@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Box, LinearProgress, TableSortLabel
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, LinearProgress, TableSortLabel} from '@mui/material';
 import { formatDate } from '@/app/components/helpers/formDate';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useTranslation from "@/app/components/language/useTranslation";
@@ -66,9 +63,10 @@ const PdfTableContent: React.FC<any> = ({
                   {t.table.order_date}
                 </TableSortLabel>
               </TableCell>
+              
 
-              <TableCell>{t.table.status}</TableCell>
-              <TableCell>{t.table.delete}</TableCell>
+              <TableCell>{t.table.payment}</TableCell>
+              {/* <TableCell>{t.table.delete}</TableCell> */}
               <TableCell>{t.table.details}</TableCell>
             </TableRow>
           </TableHead>
@@ -83,13 +81,13 @@ const PdfTableContent: React.FC<any> = ({
                 <TableCell>{order.company_name}</TableCell>
                 <TableCell>{order.id}</TableCell>
                 <TableCell>{formatDate(order.created_at)}</TableCell>
-                <TableCell>{order.status}</TableCell>
+                <TableCell>{order.payment_status}</TableCell>
 
-                <TableCell>
+                {/* <TableCell>
                   <Button onClick={() => handleDeleteOrder(order.id)}>
                     {t.table.delete}
                   </Button>
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell>
                   <Button onClick={() => handleShowDetails(order)}>

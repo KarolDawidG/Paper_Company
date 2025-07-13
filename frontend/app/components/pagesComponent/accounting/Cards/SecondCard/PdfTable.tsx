@@ -29,7 +29,8 @@ const PdfTable: React.FC = () => {
     const idUser = localStorage.getItem('idUser');
     try {
       const response = await axiosInstance.get('/sales', { params: { idUser } });
-      const pendingOrders = response.data.ordersList.filter((order: any) => order.status === 'pending');
+
+      const pendingOrders = response.data.ordersList.filter((order: any) => order.payment_status === 'unpaid');
       setData(pendingOrders);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -92,6 +93,7 @@ const PdfTable: React.FC = () => {
           orderId={selectedOrder.orderId}
           orderAdressId={selectedOrder.orderAdressId}
           clientId={selectedOrder.clientId}
+          onSuccess={fetchData} 
         />
       )}
     </Box>

@@ -1,83 +1,96 @@
-// GeneratorPDF.tsx
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View } from "@react-pdf/renderer";
+import { stylesDoc } from "./utils/stylesPdf";
+import { GeneratorPDFProps } from "./Interface/ProductInterface";
 
-interface Product {
-  product_name: string;
-  quantity: number;
-  price: number;
-}
+export const GeneratorPDF: React.FC<GeneratorPDFProps & { signed?: boolean }> = ({
+  items = [],
+  address = null,
+  total = 0,
+  orderId,
+  clientId,
+  signed = false,
+}) => {
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const net = total / 1.23;
+  const vat = total - net;
 
-interface Address {
-  nazwa_firmy: string;
-  miasto: string;
-  kod: string;
-  ulica: string;
-  nr_budynku: string;
-  nr_mieszkania: string;
-}
-
-interface GeneratorPDFProps {
-  items?: any[]; // <-- teraz opcjonalne
-  address?: Address | null;
-  total?: any;
-}
-
-const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 12 },
-  heading: { fontSize: 16, marginBottom: 20, textAlign: "center" },
-  section: { marginBottom: 10 },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 4,
-    borderBottom: "1px solid #ccc",
-  },
-  bold: { fontWeight: "bold" },
-  total: { marginTop: 20, fontSize: 14, textAlign: "right", fontWeight: "bold" },
-});
-
-export const GeneratorPDF: React.FC<GeneratorPDFProps> = ({
-                                                            items = [],
-                                                            address = null,
-                                                            total = 0
-                                                          }) => {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* <Text style={styles.heading}>Szczegóły zamówienia</Text> */}
+      <Page size="A4" style={stylesDoc.page}>
+        {/* Nagłówek */}
+        <View style={stylesDoc.header}>
+          <Text style={stylesDoc.heading}>Faktura / Szczegóły zamówienia</Text>
+        </View>
 
-        {/* {address && (
-          <View style={styles.section}>
-            <Text style={styles.bold}>Dane firmy:</Text>
+        {/* Informacje o zamówieniu */}
+        <View style={stylesDoc.section}>
+          {orderId && <Text>Numer zamówienia: {orderId}</Text>}
+          {clientId && <Text>ID klienta: {clientId}</Text>}
+          <Text>Data wystawienia: {new Date().toLocaleDateString("pl-PL")}</Text>
+        </View>
+
+        {/* Dane adresowe klienta */}
+        {address && (
+          <View style={stylesDoc.section}>
+            <Text style={stylesDoc.bold}>Dane firmy:</Text>
             <Text>{address.nazwa_firmy}</Text>
             <Text>
               {address.ulica} {address.nr_budynku}/{address.nr_mieszkania}
             </Text>
-            <Text>CIPA
-              ddddddddddddddddddddddddddddd
-            </Text>
+            <Text>{address.kod} {address.miasto}</Text>
           </View>
-        )} */}
+        )}
 
-        {/* <View style={styles.section}>
-          <Text style={styles.bold}>Produkty:</Text>
+        {/* Lista produktów */}
+        <View style={stylesDoc.section}>
+          <Text style={stylesDoc.bold}>Lista produktów:</Text>
           {items.length > 0 ? (
             items.map((item, idx) => (
-              <View key={idx} style={styles.row}>
+              <View key={idx} style={stylesDoc.row}>
                 <Text>{item.product_name}</Text>
-                <Text>
-                  {item.quantity} x {item.price.toFixed(2)} PLN
-                </Text>
+                <Text>{item.quantity} × {item.price.toFixed(2)} PLN</Text>
               </View>
             ))
           ) : (
             <Text>Brak produktów</Text>
           )}
-        </View> */}
+        </View>
 
+        {/* Podsumowanie ilościowe */}
+        <View style={stylesDoc.section}>
+          <Text>Liczba pozycji: {items.length}</Text>
+          <Text>Łączna liczba sztuk: {totalQuantity}</Text>
+        </View>
 
-        {/* <Text style={styles.total}>Razem: {total.toFixed(2)} PLN</Text> */}
+        {/* Podsumowanie finansowe */}
+        <View style={stylesDoc.section}>
+          <Text>Wartość netto: {net.toFixed(2)} PLN</Text>
+          <Text>Podatek VAT (23%): {vat.toFixed(2)} PLN</Text>
+          <Text style={stylesDoc.total}>Do zapłaty (brutto): {total.toFixed(2)} PLN</Text>
+        </View>
+
+        {/* Podpis */}
+        <View style={stylesDoc.signature}>
+          <Text>..........................................</Text>
+          <Text>Podpis osoby wystawiającej dokument</Text>
+        </View>
+
+        {/* Informacja o podpisie elektronicznym */}
+        {signed && (
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ fontSize: 12, color: 'green', textAlign: 'right' }}>
+              Podpisano elektronicznie dnia {new Date().toLocaleDateString("pl-PL")}
+            </Text>
+          </View>
+        )}
+
+        {/* Numeracja stron */}
+        <Text
+          style={stylesDoc.pageNumber}
+          render={({ pageNumber, totalPages }) => `Strona ${pageNumber} z ${totalPages}`}
+          fixed
+        />
       </Page>
     </Document>
   );
