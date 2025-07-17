@@ -19,5 +19,5 @@ export interface GeneratorPDFProps {
   total: number;
   orderId?: string;
   clientId?: string;
-  signed: boolean;
+  signed?: boolean;
 }

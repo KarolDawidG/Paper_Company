@@ -1,4 +1,3 @@
-
 CREATE TABLE `accounts` (
   `id` varchar(36) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -13,7 +12,6 @@ CREATE TABLE `accounts` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `client_addresses` (
   `id` varchar(36) NOT NULL,
@@ -30,7 +28,6 @@ CREATE TABLE `client_addresses` (
   CONSTRAINT `client_addresses_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
 CREATE TABLE `clients` (
   `id` varchar(36) NOT NULL,
   `first_name` varchar(50) NOT NULL,
@@ -41,7 +38,6 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `employees` (
   `id` varchar(36) NOT NULL,
@@ -59,6 +55,16 @@ CREATE TABLE `employees` (
   CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+CREATE TABLE `invoices` (
+  `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `order_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `invoice_number` varchar(50) NOT NULL,
+  `pdf` mediumblob NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `payment_status` varchar(20) NOT NULL DEFAULT 'unpaid',
+  `payment_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `languages` (
   `id` varchar(36) NOT NULL,
@@ -67,7 +73,6 @@ CREATE TABLE `languages` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `order_details` (
   `id` varchar(36) NOT NULL,
@@ -80,7 +85,6 @@ CREATE TABLE `order_details` (
   CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `orders` (
   `id` varchar(36) NOT NULL,
@@ -100,7 +104,6 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`client_address_id`) REFERENCES `client_addresses` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-
 CREATE TABLE `product_translations` (
   `product_id` varchar(36) NOT NULL,
   `language_id` varchar(36) NOT NULL,
@@ -111,7 +114,6 @@ CREATE TABLE `product_translations` (
   CONSTRAINT `product_translations_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   CONSTRAINT `product_translations_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `products` (
   `id` varchar(36) NOT NULL,
@@ -127,7 +129,6 @@ CREATE TABLE `products` (
 
 -- https://dbdiagram.io/d
 
-/*
 Table accounts {
   id varchar [primary key]
   username varchar
@@ -187,7 +188,7 @@ Table orders {
   status varchar
   payment_status varchar
   payment_date timestamp
-  account_id varchar // sprzedawca, ID konta z employees.account_id
+  account_id varchar // sprzedawca (employee.account_id)
 }
 
 Table order_details {
@@ -212,8 +213,17 @@ Table product_translations {
   language_id varchar
   name varchar
   description text
-  // PRIMARY KEY (product_id, language_id)
   primary key (product_id, language_id)
+}
+
+Table invoices {
+  id varchar [primary key]
+  order_id varchar
+  invoice_number varchar
+  pdf mediumblob
+  created_at timestamp
+  payment_status varchar
+  payment_date timestamp
 }
 
 // RELACJE
@@ -225,7 +235,6 @@ Ref: client_addresses.client_id > clients.id
 Ref: orders.client_id > clients.id
 Ref: orders.client_address_id > client_addresses.id
 
-// Najważniejsze: łączenie zamówienia z employee.account_id:
 Ref: orders.account_id > employees.account_id
 
 Ref: order_details.order_id > orders.id
@@ -234,5 +243,4 @@ Ref: order_details.product_id > products.id
 Ref: product_translations.product_id > products.id
 Ref: product_translations.language_id > languages.id
 
-
-*/
+Ref: invoices.order_id > orders.id

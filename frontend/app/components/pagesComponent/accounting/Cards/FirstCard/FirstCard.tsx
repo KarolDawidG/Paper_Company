@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore } from '../../../utils/ExpandUtils/ExpandMore';
 import useTranslation from "@/app/components/language/useTranslation";
 import SalesCardLogic from "../../../sales/Cards/SalesCard/SalesCardLogic";
+import InvoicesPage from "./InvoicesPage";
 
 export const FirstCard = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -16,10 +17,9 @@ export const FirstCard = () => {
 
   return (
     <Card sx={{ maxWidth: '100%' }}>
-      <CardHeader title={t.accounting.title} />
       <CardContent>
         <Typography variant="body2"  sx={{ pl: 1, fontSize: '1.5rem'}}>
-          {'First Card'}
+          {'Lista faktur'}
         </Typography>
       </CardContent>
 
@@ -27,7 +27,7 @@ export const FirstCard = () => {
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <ListItem>
             <ListItemText
-              primary={'Cos tam cos tam'}
+              primary={'Lista faktur zapisaych w systemie'}
             />
           </ListItem>
         </List>
@@ -44,7 +44,7 @@ export const FirstCard = () => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {'Rozwijane dane - miejsce na komponent xD'}
+          <InvoicesPage/>
         </CardContent>
       </Collapse>
     </Card>

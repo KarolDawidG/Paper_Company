@@ -1,4 +1,3 @@
-// PdfTable.tsx
 import React, { useCallback, useEffect, useState } from 'react';
 import { LinearProgress, Box, TablePagination } from '@mui/material';
 import axiosInstance from '@/app/api/axiosInstance';
@@ -13,11 +12,7 @@ import PdfDetailsModal from './PdfDetailsModal';
 const PdfTable: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<null | {
-    orderId: string;
-    orderAdressId: string;
-    clientId: string;
-  }>(null);
+  const [selectedOrder, setSelectedOrder] = useState<null | { orderId: string; orderAdressId: string; clientId: string;}>(null);
 
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data });

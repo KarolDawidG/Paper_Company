@@ -1,3 +1,4 @@
+import '../fonts'; 
 import {StyleSheet} from "@react-pdf/renderer";
 
 export const styles = StyleSheet.create({
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
 
 
 export const stylesDoc = StyleSheet.create({
-  page: { padding: 40, fontSize: 12, fontFamily: 'Helvetica' },
+  page: { padding: 40, fontSize: 12, fontFamily: 'Roboto' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

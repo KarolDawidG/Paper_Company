@@ -4,6 +4,7 @@ import { Grid, Typography, LinearProgress } from '@mui/material';
 import {CartProvider} from "@/app/components/pagesComponent/sales/Cards/BasketCard/CartContext";
 import { FirstCard } from './Cards/FirstCard/FirstCard';
 import { SecondCard } from './Cards/SecondCard/SecondCard';
+import { ThirdCard } from './Cards/ThirdCard/ThirdCard';
 
 const AuthorizedViewAccounting = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -29,6 +30,10 @@ const AuthorizedViewAccounting = () => {
 
             <Grid sx={{ marginBottom: 2, marginTop:2 }}>
               <SecondCard />
+            </Grid>
+
+            <Grid sx={{ marginBottom: 2, marginTop:2 }}>
+              <ThirdCard />
             </Grid>
 
           </Grid>
