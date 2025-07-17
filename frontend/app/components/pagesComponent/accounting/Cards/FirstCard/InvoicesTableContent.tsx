@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, LinearProgress, TableSortLabel, Typography, Select, MenuItem, Dialog, DialogContent, DialogTitle, DialogActions} from '@mui/material';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, Button, Box, LinearProgress, TableSortLabel, Typography,
+  Select, MenuItem, Dialog, DialogContent, DialogTitle, DialogActions,
+  CircularProgress
+} from '@mui/material';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useTranslation from "@/app/components/language/useTranslation";
 import useSorting from '@/app/components/utils/tableUtils/SortingControl';
 import { Invoice, InvoiceProps } from './interfaces/invoice';
 import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
+import { notify } from '@/app/components/notification/Notify';
 
-const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rowsPerPage, handleStatusChange, searchTerm, setSearchTerm, paymentStatuses, handleShowOrderDetails
+const InvoicesTableContent: React.FC<InvoiceProps> = ({
+  filteredData, page, rowsPerPage, handleStatusChange,
+  searchTerm, setSearchTerm, paymentStatuses, handleShowOrderDetails
 }) => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('invoice_number');
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+  const [resending, setResending] = useState(false);
   const [modalPdfUrl, setModalPdfUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
-  const handleViewPdf = async (invoiceId: string) => {
+  const handleViewPdf = async (invoice: Invoice) => {
     try {
-      const res = await axiosInstance.get(`/invoice/view/${invoiceId}`, {
+      const res = await axiosInstance.get(`/invoice/view/${invoice.id}`, {
         responseType: "blob",
       });
 
       const url = URL.createObjectURL(res.data);
       setModalPdfUrl(url);
+      setSelectedInvoice(invoice);
       setIsModalOpen(true);
     } catch (err) {
       console.error("Błąd pobierania faktury PDF:", err);
@@ -31,16 +42,27 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rows
   };
 
 
-  if (!t.table) {
-    return <LinearProgress />;
+  const handleResendInvoice = async () => {
+  if (!selectedInvoice) return;
+  try {
+    setResending(true);
+    await axiosInstance.post(`/invoice/resend/${selectedInvoice.id}`);
+    notify("Faktura została ponownie wysłana.");
+    setIsModalOpen(false);
+  } catch (err) {
+    console.error("Błąd przy ponownym wysyłaniu faktury:", err);
+    notify("Nie udało się ponownie wysłać faktury.");
+  } finally {
+    setResending(false);
   }
+};
+
+
+  if (!t.table) return <LinearProgress />;
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Lista faktur
-      </Typography>
-
+      <Typography variant="h5" gutterBottom>Lista faktur</Typography>
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <TableContainer component={Paper}>
@@ -93,9 +115,7 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rows
                     size="small"
                   >
                     {paymentStatuses.map((status) => (
-                      <MenuItem key={status} value={status}>
-                        {status}
-                      </MenuItem>
+                      <MenuItem key={status} value={status}>{status}</MenuItem>
                     ))}
                   </Select>
                 </TableCell>
@@ -108,7 +128,7 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rows
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button onClick={() => handleViewPdf(invoice.id)}>
+                  <Button onClick={() => handleViewPdf(invoice)}>
                     Wyświetl PDF
                   </Button>
                 </TableCell>
@@ -132,10 +152,18 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rows
           )}
         </DialogContent>
         <DialogActions>
+          {selectedInvoice?.payment_status === "unpaid" && (
+            <Button
+              onClick={handleResendInvoice}
+              disabled={resending}
+              startIcon={resending ? <CircularProgress size={18} color="inherit" /> : null}
+            >
+              {resending ? "Wysyłanie..." : "Wyślij jeszcze raz"}
+            </Button>
+          )}
           <Button onClick={() => setIsModalOpen(false)}>Zamknij</Button>
         </DialogActions>
       </Dialog>
-      
     </Box>
   );
 };

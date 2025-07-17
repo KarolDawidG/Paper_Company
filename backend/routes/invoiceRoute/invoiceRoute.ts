@@ -27,8 +27,6 @@ router.get("/history", async (req: Request, res: Response) => {
 router.get("/details/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
-  
     const details = await OrdersRecord.getOrderDetails(id);
     return res.status(STATUS_CODES.SUCCESS).json({ details });
   } catch (error) {
@@ -124,6 +122,31 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     return handleError(res, error, "PDF Route: POST", MESSAGES.SERVER_ERROR);
   }
 });
+
+router.post("/resend/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const testowy_email = "karoldawidg@gmail.com"; 
+
+  try {
+    // Pobierz fakturę
+    const invoice = await InvoiceRecord.getInvoiceWithClientEmail(id);
+    if (!invoice || !invoice.pdf || !invoice.client_email || !invoice.order_id) {
+      return res.status(404).json({ message: "Nie znaleziono faktury lub klienta." });
+    }
+
+    const subject = `Faktura za zamówienie ${invoice.order_id}`;
+    const message = `W załączniku znajduje się faktura dotycząca zamówienia ${invoice.order_id}.`;
+
+    await sendInvoiceEmail(testowy_email, invoice.order_id, invoice.pdf);
+
+    logger.info(`Faktura ${id} ponownie wysłana do klienta ${invoice.client_email}`);
+    return res.status(200).json({ message: "Faktura została ponownie wysłana." });
+  } catch (error) {
+    logger.error(`Invoice POST /resend/:id: ${error}`);
+    return res.status(500).json({ message: "Błąd podczas ponownego wysyłania faktury." });
+  }
+});
+    
 
 router.get("/view/:invoiceId", async (req: Request, res: Response) => {
   const { invoiceId } = req.params;

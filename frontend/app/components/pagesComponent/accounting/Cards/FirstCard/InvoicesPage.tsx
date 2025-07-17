@@ -23,8 +23,6 @@ const InvoicesPage: React.FC = () => {
     try {
       const response = await axiosInstance.get("/invoice");
       setInvoices(response.data.invoice);
-
-      console.log(response.data.invoice)
     } catch (error) {
       console.error("Błąd przy pobieraniu faktur:", error);
       notify("Nie udało się pobrać faktur.");

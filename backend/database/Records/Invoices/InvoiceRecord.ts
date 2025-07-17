@@ -111,6 +111,25 @@ static async getPdfById(id: string): Promise<{ pdf: Buffer } | null> {
   return result || null;
 }
 
+static async getInvoiceWithClientEmail(invoiceId: string): Promise<{ pdf: Buffer, order_id: string, client_email: string } | null> {
+  const query = `
+    SELECT i.pdf, i.order_id, c.email AS client_email
+    FROM invoices i
+    JOIN orders o ON i.order_id = o.id
+    JOIN clients c ON o.client_id = c.id
+    WHERE i.id = ?
+  `;
+
+  const [rows] = await pool.execute<RowDataPacket[]>(query, [invoiceId]);
+  if (!rows || rows.length === 0) return null;
+
+  const row = rows[0];
+  return {
+    pdf: row.pdf,
+    order_id: row.order_id,
+    client_email: row.client_email,
+  };
+}
 
 
 }
