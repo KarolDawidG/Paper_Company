@@ -8,22 +8,15 @@ import SearchBar from "@/app/components/utils/tableUtils/Search";
 import useTranslation from "@/app/components/language/useTranslation";
 import { formatDate } from "@/app/components/helpers/formDate";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from "@mui/material";
+import { PaymentRecord } from "./interface/PaymentRecord";
 
-interface PaymentRecord {
-  invoice_number: string;
-  created_at: string;
-  payment_date: string | null;
-  payment_status: string;
-  company_name: string;
-  total: number;
-}
 
 const PaymentsHistoryPage: React.FC = () => {
   const [payments, setPayments] = useState<PaymentRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePaginationLogic();
-  const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting("created_at");
+  const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting("invoice_date");
   const { searchTerm, setSearchTerm, filteredData } = useSearchLogic({ data: payments || [] });
 
   const t = useTranslation(localStorage.getItem("locale") || "en");
@@ -99,16 +92,18 @@ const PaymentsHistoryPage: React.FC = () => {
             {(rowsPerPage > 0
               ? sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : sortedData
-            ).map((record) => (
+            ).map((record) => {
+              console.log("RECORD:", record);
+              return (
               <TableRow key={record.invoice_number}>
                 <TableCell>{record.invoice_number}</TableCell>
                 <TableCell>{record.company_name}</TableCell>
-                <TableCell>{formatDate(record.created_at)}</TableCell>
+                <TableCell>{formatDate(record.invoice_date) }</TableCell>
                 <TableCell>{record.payment_date ? formatDate(record.payment_date) : "-"}</TableCell>
                 <TableCell>{record.payment_status}</TableCell>
                 <TableCell>{record.total.toFixed(2)} PLN</TableCell>
               </TableRow>
-            ))}
+            );})}
           </TableBody>
         </Table>
       </TableContainer>
