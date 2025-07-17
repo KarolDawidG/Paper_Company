@@ -37,7 +37,7 @@ const TopSellersChart = () => {
   }
 
   if (data.length === 0) {
-    return <Typography color="textSecondary">Brak danych do wyświetlenia.</Typography>;
+    return <Typography color="textSecondary">Brak danych.</Typography>;
   }
 
   return (
