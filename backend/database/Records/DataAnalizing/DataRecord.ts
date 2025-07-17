@@ -21,4 +21,29 @@ export class DataRecord {
       throw new Error("Could not fetch top products.");
     }
   }
+
+  static async getTopSellers(): Promise<{ name: string; quantity: number; value: number }[]> {
+    const query = `
+      SELECT 
+        CONCAT(e.first_name, ' ', e.last_name) AS name,
+        SUM(od.quantity) AS quantity,
+        SUM(od.quantity * p.price) AS value
+      FROM orders o
+      JOIN employees e ON o.account_id = e.account_id
+      JOIN order_details od ON o.id = od.order_id
+      JOIN products p ON p.id = od.product_id
+      GROUP BY e.id
+      ORDER BY quantity DESC
+      LIMIT 10;
+    `;
+
+    try {
+      const [rows] = await pool.execute(query);
+      return rows as { name: string; quantity: number; value: number }[];
+    } catch (error) {
+      console.error("Error fetching top sellers from DB:", error);
+      throw new Error("Could not fetch top sellers.");
+    }
+  }
+  
 }

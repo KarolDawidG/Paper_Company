@@ -23,4 +23,14 @@ router.get("/top-product", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/top-sellers", async (req: Request, res: Response) => {
+  try {
+    const sellers = await DataRecord.getTopSellers();
+    return res.status(STATUS_CODES.SUCCESS).json(sellers);
+  } catch (error) {
+    logger.error("Error fetching top sellers:", error);
+    return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR });
+  }
+});
+
 export default router;
