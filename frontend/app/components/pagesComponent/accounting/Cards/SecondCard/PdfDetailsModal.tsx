@@ -21,16 +21,19 @@ const handleSendToBackend = async () => {
   try {
     if (!productsData.length || !addressData) return;
 
-    const doc = (
-      <GeneratorPDF
-        items={productsData}
-        address={addressData[0]}
-        total={totalPrice}
-        clientId={clientId}
-        orderId={orderId}
-        signed={true}
-      />
-    );
+      const doc = (
+        <GeneratorPDF
+          items={productsData}
+          address={addressData[0]}
+          total={totalPrice}
+          clientId={clientId}
+          orderId={orderId}
+          signed={true}
+          t={t}
+        />
+      );
+
+
 
     const blob = await pdf(doc).toBlob();
     const arrayBuffer = await blob.arrayBuffer();
@@ -60,16 +63,11 @@ const handleSignAndSend = () => {
 };
 
 
-
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(`/client/${orderAdressId}/${orderId}`);
       setAddressData(response.data.orderDetails.clientAddress);
-      setProductsData(response.data.orderDetails.products);
-      
-      console.log(response.data.orderDetails.clientAddress);
-      console.log(response.data.orderDetails.products);
-
+      setProductsData(response.data.orderDetails.products);      
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -104,7 +102,16 @@ const handleSignAndSend = () => {
           {productsData.length > 0 && addressData && (
             <>
               <PDFViewer style={{ width: '100%', height: '600px', marginTop: '20px' }}>
-                <GeneratorPDF signed={signedMap[orderId]} items={productsData} address={addressData[0]} total={totalPrice} clientId={''} orderId={''} />
+                <GeneratorPDF
+                  signed={signedMap[orderId]}
+                  items={productsData}
+                  address={addressData[0]}
+                  total={totalPrice}
+                  clientId={clientId}
+                  orderId={orderId}
+                  t={t}
+                />
+
               </PDFViewer>
                 <Box sx={{ marginTop: 3, display: 'flex', justifyContent: 'center' }}>
                   <MainButton onClick={handleSignAndSend}>

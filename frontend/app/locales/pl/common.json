@@ -217,9 +217,10 @@
       "total_quantity": "Łączna liczba sztuk",
       "net": "Wartość netto",
       "vat": "Podatek VAT (23%)",
-      "gross": "Do zapłaty (brutto)",
+      "gross": "Do zapłaty (brutto): ",
       "signature": "Podpis osoby wystawiającej dokument",
-      "page": "Strona"
+      "page": "Strona",
+      "signature_acctepted": "Podpisano elektronicznie dnia"
     }
 
   

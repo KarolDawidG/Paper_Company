@@ -220,7 +220,8 @@
         "vat": "VAT (23%)",
         "gross": "Total Amount (Gross)",
         "signature": "Issuer's Signature",
-        "page": "Page"
+        "page": "Page",
+        "signature_acctepted": "Signed electronically on"
       }
 
   }

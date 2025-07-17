@@ -1,4 +1,5 @@
 export type Invoice = {
+  client_id: string | undefined;
   id: string;
   order_id: string;
   invoice_number: string;

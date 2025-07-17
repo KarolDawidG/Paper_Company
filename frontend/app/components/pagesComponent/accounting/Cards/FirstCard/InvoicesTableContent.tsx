@@ -1,33 +1,39 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, LinearProgress, TableSortLabel, Typography, Select, MenuItem} from '@mui/material';
+import React, { useState } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, LinearProgress, TableSortLabel, Typography, Select, MenuItem, Dialog, DialogContent, DialogTitle, DialogActions} from '@mui/material';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useTranslation from "@/app/components/language/useTranslation";
 import useSorting from '@/app/components/utils/tableUtils/SortingControl';
 import { Invoice, InvoiceProps } from './interfaces/invoice';
 import { formatDate } from '@/app/components/helpers/formDate';
+import axiosInstance from '@/app/api/axiosInstance';
 
-
-
-const InvoicesTableContent: React.FC<InvoiceProps> = ({
-  filteredData,
-  page,
-  rowsPerPage,
-  handleStatusChange,
-  searchTerm,
-  setSearchTerm,
-  paymentStatuses,
-  handleShowOrderDetails
+const InvoicesTableContent: React.FC<InvoiceProps> = ({ filteredData, page, rowsPerPage, handleStatusChange, searchTerm, setSearchTerm, paymentStatuses, handleShowOrderDetails
 }) => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
-
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('invoice_number');
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+  const [modalPdfUrl, setModalPdfUrl] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewPdf = async (invoiceId: string) => {
+    try {
+      const res = await axiosInstance.get(`/invoice/view/${invoiceId}`, {
+        responseType: "blob",
+      });
+
+      const url = URL.createObjectURL(res.data);
+      setModalPdfUrl(url);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error("Błąd pobierania faktury PDF:", err);
+    }
+  };
+
 
   if (!t.table) {
     return <LinearProgress />;
   }
-
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -42,7 +48,6 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
           <TableHead>
             <TableRow>
               <TableCell>Nr</TableCell>
-
               <TableCell>
                 <TableSortLabel
                   active={orderBy === "invoice_number"}
@@ -52,7 +57,6 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
                   Numer faktury
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>
                 <TableSortLabel
                   active={orderBy === "created_at"}
@@ -62,11 +66,11 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
                   Data utworzenia
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>ID zamówienia</TableCell>
               <TableCell>Status płatności</TableCell>
               <TableCell>Data płatności</TableCell>
               <TableCell>Szczegóły</TableCell>
+              <TableCell>Wyświetl PDF</TableCell>
             </TableRow>
           </TableHead>
 
@@ -95,22 +99,43 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
                     ))}
                   </Select>
                 </TableCell>
-                <TableCell>{invoice.payment_date ? formatDate(invoice.payment_date) : "—"}</TableCell>
                 <TableCell>
-                    <Button onClick={() => handleShowOrderDetails(invoice.order_id)}>
-                        Szczegóły
-                    </Button>
+                  {invoice.payment_date ? formatDate(invoice.payment_date) : "—"}
                 </TableCell>
-
+                <TableCell>
+                  <Button onClick={() => handleShowOrderDetails(invoice.order_id)}>
+                    Szczegóły
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => handleViewPdf(invoice.id)}>
+                    Wyświetl PDF
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-
-
-
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} maxWidth="lg" fullWidth>
+        <DialogTitle>Podgląd faktury</DialogTitle>
+        <DialogContent dividers style={{ height: "80vh", padding: 0 }}>
+          {modalPdfUrl && (
+            <iframe
+              src={modalPdfUrl}
+              title="PDF Preview"
+              width="100%"
+              height="100%"
+              style={{ border: "none" }}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsModalOpen(false)}>Zamknij</Button>
+        </DialogActions>
+      </Dialog>
+      
     </Box>
   );
 };

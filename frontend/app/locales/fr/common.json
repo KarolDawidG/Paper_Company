@@ -207,19 +207,20 @@
       "confirm_delete_address": "Êtes-vous sûr de vouloir supprimer cette adresse? Cette action ne peut pas être annulée."
     },
     "pdf": {
-      "title": "Invoice / Order Details",
-      "order_number": "Order Number",
-      "client_id": "Client ID",
-      "issue_date": "Issue Date",
-      "company_data": "Company Information",
-      "product_list": "Product List",
-      "no_products": "No products",
-      "item_count": "Item Count",
-      "total_quantity": "Total Quantity",
-      "net": "Net Amount",
-      "vat": "VAT (23%)",
-      "gross": "Total Amount (Gross)",
-      "signature": "Issuer's Signature",
-      "page": "Page"
-    }  
+      "title": "Détails de la facture/commande",
+      "order_number": "Numéro de commande",
+      "client_id": "ID client",
+      "issue_date": "Date d'émission",
+      "company_data": "Informations sur l'entreprise",
+      "product_list": "Liste de produits",
+      "no_products": "Aucun produit",
+      "item_count": "Nombre d'articles",
+      "total_quantity": "Quantité totale",
+      "net": "Montant net",
+      "vat": "TVA (23 %)",
+      "gross": "Montant total (brut)",
+      "signature": "Signature de l'émetteur",
+      "page": "Page",
+      "signature_acctepted": "Signé électroniquement le"
+      }
 }
