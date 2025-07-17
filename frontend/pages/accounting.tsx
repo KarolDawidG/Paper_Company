@@ -30,9 +30,6 @@ const Accounting = () => {
 
     return (
       <Box sx={{ margin: "0 0 20px 0" }}>
-        <Typography variant="h1" gutterBottom>
-          {t.sales_and_orders.title}
-        </Typography>
         <WarningPage />
         <UnauthorizedViewSecurity children={'accounting'}/>
       </Box>
