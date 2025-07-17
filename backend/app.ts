@@ -22,6 +22,7 @@ import employeeRoute from "./routes/employeeRoute/employeeRoute";
 import mailRoute from "./routes/mailRoute/mailRoute";
 import warehouseRoute from "./routes/warehouseRoute/warehouseRoute";
 import invoiceRoute from "./routes/invoiceRoute/invoiceRoute";
+import dataAnalizingRoute from "./routes/dataAnalizingRoute/dataAnalizingRoute";
 
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -60,6 +61,7 @@ app.use("/employee", employeeRoute);
 app.use("/mail", mailRoute);
 app.use("/warehouse", warehouseRoute);
 app.use("/invoice", invoiceRoute);
+app.use("/data-analizing", dataAnalizingRoute);
 
 app.use(middleware);
 app.use(limiter);
