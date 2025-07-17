@@ -1,5 +1,6 @@
 import { pool } from "../../pool";
 import { v4 as uuidv4 } from "uuid";
+import { RowDataPacket } from "mysql2/promise";
 
 export interface Invoice {
   id: string;
@@ -99,6 +100,17 @@ static async updatePaymentStatus(id: string, newStatus: string): Promise<void> {
     );
   }
 }
+
+static async getPdfById(id: string): Promise<{ pdf: Buffer } | null> {
+  const [rows] = await pool.execute<RowDataPacket[]>(
+    "SELECT pdf FROM invoices WHERE id = ?",
+    [id]
+  );
+
+  const result = rows[0] as { pdf: Buffer } | undefined;
+  return result || null;
+}
+
 
 
 }

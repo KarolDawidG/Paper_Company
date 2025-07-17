@@ -125,4 +125,25 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+router.get("/view/:invoiceId", async (req: Request, res: Response) => {
+  const { invoiceId } = req.params;
+
+  console.log(invoiceId);
+
+  try {
+    const result = await InvoiceRecord.getPdfById(invoiceId);
+
+    if (!result || !result.pdf) {
+      return res.status(404).json({ message: "Faktura nie znaleziona." });
+    }
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "inline; filename=faktura.pdf");
+    res.send(result.pdf);
+  } catch (error) {
+    logger.error(`Invoice GET /view/:invoiceId: ${error}`);
+    return res.status(500).json({ message: "Błąd podczas pobierania faktury PDF." });
+  }
+});
+
 export default router;
