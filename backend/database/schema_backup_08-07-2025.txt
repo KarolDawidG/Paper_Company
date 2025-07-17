@@ -1,0 +1,246 @@
+CREATE TABLE `accounts` (
+  `id` varchar(36) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `role` varchar(20) NOT NULL DEFAULT 'user',
+  `img_url` varchar(100) NOT NULL DEFAULT 'https://utfs.io/f/bca7e335-8a46-4ffa-9186-81d51e65c875-kmjf4x.jpg',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_active` tinyint(1) DEFAULT '0',
+  `refresh_token` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `client_addresses` (
+  `id` varchar(36) NOT NULL,
+  `client_id` varchar(36) NOT NULL,
+  `miasto` varchar(100) NOT NULL,
+  `ulica` varchar(100) NOT NULL,
+  `nr_budynku` varchar(20) NOT NULL,
+  `nr_mieszkania` varchar(20) DEFAULT NULL,
+  `kod` varchar(20) NOT NULL,
+  `nazwa_firmy` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  CONSTRAINT `client_addresses_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `clients` (
+  `id` varchar(36) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `second_name` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `company_name` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `employees` (
+  `id` varchar(36) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `department` varchar(100) DEFAULT NULL,
+  `position` varchar(100) DEFAULT NULL,
+  `hire_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `account_id` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `account_id` (`account_id`),
+  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `invoices` (
+  `id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `order_id` varchar(36) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `invoice_number` varchar(50) NOT NULL,
+  `pdf` mediumblob NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `payment_status` varchar(20) NOT NULL DEFAULT 'unpaid',
+  `payment_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `languages` (
+  `id` varchar(36) NOT NULL,
+  `code` varchar(10) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `order_details` (
+  `id` varchar(36) NOT NULL,
+  `order_id` varchar(36) NOT NULL,
+  `product_id` varchar(36) NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `orders` (
+  `id` varchar(36) NOT NULL,
+  `client_id` varchar(36) NOT NULL,
+  `client_address_id` varchar(36) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(20) DEFAULT 'pending',
+  `payment_status` varchar(20) DEFAULT 'unpaid',
+  `payment_date` timestamp NULL DEFAULT NULL,
+  `account_id` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  KEY `client_address_id` (`client_address_id`),
+  KEY `fk_orders_account` (`account_id`),
+  CONSTRAINT `fk_orders_account` FOREIGN KEY (`account_id`) REFERENCES `employees` (`account_id`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`client_address_id`) REFERENCES `client_addresses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `product_translations` (
+  `product_id` varchar(36) NOT NULL,
+  `language_id` varchar(36) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  PRIMARY KEY (`product_id`,`language_id`),
+  KEY `language_id` (`language_id`),
+  CONSTRAINT `product_translations_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  CONSTRAINT `product_translations_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE `products` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `description` text,
+  `price` decimal(10,2) NOT NULL,
+  `stock` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
+-- https://dbdiagram.io/d
+
+Table accounts {
+  id varchar [primary key]
+  username varchar
+  password varchar
+  email varchar
+  role varchar
+  img_url varchar
+  created_at timestamp
+  is_active boolean
+  refresh_token text
+}
+
+Table clients {
+  id varchar [primary key]
+  first_name varchar
+  second_name varchar
+  email varchar
+  created_at timestamp
+  company_name varchar
+}
+
+Table client_addresses {
+  id varchar [primary key]
+  client_id varchar
+  miasto varchar
+  ulica varchar
+  nr_budynku varchar
+  nr_mieszkania varchar
+  kod varchar
+  nazwa_firmy varchar
+  created_at timestamp
+}
+
+Table employees {
+  id varchar [primary key]
+  first_name varchar
+  last_name varchar
+  email varchar
+  phone_number varchar
+  department varchar
+  position varchar
+  hire_date timestamp
+  account_id varchar
+}
+
+Table languages {
+  id varchar [primary key]
+  code varchar
+  name varchar
+}
+
+Table orders {
+  id varchar [primary key]
+  client_id varchar
+  client_address_id varchar
+  created_at timestamp
+  status varchar
+  payment_status varchar
+  payment_date timestamp
+  account_id varchar // sprzedawca (employee.account_id)
+}
+
+Table order_details {
+  id varchar [primary key]
+  order_id varchar
+  product_id varchar
+  quantity int
+}
+
+Table products {
+  id varchar [primary key]
+  name varchar
+  category varchar
+  description text
+  price decimal
+  stock int
+  created_at timestamp
+}
+
+Table product_translations {
+  product_id varchar
+  language_id varchar
+  name varchar
+  description text
+  primary key (product_id, language_id)
+}
+
+Table invoices {
+  id varchar [primary key]
+  order_id varchar
+  invoice_number varchar
+  pdf mediumblob
+  created_at timestamp
+  payment_status varchar
+  payment_date timestamp
+}
+
+// RELACJE
+
+Ref: employees.account_id > accounts.id
+
+Ref: client_addresses.client_id > clients.id
+
+Ref: orders.client_id > clients.id
+Ref: orders.client_address_id > client_addresses.id
+
+Ref: orders.account_id > employees.account_id
+
+Ref: order_details.order_id > orders.id
+Ref: order_details.product_id > products.id
+
+Ref: product_translations.product_id > products.id
+Ref: product_translations.language_id > languages.id
+
+Ref: invoices.order_id > orders.id

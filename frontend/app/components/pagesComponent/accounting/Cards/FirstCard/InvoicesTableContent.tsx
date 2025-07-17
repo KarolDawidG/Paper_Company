@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Box, LinearProgress, TableSortLabel, Typography,
-  Select, MenuItem, Dialog, DialogContent, DialogTitle, DialogActions,
-  CircularProgress
-} from '@mui/material';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, LinearProgress, TableSortLabel, Typography, Select, MenuItem, Dialog, DialogContent, DialogTitle, DialogActions, CircularProgress} from '@mui/material';
 import SearchBar from '@/app/components/utils/tableUtils/Search';
 import useTranslation from "@/app/components/language/useTranslation";
 import useSorting from '@/app/components/utils/tableUtils/SortingControl';
@@ -13,10 +8,7 @@ import { formatDate } from '@/app/components/helpers/formDate';
 import axiosInstance from '@/app/api/axiosInstance';
 import { notify } from '@/app/components/notification/Notify';
 
-const InvoicesTableContent: React.FC<InvoiceProps> = ({
-  filteredData, page, rowsPerPage, handleStatusChange,
-  searchTerm, setSearchTerm, paymentStatuses, handleShowOrderDetails
-}) => {
+const InvoicesTableContent: React.FC<InvoiceProps> = ({filteredData, page, rowsPerPage, handleStatusChange, searchTerm, setSearchTerm, paymentStatuses, handleShowOrderDetails}) => {
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
   const { order, orderBy, handleRequestSort, stableSort, getComparator } = useSorting('invoice_number');
@@ -41,7 +33,6 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
     }
   };
 
-
   const handleResendInvoice = async () => {
   if (!selectedInvoice) return;
   try {
@@ -56,7 +47,6 @@ const InvoicesTableContent: React.FC<InvoiceProps> = ({
     setResending(false);
   }
 };
-
 
   if (!t.table) return <LinearProgress />;
 
