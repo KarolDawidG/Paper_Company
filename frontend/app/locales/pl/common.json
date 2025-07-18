@@ -221,8 +221,18 @@
       "signature": "Podpis osoby wystawiającej dokument",
       "page": "Strona",
       "signature_acctepted": "Podpisano elektronicznie dnia"
+    },
+    "monthlyReport": {
+      "title": "Generowanie Raportu Miesięcznego",
+      "selectMonth": "Wybierz miesiąc:",
+      "": "Prognoza zysków",
+      "download": "Pobierz raport PDF",
+      "preview": "Podgląd raportu PDF",
+      "topClients": "Top Klienci",
+      "topSellers": "Top Sprzedawcy",
+      "topProducts": "Najpopularniejsze Produkty",
+      "orders": "Zamówienia",
+      "value": "Wartość"
     }
-
-  
   }
   

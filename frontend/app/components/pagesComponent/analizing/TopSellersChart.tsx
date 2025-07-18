@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { CircularProgress, Typography } from '@mui/material';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend
+} from 'recharts';
+import { CircularProgress, Typography, Grid } from '@mui/material';
 import { notify } from '@/app/components/notification/Notify';
 import axiosInstance from '@/app/api/axiosInstance';
 
@@ -32,36 +40,57 @@ const TopSellersChart = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (data.length === 0) {
-    return <Typography color="textSecondary">Brak danych.</Typography>;
-  }
+  if (loading) return <CircularProgress />;
+  if (data.length === 0) return <Typography>Brak danych do wyświetlenia.</Typography>;
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">📊 Najlepsi sprzedawcy – ilość vs wartość sprzedaży</h2>
-      <ResponsiveContainer width="100%" height={500}>
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ top: 20, right: 40, left: 100, bottom: 20 }}
-        >
-          <XAxis type="number" />
-          <YAxis dataKey="name" type="category" width={150} />
-          <Tooltip formatter={(value: number, name: string) => {
-            return name === 'Ilość'
-              ? [`${value}`, 'Ilość']
-              : [`${value.toFixed(2)} zł`, 'Wartość (PLN)'];
-          }} />
-          <Legend />
-          <Bar dataKey="quantity" fill="#8884d8" name="Ilość" barSize={15} />
-          <Bar dataKey="value" fill="#82ca9d" name="Wartość (PLN)" barSize={15} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <Grid container spacing={4}>
+      {/* Ilość */}
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>📦 Najlepsi sprzedawcy – liczba zamówień</Typography>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 20, right: 40, left: 120, bottom: 20 }}
+          >
+            <XAxis type="number" />
+            <YAxis
+              dataKey="name"
+              type="category"
+              width={200}
+              tick={{ fontSize: 14, fontWeight: 600 }}
+            />
+            <Tooltip formatter={(value: number) => `${value} szt.`} />
+            <Legend />
+            <Bar dataKey="quantity" fill="#8884d8" name="Ilość zamówień" barSize={20} />
+          </BarChart>
+        </ResponsiveContainer>
+      </Grid>
+
+      {/* Wartość */}
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>💰 Najlepsi sprzedawcy – wartość sprzedaży</Typography>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 20, right: 40, left: 120, bottom: 20 }}
+          >
+            <XAxis type="number" />
+            <YAxis
+              dataKey="name"
+              type="category"
+              width={200}
+              tick={{ fontSize: 14, fontWeight: 600 }}
+            />
+            <Tooltip formatter={(value: number) => `${value.toFixed(2)} zł`} />
+            <Legend />
+            <Bar dataKey="value" fill="#82ca9d" name="Wartość (PLN)" barSize={20} />
+          </BarChart>
+        </ResponsiveContainer>
+      </Grid>
+    </Grid>
   );
 };
 

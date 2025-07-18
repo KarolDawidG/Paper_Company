@@ -222,6 +222,18 @@
         "signature": "Issuer's Signature",
         "page": "Page",
         "signature_acctepted": "Signed electronically on"
+    },
+    "monthlyReport": {
+      "title": "Generate Monthly Report",
+      "selectMonth": "Select month:",
+      "prediction": "Profit forecast",
+      "download": "Download PDF report",
+      "preview": "PDF report preview",
+      "topClients": "Top Customers",
+      "topSellers": "Top Sellers",
+      "topProducts": "Most Popular Products",
+      "orders": "Orders",
+      "value": "Value"
       }
 
   }

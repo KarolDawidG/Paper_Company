@@ -222,5 +222,17 @@
       "signature": "Signature de l'émetteur",
       "page": "Page",
       "signature_acctepted": "Signé électroniquement le"
+         },
+    "monthlyReport": {
+      "title": "Générer un rapport mensuel",
+      "selectMonth": "Sélectionner le mois :",
+      "prediction": "Prévisions de bénéfices",
+      "download": "Télécharger le rapport PDF",
+      "preview": "Aperçu du rapport PDF",
+      "topClients": "Meilleurs clients",
+      "topSellers": "Meilleures ventes",
+      "topProducts": "Produits les plus populaires",
+      "orders": "Commandes",
+      "value": "Valeur"
       }
 }

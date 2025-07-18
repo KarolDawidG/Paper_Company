@@ -32,6 +32,15 @@ export const styles = StyleSheet.create({
 
 export const stylesDoc = StyleSheet.create({
   page: { padding: 40, fontSize: 12, fontFamily: 'Roboto' },
+  sectionTitle: {
+  color: '#2c3e50',
+  borderBottom: '1pt solid #2c3e50',
+  fontSize: 14,
+  fontWeight: 'bold',
+  marginBottom: 8,
+  // borderBottom: '1pt solid #666',
+  paddingBottom: 4,
+},
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -72,5 +81,21 @@ export const stylesDoc = StyleSheet.create({
     bottom: 20,
     right: 40,
     color: 'grey',
+  },
+  table: { width: "auto", marginTop: 10 },
+  tableRow: { flexDirection: "row", borderBottom: "1pt solid #ccc" },
+  tableHeader: { flexDirection: "row", backgroundColor: "#f0f0f0", borderBottom: "1pt solid #999" },
+  cellHeader: { flex: 1, fontWeight: "bold", padding: 4, fontSize: 10 },
+  cell: { flex: 1, padding: 4, fontSize: 10 },
+  footer: {
+    position: 'absolute',
+    bottom: 30,
+    left: 40,
+    right: 40,
+    fontSize: 10,
+    color: 'grey',
+    textAlign: 'center',
+    borderTop: '1pt solid #ccc',
+    paddingTop: 4,
   },
 });

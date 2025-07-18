@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  LabelList,
+} from 'recharts';
 import { CircularProgress, Typography } from '@mui/material';
-import { notify } from '@/app/components/notification/Notify';
 import axiosInstance from '@/app/api/axiosInstance';
+import { notify } from '@/app/components/notification/Notify';
 
 interface ProductData {
   name: string;
@@ -12,7 +19,7 @@ interface ProductData {
 
 const TopProductsChart = () => {
   const [data, setData] = useState<ProductData[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -21,8 +28,8 @@ const TopProductsChart = () => {
       const sorted = response.data.sort((a, b) => b.quantity - a.quantity);
       setData(sorted);
     } catch (error) {
-      console.error('Błąd pobierania danych:', error);
-      notify('Błąd pobierania najlepiej sprzedających się towarów.');
+      console.error('Błąd pobierania danych produktów:', error);
+      notify('Nie udało się pobrać danych o produktach.');
     } finally {
       setLoading(false);
     }
@@ -32,23 +39,25 @@ const TopProductsChart = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (data.length === 0) {
-    return <Typography color="textSecondary">Brak danych do wyświetlenia.</Typography>;
-  }
+  if (loading) return <CircularProgress />;
+  if (data.length === 0) return <Typography>Brak danych do wyświetlenia.</Typography>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-2">📈 Najlepiej sprzedające się towary</h2>
+      <Typography variant="h6" gutterBottom>📦 Najczęściej sprzedawane produkty</Typography>
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={data} layout="vertical">
+        <BarChart
+          data={data}
+          layout="vertical"
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
           <XAxis type="number" />
-          <YAxis dataKey="name" type="category" width={150} />
-          <Tooltip />
-          <Bar dataKey="quantity" fill="#ffc658" name="Ilość" />
+          <YAxis type="category" dataKey="name" hide /> {/* ukrywamy oś Y */}
+          <Tooltip formatter={(value: number) => `${value} szt.`} />
+          <Bar dataKey="quantity" fill="#8884d8" name="Ilość sprzedana">
+            <LabelList dataKey="name" position="insideLeft" style={{ fill: '#fff', fontSize: 12 }} />
+            <LabelList dataKey="quantity" position="insideRight" style={{ fill: '#fff', fontWeight: 'bold' }} />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

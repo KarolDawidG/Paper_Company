@@ -5,6 +5,8 @@ import { CartProvider } from "@/app/components/pagesComponent/sales/Cards/Basket
 import TopSellersChart from './TopSellersChart';
 import TopProductsChart from './TopProductsChart';
 import TopClientsChart from './TopClientsChart';
+import MonthlyProfitChart from './MonthlyProfitChart';
+import MonthlyReportPDF from './MonthlyReportPDF';
 
 const AuthorizedViewAnalizing = () => {
   const currentLocale = localStorage.getItem("locale") || "en";
@@ -24,10 +26,11 @@ const AuthorizedViewAnalizing = () => {
             </Typography>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
+              <MonthlyProfitChart/>
+              <MonthlyReportPDF/>
               <TopSellersChart />
               <TopProductsChart />
               <TopClientsChart />
-              
             </div>
           </Grid>
         </Grid>
