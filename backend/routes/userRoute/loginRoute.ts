@@ -58,7 +58,8 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 
     await UsersRecord.updateRefreshTokenById([refreshToken, userRecord.id]);
 
-    logger.info(`Logged in user: ${user}, access level: ${userRecord.role}`);
+    // 27.11.24: Sukces logowania zapisuje tylko wynik i rolę, bez pełnego identyfikatora użytkownika.
+    logger.info("Successful login with access level: %s", userRecord.role);
     return res.status(STATUS_CODES.SUCCESS).json({
       token,
       refreshToken,

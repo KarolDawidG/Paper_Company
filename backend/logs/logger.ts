@@ -22,6 +22,17 @@ const logger = createLogger({
     new transports.File({ filename: "logs/combined.log" }),
     new transports.File({ filename: "logs/error.log", level: "error" }),
   ],
+  // 27.11.19: Winston przechwytuje też wyjątki procesu, żeby uncaughtException nie ginęło poza standardowym flow requestów.
+  exceptionHandlers: [
+    new transports.Console(),
+    new transports.File({ filename: "logs/exceptions.log" }),
+  ],
+  // 27.11.20: Odrzucone promise'y są logowane osobno, żeby łatwiej wyłapać unhandledRejection w async backendu.
+  rejectionHandlers: [
+    new transports.Console(),
+    new transports.File({ filename: "logs/rejections.log" }),
+  ],
+  exitOnError: false,
 });
 
 export default logger;

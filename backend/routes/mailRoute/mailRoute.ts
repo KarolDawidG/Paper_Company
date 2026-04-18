@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning, maskEmail } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -48,8 +48,9 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
             await sendEmployeeEmail(email.to, email.subject, email.message);
             successEmails.push(email.to);
           } catch (error:any) {
-            logger.error(`Mail Route: POST: Failed to send email to ${email.to}. Error: ${error.message}`);
-            errors.push(`Failed to send email to ${email.to}`);
+            // 27.11.26: Masowa wysyłka maili loguje zamaskowany adres odbiorcy, żeby nie ujawniać pełnej listy adresowej.
+            logger.error(`Mail Route: POST: Failed to send email to ${maskEmail(email.to)}. Error: ${error.message}`);
+            errors.push(`Failed to send email to ${maskEmail(email.to)}`);
           }
       });
       await Promise.all(emailPromises);

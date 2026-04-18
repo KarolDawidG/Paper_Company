@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import middleware from "../../config/middleware";
-import { errorHandler, handleError, handleWarning } from "../../config/config";
+import { errorHandler, handleError, handleWarning, maskEmail } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -24,7 +24,8 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const [userRecord]: any = await UsersRecord.selectByEmail([email]);
       if (!userRecord) {
-        logger.warn(`Forgot Pass Route: POST: Email not found: ${email}`);
+        // 27.11.25: Reset hasła maskuje adres e-mail w logu, żeby nie zostawiać pełnych danych kontaktowych.
+        logger.warn(`Forgot Pass Route: POST: Email not found: ${maskEmail(email)}`);
         return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.EMAIL_SUCCESS);
       }
 
@@ -35,7 +36,7 @@ router.post("/", async (req: Request, res: Response) => {
     const link: string = `${URL.RESET_URL}${id}/${token}`;
 
     await sendResetPasswordEmail(userEmail, username, link);
-    logger.info(`Forgot Pass Route: POST: Reset email sent to ${userEmail}`);
+    logger.info(`Forgot Pass Route: POST: Reset email sent to ${maskEmail(userEmail)}`);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.EMAIL_SUCCESS);
   } catch (error: any) {
     return handleError(res, error, "Forgot Pass Route: POST", MESSAGES.SERVER_ERROR);

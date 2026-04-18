@@ -1,0 +1,13 @@
+2026-04-18 20:58:50 error: Error: ⨯ Unable to compile TypeScript:
+routes/userRoute/loginRoute.ts(63,87): error TS2339: Property 'email' does not exist on type 'UserInterface'.
+
+    at Object.<anonymous> (/home/dawid/Desktop/Programowanie/2)Paper_Company/backend/routes/userRoute/loginRoute.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/home/dawid/Desktop/Programowanie/2)Paper_Company/backend/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/tmp/ts-node-dev-hook-14410167156155973.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/tmp/ts-node-dev-hook-14410167156155973.js:114:20)
+    at require.extensions.<computed> (/tmp/ts-node-dev-hook-14410167156155973.js:71:20)
+    at Object.nodeDevHook [as .ts] (/home/dawid/Desktop/Programowanie/2)Paper_Company/backend/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)

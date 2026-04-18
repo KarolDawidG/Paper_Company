@@ -156,6 +156,31 @@ const areNonEmptyStrings = (...values: unknown[]): boolean => {
   return values.every((value) => isNonEmptyString(value));
 };
 
+const maskEmail = (value: string): string => {
+  const normalizedValue = normalizeString(value);
+  const [localPart, domain] = normalizedValue.split("@");
+
+  if (!localPart || !domain) {
+    return normalizedValue;
+  }
+
+  const visiblePrefix = localPart.slice(0, 2);
+  return `${visiblePrefix}${"*".repeat(Math.max(localPart.length - 2, 1))}@${domain}`;
+};
+
+const sanitizeLogValue = (value: unknown): string => {
+  const normalizedValue =
+    value instanceof Error ? `${value.name}: ${value.message}` : `${value ?? ""}`;
+
+  return normalizedValue
+    .replace(/Bearer\s+[A-Za-z0-9\-_.]+/gi, "Bearer [REDACTED]")
+    .replace(/(refresh[_-\s]?token["'=:\s]*)[A-Za-z0-9\-_.]+/gi, "$1[REDACTED]")
+    .replace(/(token["'=:\s]*)[A-Za-z0-9\-_.]+/gi, "$1[REDACTED]")
+    .replace(/(password["'=:\s]*)[^,\s]+/gi, "$1[REDACTED]")
+    .replace(/(secret["'=:\s]*)[^,\s]+/gi, "$1[REDACTED]")
+    .replace(/([A-Z0-9._%+-]{2})[A-Z0-9._%+-]*@([A-Z0-9.-]+\.[A-Z]{2,})/gi, "$1***@$2");
+};
+
 const handleError = (
   res: Response,
   error: any,
@@ -164,11 +189,16 @@ const handleError = (
   statusCode: number = STATUS_CODES.SERVER_ERROR,
   id?: string
 ) => {
+  const safeRoute = sanitizeLogValue(route);
+  const safeError = sanitizeLogValue(error);
+  const safeId = id ? sanitizeLogValue(id) : undefined;
+
   if (id) {
-    logger.error(`${route}: Error with ID ${id}. Error: ${error.message}`);
+    // 27.11.22: Centralny helper błędów redaguje tokeny, hasła i maile, zanim trafią do logów winston.
+    logger.error(`${safeRoute}: Error with ID ${safeId}. Error: ${safeError}`);
     return res.status(statusCode).send(`${message} (ID: ${id})`);
   } else {
-    logger.error(`${route}: ${message}. Error: ${error.message}`);
+    logger.error(`${safeRoute}: ${message}. Error: ${safeError}`);
     return res.status(statusCode).send(message);
   }
 };
@@ -180,10 +210,14 @@ const handleWarning = (
   statusCode: number = STATUS_CODES.NOT_FOUND,
   id?: string
 ) => {
+  const safeRoute = sanitizeLogValue(route);
+  const safeId = id ? sanitizeLogValue(id) : undefined;
+
   if (id) {
-    logger.warn(`${route}: Warning with ID ${id}. Message: ${message}`);
+    // 27.11.23: Ostrzeżenia przechodzą przez tę samą sanitację, żeby logi walidacyjne nie ujawniały wrażliwych wartości.
+    logger.warn(`${safeRoute}: Warning with ID ${safeId}. Message: ${message}`);
   } else {
-    logger.warn(`${route}: ${message}`);
+    logger.warn(`${safeRoute}: ${message}`);
   }
 
   return res.status(statusCode).send(message);
@@ -210,6 +244,8 @@ export {
   normalizeString,
   isNonEmptyString,
   areNonEmptyStrings,
+  maskEmail,
+  sanitizeLogValue,
   verifyToken,
   requireSelfOrAdmin,
   requireRoles,

@@ -6,3 +6,20 @@
 2026-04-18 20:45:30 warn: Token verification failed on GET /users/user/0a90fd86-c85a-4d6e-bb77-1a4d8c119483: Authorization failed due to an invalid JsonWebToken signature.
 2026-04-18 20:45:32 info: Logout Route: POST: User 0a90fd86-c85a-4d6e-bb77-1a4d8c119483 logged out.
 2026-04-18 20:45:37 info: Logged in user: superuser, access level: superuser
+2026-04-18 20:51:32 info: Checking if database "erp" exists...
+2026-04-18 20:51:32 info: Database "erp" already exists, no need to create.
+2026-04-18 20:51:32 info: User root status: 1
+2026-04-18 20:51:32 info: Database initialized successfully.
+2026-04-18 20:51:32 info: Server is running on port: 3001
+2026-04-18 20:52:58 warn: Token verification failed on GET /warehouse/products: Authorization failed due to an invalid JsonWebToken signature.
+2026-04-18 20:53:48 info: Logout Route: POST: User 0a90fd86-c85a-4d6e-bb77-1a4d8c119483 logged out.
+2026-04-18 20:53:53 warn: Login Route: POST: User not found. Username: Alexis: Invalid login credentials. Please check your login details.
+2026-04-18 20:53:58 warn: Login Route: POST: User not found. Username: Ewa Strauss: Invalid login credentials. Please check your login details.
+2026-04-18 20:54:02 warn: Login Route: POST: User not found. Username: Ewa Strauss: Invalid login credentials. Please check your login details.
+2026-04-18 20:54:14 info: Logged in user: Monika Jarzabska, access level: sales
+2026-04-18 20:54:37 info: Logout Route: POST: User f72ed688-be28-4a27-a272-3416ff66b055 logged out.
+2026-04-18 20:59:14 info: Checking if database "erp" exists...
+2026-04-18 20:59:14 info: Database "erp" already exists, no need to create.
+2026-04-18 20:59:14 info: User root status: 1
+2026-04-18 20:59:14 info: Database initialized successfully.
+2026-04-18 20:59:14 info: Server is running on port: 3001
