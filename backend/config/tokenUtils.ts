@@ -1,37 +1,41 @@
+import "dotenv/config";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import fs from "fs";
 
 const TOKEN_EXPIRATION_TIME = "1m";
-// zmiana powoduje ze klucz zmienia sie przy kazdym restarcie serwera
-// powoduje odmowe dostępu dla wszystkich zalogowanych użytkowników w poprzedniej sesji serwera
-// const SECRET_REFRESH_TOKEN = crypto.randomBytes(32).toString("hex");
-// w razie niepewności czy dane są bezpieczne, wystarczy zresetowac serwer, aby natychmiast uniemozliwic prace
-// osobom które uzyskały nieautoryzowany dostep
-
-const SECRET_REFRESH_TOKEN = "Jakis_super_tajny_klucz";
+const SECRET_REFRESH_TOKEN =
+  process.env.REFRESH_TOKEN_SECRET ||
+  process.env.jwt_secret ||
+  crypto.randomBytes(32).toString("hex");
 const REFRESH_TOKEN_EXPIRATION = "7d";
 const privateKey = fs.readFileSync("./klucze/privateKey.pem", "utf8");
 
 interface TokenPayload {
+  userId: string;
   user: string;
   role: string;
-  exp?: number;
 }
 
-const generateToken = (username: string, role: string): string => {
+const generateToken = (userId: string, username: string, role: string): string => {
   const payload: TokenPayload = {
+    userId,
     user: username,
     role: role,
-    exp:
-      Math.floor(Date.now() / 1000) +
-      parseInt(TOKEN_EXPIRATION_TIME.split("m")[0]) * 60 * 60,
   };
-  return jwt.sign(payload, privateKey, { algorithm: "RS256" });
+  return jwt.sign(payload, privateKey, {
+    algorithm: "RS256",
+    expiresIn: TOKEN_EXPIRATION_TIME,
+  });
 };
 
-const generateRefreshToken = (username: string, role: string): string => {
-  const payload: Omit<TokenPayload, "exp"> = {
+const generateRefreshToken = (
+  userId: string,
+  username: string,
+  role: string,
+): string => {
+  const payload: TokenPayload = {
+    userId,
     user: username,
     role: role,
   };

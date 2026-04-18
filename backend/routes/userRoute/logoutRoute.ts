@@ -3,6 +3,8 @@ import middleware from "../../config/middleware";
 import logger from "../../logs/logger";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
+import { handleError, handleWarning, verifyToken } from "../../config/config";
+import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 
 const router = express.Router();
 router.use(middleware);
@@ -10,6 +12,37 @@ router.use(middleware);
 router.get("/", (req: Request, res: Response): Response => {
   logger.info(MESSAGES.SUCCESSFUL_LOGOUT);
   return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_LOGOUT);
+});
+
+router.post("/", verifyToken, async (req: Request, res: Response): Promise<Response | void> => {
+  const { idUser, refreshToken } = req.body;
+
+  if (!idUser) {
+    return handleWarning(res, "Logout Route: POST", MESSAGES.MISSING_ID_USER, STATUS_CODES.UNPROCESSABLE_ENTITY);
+  }
+
+  if (!refreshToken) {
+    return handleWarning(res, "Logout Route: POST", MESSAGES.NO_REFRESH_TOKEN, STATUS_CODES.UNAUTHORIZED, idUser);
+  }
+
+  try {
+    const userInfo: any = await UsersRecord.selectTokenById([idUser]);
+    if (userInfo.length === 0) {
+      return handleWarning(res, "Logout Route: POST", MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND, idUser);
+    }
+
+    const storedRefreshToken = userInfo[0]?.refresh_token;
+    if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
+      return handleWarning(res, "Logout Route: POST", MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
+    }
+
+    await UsersRecord.updateRefreshTokenById([null, idUser]);
+
+    logger.info(`Logout Route: POST: User ${idUser} logged out.`);
+    return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_LOGOUT);
+  } catch (error: any) {
+    return handleError(res, error, "Logout Route: POST", MESSAGES.SERVER_ERROR, STATUS_CODES.SERVER_ERROR, idUser);
+  }
 });
 
 export default router;

@@ -30,7 +30,7 @@ interface IUserRecord {
   img_url: string;
   created_at: string;
   is_active: string;
-  refresh_token: string; 
+  refresh_token: string | null;
 }
 
 interface IQueryResult {
@@ -46,7 +46,7 @@ class UsersRecord implements IUserRecord {
   img_url: string;
   created_at: string;
   is_active: string;
-  refresh_token: string; 
+  refresh_token: string | null;
 
   constructor(obj: IUserRecord) {
     this.id = obj.id;
@@ -99,7 +99,7 @@ class UsersRecord implements IUserRecord {
     });
   }
 
-  static async updateRefreshTokenById([refreshToken, id]: [string, string]) {
+  static async updateRefreshTokenById([refreshToken, id]: [string | null, string]) {
     return performTransaction(async (connection) => {
       const results = await connection.execute(UPDATE_TOKEN_BY_ID, [
         refreshToken,

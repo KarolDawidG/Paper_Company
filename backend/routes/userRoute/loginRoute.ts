@@ -49,14 +49,15 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         return handleWarning(res, `Login Route: POST: Wrong password. Username: ${user}`, MESSAGES.UNPROCESSABLE_ENTITY, STATUS_CODES.UNAUTHORIZED);
       }
 
-    const token = generateToken(user, userRecord.role);
-    const refreshToken = generateRefreshToken(user, userRecord.role);
+    const token = generateToken(userRecord.id, user, userRecord.role);
+    const refreshToken = generateRefreshToken(userRecord.id, user, userRecord.role);
 
     await UsersRecord.updateRefreshTokenById([refreshToken, userRecord.id]);
 
     logger.info(`Logged in user: ${user}, access level: ${userRecord.role}`);
     return res.status(STATUS_CODES.SUCCESS).json({
       token,
+      refreshToken,
       idUser: userRecord.id,
       message: MESSAGES.SUCCESSFUL_SIGN_UP,
     });
@@ -66,9 +67,12 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 });
 
 router.post("/refresh", async (req: Request, res: Response) => {
-  const { idUser } = req.body;
+  const { idUser, refreshToken } = req.body;
     if (!idUser) {
       return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.MISSING_ID_USER, STATUS_CODES.UNPROCESSABLE_ENTITY);
+    }
+    if (!refreshToken) {
+      return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.NO_REFRESH_TOKEN, STATUS_CODES.UNAUTHORIZED);
     }
   try {
     const userInfo: any = await UsersRecord.selectTokenById([idUser]);
@@ -76,9 +80,12 @@ router.post("/refresh", async (req: Request, res: Response) => {
         return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND, idUser);
       }
 
-    const refreshToken = userInfo[0]?.refresh_token;
-      if (!refreshToken) {
+    const storedRefreshToken = userInfo[0]?.refresh_token;
+      if (!storedRefreshToken) {
         return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.NO_REFRESH_TOKEN, STATUS_CODES.UNAUTHORIZED, idUser);
+      }
+      if (storedRefreshToken !== refreshToken) {
+        return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
       }
 
     jwt.verify(refreshToken, SECRET_REFRESH_TOKEN, (err: any, decoded: any) => {
@@ -86,25 +93,25 @@ router.post("/refresh", async (req: Request, res: Response) => {
         return handleError(res, err, `Login Route /refresh: POST`, MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
       }
 
-      const { user: username, role } = decoded;
-      const newToken: string = generateToken(username, role);
-      const newRefreshToken: string = generateRefreshToken(username, role);
+      const { userId, user: username, role } = decoded;
+      if (`${userId}` !== `${idUser}`) {
+        return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
+      }
+      const newToken: string = generateToken(userId, username, role);
+      const newRefreshToken: string = generateRefreshToken(userId, username, role);
     
       UsersRecord.updateRefreshTokenById([newRefreshToken, idUser])
         .then(() => {
-          return res.json({ token: newToken });
+          return res.json({ token: newToken, refreshToken: newRefreshToken });
         })
         .catch((error) => {
-          return handleError(res, err, `Refresh Route: POST: Error updating refresh token for user ID: ${idUser}`, MESSAGES.SERVER_ERROR, STATUS_CODES.SERVER_ERROR);
+          return handleError(res, error, `Refresh Route: POST: Error updating refresh token for user ID: ${idUser}`, MESSAGES.SERVER_ERROR, STATUS_CODES.SERVER_ERROR);
         });
     });
 
   } catch (error:any) {
       return handleError(res, error, "Refresh Route: POST", MESSAGES.SERVER_ERROR, STATUS_CODES.SERVER_ERROR);
   }
-
-
-
 });
 
 /**
