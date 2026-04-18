@@ -1,12 +1,12 @@
-import axios from "axios";
+import axiosInstance from "@/app/api/axiosInstance";
 import { Mail } from "../Interfaces/MailInterface";
 import { EmployeeMessageInterface } from "../Interfaces/EmployeeInterface";
 import { notify } from "@/app/components/notification/Notify";
-const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
 
 export const fetchMailsData = async (setEmails: (emails: Mail[]) => void) => {
     try {
-      const response = await axios.get(`${BACKEND}/mail`);
+      // 27.9.2: Skrzynka HR używa axiosInstance, żeby chronione requesty dziedziczyły token i odświeżanie sesji.
+      const response = await axiosInstance.get(`/mail`);
       setEmails(response.data);
     } catch (error) {
       console.log(error);
@@ -16,7 +16,7 @@ export const fetchMailsData = async (setEmails: (emails: Mail[]) => void) => {
 
   export const deleteMail = async (mailId: string, setEmails: React.Dispatch<React.SetStateAction<Mail[]>>) => {
     try {
-      await axios.delete(`${BACKEND}/mail/${mailId}`);
+      await axiosInstance.delete(`/mail/${mailId}`);
       fetchMailsData(setEmails);
     } catch (error) {
       console.error('Error deleting mail:', error);
@@ -25,7 +25,7 @@ export const fetchMailsData = async (setEmails: (emails: Mail[]) => void) => {
 
   export const sendMail = async (emailData: EmployeeMessageInterface[]) => {
     try {
-      await axios.post(`${BACKEND}/mail`, emailData, {
+      await axiosInstance.post(`/mail`, emailData, {
         headers: {
           'Content-Type': 'application/json',
         },

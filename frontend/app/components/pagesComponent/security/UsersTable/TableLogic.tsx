@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { User, UserData } from './TableInterfaces';
 import axiosInstance from '@/app/api/axiosInstance';
-import axios from 'axios';
 
 const TableLogic = () => {
   const [data, setData] = useState<User[]>([]);
@@ -20,7 +19,8 @@ const TableLogic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<UserData>('http://localhost:3001/admin');
+        // 27.9.1: Panel admina korzysta z axiosInstance, bo endpoint wymaga tokenu i powinien wspierać refresh sesji.
+        const response = await axiosInstance.get<UserData>('/admin');
         console.log(response.data.usersList)
         setData(response.data.usersList);
       } catch (error) {
@@ -34,7 +34,7 @@ const TableLogic = () => {
   const handleChangeRole = async (userId: string) => {
     try {
       const role = selectedRoles[userId] || 'user';
-      await axiosInstance.put(`http://localhost:3001/admin/${userId}/${role}`);
+      await axiosInstance.put(`/admin/${userId}/${role}`);
 
       setData((prevData) =>
         prevData.map((user) =>
@@ -48,7 +48,7 @@ const TableLogic = () => {
 
   const handleDeleteUser = async (id: string) => {
     try {
-      await axiosInstance.delete(`http://localhost:3001/admin/${id}`);
+      await axiosInstance.delete(`/admin/${id}`);
       setData((prevData) => prevData.filter((user) => user.id !== id));
     } catch (error) {
       console.error('Error deleting user:', error);
