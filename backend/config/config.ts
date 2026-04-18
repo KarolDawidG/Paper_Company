@@ -68,7 +68,8 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
         .status(STATUS_CODES.UNAUTHORIZED)
         .send(MESSAGES.SESSION_EXPIRED);
     }
-    req.userRole = (decoded as any).role; // Teraz TypeScript wie o `userRole`
+    // 777 superuser fix: Normalizujemy rolę z tokenu do małych liter, żeby porównania były odporne na zapis w bazie.
+    req.userRole = normalizeString((decoded as any).role).toLowerCase();
     req.user = decoded; // I o `user` :p
     next();
   });
@@ -82,8 +83,12 @@ const requireSelfOrAdmin = (
   const resourceId = req.params.id;
   const authenticatedUserId = req.user?.userId;
 
-  // 27.6.1: Profil i avatar mają być dostępne tylko dla właściciela zasobu albo admina.
-  if (req.userRole === "admin" || `${authenticatedUserId}` === `${resourceId}`) {
+  // 777 superuser: Rola deweloperska ma pełny dostęp do własnych zasobów i zasobów innych użytkowników.
+  if (
+    req.userRole === "admin" ||
+    req.userRole === "superuser" ||
+    `${authenticatedUserId}` === `${resourceId}`
+  ) {
     return next();
   }
 
@@ -93,6 +98,10 @@ const requireSelfOrAdmin = (
 const requireRoles =
   (...roles: string[]) =>
   (req: CustomRequest, res: Response, next: NextFunction) => {
+    // 777 superuser: Rola testowa omija bramki modułowe, żeby dało się przejść cały system jednym kontem.
+    if (req.userRole === "superuser") {
+      return next();
+    }
     // 27.8.1: Moduły biznesowe mają jawnie wskazane role zamiast samego "czy token istnieje".
     if (req.userRole && roles.includes(req.userRole)) {
       return next();

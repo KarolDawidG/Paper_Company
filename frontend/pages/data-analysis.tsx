@@ -21,7 +21,8 @@ const DataAnalysis = () => {
 
   if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "analize") {
+  // 777 superuser: Konto testowe ma dostęp do każdego modułu bez przełączania roli na froncie.
+  if (userRole !== "analize" && userRole !== "superuser") {
 
     return (
       <Box>

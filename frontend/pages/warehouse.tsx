@@ -21,7 +21,8 @@ const Warehouse = () => {
 
   if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "warehouse") {
+  // 777 superuser: Konto testowe ma dostęp do każdego modułu bez przełączania roli na froncie.
+  if (userRole !== "warehouse" && userRole !== "superuser") {
 
     return (
       <Box>

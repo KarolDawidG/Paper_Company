@@ -24,7 +24,8 @@ const Accounting = () => {
 
   if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "accounting") {
+  // 777 superuser: Konto testowe ma dostęp do każdego modułu bez przełączania roli na froncie.
+  if (userRole !== "accounting" && userRole !== "superuser") {
 
 
 

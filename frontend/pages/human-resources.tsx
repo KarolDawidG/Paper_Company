@@ -21,7 +21,8 @@ const HumanResources = () => {
 
   if (!userRole) return <LinearProgress />;
 
-  if (userRole !== "hr") {
+  // 777 superuser: Konto testowe ma dostęp do każdego modułu bez przełączania roli na froncie.
+  if (userRole !== "hr" && userRole !== "superuser") {
 
     return (
       <Box>
