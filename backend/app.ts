@@ -44,6 +44,9 @@ fs.writeFileSync(outputPath, jsonSpecs, 'utf-8');
 const app: express.Application = express();
 const PORT: number = 3001;
 
+// 27.10.11: Globalne middleware montujemy przed route'ami, żeby naprawdę obejmowały całą aplikację.
+app.use(middleware);
+app.use(limiter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/register", regRoute);
 app.use("/auth", logRoute);
@@ -66,8 +69,7 @@ app.use("/invoice", invoiceRoute);
 app.use("/data-analizing", dataAnalizingRoute);
 app.use("/support", supportRoute);
 
-app.use(middleware);
-app.use(limiter);
+// 27.10.12: Error handler zostaje na końcu, bo dopiero tam może przechwycić błędy z wcześniej zarejestrowanych tras.
 app.use(errorHandler);
 
 app.get("/", (req: Request, res: Response) => {
