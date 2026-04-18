@@ -23,6 +23,8 @@ import mailRoute from "./routes/mailRoute/mailRoute";
 import warehouseRoute from "./routes/warehouseRoute/warehouseRoute";
 import invoiceRoute from "./routes/invoiceRoute/invoiceRoute";
 import dataAnalizingRoute from "./routes/dataAnalizingRoute/dataAnalizingRoute";
+// 27.3.4: Rejestracja osobnej trasy pomocniczej dla kontaktów do modułów bez uprawnień.
+import supportRoute from "./routes/supportRoute/supportRoute";
 
 // swagger
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -62,6 +64,7 @@ app.use("/mail", mailRoute);
 app.use("/warehouse", warehouseRoute);
 app.use("/invoice", invoiceRoute);
 app.use("/data-analizing", dataAnalizingRoute);
+app.use("/support", supportRoute);
 
 app.use(middleware);
 app.use(limiter);
@@ -76,7 +79,7 @@ app.get("/", (req: Request, res: Response) => {
     await createDatabaseIfNotExists();
     await initializeDatabase();
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server is running on port: ${PORT}`);
     });
   } catch (err) {
     console.error("Initialization failed:", err);

@@ -83,6 +83,72 @@ NEXT_PUBLIC_BACKEND=http://localhost:3001
 
 ---
 
+## 🤖 Opis zmian wykonanych przez AI
+
+Poniższa sekcja dokumentuje zmiany wprowadzone iteracyjnie przy wsparciu AI. Opis ma charakter roboczy i edukacyjny: pokazuje **co** zostało zmienione oraz **dlaczego** dana zmiana była potrzebna z perspektywy spójności działania aplikacji.
+
+### Ważna informacja
+Ten opis oraz poniżej wymienione poprawki zostały przygotowane przy wsparciu **AI (Codex)**. Zmiany nie są deklaracją gotowości produkcyjnej systemu, tylko uporządkowaniem wybranych obszarów projektu edukacyjnego.
+
+### Iteracja `27.1.x` - Backend: uszczelnienie flow logowania
+
+#### Co zmieniono
+- endpoint logowania został rozszerzony tak, aby zwracał także `refreshToken`,
+- endpoint odświeżania sesji wymaga teraz `idUser` oraz `refreshToken`,
+- dodano backendowe wylogowanie unieważniające zapisany `refreshToken`,
+- poprawiono generowanie tokenów, aby flow sesji było bardziej spójne.
+
+#### Dlaczego
+- wcześniejszy model odświeżania sesji był zbyt luźny i łatwo prowadził do niespójności między stanem użytkownika a aktywną sesją,
+- brak pełnego flow `logout` po stronie backendu powodował, że wylogowanie było głównie lokalne, a nie faktyczne,
+- celem tej iteracji było uporządkowanie podstaw bezpieczeństwa wokół `login / refresh / logout`.
+
+### Iteracja `27.2.x` - Frontend: dopasowanie do nowego flow auth
+
+#### Co zmieniono
+- frontend zapisuje `refreshToken` po zalogowaniu,
+- mechanizm odświeżania sesji wysyła `idUser` i `refreshToken`,
+- poprawiono obsługę `401` w interceptorze,
+- wylogowanie z UI wywołuje backendowe `/logout`, a nie tylko czyści dane lokalne.
+
+#### Dlaczego
+- po zmianach backendowych frontend nadal działał według starego kontraktu,
+- prowadziło to do problemów po wygaśnięciu access tokenu,
+- celem było zsynchronizowanie obu warstw aplikacji, aby sesja działała przewidywalnie.
+
+### Iteracja `27.3.x` - Backend: wydzielenie endpointu pomocniczego dla ekranów bez uprawnień
+
+#### Co zmieniono
+- dodano osobny endpoint `GET /support/:role`,
+- wydzielono zapytanie i metodę do pobierania listy kontaktów wsparcia na podstawie roli,
+- oddzielono dane pomocnicze dla UI od danych administracyjnych użytkowników.
+
+#### Dlaczego
+- wcześniejsze widoki "brak uprawnień" korzystały z endpointów o bardziej administracyjnym charakterze,
+- to utrudniało późniejsze zaostrzanie uprawnień i mogło psuć frontend,
+- celem tej iteracji było rozdzielenie danych pomocniczych od właściwych danych modułowych.
+
+### Iteracja `27.4.x` - Frontend: przepięcie widoku "brak uprawnień"
+
+#### Co zmieniono
+- komponent odpowiedzialny za widok bez dostępu do modułu korzysta teraz z `/support/:role`,
+- frontend pobiera listę kontaktów wsparcia z dedykowanego endpointu zamiast z trasy administracyjnej.
+
+#### Dlaczego
+- ekran "brak uprawnień" powinien nadal pokazywać użytkownikowi, z kim może się skontaktować,
+- lista kontaktów jest danymi pomocniczymi dla interfejsu, a nie częścią panelu administracyjnego,
+- zmiana zmniejsza ryzyko przypadkowego zepsucia tego widoku przy kolejnych poprawkach uprawnień.
+
+### Jak czytać komentarze w kodzie
+- `27.1.x` odnosi się do backendowego flow logowania,
+- `27.2.x` odnosi się do frontendowego flow logowania,
+- `27.3.x` odnosi się do backendowego endpointu wsparcia,
+- `27.4.x` odnosi się do frontendowego widoku wsparcia.
+
+Komentarze z tą numeracją zostały dodane bezpośrednio w zmienionych plikach, aby łatwiej było prześledzić zakres i powód konkretnych modyfikacji.
+
+---
+
 # 🗄️ Struktura Bazy Danych ERP – Dystrybucja Papieru
 
 System korzysta z relacyjnej bazy danych **MySQL**, silnik **InnoDB**, kodowanie **UTF-8**.

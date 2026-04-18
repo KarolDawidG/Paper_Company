@@ -25,7 +25,7 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    // Chronimy się przed błędami sieciowymi i zapętlonym refresh flow.
+    // 27.2.4: Interceptor przerywa przy błędach sieciowych i nie zapętla się na samym /auth/refresh.
     if (!error.response || !originalRequest) {
       return Promise.reject(error);
     }
@@ -38,6 +38,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
+        // 27.2.5: Odtwarzamy nagłówek tylko dla ponawianego requestu, bez globalnego nadpisywania axiosa.
         originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);

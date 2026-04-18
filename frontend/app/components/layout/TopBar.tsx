@@ -25,9 +25,13 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
   useEffect(() => {
     (async () => {
       try {
-        const storedLocale = localStorage.getItem("idUser");
+        const storedUserId = localStorage.getItem("idUser");
+        if (!storedUserId) {
+          return;
+        }
 
-        const res = await axiosInstance.get(`${BACKEND}/url/${storedLocale}`);
+        // 27.6.8: TopBar pobiera avatar zawsze dla aktualnie zalogowanego użytkownika.
+        const res = await axiosInstance.get(`${BACKEND}/url/${storedUserId}`);
         const responseData = res.data.img_url;
         setUrlImg(responseData);
         setImageUrl(responseData);
@@ -50,7 +54,7 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
     const idUser = localStorage.getItem("idUser");
 
     try {
-      // Informujemy backend o wylogowaniu, żeby unieważnić refresh token w bazie.
+      // 27.2.7: Wylogowanie woła backend, żeby unieważnić refresh token także po stronie serwera.
       if (token && refreshToken && idUser) {
         await axios.post(
           `${BACKEND}/logout`,
@@ -65,6 +69,7 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
     } catch (error) {
       console.error("Error: ", error);
     } finally {
+      // 27.2.8: Po wylogowaniu czyścimy oba tokeny i lokalny stan użytkownika.
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("role");

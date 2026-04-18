@@ -49,6 +49,7 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
         return handleWarning(res, `Login Route: POST: Wrong password. Username: ${user}`, MESSAGES.UNPROCESSABLE_ENTITY, STATUS_CODES.UNAUTHORIZED);
       }
 
+    // 27.1.4: Login zwraca parę access + refresh token, żeby frontend mógł bezpiecznie odnowić sesję.
     const token = generateToken(userRecord.id, user, userRecord.role);
     const refreshToken = generateRefreshToken(userRecord.id, user, userRecord.role);
 
@@ -80,6 +81,7 @@ router.post("/refresh", async (req: Request, res: Response) => {
         return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND, idUser);
       }
 
+    // 27.1.5: Backend porównuje refresh token z wersją zapisaną w bazie, zamiast ufać samemu idUser.
     const storedRefreshToken = userInfo[0]?.refresh_token;
       if (!storedRefreshToken) {
         return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.NO_REFRESH_TOKEN, STATUS_CODES.UNAUTHORIZED, idUser);
@@ -93,10 +95,12 @@ router.post("/refresh", async (req: Request, res: Response) => {
         return handleError(res, err, `Login Route /refresh: POST`, MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
       }
 
+      // 27.1.6: Po weryfikacji podpisu sprawdzamy jeszcze, czy token należy do wskazanego użytkownika.
       const { userId, user: username, role } = decoded;
       if (`${userId}` !== `${idUser}`) {
         return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);
       }
+      // 27.1.7: Refresh rotuje oba tokeny, żeby stara sesja nie była utrzymywana bez końca.
       const newToken: string = generateToken(userId, username, role);
       const newRefreshToken: string = generateRefreshToken(userId, username, role);
     

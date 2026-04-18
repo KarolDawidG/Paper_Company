@@ -10,8 +10,9 @@ const UnauthorizedViewSecurity = ({children}:any) => {
     const fetchUserData = async () => {
       const role = children;
       try {
-        const response = await axiosInstance.get(`/users/${role}`);
-        setUserData(response.data.usersList);
+        // 27.4.1: Widok "brak uprawnień" korzysta z /support/:role, a nie z tras administracyjnych.
+        const response = await axiosInstance.get(`/support/${role}`);
+        setUserData(response.data.contacts);
       } catch (error) {
         console.error("Nie udało się pobrać danych użytkownika.", error);
       }

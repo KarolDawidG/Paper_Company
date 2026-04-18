@@ -34,7 +34,11 @@ const DeleteImageButton = () => {
       //usuwanie z localstorage
       localStorage.removeItem("image");
       const idUser = localStorage.getItem("idUser");
+      if (!idUser) {
+        throw new Error("Missing user id");
+      }
       //usuwanie z bazy danych
+      // 27.6.9: Usuwanie avatara opiera się na tym samym idUser co odczyt i upload.
       await axiosInstance.delete(`${BACKEND}/url/${idUser}`);
       //ustawianie globalnego stanu dla glownego awatara
       setImageUrl(MAIN_AVATAR);

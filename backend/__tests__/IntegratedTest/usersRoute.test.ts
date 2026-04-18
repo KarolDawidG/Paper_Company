@@ -12,6 +12,8 @@ app.use(express.json());
 app.use('/users', router);
 
 const token = generateTokenForUnitTest('admin');
+const selfToken = generateTokenForUnitTest('user', 'id1');
+const otherUserToken = generateTokenForUnitTest('user', 'id2');
 
 describe('Users API', () => {
 
@@ -94,6 +96,28 @@ describe('Users API', () => {
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR}`);
   });
 
+  it('should return 403 when user tries to update someone else profile', async () => {
+    const response = await request(app)
+      .put('/users/id1')
+      .set('Authorization', `Bearer ${otherUserToken}`)
+      .send({ username: 'NewName', email: 'newemail@example.com' });
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
+
+  it('should allow user to update own profile', async () => {
+    jest.spyOn(UsersRecord, 'updateUserData').mockResolvedValue([{ affectedRows: 1 }]);
+
+    const response = await request(app)
+      .put('/users/id1')
+      .set('Authorization', `Bearer ${selfToken}`)
+      .send({ username: 'OwnName', email: 'own@example.com' });
+
+    expect(response.status).toBe(STATUS_CODES.SUCCESS);
+    expect(response.text).toBe(MESSAGES.SUCCESSFUL_OPERATION);
+  });
+
   //////////////////////////////////////////////////////
   //////          Test for method GET user by ID  ///////
   //////////////////////////////////////////////////////
@@ -136,6 +160,35 @@ describe('Users API', () => {
       .set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR} (ID: id1)`);
+  });
+
+  it('should return 403 when user tries to read another profile', async () => {
+    const response = await request(app)
+      .get('/users/user/id1')
+      .set('Authorization', `Bearer ${otherUserToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
+
+  it('should allow user to read own profile', async () => {
+    jest.spyOn(UsersRecord, 'selectById').mockResolvedValue([
+      {
+        id: 'id1',
+        username: 'john_doe',
+        email: 'john@example.com',
+        created_at: '2023-01-01',
+        password: 'hashedPassword',
+        role: 'user'
+      } as RowDataPacket
+    ]);
+
+    const response = await request(app)
+      .get('/users/user/id1')
+      .set('Authorization', `Bearer ${selfToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.SUCCESS);
+    expect(response.body.id).toBe('id1');
   });
 
 });

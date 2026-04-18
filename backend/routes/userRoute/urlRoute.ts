@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified } from "../../config/config";
+import { limiter, errorHandler, handleError, handleNoRecordsModified, requireSelfOrAdmin } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
@@ -9,9 +9,10 @@ import MESSAGES from "../../config/messages";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
+      // 27.6.5: Avatar podpinamy do tej samej zasady własności co dane profilu.
       const [userInfo]: any = await UsersRecord.selectUrlById([id]);
         if (userInfo === undefined){
           return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
@@ -23,9 +24,13 @@ router.get("/:id", verifyToken, async (req: Request, res: Response, next: NextFu
   },
 );
 
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response) => {
   const id: string = req.params.id;
   const img_url: string = req.body.img_url;
+
+  if (!img_url) {
+    return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+  }
 
   try {
     const result = await UsersRecord.updateImgUrl(id, img_url);
@@ -38,11 +43,10 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
      const [result] = await UsersRecord.deleteUrl(id);
-     console.log(result.affectedRows)
      if (result.affectedRows === 0) {
       return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NO_RECORDS_MODIFIED);
     }

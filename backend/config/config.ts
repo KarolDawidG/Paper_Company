@@ -74,6 +74,22 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
   });
 };
 
+const requireSelfOrAdmin = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const resourceId = req.params.id;
+  const authenticatedUserId = req.user?.userId;
+
+  // 27.6.1: Profil i avatar mają być dostępne tylko dla właściciela zasobu albo admina.
+  if (req.userRole === "admin" || `${authenticatedUserId}` === `${resourceId}`) {
+    return next();
+  }
+
+  return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
+};
+
 const queryParameterize = /^[A-Za-z0-9]+$/;
 
 const validateEmail = (e: string) => {
@@ -141,7 +157,9 @@ function handleNoRecordsModified(res: Response, route: string, id: string, resul
   }
 }
 
-const generateTokenForUnitTest = (role: string) => jwt.sign({ role }, privateKey, { algorithm: 'RS256' });
+const generateTokenForUnitTest = (role: string, userId: string = "test-id") =>
+  // 27.6.2: Token testowy niesie też userId, żeby dało się testować własne zasoby.
+  jwt.sign({ role, userId }, privateKey, { algorithm: 'RS256' });
 
 export {
   errorHandler,
@@ -152,6 +170,7 @@ export {
   validatePassword,
   validateUserName,
   verifyToken,
+  requireSelfOrAdmin,
   handleError,
   handleWarning,
   handleNoRecordsModified,

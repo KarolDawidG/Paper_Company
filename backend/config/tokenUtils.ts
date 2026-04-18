@@ -4,6 +4,7 @@ import crypto from "crypto";
 import fs from "fs";
 
 const TOKEN_EXPIRATION_TIME = "1m";
+// 27.1.1: Refresh secret przestał być hardcoded i jest brany z env z bezpiecznym fallbackiem.
 const SECRET_REFRESH_TOKEN =
   process.env.REFRESH_TOKEN_SECRET ||
   process.env.jwt_secret ||
@@ -18,6 +19,7 @@ interface TokenPayload {
 }
 
 const generateToken = (userId: string, username: string, role: string): string => {
+  // 27.1.2: Access token niesie userId, żeby backend mógł wiązać sesję z konkretnym użytkownikiem.
   const payload: TokenPayload = {
     userId,
     user: username,
@@ -34,6 +36,7 @@ const generateRefreshToken = (
   username: string,
   role: string,
 ): string => {
+  // 27.1.3: Refresh token ma ten sam kontekst użytkownika co access token.
   const payload: TokenPayload = {
     userId,
     user: username,

@@ -19,12 +19,19 @@ const ImpageUpload = () => {
   const t = useTranslation(currentLocale);
 
   const handleClientUploadComplete = async (res: any) => {
-    const storedLocale = localStorage.getItem("idUser");
+    const storedUserId = localStorage.getItem("idUser");
     const newImageUrl: any = res[0].url;
     setImageUrl(newImageUrl);
     setDropImage(newImageUrl);
+
+    if (!storedUserId) {
+      notify(`${t.notification.error}`);
+      return;
+    }
+
     try {
-      await axiosInstance.put(`${BACKEND}/url/${storedLocale}`, {
+      // 27.6.7: Aktualizacja avatara używa jawnie id zalogowanego użytkownika, nie mylącej nazwy zmiennej.
+      await axiosInstance.put(`${BACKEND}/url/${storedUserId}`, {
         img_url: newImageUrl,
       });
       //TODO: useTranslationStatus - there may be errors if it is not added

@@ -28,24 +28,41 @@ const registerLogic = () => {
     }));
   };
 
+  // 27.5.3: Czyścimy stan captcha po wygaśnięciu lub błędzie, żeby przycisk rejestracji nie został aktywny pozornie.
+  const resetCaptchaState = () => {
+    setCaptchaValue(null);
+    setIsHuman(false);
+  };
+
   const onCaptchaChange = async (token: string | null) => {
-    if (token) {
-      try {
-        const responseCaptcha = await axios.post(`${BACKEND}/cap`, { token });
-        if (responseCaptcha.data === "Human 👨 👩") {
-          setCaptchaValue(token);
-          setIsHuman(true);
-        } else {
-          setIsHuman(false);
-        }
-      } catch (error: any) {
-        showSnackbar(error.response.data, "error");
+    if (!token) {
+      resetCaptchaState();
+      return;
+    }
+
+    try {
+      const responseCaptcha = await axios.post(`${BACKEND}/cap`, { token });
+      if (responseCaptcha.data === "Human 👨 👩") {
+        setCaptchaValue(token);
+        setIsHuman(true);
+        return;
       }
+
+      resetCaptchaState();
+    } catch (error: any) {
+      resetCaptchaState();
+      showSnackbar(error.response?.data || "Captcha verification failed.", "error");
     }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    // 27.5.4: Blokujemy rejestrację bez poprawnie zweryfikowanej captcha także na poziomie submitu.
+    if (!isHuman || !captchaValue) {
+      showSnackbar("Potwierdź reCAPTCHA przed rejestracją.", "error");
+      return;
+    }
+
     try {
       const response = await axios.post(`${BACKEND}/register`, userData);
       if (response.status === 200) {
@@ -65,6 +82,7 @@ const registerLogic = () => {
     REACT_APP_SITE_KEY,
     userData,
     handleChange,
+    resetCaptchaState,
     onCaptchaChange,
     handleSubmit,
   };

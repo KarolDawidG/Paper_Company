@@ -10,6 +10,7 @@ const useUserData = () => {
   const [id, setUserId] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState({username: "", email: "",});
+  const storedUserId = localStorage.getItem("idUser");
 
   const currentLocale = localStorage.getItem("locale") || "en";
   const t = useTranslation(currentLocale);
@@ -18,10 +19,9 @@ const useUserData = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const idUser: string | null = localStorage.getItem("idUser");
-        setUserId(idUser);
-    
-        const response = await axiosInstance.get(`/users/user/${idUser}`);
+        setUserId(storedUserId);
+        // 27.6.6: Dashboard czyta i zapisuje dane zawsze względem zalogowanego idUser.
+        const response = await axiosInstance.get(`/users/user/${storedUserId}`);
         setUserData(response.data);
       } catch (error) {
         if (isTranslationLoaded) {
@@ -44,6 +44,9 @@ const useUserData = () => {
   };
 
   const handleSaveClick = async () => {
+    if (!id) {
+      return;
+    }
     try {
       setUserData((prevUserData) => ({
         ...prevUserData!,

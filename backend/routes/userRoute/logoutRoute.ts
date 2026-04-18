@@ -31,6 +31,7 @@ router.post("/", verifyToken, async (req: Request, res: Response): Promise<Respo
       return handleWarning(res, "Logout Route: POST", MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND, idUser);
     }
 
+    // 27.1.8: Wylogowanie czyści refresh token w bazie dopiero po potwierdzeniu, że klient zna jego aktualną wartość.
     const storedRefreshToken = userInfo[0]?.refresh_token;
     if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
       return handleWarning(res, "Logout Route: POST", MESSAGES.INVALID_REFRESH_TOKEN, STATUS_CODES.FORBIDDEN, idUser);

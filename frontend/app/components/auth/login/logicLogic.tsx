@@ -37,7 +37,7 @@ const logicLogic = () => {
         const idUser = response.data.idUser;
 
         localStorage.setItem("token", token);
-        // Refresh token zapisujemy osobno, bo frontend używa go tylko przy odnawianiu sesji.
+        // 27.2.6: Refresh token zapisujemy osobno, bo frontend używa go tylko do odnawiania sesji.
         if (refreshToken) {
           localStorage.setItem("refreshToken", refreshToken);
         }

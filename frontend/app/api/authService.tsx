@@ -7,7 +7,7 @@ export const refreshAccessToken = async () => {
     const idUser = localStorage.getItem("idUser");
     const refreshToken = localStorage.getItem("refreshToken");
 
-    // Backend wymaga teraz obu danych, więc trzymamy je razem przy odnawianiu sesji.
+    // 27.2.1: Frontend wysyła teraz idUser i refreshToken, zgodnie z nowym kontraktem backendu.
     if (!idUser || !refreshToken) {
       return null;
     }
@@ -21,6 +21,7 @@ export const refreshAccessToken = async () => {
       const newAccessToken = response.data.token;
       const newRefreshToken = response.data.refreshToken;
 
+      // 27.2.2: Po refreshu aktualizujemy lokalny stan sesji, a nie tylko sam access token.
       localStorage.setItem("token", newAccessToken);
       if (newRefreshToken) {
         localStorage.setItem("refreshToken", newRefreshToken);
@@ -36,7 +37,7 @@ export const refreshAccessToken = async () => {
   } catch (error) {
     console.error("Błąd przy odświeżaniu tokena:", error);
 
-    // Czyścimy lokalną sesję, gdy refresh już nie działa, żeby UI nie trzymał martwego stanu.
+    // 27.2.3: Czyścimy lokalną sesję, gdy refresh się nie powiedzie, żeby UI nie trzymał martwego stanu.
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("role");

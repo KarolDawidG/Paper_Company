@@ -19,6 +19,7 @@ import {
   SELECT_URL_BY_ID,
   UPDATE_USER_DATA_BY_ID,
   SELECT_BY_ROLE,
+  SELECT_SUPPORT_BY_ROLE,
 } from "./querryUsersRecord";
 
 interface IUserRecord {
@@ -127,6 +128,17 @@ class UsersRecord implements IUserRecord {
       return results.map((obj: any) => new UsersRecord(obj));
     } catch (error) {
       console.error("Error in listByRole:", error);
+      throw error;
+    }
+  }
+
+  static async listSupportByRole(role: string) {
+    try {
+      // 27.3.2: Helper zwraca tylko minimalne dane kontaktowe potrzebne na froncie.
+      const [results] = await pool.execute(SELECT_SUPPORT_BY_ROLE, [role]) as any;
+      return results;
+    } catch (error) {
+      console.error("Error in listSupportByRole:", error);
       throw error;
     }
   }

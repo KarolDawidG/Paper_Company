@@ -11,7 +11,8 @@ const app = express();
 app.use('/url', router);
 
 
-const token = generateTokenForUnitTest('user');
+const token = generateTokenForUnitTest('user', 'id1');
+const otherUserToken = generateTokenForUnitTest('user', 'id2');
 
   //////////////////////////////////////////////////////
   //////          Test for method GET          ///////
@@ -59,6 +60,15 @@ describe('Test for method GET', () => {
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.SERVER_ERROR}`);
   });
+
+  it('should return 403 when user tries to read another avatar', async () => {
+    const response = await request(app)
+      .get('/url/id1')
+      .set('Authorization', `Bearer ${otherUserToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
 });
 
   //////////////////////////////////////////////////////
@@ -105,5 +115,15 @@ describe('Test for method PUT', () => {
 
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.SERVER_ERROR}`);
+  });
+
+  it('should return 403 when user tries to update another avatar', async () => {
+    const response = await request(app)
+      .put('/url/id1')
+      .set('Authorization', `Bearer ${otherUserToken}`)
+      .send({ img_url: 'https://example.com/new-avatar.png' });
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 });

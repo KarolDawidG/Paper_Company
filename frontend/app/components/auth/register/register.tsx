@@ -12,6 +12,7 @@ const Register = () => {
     REACT_APP_SITE_KEY,
     userData,
     handleChange,
+    resetCaptchaState,
     onCaptchaChange,
     handleSubmit,
   } = registerLogic();
@@ -58,6 +59,9 @@ const Register = () => {
         ref={captchaRef}
         sitekey={REACT_APP_SITE_KEY}
         onChange={onCaptchaChange}
+        // 27.5.5: Obsługujemy wygaśnięcie i błąd widgetu, żeby stan formularza był zgodny z realnym stanem captcha.
+        onExpired={resetCaptchaState}
+        onErrored={resetCaptchaState}
       />
 
       <Button

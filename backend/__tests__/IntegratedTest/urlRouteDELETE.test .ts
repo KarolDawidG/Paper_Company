@@ -15,7 +15,8 @@ const createApp = () => {
 };
 
 // Token dla testów
-const token = generateTokenForUnitTest('user');
+const token = generateTokenForUnitTest('user', '123');
+const otherUserToken = generateTokenForUnitTest('user', 'other-id');
 
 // Zamockowanie funkcji handleNoRecordsModified na poziomie importu
 jest.mock('../../config/config', () => ({
@@ -65,6 +66,15 @@ describe('Test for method DELETE', () => {
 
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.SERVER_ERROR}`);
+  });
+
+  it('should return 403 when user tries to delete another avatar', async () => {
+    const response = await request(app)
+      .delete('/url/123')
+      .set('Authorization', `Bearer ${otherUserToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 });
 

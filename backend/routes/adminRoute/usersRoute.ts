@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleWarning, handleError } from "../../config/config";
+import { limiter, errorHandler, handleWarning, handleError, requireSelfOrAdmin, validateEmail, validateUserName } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -22,14 +22,18 @@ router.get("/:role", verifyToken, async (req: Request, res: Response, next: Next
   },
 );
 
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response) => {
   const userId: string = req.params.id;
   const {username, email} = req.body;
 
   if (!username || !email) {
     return handleWarning(res, `Users Route: PUT Missing required fields: username: ${username}, or email: ${email}`, MESSAGES.NOT_FOUND, STATUS_CODES.BAD_REQUEST);
   }
+  if (!validateUserName(username) || !validateEmail(email)) {
+    return handleWarning(res, "Users Route: PUT Invalid username or email format", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+  }
     try {
+      // 27.6.3: Edycja danych profilu jest ograniczona do właściciela konta lub admina.
       await UsersRecord.updateUserData([username, email, userId]);
         return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
@@ -37,9 +41,10 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-router.get("/user/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.get("/user/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
+      // 27.6.4: Odczyt pełnych danych profilu trzymamy w tej samej zasadzie co edycję.
       const [userInfo]: any = await UsersRecord.selectById([id]);
       if (!userInfo) {
         return handleWarning(res, "Users/user Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);

@@ -15,6 +15,9 @@ const UPDATE_ROLE: string = "UPDATE accounts SET role = ? WHERE id = ?";
 const SELECT_ALL: string = "SELECT * FROM accounts";
 
 const SELECT_BY_ROLE: string = "SELECT * FROM `accounts` WHERE `role` = ?";
+// 27.3.1: Osobne zapytanie kontaktowe dla ekranów "brak uprawnień", niezależne od tras administracyjnych.
+const SELECT_SUPPORT_BY_ROLE: string =
+  "SELECT id, username, email, img_url, role FROM accounts WHERE role = ? AND is_active = true";
 
 const SELECT_BY_EMAIL: string = "SELECT * FROM accounts WHERE email = ?";
 
@@ -49,4 +52,5 @@ export {
   SELECT_URL_BY_ID,
   UPDATE_USER_DATA_BY_ID,
   SELECT_BY_ROLE,
+  SELECT_SUPPORT_BY_ROLE,
 };

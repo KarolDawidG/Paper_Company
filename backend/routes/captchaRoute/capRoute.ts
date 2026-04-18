@@ -6,8 +6,10 @@ import middleware from "../../config/middleware";
 import dotenv from "dotenv";
 import STATUS_CODES from "../../config/status-codes";
 import { handleError } from "../../config/config";
+import logger from "../../logs/logger";
 dotenv.config();
-const REACT_APP_SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
+const RECAPTCHA_SECRET_KEY =
+  process.env.RECAPTCHA_SECRET_KEY || process.env.REACT_APP_SECRET_KEY;
 
 const router: Router = express.Router();
 
@@ -16,14 +18,39 @@ router.use(middleware);
 // TODO upgrade frontend
 
 router.post("/", async (req: Request, res: Response) => {
-  const { token, inputVal } = req.body as { token: string; inputVal: string };
+  const { token } = req.body as { token: string };
   try {
-    const response = await axios.post(`${URL.RECAPTCHA}${REACT_APP_SECRET_KEY}&response=${token}`,);
-      if (response.data.success) {
-        return res.status(STATUS_CODES.SUCCESS).send("Human 👨 👩");
-      } else {
-        return res.status(STATUS_CODES.FORBIDDEN).send("Robot 🤖");
-      }
+    // 27.5.1: Walidujemy konfigurację i token, żeby szybciej wykryć problem z env lub pustą captcha.
+    if (!RECAPTCHA_SECRET_KEY || !token) {
+      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.CAPTCHA_ERROR);
+    }
+
+    const params = new URLSearchParams({
+      secret: RECAPTCHA_SECRET_KEY,
+      response: token,
+    });
+
+    // 27.5.2: Wysyłamy dane do Google w standardowym formacie formularza zamiast składać URL ręcznie.
+    const response = await axios.post(URL.RECAPTCHA, params, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    if (response.data.success) {
+      return res.status(STATUS_CODES.SUCCESS).send("Human 👨 👩");
+    }
+
+    // 27.5.6: Logujemy szczegóły odpowiedzi Google, żeby łatwo ustalić przyczynę 403 podczas testów captcha.
+    logger.warn(
+      `CAPTCHA rejected: ${JSON.stringify({
+        success: response.data.success,
+        hostname: response.data.hostname,
+        errorCodes: response.data["error-codes"],
+      })}`,
+    );
+
+    return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.CAPTCHA_ERROR);
   } catch (error:any) {
     return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOW_ERROR);
   }
