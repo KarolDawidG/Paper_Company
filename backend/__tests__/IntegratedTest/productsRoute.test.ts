@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import { ProductsRecord } from '../../database/Records/Products/ProductsRecord';
 import STATUS_CODES from '../../config/status-codes';
-import router from '../../routes/productsRoute/producsRoute';
+import router from '../../routes/productsRoute/productsRoute';
 import MESSAGES from '../../config/messages';
 
 const app = express();

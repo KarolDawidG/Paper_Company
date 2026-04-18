@@ -70,7 +70,8 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
     }
     // 777 superuser fix: Normalizujemy rolę z tokenu do małych liter, żeby porównania były odporne na zapis w bazie.
     req.userRole = normalizeString((decoded as any).role).toLowerCase();
-    req.user = decoded; // I o `user` :p
+    // 27.10.10.3: Zdekodowany token trzymamy na req.user, żeby middleware uprawnień miały jedno źródło danych użytkownika.
+    req.user = decoded;
     next();
   });
 };

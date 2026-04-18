@@ -27,7 +27,7 @@ router.get("/:role", verifyToken, async (req: Request, res: Response) => {
       res,
       error,
       `Support Route: GET for role ${role}`,
-      MESSAGES.UNKNOW_ERROR,
+      MESSAGES.UNKNOWN_ERROR,
       STATUS_CODES.SERVER_ERROR,
     );
   }

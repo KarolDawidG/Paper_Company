@@ -81,3 +81,39 @@
 2026-04-18 21:24:17 info: PUT /users/47d8aef6-59e3-405f-bace-4a4fab13ac21 -> 200 (7ms)
 2026-04-18 21:24:25 info: GET /products -> 304 (2ms)
 2026-04-18 21:24:25 info: GET /client/client-data/null/null -> 304 (2ms)
+2026-04-18 21:27:25 warn: Token verification failed on GET /url/47d8aef6-59e3-405f-bace-4a4fab13ac21: Authorization failed due to an invalid JsonWebToken signature.
+2026-04-18 21:27:25 warn: GET /url/47d8aef6-59e3-405f-bace-4a4fab13ac21 -> 401 (1ms)
+2026-04-18 21:27:25 info: POST /auth/refresh -> 200 (8ms)
+2026-04-18 21:27:25 warn: Token verification failed on GET /users/user/47d8aef6-59e3-405f-bace-4a4fab13ac21: Authorization failed due to an invalid JsonWebToken signature.
+2026-04-18 21:27:25 warn: GET /users/user/47d8aef6-59e3-405f-bace-4a4fab13ac21 -> 401 (1ms)
+2026-04-18 21:27:25 info: GET /url/47d8aef6-59e3-405f-bace-4a4fab13ac21 -> 304 (2ms)
+2026-04-18 21:27:25 info: POST /auth/refresh -> 200 (4ms)
+2026-04-18 21:27:25 info: GET /users/user/47d8aef6-59e3-405f-bace-4a4fab13ac21 -> 200 (1ms)
+2026-04-18 21:27:28 info: Logout Route: POST: User 47d8aef6-59e3-405f-bace-4a4fab13ac21 logged out.
+2026-04-18 21:27:28 info: POST /logout -> 200 (8ms)
+2026-04-18 21:28:05 info: Checking if database "erp" exists...
+2026-04-18 21:28:05 info: Database "erp" already exists, no need to create.
+2026-04-18 21:28:05 info: User root status: 1
+2026-04-18 21:28:05 info: Database initialized successfully.
+2026-04-18 21:28:05 info: Server is running on port: 3001
+2026-04-18 21:38:21 info: Checking if database "erp" exists...
+2026-04-18 21:38:21 info: Database "erp" already exists, no need to create.
+2026-04-18 21:38:21 info: User root status: 1
+2026-04-18 21:38:21 info: Database initialized successfully.
+2026-04-18 21:38:21 info: Server is running on port: 3001
+2026-04-18 21:41:47 info: Successful login with access level: accounting
+2026-04-18 21:41:47 info: POST /auth -> 200 (64ms)
+2026-04-18 21:41:48 info: GET /url/c933ba30-55dd-4568-ada5-0fec21a66a70 -> 200 (5ms)
+2026-04-18 21:41:48 info: GET /users/user/c933ba30-55dd-4568-ada5-0fec21a66a70 -> 200 (4ms)
+2026-04-18 21:41:50 info: GET /support/sales -> 200 (2ms)
+2026-04-18 21:41:52 info: GET /support/warehouse -> 304 (2ms)
+2026-04-18 21:41:59 info: Logout Route: POST: User c933ba30-55dd-4568-ada5-0fec21a66a70 logged out.
+2026-04-18 21:41:59 info: POST /logout -> 200 (10ms)
+2026-04-18 21:42:04 info: Successful login with access level: superuser
+2026-04-18 21:42:04 info: POST /auth -> 200 (64ms)
+2026-04-18 21:42:05 info: GET /url/0a90fd86-c85a-4d6e-bb77-1a4d8c119483 -> 304 (2ms)
+2026-04-18 21:42:05 info: GET /users/user/0a90fd86-c85a-4d6e-bb77-1a4d8c119483 -> 304 (3ms)
+2026-04-18 21:42:10 info: PUT /users/0a90fd86-c85a-4d6e-bb77-1a4d8c119483 -> 200 (6ms)
+2026-04-18 21:42:16 info: GET /admin -> 200 (5ms)
+2026-04-18 21:42:24 info: DELETE /admin/cad8c719-8f88-4786-a75e-425afc2273d1 -> 200 (7ms)
+2026-04-18 21:42:26 info: GET /users/user/0a90fd86-c85a-4d6e-bb77-1a4d8c119483 -> 200 (2ms)

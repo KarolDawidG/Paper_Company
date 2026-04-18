@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, Button, Box, Snackbar, Alert } from "@mui/material";
 import ResetPasswordForm from "../reset/ResetPasswordForm";
-import logicLogic from "./logicLogic";
+import useLoginLogic from "./useLoginLogic";
 
 const Login = () => {
   const {
@@ -15,7 +15,7 @@ const Login = () => {
     setUsername,
     setPassword,
     setResetPasswordDialogOpen,
-  } = logicLogic();
+  } = useLoginLogic();
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

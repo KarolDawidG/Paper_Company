@@ -16,7 +16,7 @@ router.get("/:role", verifyToken, requireRoles("admin"), async (req: Request, re
         }
       return res.status(STATUS_CODES.SUCCESS).json({ usersList });
     } catch (error: any) {
-      return handleError(res, error, `Users Route: GET for role ${role}`, MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+      return handleError(res, error, `Users Route: GET for role ${role}`, MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR);
     }
   },
 );
@@ -36,7 +36,7 @@ router.put("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Re
       await UsersRecord.updateUserData([username, email, userId]);
         return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, `Users Route: PUT: Error updating user with ID ${userId}`, MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+      return handleError(res, error, `Users Route: PUT: Error updating user with ID ${userId}`, MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR);
     }
 });
 
@@ -50,7 +50,7 @@ router.get("/user/:id", verifyToken, requireSelfOrAdmin, async (req: Request, re
       }
       return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
-      return handleError(res, error, "Users/user Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Users/user Route: GET", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
   },
 );

@@ -14,7 +14,7 @@ import forgotRoute from "./routes/userRoute/forgotPassRoute";
 import capRoutes from "./routes/captchaRoute/capRoute";
 import urlRoutes from "./routes/userRoute/urlRoute";
 import salesRoutes from "./routes/salesRoute/salesRoute";
-import producsRoute from "./routes/productsRoute/producsRoute";
+import productsRoute from "./routes/productsRoute/productsRoute";
 import basketRoute from "./routes/basketRoute/basketRoute";
 import clientRoute from "./routes/clientRoute/clientRoute";
 import addressRoute from "./routes/addressRoute/addressRoute";
@@ -22,7 +22,7 @@ import employeeRoute from "./routes/employeeRoute/employeeRoute";
 import mailRoute from "./routes/mailRoute/mailRoute";
 import warehouseRoute from "./routes/warehouseRoute/warehouseRoute";
 import invoiceRoute from "./routes/invoiceRoute/invoiceRoute";
-import dataAnalizingRoute from "./routes/dataAnalizingRoute/dataAnalizingRoute";
+import dataAnalyticsRoute from "./routes/dataAnalizingRoute/dataAnalyticsRoute";
 // 27.3.4: Rejestracja osobnej trasy pomocniczej dla kontaktów do modułów bez uprawnień.
 import supportRoute from "./routes/supportRoute/supportRoute";
 
@@ -59,7 +59,8 @@ app.use("/forgot", forgotRoute);
 app.use("/cap", capRoutes);
 app.use("/url", urlRoutes);
 app.use("/sales", salesRoutes);
-app.use("/products", producsRoute);
+// 27.10.10.1: Alias importu porządkujemy do poprawnej nazwy domenowej, bez ryzykownego przenoszenia pliku na tym etapie.
+app.use("/products", productsRoute);
 app.use("/basket", basketRoute);
 app.use("/client", clientRoute);
 app.use("/address", addressRoute);
@@ -67,7 +68,7 @@ app.use("/employee", employeeRoute);
 app.use("/mail", mailRoute);
 app.use("/warehouse", warehouseRoute);
 app.use("/invoice", invoiceRoute);
-app.use("/data-analizing", dataAnalizingRoute);
+app.use("/data-analizing", dataAnalyticsRoute);
 app.use("/support", supportRoute);
 
 // 27.10.12: Error handler zostaje na końcu, bo dopiero tam może przechwycić błędy z wcześniej zarejestrowanych tras.

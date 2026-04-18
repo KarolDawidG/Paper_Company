@@ -19,7 +19,7 @@ router.get("/:id", verifyToken, requireRoles("sales", "admin"), async (req: Requ
         // }
       return res.status(STATUS_CODES.SUCCESS).json({ addressList });
     } catch (error: any) {
-      return handleError(res, error, "Address Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Address Route: GET", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 
@@ -32,7 +32,7 @@ router.delete("/:id", verifyToken, requireRoles("sales", "admin"), async (req: R
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) { 
-      return handleError(res, error, "Address Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Address Route: DELETE", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 

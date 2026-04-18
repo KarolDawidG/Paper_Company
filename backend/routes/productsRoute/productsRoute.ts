@@ -14,7 +14,7 @@ router.get("/", async (req: Request, res: Response) => {
         }
       return res.status(STATUS_CODES.SUCCESS).json({ productsData });
     } catch (error: any) {
-      return handleError(res, error, "Products Route: GET", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Products Route: GET", MESSAGES.UNKNOWN_ERROR);
   }
 });
 
@@ -30,7 +30,7 @@ router.get("/cart/:id", async (req: Request, res: Response) => {
       }
     return res.status(STATUS_CODES.SUCCESS).json(productsData );
   } catch (error: any) {
-    return handleError(res, error, "Products/cart/id Route: GET", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "Products/cart/id Route: GET", MESSAGES.UNKNOWN_ERROR);
   }
 });
 

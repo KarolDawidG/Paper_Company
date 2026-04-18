@@ -26,7 +26,7 @@ router.get("/", verifyToken, requireRoles("sales", "admin"), async (req: Request
     }
     return res.status(STATUS_CODES.SUCCESS).json({ clientList });
   } catch (error: any) {
-    return handleError(res, error, "Client Route: GET", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "Client Route: GET", MESSAGES.UNKNOWN_ERROR);
   }
 });
 
@@ -49,7 +49,7 @@ router.get("/client-data/:clientid/:addresid", verifyToken, requireRoles("sales"
       // TODO: Jesli clientData.length === 0 nie wysyłac json
     return res.status(STATUS_CODES.SUCCESS).json(clientData);
   } catch (error: any) {
-    return handleError(res, error, "Client/client-data Route: GET", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "Client/client-data Route: GET", MESSAGES.UNKNOWN_ERROR);
   }
 });
 
@@ -70,7 +70,7 @@ router.get("/:addressId/:orderId", verifyToken, requireRoles("sales", "accountin
     
       return res.status(STATUS_CODES.SUCCESS).json({ orderDetails });
     } catch (error: any) {
-      return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Client Route Get Address: GET", MESSAGES.UNKNOWN_ERROR);
     }
 });
 
@@ -98,7 +98,7 @@ router.post("/save/:orderId", verifyToken, requireRoles("sales", "admin"), async
 
       return res.status(STATUS_CODES.SUCCESS).json({ message: "Order details saved to file." });
     } catch (error: any) {
-      return handleError(res, error, "Error saving order details", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Error saving order details", MESSAGES.UNKNOWN_ERROR);
     }
 });
 
@@ -117,7 +117,7 @@ router.post("/", verifyToken, requireRoles("sales", "admin"), async (req: Reques
     await ClientRecord.insert(formData);
     return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
   } catch (error: any) {
-    return handleError(res, error, "Client Route: POST", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "Client Route: POST", MESSAGES.UNKNOWN_ERROR);
   }
 });
 
@@ -134,7 +134,7 @@ router.delete("/:clientId", verifyToken, requireRoles("sales", "admin"), async (
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, "Client Route: DELETE", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Client Route: DELETE", MESSAGES.UNKNOWN_ERROR);
     }
 });
 
@@ -155,7 +155,7 @@ router.put("/:id", verifyToken, requireRoles("sales", "admin"), async (req: Requ
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, "Client Route: PUT", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Client Route: PUT", MESSAGES.UNKNOWN_ERROR);
     }
 });
 

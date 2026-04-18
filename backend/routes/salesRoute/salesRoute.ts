@@ -14,7 +14,7 @@ router.get("/", verifyToken, requireRoles("sales", "accounting", "admin"), async
      // debug pod listę zamówień był tu wcześniej potrzebny podczas wdrażania modułu sprzedaży.
       return res.status(STATUS_CODES.SUCCESS).json({ ordersList });
     } catch (error: any) {
-      return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOW_ERROR);
+      return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOWN_ERROR);
     }
 });
 
@@ -37,7 +37,7 @@ router.post("/", verifyToken, requireRoles("sales", "admin"), async (req: Reques
       await AddressRecord.insert(formData);
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, "Sales Route address: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, formData.client_id);
+      return handleError(res, error, "Sales Route address: POST", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, formData.client_id);
     }
 });
 
@@ -53,7 +53,7 @@ router.post("/new-order", verifyToken, requireRoles("sales", "admin"), async (re
       const order_id = await OrdersRecord.insert(client_id, client_address_id, account_id );
       return res.status(STATUS_CODES.SUCCESS).send({ order_id: order_id, message: MESSAGES.SUCCESSFUL_OPERATION });
     } catch (error: any) {
-      return handleError(res, error, "Sales/new-order Route: POST: Failed to create new order for client id", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, client_id);
+      return handleError(res, error, "Sales/new-order Route: POST: Failed to create new order for client id", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, client_id);
     }
 });
 
@@ -69,7 +69,7 @@ router.delete("/:id", verifyToken, requireRoles("sales", "accounting", "admin"),
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, "Sales Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Sales Route: DELETE", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { decodeJwt } from "jose";
 import useSnackbarManager from "../../notification/useSnackbarManager";
 
-const logicLogic = () => {
+const useLoginLogic = () => {
   const { snackbar, showSnackbar, handleClose } = useSnackbarManager();
   const BACKEND: string = process.env.NEXT_PUBLIC_BACKEND as string;
   const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
@@ -72,4 +72,4 @@ const logicLogic = () => {
   };
 };
 
-export default logicLogic;
+export default useLoginLogic;

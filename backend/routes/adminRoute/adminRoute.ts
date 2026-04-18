@@ -16,7 +16,7 @@ router.get("/", verifyToken, requireRoles("admin"), async (req: Request, res: Re
       }
     return res.status(STATUS_CODES.SUCCESS).json({ usersList });
   } catch (error: any) {
-    return handleError(res, error, "Admin Route: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+    return handleError(res, error, "Admin Route: GET", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR);
   }
 });
 
@@ -29,7 +29,7 @@ router.put("/:id/:role", verifyToken, requireRoles("admin"), async (req, res) =>
         }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error:any) {
-      return handleError(res, error, "Admin Route: PUT", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Admin Route: PUT", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 
@@ -42,7 +42,7 @@ router.delete("/:id", verifyToken, requireRoles("admin"), async (req: Request, r
       }
         return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {
-      return handleError(res, error, "Admin Route: DELETE", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, id);
+      return handleError(res, error, "Admin Route: DELETE", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR, id);
     }
 });
 

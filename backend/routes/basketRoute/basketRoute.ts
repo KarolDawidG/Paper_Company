@@ -29,7 +29,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
                     
                 } catch (error:any) {
                     logger.error(`Error inserting product with ID ${id} for order ${orderId}`);
-                    return handleError(res, error, "Basket Route: POST - insert", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+                    return handleError(res, error, "Basket Route: POST - insert", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR);
                 }
             }
         }
@@ -42,14 +42,14 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
         } catch (error:any) {
                 logger.error("Basket route: stock");
                 // 27.10.5.23: Konflikt stanu magazynowego zachowujemy jako 409, ale nadal przez wspólny handleError.
-                return handleError(res, error, "Basket Route: POST: decrease", MESSAGES.UNKNOW_ERROR, 409);
+                return handleError(res, error, "Basket Route: POST: decrease", MESSAGES.UNKNOWN_ERROR, 409);
         }
 
 
 
         res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error:any) {
-        return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR);
+        return handleError(res, error, "Basket Route: POST", MESSAGES.UNKNOWN_ERROR, STATUS_CODES.SERVER_ERROR);
     }
 });
 

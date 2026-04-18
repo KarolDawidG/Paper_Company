@@ -51,7 +51,7 @@ router.post("/", async (req: Request, res: Response) => {
     // 27.10.5.21: Odrzucona captcha zwraca spójny 403 przez handleWarning.
     return handleWarning(res, "Captcha Route: POST", MESSAGES.CAPTCHA_ERROR, STATUS_CODES.FORBIDDEN);
   } catch (error:any) {
-    return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOW_ERROR);
+    return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOWN_ERROR);
   }
 });
 

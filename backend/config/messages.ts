@@ -30,6 +30,8 @@ const MESSAGES: Record<string, string> = {
   // Server errors and permissions
   INVALID_REQUEST: "The request is invalid.",
   SERVER_ERROR: "Server encountered an error. Please contact the administrator for support.",
+  // 27.10.10.2: Poprawna nazwa UNKNOWN_ERROR staje się głównym kluczem, a stary UNKNOW_ERROR zostaje tylko dla zgodności wstecznej.
+  UNKNOWN_ERROR: "An unknown error occurred.",
   UNKNOW_ERROR: "An unknown error occurred.",
   FORBIDDEN: "Access denied. Insufficient permissions for the requested resource.",
   CAPTCHA_ERROR: "Failed to verify reCAPTCHA.",
@@ -41,7 +43,6 @@ const MESSAGES: Record<string, string> = {
   JWT_ERROR: "Authorization failed due to an invalid JsonWebToken signature.",
   NO_REFRESH_TOKEN: "No refresh token provided.",
   INVALID_REFRESH_TOKEN: "The refresh token is invalid.",
-  AUTHORIZATION_LVL: "Authorization level: ",
 };
 
 export default MESSAGES;
