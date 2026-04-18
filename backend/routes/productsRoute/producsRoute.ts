@@ -1,11 +1,9 @@
 import express, { Request, Response } from "express";
-import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter } from "../../config/config";
+import { handleError, handleWarning } from "../../config/config";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 const router = express.Router();
-router.use(middleware, limiter);
 
 router.get("/", async (req: Request, res: Response) => {
   const locale = req.headers['accept-language'] || 'en';

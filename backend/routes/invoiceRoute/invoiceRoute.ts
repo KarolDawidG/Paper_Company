@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning, requireRoles, verifyToken } from "../../config/config";
+import { handleError, handleWarning, requireRoles, verifyToken } from "../../config/config";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
 import logger from "../../logs/logger";
@@ -10,7 +9,7 @@ import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import { InvoiceRecord } from "../../database/Records/Invoices/InvoiceRecord";
 
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
+// 27.10.6.6: Faktury nie dublują globalnego middleware i limitera; lokalnie zostaje tylko większy limit payloadu dla PDF.
 router.use(express.json({ limit: "10mb" }));
 
 // 27.8.5: Operacje na fakturach są ograniczone do księgowości i administratora.

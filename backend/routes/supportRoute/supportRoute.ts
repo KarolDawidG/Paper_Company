@@ -1,13 +1,10 @@
 import express, { Request, Response } from "express";
-import middleware from "../../config/middleware";
-import { errorHandler, handleError, handleWarning, limiter, verifyToken } from "../../config/config";
+import { handleError, handleWarning, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 
 const router = express.Router();
-
-router.use(middleware, limiter, errorHandler);
 
 router.get("/:role", verifyToken, async (req: Request, res: Response) => {
   const role: string = req.params.role;

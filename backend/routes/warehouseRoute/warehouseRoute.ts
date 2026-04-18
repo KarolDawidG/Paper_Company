@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter, requireRoles, verifyToken } from "../../config/config";
+import { handleError, handleWarning, requireRoles, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -9,7 +8,7 @@ import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 
 const router = express.Router();
-router.use(middleware, limiter);
+// 27.10.6.4: Magazyn opiera się na globalnych middleware, zamiast rejestrować je drugi raz w routerze.
 
 
 // 27.8.4: Moduł magazynu pozostaje zamknięty dla roli warehouse/admin, bo nie zasila widoków pomocniczych.

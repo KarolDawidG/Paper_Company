@@ -1,13 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
 import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, normalizeString, requireRoles, verifyToken } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 const router = express.Router();
-
-router.use(middleware);
+// 27.10.6.1: Middleware globalne są montowane w app.ts, więc router sprzedaży zostawia tylko logikę domenową.
 
 // 27.8.2: Lista zamówień jest potrzebna zarówno sprzedaży, jak i księgowości pracującej na fakturach.
 router.get("/", verifyToken, requireRoles("sales", "accounting", "admin"), async (req: Request, res: Response) => {

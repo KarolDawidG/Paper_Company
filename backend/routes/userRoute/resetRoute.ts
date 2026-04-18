@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
+import { handleError, handleWarning } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import logger from "../../logs/logger";
 import MESSAGES from "../../config/messages";
@@ -12,10 +11,6 @@ import { validatePassword } from "../../config/config";
 require("dotenv").config();
 const jwt_secret = process.env.jwt_secret || "";
 const router = express.Router();
-
-router.use(middleware);
-router.use(limiter);
-router.use(errorHandler);
 
 router.post("/:id/:token", async (req: Request, res: Response) => {
   const { id, token } = req.params;

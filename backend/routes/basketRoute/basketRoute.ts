@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter } from "../../config/config";
+import { handleError, handleWarning } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -9,7 +8,6 @@ import { BasketRecord } from "../../database/Records/Basket/BasketRecord";
 import { ProductsRecord } from "../../database/Records/Products/ProductsRecord";
 
 const router = express.Router();
-router.use(middleware, limiter);
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   const basketData = req.body;

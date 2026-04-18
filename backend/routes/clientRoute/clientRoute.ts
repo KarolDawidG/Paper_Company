@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, limiter, normalizeString, requireRoles, validateEmail, verifyToken } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, normalizeString, requireRoles, validateEmail, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -9,7 +8,6 @@ import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import { saveOrderDetailsToFile } from "../../config/fileUtils";
 
 const router = express.Router();
-router.use(middleware, limiter);
 
 const getNormalizedClientPayload = (body: any) => ({
   first_name: normalizeString(body.first_name),

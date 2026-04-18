@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
-import middleware from "../../config/middleware";
-import { errorHandler, handleError, handleWarning, maskEmail } from "../../config/config";
+import { handleError, handleWarning, maskEmail } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -12,9 +11,6 @@ require("dotenv").config();
 const jwt_secret: string = process.env.jwt_secret || "";
 
 const router: Router = express.Router();
-
-router.use(middleware);
-router.use(errorHandler);
 
 router.post("/", async (req: Request, res: Response) => {
   const { email } = req.body as { email: string };

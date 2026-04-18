@@ -1,14 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified, requireRoles, verifyToken } from "../../config/config";
+import { handleError, handleWarning, handleNoRecordsModified, requireRoles, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 
 const router = express.Router();
-
-router.use(middleware, limiter, errorHandler);
 
 // 27.10.13: Cały panel admina zamykamy zasadą admin only, zamiast mieszać publiczny GET z chronionym PUT/DELETE.
 router.get("/", verifyToken, requireRoles("admin"), async (req: Request, res: Response, next: NextFunction) => {

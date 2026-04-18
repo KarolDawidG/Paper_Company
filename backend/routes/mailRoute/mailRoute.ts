@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning, maskEmail } from "../../config/config";
+import { handleError, handleWarning, maskEmail } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -12,7 +11,7 @@ import { deleteMailById } from "../../config/mails/deleteMailById";
 import { sendEmployeeEmail } from "../../config/mails/emailsSender";
 
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
+// 27.10.6.3: Mail route korzysta z globalnego stosu middleware, lokalnie zostawiając tylko parser JSON.
 router.use(express.json());
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {

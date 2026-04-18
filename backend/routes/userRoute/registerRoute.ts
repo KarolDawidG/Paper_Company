@@ -2,8 +2,7 @@ import express, { Request, Response } from "express";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import middleware from "../../config/middleware";
-import { areNonEmptyStrings, errorHandler, handleError, handleWarning, normalizeString, validateEmail, validatePassword, validateUserName } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleWarning, normalizeString, validateEmail, validatePassword, validateUserName } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import URL from "../../config/url";
 import STATUS_CODES from "../../config/status-codes";
@@ -14,8 +13,6 @@ require("dotenv").config();
 const JWT_CONFIRMED_TOKEN = process.env.JWT_CONFIRMED_TOKEN;
 
 const router = express.Router();
-router.use(middleware);
-router.use(errorHandler);
 
 router.post("/", async (req: Request, res: Response) => {
   const email = normalizeString(req.body.email);

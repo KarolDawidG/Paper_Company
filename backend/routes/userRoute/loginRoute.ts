@@ -4,13 +4,11 @@ import bcrypt from "bcrypt";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import {
   areNonEmptyStrings,
-  errorHandler,
   handleError,
   handleWarning,
   limiterLogin,
   normalizeString,
 } from "../../config/config";
-import middleware from "../../config/middleware";
 
 import {
   SECRET_REFRESH_TOKEN,
@@ -23,9 +21,7 @@ import logger from "../../logs/logger";
 import { UserInterface } from "./helpers/UserInterface";
 
 const router: Router = express.Router();
-
-router.use(middleware);
-router.use(errorHandler);
+// 27.10.6.5: Auth zostawia lokalnie tylko limiter logowania, a wspólne middleware bierze z app.ts.
 
 router.post("/", limiterLogin, async (req: Request, res: Response) => {
   const user = normalizeString(req.body.username);

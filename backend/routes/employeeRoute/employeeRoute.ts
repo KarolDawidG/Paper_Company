@@ -1,12 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning } from "../../config/config";
+import { handleError, handleWarning } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
 import { EmployeeRecord } from "../../database/Records/Employee/EmployeeRecord";
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
 
 //todo: dokumentacja do zmiany
 router.get("/", verifyToken, async (req: Request, res: Response, next: NextFunction) => {

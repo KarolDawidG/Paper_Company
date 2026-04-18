@@ -2,7 +2,6 @@ import express, { Request, Response, Router } from "express";
 import axios from "axios";
 import MESSAGES from "../../config/messages";
 import URL from "../../config/url";
-import middleware from "../../config/middleware";
 import dotenv from "dotenv";
 import STATUS_CODES from "../../config/status-codes";
 import { handleError, handleWarning } from "../../config/config";
@@ -12,8 +11,6 @@ const RECAPTCHA_SECRET_KEY =
   process.env.RECAPTCHA_SECRET_KEY || process.env.REACT_APP_SECRET_KEY;
 
 const router: Router = express.Router();
-
-router.use(middleware);
 
 // TODO upgrade frontend
 

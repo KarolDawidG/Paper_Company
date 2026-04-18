@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import middleware from "../../config/middleware";
 import logger from "../../logs/logger";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -7,7 +6,6 @@ import { handleError, handleWarning, verifyToken } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 
 const router = express.Router();
-router.use(middleware);
 
 router.get("/", (req: Request, res: Response): Response => {
   logger.info(MESSAGES.SUCCESSFUL_LOGOUT);

@@ -1,13 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleNoRecordsModified, handleWarning, requireSelfOrAdmin } from "../../config/config";
+import { handleError, handleNoRecordsModified, handleWarning, requireSelfOrAdmin } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
 
 router.get("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;

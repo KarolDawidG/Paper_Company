@@ -1,13 +1,12 @@
 import express, { Request, Response } from "express";
-import middleware from "../../config/middleware";
-import { handleError, handleWarning, limiter, errorHandler, requireRoles, verifyToken } from "../../config/config";
+import { handleError, handleWarning, requireRoles, verifyToken } from "../../config/config";
 import logger from "../../logs/logger";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
 import { DataRecord } from "../../database/Records/DataAnalizing/DataRecord";
 
 const router = express.Router();
-router.use(middleware, limiter, errorHandler);
+// 27.10.6.2: Router analityki nie dubluje już globalnych middleware, limitera ani error handlera.
 router.use(express.json({ limit: "10mb" }));
 
 // 27.8.6: Raporty analityczne dostają własną bramkę roli analize/admin zamiast być publiczne.
