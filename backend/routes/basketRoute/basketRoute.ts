@@ -16,7 +16,8 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
   const orderId = basketData.order_id;
     try {
       if (!orderId) {
-        return handleWarning(res, "Basket Route: POST: Missing order_id in request", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
+        // 27.10.5.22: Brak order_id w koszyku to błąd wejścia, więc zwracamy spójne 400 zamiast 404.
+        return handleWarning(res, "Basket Route: POST: Missing order_id in request", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
     }
         for (const key in basketData) {
             if (key !== "order_id") {
@@ -42,6 +43,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
             
         } catch (error:any) {
                 logger.error("Basket route: stock");
+                // 27.10.5.23: Konflikt stanu magazynowego zachowujemy jako 409, ale nadal przez wspólny handleError.
                 return handleError(res, error, "Basket Route: POST: decrease", MESSAGES.UNKNOW_ERROR, 409);
         }
 

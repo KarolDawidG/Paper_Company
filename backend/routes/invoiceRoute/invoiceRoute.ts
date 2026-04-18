@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, requireRoles, verifyToken } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning, requireRoles, verifyToken } from "../../config/config";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
 import logger from "../../logs/logger";
@@ -17,10 +17,10 @@ router.use(express.json({ limit: "10mb" }));
 router.get("/history", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   try {
     const history = await InvoiceRecord.getPaymentHistory();
-    return res.status(200).json({ history });
-  } catch (error) {
-    console.error("Error fetching payment history:", error);
-    return res.status(500).json({ message: "Błąd podczas pobierania historii płatności." });
+    return res.status(STATUS_CODES.SUCCESS).json({ history });
+  } catch (error: any) {
+    // 27.10.5.5: Historia płatności używa wspólnego handleError zamiast ręcznego 500 z własnym komunikatem.
+    return handleError(res, error, "Invoice Route /history: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -30,16 +30,24 @@ router.get("/details/:id", verifyToken, requireRoles("accounting", "admin"), asy
     const { id } = req.params;
     const details = await OrdersRecord.getOrderDetails(id);
     return res.status(STATUS_CODES.SUCCESS).json({ details });
-  } catch (error) {
-    res.status(500).json({ message: "Błąd pobierania szczegółów zamówienia." });
+  } catch (error: any) {
+    // 27.10.5.6: Szczegóły zamówienia do faktury zwracają błędy tym samym mechanizmem co reszta modułu.
+    return handleError(res, error, "Invoice Route /details/:id: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
 
 router.get("/", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
-    const invoice = await InvoiceRecord.getInvoicesList();
-    if (!invoice) return res.status(404).send("Nie znaleziono faktury.");
-   return res.status(STATUS_CODES.SUCCESS).json({ invoice });
+    try {
+      const invoice = await InvoiceRecord.getInvoicesList();
+      if (!invoice) {
+        // 27.10.5.7: Brak faktur raportujemy przez handleWarning, żeby 404 było spójne z innymi route'ami.
+        return handleWarning(res, "Invoice Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
+      }
+      return res.status(STATUS_CODES.SUCCESS).json({ invoice });
+    } catch (error: any) {
+      return handleError(res, error, "Invoice Route: GET", MESSAGES.SERVER_ERROR);
+    }
   });
 
     /*
@@ -54,7 +62,7 @@ router.get("/:id", verifyToken, requireRoles("accounting", "admin"), async (req:
   try {
     const invoice = await InvoiceRecord.getOneById(id);
     if (!invoice) {
-      return res.status(STATUS_CODES.NOT_FOUND).json({ message: "Faktura nie znaleziona." });
+      return handleWarning(res, "Invoice GET /:id", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
     }
 
     return res.status(STATUS_CODES.SUCCESS).json({ invoice });
@@ -70,7 +78,8 @@ router.patch("/:id/status", verifyToken, requireRoles("accounting", "admin"), as
   const { status } = req.body;
 
     if (!["unpaid", "waiting", "paid", "overdue"].includes(status)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ message: "Nieprawidłowy status." });
+      // 27.10.5.8: Nieprawidłowy status faktury przechodzi przez handleWarning z kodem 400 zamiast ręcznego json.
+      return handleWarning(res, "Invoice PATCH /:id/status", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST, id);
     }
 
   try {
@@ -87,17 +96,15 @@ router.post("/", verifyToken, requireRoles("accounting", "admin"), async (req: R
   const { pdf, clientId, clientAddressId, orderId } = req.body;
 
     if (!pdf || !clientId || !clientAddressId || !orderId) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({
-        message: "Brakuje wymaganych danych.",
-      });
+      // 27.10.5.9: Walidacja wejścia przy generowaniu faktury używa wspólnego komunikatu BAD_REQUEST.
+      return handleWarning(res, "Invoice Route: POST", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
     }
   try {
   
     const client = await ClientRecord.getEmailById(clientId);
     if (!client) {
-      return res.status(STATUS_CODES.NOT_FOUND).json({
-        message: "Nie znaleziono klienta lub adresu email.",
-      });
+      // 27.10.5.10: Brak klienta lub e-maila jest zgłaszany jednolicie jako 404 przez handleWarning.
+      return handleWarning(res, "Invoice Route: POST", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, clientId);
     }
 
     const pdfBuffer = Buffer.from(pdf);
@@ -132,7 +139,8 @@ router.post("/resend/:id", verifyToken, requireRoles("accounting", "admin"), asy
     // Pobierz fakturę
     const invoice = await InvoiceRecord.getInvoiceWithClientEmail(id);
     if (!invoice || !invoice.pdf || !invoice.client_email || !invoice.order_id) {
-      return res.status(404).json({ message: "Nie znaleziono faktury lub klienta." });
+      // 27.10.5.11: Ponowna wysyłka faktury ma teraz spójne 404 i 500 jak reszta modułu.
+      return handleWarning(res, "Invoice Route /resend/:id: POST", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
     }
 
     const subject = `Faktura za zamówienie ${invoice.order_id}`;
@@ -141,10 +149,10 @@ router.post("/resend/:id", verifyToken, requireRoles("accounting", "admin"), asy
     await sendInvoiceEmail(testowy_email, invoice.order_id, invoice.pdf);
 
     logger.info(`Faktura ${id} ponownie wysłana do klienta ${invoice.client_email}`);
-    return res.status(200).json({ message: "Faktura została ponownie wysłana." });
-  } catch (error) {
+    return res.status(STATUS_CODES.SUCCESS).json({ message: "Faktura została ponownie wysłana." });
+  } catch (error: any) {
     logger.error(`Invoice POST /resend/:id: ${error}`);
-    return res.status(500).json({ message: "Błąd podczas ponownego wysyłania faktury." });
+    return handleError(res, error, "Invoice Route /resend/:id: POST", MESSAGES.SERVER_ERROR);
   }
 });
     
@@ -152,21 +160,20 @@ router.post("/resend/:id", verifyToken, requireRoles("accounting", "admin"), asy
 router.get("/view/:invoiceId", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   const { invoiceId } = req.params;
 
-  console.log(invoiceId);
-
   try {
     const result = await InvoiceRecord.getPdfById(invoiceId);
 
     if (!result || !result.pdf) {
-      return res.status(404).json({ message: "Faktura nie znaleziona." });
+      // 27.10.5.12: Podgląd PDF korzysta z handleWarning/handleError zamiast ręcznych odpowiedzi mieszanych ze statusem 404/500.
+      return handleWarning(res, "Invoice GET /view/:invoiceId", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, invoiceId);
     }
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", "inline; filename=faktura.pdf");
     res.send(result.pdf);
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Invoice GET /view/:invoiceId: ${error}`);
-    return res.status(500).json({ message: "Błąd podczas pobierania faktury PDF." });
+    return handleError(res, error, "Invoice GET /view/:invoiceId", MESSAGES.SERVER_ERROR);
   }
 });
 

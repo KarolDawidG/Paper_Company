@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, requireRoles, verifyToken } from "../../config/config";
+import { handleError, handleWarning, limiter, errorHandler, requireRoles, verifyToken } from "../../config/config";
 import logger from "../../logs/logger";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
@@ -16,10 +16,11 @@ router.get("/top-product", verifyToken, requireRoles("analize", "admin"), async 
 
   try {
     const topProducts = await DataRecord.getTopProducts(lang);
-    return res.status(200).json(topProducts);
-  } catch (error) {
+    return res.status(STATUS_CODES.SUCCESS).json(topProducts);
+  } catch (error: any) {
+    // 27.10.5.13: Analiza top produktów używa wspólnego handleError zamiast ręcznego 500.
     logger.error("Error fetching top products:", error);
-    return res.status(500).json({ message: MESSAGES.INTERNAL_SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /top-product: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -27,9 +28,9 @@ router.get("/top-sellers", verifyToken, requireRoles("analize", "admin"), async 
   try {
     const sellers = await DataRecord.getTopSellers();
     return res.status(STATUS_CODES.SUCCESS).json(sellers);
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error fetching top sellers:", error);
-    return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /top-sellers: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -37,9 +38,9 @@ router.get("/top-clients", verifyToken, requireRoles("analize", "admin"), async 
   try {
     const clients = await DataRecord.getTopClients();
     return res.status(STATUS_CODES.SUCCESS).json(clients);
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error fetching top sellers:", error);
-    return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /top-clients: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -47,9 +48,9 @@ router.get("/monthly-profit", verifyToken, requireRoles("analize", "admin"), asy
   try {
     const monthlyProfit = await DataRecord.getMonthlyProfit();
     return res.status(STATUS_CODES.SUCCESS).json(monthlyProfit);
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error fetching monthly profit:", error);
-    return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /monthly-profit: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
@@ -58,30 +59,32 @@ router.get("/monthly-summary", verifyToken, requireRoles("analize", "admin"), as
   const lang = (req.query.lang as string) || 'pl';
 
   if (!month || !/^\d{4}-\d{2}$/.test(month)) {
-    return res.status(STATUS_CODES.BAD_REQUEST).json({ message: "Nieprawidłowy format miesiąca. Użyj 'YYYY-MM'." });
+    // 27.10.5.14: Błędny format miesiąca przechodzi przez handleWarning, żeby 400 było spójne z innymi routerami.
+    return handleWarning(res, "Data Analizing Route /monthly-summary: GET", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
   }
 
   try {
     const summary = await DataRecord.getMonthlySummaryData(month, lang);
     return res.status(STATUS_CODES.SUCCESS).json(summary);
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error fetching monthly summary:", error);
-    return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /monthly-summary: GET", MESSAGES.SERVER_ERROR);
   }
 });
 
 router.get('/monthly-report', verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   const month = (req.query.month as string) || '';
   if (!/^\d{4}-\d{2}$/.test(month)) {
-    return res.status(400).json({ message: 'Nieprawidłowy format miesiąca (YYYY-MM).' });
+    // 27.10.5.15: Raport miesięczny używa tej samej ścieżki walidacji 400 co monthly-summary.
+    return handleWarning(res, "Data Analizing Route /monthly-report: GET", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
   }
 
   try {
     const report = await DataRecord.getMonthlyReport(month);
-    return res.status(200).json(report);
-  } catch (error) {
+    return res.status(STATUS_CODES.SUCCESS).json(report);
+  } catch (error: any) {
     logger.error('Błąd generowania raportu miesięcznego:', error);
-    return res.status(500).json({ message: MESSAGES.INTERNAL_SERVER_ERROR });
+    return handleError(res, error, "Data Analizing Route /monthly-report: GET", MESSAGES.SERVER_ERROR);
   }
 });
 

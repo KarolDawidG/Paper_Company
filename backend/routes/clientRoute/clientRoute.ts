@@ -23,7 +23,8 @@ router.get("/", verifyToken, requireRoles("sales", "admin"), async (req: Request
     const clientList = await ClientRecord.getList();
     if (clientList.length === 0) {
       logger.warn("Client Route: GET: No clients found.");
-      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+      // 27.10.5.16: Lista klientów używa handleWarning, żeby brak danych był obsłużony tak samo jak w innych routerach.
+      return handleWarning(res, "Client Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
     }
     return res.status(STATUS_CODES.SUCCESS).json({ clientList });
   } catch (error: any) {

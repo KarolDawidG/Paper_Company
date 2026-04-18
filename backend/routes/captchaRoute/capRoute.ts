@@ -5,7 +5,7 @@ import URL from "../../config/url";
 import middleware from "../../config/middleware";
 import dotenv from "dotenv";
 import STATUS_CODES from "../../config/status-codes";
-import { handleError } from "../../config/config";
+import { handleError, handleWarning } from "../../config/config";
 import logger from "../../logs/logger";
 dotenv.config();
 const RECAPTCHA_SECRET_KEY =
@@ -22,7 +22,8 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     // 27.5.1: Walidujemy konfigurację i token, żeby szybciej wykryć problem z env lub pustą captcha.
     if (!RECAPTCHA_SECRET_KEY || !token) {
-      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.CAPTCHA_ERROR);
+      // 27.10.5.20: reCAPTCHA używa handleWarning dla błędnego wejścia, zamiast ręcznego 400.
+      return handleWarning(res, "Captcha Route: POST", MESSAGES.CAPTCHA_ERROR, STATUS_CODES.BAD_REQUEST);
     }
 
     const params = new URLSearchParams({
@@ -50,7 +51,8 @@ router.post("/", async (req: Request, res: Response) => {
       })}`,
     );
 
-    return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.CAPTCHA_ERROR);
+    // 27.10.5.21: Odrzucona captcha zwraca spójny 403 przez handleWarning.
+    return handleWarning(res, "Captcha Route: POST", MESSAGES.CAPTCHA_ERROR, STATUS_CODES.FORBIDDEN);
   } catch (error:any) {
     return handleError(res, error, "CAPTCHA Verification Error", MESSAGES.UNKNOW_ERROR);
   }

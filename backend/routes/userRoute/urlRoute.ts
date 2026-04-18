@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleNoRecordsModified, requireSelfOrAdmin } from "../../config/config";
+import { limiter, errorHandler, handleError, handleNoRecordsModified, handleWarning, requireSelfOrAdmin } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import STATUS_CODES from "../../config/status-codes";
 import { verifyToken } from "../../config/config";
@@ -15,7 +15,8 @@ router.get("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Re
       // 27.6.5: Avatar podpinamy do tej samej zasady własności co dane profilu.
       const [userInfo]: any = await UsersRecord.selectUrlById([id]);
         if (userInfo === undefined){
-          return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NOT_FOUND);
+          // 27.10.5.17: Brak avatara raportujemy przez handleWarning zamiast ręcznego 404.
+          return handleWarning(res, "URL Route: GET", MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND, id);
         }
       return res.status(STATUS_CODES.SUCCESS).json(userInfo);
     } catch (error: any) {
@@ -29,7 +30,8 @@ router.put("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res: Re
   const img_url: string = req.body.img_url;
 
   if (!img_url) {
-    return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+    // 27.10.5.18: Walidacja avatara używa wspólnego 400 przez handleWarning.
+    return handleWarning(res, "URL Route: PUT", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST, id);
   }
 
   try {
@@ -48,7 +50,8 @@ router.delete("/:id", verifyToken, requireSelfOrAdmin, async (req: Request, res:
     try {
      const [result] = await UsersRecord.deleteUrl(id);
      if (result.affectedRows === 0) {
-      return res.status(STATUS_CODES.NOT_FOUND).send(MESSAGES.NO_RECORDS_MODIFIED);
+      // 27.10.5.19: Usuwanie avatara zwraca spójne 404 przez helper zamiast ręcznego send.
+      return handleWarning(res, "URL Route: DELETE", MESSAGES.NO_RECORDS_MODIFIED, STATUS_CODES.NOT_FOUND, id);
     }
       return res.status(STATUS_CODES.SUCCESS).send(MESSAGES.SUCCESSFUL_OPERATION);
     } catch (error: any) {

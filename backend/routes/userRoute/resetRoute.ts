@@ -22,7 +22,8 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
   const { password, password2 } = req.body;
 
   if (!password || !password2) {
-    return handleWarning(res, `Reset Route: POST`, MESSAGES.NOT_FOUND, STATUS_CODES.NOT_FOUND);
+    // 27.10.5.24: Brak haseł przy resecie to walidacja wejścia, więc zwracamy 400 zamiast 404.
+    return handleWarning(res, `Reset Route: POST`, MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
   }
 
   if (password !== password2) {
@@ -35,15 +36,12 @@ router.post("/:id/:token", async (req: Request, res: Response) => {
 
   try {
     const [user]: any = await UsersRecord.selectById([id]);
-    console.log(user)
     if (!user) {
       return handleWarning(res, `Reset Route: POST: User not found. ID: ${id}`, MESSAGES.USER_NOT_FOUND, STATUS_CODES.NOT_FOUND);
     }
 
     const oldPassword = user.password || "";
     const secret = jwt_secret + oldPassword;
-    console.log("reset password: ", jwt_secret)
-    console.log(oldPassword)
     jwt.verify(token, secret, async (err: any, decoded: any) => {
       if (err) {
         return handleError(res, err, `Reset Route: POST: Token verification failed. ID: ${id}`, MESSAGES.JWT_ERROR, STATUS_CODES.UNAUTHORIZED);

@@ -19,9 +19,9 @@ router.get('/', verifyToken, requireRoles("warehouse", "admin"), async (req: Req
         const orders = await OrdersRecord.getOrdersByStatus(status);
 
         return res.status(STATUS_CODES.SUCCESS).json({ orders });
-        } catch (error) {
-        console.error('Error fetching orders:', error);
-        res.status(500).json({ message: 'Błąd podczas pobierania zamówień.' });
+        } catch (error: any) {
+        // 27.10.5.1: Magazyn przechodzi na handleError, żeby statusy i komunikaty błędów były spójne z resztą backendu.
+        return handleError(res, error, "Warehouse Route: GET", MESSAGES.UNKNOW_ERROR);
         }
   });
 
@@ -44,10 +44,10 @@ router.get('/', verifyToken, requireRoles("warehouse", "admin"), async (req: Req
 
         try {
         const orderData = await OrdersRecord.quantityAndItems(orderId);
-        res.status(200).json(orderData);
-        } catch (error) {
-        console.error('Error fetching order details:', error);
-        res.status(500).json({ message: 'Błąd podczas pobierania szczegółów zamówienia.' });
+        return res.status(STATUS_CODES.SUCCESS).json(orderData);
+        } catch (error: any) {
+        // 27.10.5.2: Szczegóły zamówienia w magazynie zwracają teraz błędy przez wspólny helper zamiast ręcznego 500.
+        return handleError(res, error, "Warehouse Route /:orderId: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, orderId);
         }
   });
 
@@ -56,11 +56,10 @@ router.get('/', verifyToken, requireRoles("warehouse", "admin"), async (req: Req
 
         try {
             const clientData = await ClientRecord.getClientDataById([client_id])
-            console.log(clientData);
-            res.status(200).json(clientData);
-        } catch (error) {
-        console.error('Error fetching order details:', error);
-        res.status(500).json({ message: 'Błąd podczas pobierania szczegółów zamówienia.' });
+            return res.status(STATUS_CODES.SUCCESS).json(clientData);
+        } catch (error: any) {
+        // 27.10.5.3: Dane klienta dla magazynu korzystają z tej samej ścieżki błędów co pozostałe endpointy.
+        return handleError(res, error, "Warehouse Route /client_data/:client_id: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, client_id);
         }
   });
 
@@ -69,11 +68,10 @@ router.get('/', verifyToken, requireRoles("warehouse", "admin"), async (req: Req
 
         try {
             const clientAddress = await ClientRecord.getAddress([client_address_id]);
-            console.log(clientAddress);
-            res.status(200).json(clientAddress);
-        } catch (error) {
-        console.error('Error fetching order details:', error);
-        res.status(500).json({ message: 'Błąd podczas pobierania szczegółów zamówienia.' });
+            return res.status(STATUS_CODES.SUCCESS).json(clientAddress);
+        } catch (error: any) {
+        // 27.10.5.4: Adresy dostaw w magazynie raportują błędy jednolicie przez handleError.
+        return handleError(res, error, "Warehouse Route /address/:client_address_id: GET", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, client_address_id);
         }
   });
   
