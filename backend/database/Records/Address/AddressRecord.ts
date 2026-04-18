@@ -27,7 +27,12 @@ class AddressRecord implements Address {
     this.nazwa_firmy = obj.nazwa_firmy;
   }
 
-  static async insert(formData: Address) {
+  static async insert(
+    formData: Pick<
+      Address,
+      "client_id" | "miasto" | "ulica" | "nr_budynku" | "nr_mieszkania" | "kod" | "nazwa_firmy"
+    >,
+  ) {
     const id = uuidv4();
 
     return performTransaction(async (connection) => {

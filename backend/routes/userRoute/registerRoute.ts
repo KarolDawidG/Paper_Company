@@ -3,12 +3,11 @@ import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import middleware from "../../config/middleware";
-import { errorHandler, handleError } from "../../config/config";
+import { areNonEmptyStrings, errorHandler, handleError, handleWarning, normalizeString, validateEmail, validatePassword, validateUserName } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import URL from "../../config/url";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
-import { validatePassword } from "../../config/config";
 import { sendRegisterEmail } from "../../config/mails/emailsSender";
 
 require("dotenv").config();
@@ -19,10 +18,23 @@ router.use(middleware);
 router.use(errorHandler);
 
 router.post("/", async (req: Request, res: Response) => {
-  const { email, username, password } = req.body;
-    if (!validatePassword(password)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_PASS);
-    }
+  const email = normalizeString(req.body.email);
+  const username = normalizeString(req.body.username);
+  const password = normalizeString(req.body.password);
+
+  // 27.7.1: Rejestracja używa jednej ścieżki walidacji: obecność pól, format email/login i siła hasła.
+  if (!areNonEmptyStrings(email, username, password)) {
+    return handleWarning(res, "Register Route: POST: Missing required fields", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+  }
+  if (!validateEmail(email)) {
+    return handleWarning(res, "Register Route: POST: Invalid email", MESSAGES.INVALID_EMAIL, STATUS_CODES.BAD_REQUEST);
+  }
+  if (!validateUserName(username)) {
+    return handleWarning(res, "Register Route: POST: Invalid username", MESSAGES.INCORRECT_USERNAME, STATUS_CODES.BAD_REQUEST);
+  }
+  if (!validatePassword(password)) {
+    return handleWarning(res, "Register Route: POST: Invalid password", MESSAGES.INVALID_PASS, STATUS_CODES.BAD_REQUEST);
+  }
   try {
     const userExists = {
       emailExists: await UsersRecord.selectByEmail([email]),

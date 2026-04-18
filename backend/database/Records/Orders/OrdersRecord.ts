@@ -25,7 +25,7 @@ class OrdersRecord implements Order {
     this.account_id = obj.account_id;
   }
 
-    static async insert(client_id: string, client_address_id: string, account_id:string) {
+    static async insert(client_id: string, client_address_id: string, account_id?: string | null) {
         const id: string = uuidv4();
 
         return performTransaction(async (connection) => {

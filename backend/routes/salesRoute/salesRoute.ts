@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleNoRecordsModified, handleWarning } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, normalizeString } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -20,18 +20,18 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  let formData = req.body;
-  formData = {
-    miasto: formData.city || null,
-    ulica: formData.street || null,
-    nr_budynku: formData.building || null,
-    nr_mieszkania: formData.no_apartment || null,
-    kod: formData.code || null,
-    nazwa_firmy: formData.company_name || null,
-    client_id: formData.client_id || null
+  const formData = {
+    miasto: normalizeString(req.body.city),
+    ulica: normalizeString(req.body.street),
+    nr_budynku: normalizeString(req.body.building),
+    nr_mieszkania: normalizeString(req.body.no_apartment),
+    kod: normalizeString(req.body.code),
+    nazwa_firmy: normalizeString(req.body.company_name),
+    client_id: normalizeString(req.body.client_id)
   };
 
-    if (!formData.client_id || !formData.miasto || !formData.ulica) {
+    // 27.7.4: Adres sprzedażowy walidujemy po znormalizowaniu pól, żeby spacje nie przechodziły jako dane.
+    if (!areNonEmptyStrings(formData.client_id, formData.miasto, formData.ulica)) {
       return handleWarning(res, "Sales Route: POST: Missing required address or client data", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
     }
     try {
@@ -43,8 +43,10 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 router.post("/new-order", async (req: Request, res: Response) => {
-  const {client_id, client_address_id, account_id} = req.body;
-    if (!client_id || !client_address_id) {
+  const client_id = normalizeString(req.body.client_id);
+  const client_address_id = normalizeString(req.body.client_address_id);
+  const account_id = normalizeString(req.body.account_id) || undefined;
+    if (!areNonEmptyStrings(client_id, client_address_id)) {
       return handleWarning(res, "Sales/new-order Route: POST: Missing client or address ID", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
     }
     try {
@@ -57,7 +59,10 @@ router.post("/new-order", async (req: Request, res: Response) => {
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  const id:string = req.params.id;
+  const id:string = normalizeString(req.params.id);
+    if (!id) {
+      return handleWarning(res, "Sales Route: DELETE: Missing order id", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+    }
     try {
       const [result] = await OrdersRecord.delete(id); 
         if (handleNoRecordsModified(res, "Sales Route: DELETE", id, result)) {

@@ -64,7 +64,20 @@ describe('Register Route', () => {
                 });
 
             expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
-            expect(response.text).toBe(MESSAGES.EMAIL_EXIST);
+            expect(response.text).toBe(MESSAGES.USER_EXIST);
+        });
+
+        it('should return 400 if the email format is invalid', async () => {
+            const response = await request(app)
+                .post('/register')
+                .send({
+                    email: 'wrong-email',
+                    username: 'testuser',
+                    password: 'ValidPass123'
+                });
+
+            expect(response.status).toBe(STATUS_CODES.BAD_REQUEST);
+            expect(response.text).toBe(MESSAGES.INVALID_EMAIL);
         });
 
         it('should return 200 and register the user successfully', async () => {

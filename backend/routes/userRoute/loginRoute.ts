@@ -3,11 +3,12 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import {
+  areNonEmptyStrings,
   errorHandler,
   handleError,
   handleWarning,
   limiterLogin,
-  queryParameterize,
+  normalizeString,
 } from "../../config/config";
 import middleware from "../../config/middleware";
 
@@ -27,9 +28,11 @@ router.use(middleware);
 router.use(errorHandler);
 
 router.post("/", limiterLogin, async (req: Request, res: Response) => {
-  const { username: user, password } = req.body;
+  const user = normalizeString(req.body.username);
+  const password = normalizeString(req.body.password);
 
-  if (!user || !password) {
+  // 27.7.2: Login waliduje wejście po trimie, żeby puste stringi i spacje nie przechodziły jak poprawne dane.
+  if (!areNonEmptyStrings(user, password)) {
     return handleWarning(res, "Login Route: POST: Missing username or password", MESSAGES.UNPROCESSABLE_ENTITY, STATUS_CODES.UNPROCESSABLE_ENTITY);
   }
 
@@ -68,7 +71,8 @@ router.post("/", limiterLogin, async (req: Request, res: Response) => {
 });
 
 router.post("/refresh", async (req: Request, res: Response) => {
-  const { idUser, refreshToken } = req.body;
+  const idUser = normalizeString(req.body.idUser);
+  const refreshToken = normalizeString(req.body.refreshToken);
     if (!idUser) {
       return handleWarning(res, `Login Route /refresh: POST`, MESSAGES.MISSING_ID_USER, STATUS_CODES.UNPROCESSABLE_ENTITY);
     }

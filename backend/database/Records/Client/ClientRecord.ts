@@ -37,7 +37,9 @@ class ClientRecord implements Client {
         return results;
     }
 
-    static async insert(formData: Client) {
+    static async insert(
+      formData: Pick<Client, "first_name" | "second_name" | "email" | "company_name">,
+    ) {
       const id = uuidv4();
       return performTransaction(async (connection) => {
         await connection.execute(INSERT_CLIENT,

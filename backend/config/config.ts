@@ -118,6 +118,24 @@ const validateUserName = (e: string) => {
   }
 };
 
+const normalizeString = (value: unknown): string => {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+  if (typeof value === "number") {
+    return `${value}`.trim();
+  }
+  return "";
+};
+
+const isNonEmptyString = (value: unknown): boolean => {
+  return normalizeString(value).length > 0;
+};
+
+const areNonEmptyStrings = (...values: unknown[]): boolean => {
+  return values.every((value) => isNonEmptyString(value));
+};
+
 const handleError = (
   res: Response,
   error: any,
@@ -169,6 +187,9 @@ export {
   validateEmail,
   validatePassword,
   validateUserName,
+  normalizeString,
+  isNonEmptyString,
+  areNonEmptyStrings,
   verifyToken,
   requireSelfOrAdmin,
   handleError,

@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleNoRecordsModified, limiter } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, limiter, normalizeString, validateEmail } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -11,6 +11,13 @@ import { saveOrderDetailsToFile } from "../../config/fileUtils";
 
 const router = express.Router();
 router.use(middleware, limiter);
+
+const getNormalizedClientPayload = (body: any) => ({
+  first_name: normalizeString(body.first_name),
+  second_name: normalizeString(body.second_name),
+  email: normalizeString(body.email),
+  company_name: normalizeString(body.company_name),
+});
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
@@ -26,7 +33,12 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
-  const { clientid, addresid } = req.params;
+  const clientid = normalizeString(req.params.clientid);
+  const addresid = normalizeString(req.params.addresid);
+
+  if (!areNonEmptyStrings(clientid, addresid)) {
+    return handleWarning(res, "Client/client-data Route: GET: Missing ids", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+  }
 
   try {
     const queryResult = await ClientRecord.getClientData(clientid, addresid);
@@ -44,8 +56,11 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
 });
 
 router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
-  const addressId:string = req.params.addressId;
-  const orderId:string = req.params.orderId;
+  const addressId:string = normalizeString(req.params.addressId);
+  const orderId:string = normalizeString(req.params.orderId);
+    if (!areNonEmptyStrings(addressId, orderId)) {
+      return handleWarning(res, "Client Route Get Address: GET: Missing ids", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+    }
     try {
       const clientAddress = await ClientRecord.getAddress([addressId]);
       const quantityAndItems = await OrdersRecord.quantityAndItems(orderId);
@@ -62,9 +77,13 @@ router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
 
 // Nowy endpoint zapisujący szczegóły zamówienia do pliku JSON po naciśnięciu przycisku "Zapisz" na froncie
 router.post("/save/:orderId", async (req: Request, res: Response) => {
-  const orderId: string = req.params.orderId;
-  const addressId: string = req.body.addressId;
-  const clientId: string = req.body.clientId;
+  const orderId: string = normalizeString(req.params.orderId);
+  const addressId: string = normalizeString(req.body.addressId);
+  const clientId: string = normalizeString(req.body.clientId);
+
+  if (!areNonEmptyStrings(orderId, addressId, clientId)) {
+    return handleWarning(res, "Client Route: POST /save: Missing order, address or client id", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+  }
 
     try {
       const clientAddress = await ClientRecord.getAddress([addressId]);
@@ -86,9 +105,13 @@ router.post("/save/:orderId", async (req: Request, res: Response) => {
 
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
-  const formData = req.body;
-    if (!formData.first_name || !formData.second_name || !formData.email || !formData.company_name ) {
-      return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+  const formData = getNormalizedClientPayload(req.body);
+    // 27.7.3: Dane klienta przechodzą wspólną walidację pól wymaganych i formatu e-mail.
+    if (!areNonEmptyStrings(formData.first_name, formData.second_name, formData.email, formData.company_name)) {
+      return handleWarning(res, "Client Route: POST: Missing required client fields", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+    }
+    if (!validateEmail(formData.email)) {
+      return handleWarning(res, "Client Route: POST: Invalid email", MESSAGES.INVALID_EMAIL, STATUS_CODES.BAD_REQUEST);
     }
   try {
     
@@ -100,7 +123,10 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
-  const { clientId } = req.params;
+  const clientId = normalizeString(req.params.clientId);
+  if (!clientId) {
+    return handleWarning(res, "Client Route: DELETE: Missing client id", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+  }
   
     try {
       const [result] = await ClientRecord.delete(clientId);
@@ -114,14 +140,17 @@ router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => 
 });
 
 router.put("/:id", verifyToken, async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  const { first_name, second_name, email } = req.body;
+  const id: string = normalizeString(req.params.id);
+  const formData = getNormalizedClientPayload(req.body);
 
-      if (!first_name || !second_name || !email ) {
-        return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.BAD_REQUEST);
+      if (!areNonEmptyStrings(id, formData.first_name, formData.second_name, formData.email)) {
+        return handleWarning(res, "Client Route: PUT: Missing required client fields", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
+      }
+      if (!validateEmail(formData.email)) {
+        return handleWarning(res, "Client Route: PUT: Invalid email", MESSAGES.INVALID_EMAIL, STATUS_CODES.BAD_REQUEST);
       }
     try {
-      const result = await ClientRecord.updateClient([id, first_name, second_name, email ]);
+      const result = await ClientRecord.updateClient([id, formData.first_name, formData.second_name, formData.email ]);
         if (handleNoRecordsModified(res, "Client Route: PUT", id, result)) {
           return; 
         }
