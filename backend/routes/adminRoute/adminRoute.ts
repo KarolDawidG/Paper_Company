@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified } from "../../config/config";
-import { verifyToken } from "../../config/config";
+import { limiter, errorHandler, handleError, handleWarning, handleNoRecordsModified, requireRoles, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
@@ -11,7 +10,8 @@ const router = express.Router();
 
 router.use(middleware, limiter, errorHandler);
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+// 27.10.13: Cały panel admina zamykamy zasadą admin only, zamiast mieszać publiczny GET z chronionym PUT/DELETE.
+router.get("/", verifyToken, requireRoles("admin"), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const usersList = await UsersRecord.listAll();
       if (usersList.length === 0) {
@@ -23,7 +23,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.put("/:id/:role", verifyToken, async (req, res) => {
+router.put("/:id/:role", verifyToken, requireRoles("admin"), async (req, res) => {
   const {id, role} = req.params;
     try {
       const [result] = await UsersRecord.updateRole(role, id);
@@ -36,7 +36,7 @@ router.put("/:id/:role", verifyToken, async (req, res) => {
     }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:id", verifyToken, requireRoles("admin"), async (req: Request, res: Response, next: NextFunction) => {
   const id: string = req.params.id;
     try {
       const [result] = await UsersRecord.delete(id);

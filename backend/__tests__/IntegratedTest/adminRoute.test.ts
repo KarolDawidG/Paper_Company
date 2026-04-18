@@ -13,6 +13,7 @@ describe('Admin API', () => {
 
   // Mock JWT token generation
   const token = generateTokenForUnitTest('admin');
+  const userToken = generateTokenForUnitTest('user');
 
   //////////////////////////////////////////////////////
   //////          Test for method GET          ///////
@@ -58,6 +59,15 @@ describe('Admin API', () => {
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR}`);
   });
 
+  it('should return 403 when non-admin tries to read admin list', async () => {
+    const response = await request(app)
+      .get('/admin')
+      .set('Authorization', `Bearer ${userToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
+
   //////////////////////////////////////////////////////
   //////          Test for method PUT           ///////
   //////////////////////////////////////////////////////
@@ -90,6 +100,15 @@ describe('Admin API', () => {
       .set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR} (ID: test-id)`);
+  });
+
+  it('should return 403 when non-admin tries to update role', async () => {
+    const response = await request(app)
+      .put('/admin/test-id/new-role')
+      .set('Authorization', `Bearer ${userToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 
   //////////////////////////////////////////////////////
@@ -134,6 +153,15 @@ describe('Admin API', () => {
       .set('Authorization', `Bearer fake-token`);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
     expect(response.text).toBe(MESSAGES.SESSION_EXPIRED);
+  });
+
+  it('should return 403 when non-admin tries to delete user', async () => {
+    const response = await request(app)
+      .delete('/admin/test-id')
+      .set('Authorization', `Bearer ${userToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 
 });

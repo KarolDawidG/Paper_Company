@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleWarning, handleError, requireSelfOrAdmin, validateEmail, validateUserName } from "../../config/config";
+import { limiter, errorHandler, handleWarning, handleError, requireRoles, requireSelfOrAdmin, validateEmail, validateUserName } from "../../config/config";
 import { UsersRecord } from "../../database/Records/Users/UsersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -8,7 +8,8 @@ import { verifyToken } from "../../config/config";
 const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 
-router.get("/:role", verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+// 27.10.14: Lista użytkowników po roli zostaje trasą administracyjną, bo helper data przenieśliśmy już do /support/:role.
+router.get("/:role", verifyToken, requireRoles("admin"), async (req: Request, res: Response, next: NextFunction) => {
   const role: string = req.params.role;
     try {
       const usersList = await UsersRecord.listByRole(role);

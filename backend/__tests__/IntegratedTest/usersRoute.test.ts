@@ -61,6 +61,15 @@ describe('Users API', () => {
     expect(response.text).toBe(MESSAGES.UNKNOW_ERROR);
   });
 
+  it('should return 403 when non-admin tries to read users by role', async () => {
+    const response = await request(app)
+      .get('/users/hr')
+      .set('Authorization', `Bearer ${otherUserToken}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
+
   //////////////////////////////////////////////////////
   //////          Test for method PUT            ///////
   //////////////////////////////////////////////////////
