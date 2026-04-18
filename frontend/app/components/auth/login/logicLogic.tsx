@@ -33,9 +33,14 @@ const logicLogic = () => {
 
       if (response && response.status === 200) {
         const token = response.data.token;
+        const refreshToken = response.data.refreshToken;
         const idUser = response.data.idUser;
 
         localStorage.setItem("token", token);
+        // Refresh token zapisujemy osobno, bo frontend używa go tylko przy odnawianiu sesji.
+        if (refreshToken) {
+          localStorage.setItem("refreshToken", refreshToken);
+        }
         localStorage.setItem("idUser", idUser);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

@@ -11,6 +11,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import axiosInstance from "@/app/api/axiosInstance";
 import { useImage } from "../utils/context/ImageContext";
 
@@ -44,15 +45,34 @@ const TopBar = ({ toggleTheme, mode, setLocale }: any) => {
 
   //add endpont in backend side
   const handleLogOut = async () => {
+    const token = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const idUser = localStorage.getItem("idUser");
+
     try {
+      // Informujemy backend o wylogowaniu, żeby unieważnić refresh token w bazie.
+      if (token && refreshToken && idUser) {
+        await axios.post(
+          `${BACKEND}/logout`,
+          { idUser, refreshToken },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    } finally {
       localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
       localStorage.removeItem("role");
       localStorage.removeItem("idUser");
       localStorage.removeItem("order_id");
       sessionStorage.removeItem("clientId");
+      sessionStorage.removeItem("addressId");
       router.push("/");
-    } catch (error) {
-      console.error("Error: ", error);
     }
   };
 

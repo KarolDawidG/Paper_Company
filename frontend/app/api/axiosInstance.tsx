@@ -25,13 +25,21 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    // Chronimy się przed błędami sieciowymi i zapętlonym refresh flow.
+    if (!error.response || !originalRequest) {
+      return Promise.reject(error);
+    }
+
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("auth/refresh")
+    ) {
       originalRequest._retry = true;
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
-        localStorage.setItem("token", newAccessToken);
-        axios.defaults.headers.common["Authorization"] =
-          `Bearer ${newAccessToken}`;
+        originalRequest.headers = originalRequest.headers || {};
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       }
     }
