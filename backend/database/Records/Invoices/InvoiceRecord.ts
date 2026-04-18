@@ -1,6 +1,7 @@
 import { pool } from "../../pool";
 import { v4 as uuidv4 } from "uuid";
 import { RowDataPacket } from "mysql2/promise";
+import logger from "../../../logs/logger";
 
 export interface Invoice {
   id: string;
@@ -71,7 +72,8 @@ static async getInvoicesList() {
     const [results] = await pool.execute(`SELECT id, invoice_number, created_at, order_id, payment_status, payment_date FROM invoices`) as any;
     return results;
   } catch (error) {
-    console.error("Error in getInvoicesList:", error);
+    // 27.11.13: Operacje fakturowe raportują błędy przez winston, bo są kluczowe dla diagnostyki procesów księgowych.
+    logger.error("Error in getInvoicesList: %s", error);
     throw error;
   }
 }

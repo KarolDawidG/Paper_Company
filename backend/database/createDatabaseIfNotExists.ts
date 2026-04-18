@@ -1,6 +1,7 @@
 import { Pool, RowDataPacket, FieldPacket } from "mysql2/promise";
 import "dotenv/config";
 import { pool } from "./pool";
+import logger from "../logs/logger";
 
 const nameDB = process.env.NAME_DB as string;
 
@@ -15,25 +16,26 @@ const checkDatabaseExists = async (
     ];
     return rows.length > 0;
   } catch (err) {
-    console.error(`Error checking database "${nameDB}":`, err);
+    logger.error('Error checking database "%s": %s', nameDB, err);
     throw err;
   }
 };
 
 const createDatabaseIfNotExists = async (): Promise<void> => {
   try {
-    console.log(`Checking if database "${nameDB}" exists...`);
+    // 27.11.4: Inicjalizacja bazy zapisuje status przez winston, żeby logi startowe były spójne z resztą backendu.
+    logger.info('Checking if database "%s" exists...', nameDB);
     const exists = await checkDatabaseExists(pool, nameDB);
     if (!exists) {
-      console.log(`Database "${nameDB}" does not exist, creating...`);
+      logger.warn('Database "%s" does not exist, creating...', nameDB);
       await pool.query(`CREATE DATABASE IF NOT EXISTS \`${nameDB}\``);
       // await pool.query(`USE ${nameDB}`);
-      console.log(`Database "${nameDB}" has been created.`);
+      logger.info('Database "%s" has been created.', nameDB);
     } else {
-      console.log(`Database "${nameDB}" already exists, no need to create.`);
+      logger.info('Database "%s" already exists, no need to create.', nameDB);
     }
   } catch (err) {
-    console.error(`Error creating/checking database "${nameDB}":`, err);
+    logger.error('Error creating/checking database "%s": %s', nameDB, err);
   }
 };
 

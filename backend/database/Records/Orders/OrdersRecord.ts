@@ -3,6 +3,7 @@ import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
 import {DELETE_ORDER, INSERT_ORDER, SELECT_ORDERS, SELECT_PENDING_ORDERS} from "./querryOrderRecord";
 import { Order } from "./InterfaceOrder";
+import logger from "../../../logs/logger";
 
 class OrdersRecord implements Order {
   id: string;
@@ -64,7 +65,8 @@ class OrdersRecord implements Order {
         const [rows] = await pool.execute(query);
         return rows as any[];
       } catch (error) {
-        console.error("Error fetching pending orders:", error);
+        // 27.11.15: Logi zamówień przechodzą na winston, bo ten moduł łączy kilka procesów biznesowych naraz.
+        logger.error("Error fetching pending orders: %s", error);
         throw new Error("Could not fetch orders.");
       }
     }
@@ -74,7 +76,7 @@ class OrdersRecord implements Order {
       const [results] = await pool.execute(SELECT_ORDERS) as any;
       return results.map((obj: any) => new OrdersRecord(obj));
     } catch (error) {
-      console.error("Error in getList:", error);
+      logger.error("Error in getList: %s", error);
       throw error;
     }
   }
@@ -98,7 +100,7 @@ class OrdersRecord implements Order {
       const [results] = await pool.execute(query, [orderId]) as any;
       return results;
     } catch (error) {
-      console.error("Error in quantityAndItems:", error);
+      logger.error("Error in quantityAndItems: %s", error);
       throw error;
     }
   }
@@ -113,7 +115,7 @@ class OrdersRecord implements Order {
     try {
       await pool.execute(query, [newStatus, orderId]);
     } catch (error) {
-      console.error(`Error updating order status to ${newStatus}:`, error);
+      logger.error("Error updating order status to %s: %s", newStatus, error);
       throw new Error("Could not update order status.");
     }
   }
@@ -141,7 +143,7 @@ class OrdersRecord implements Order {
       const [rows] = await pool.execute(query, [status]);
       return rows as any[];
     } catch (error) {
-      console.error(`Error fetching orders with status ${status}:`, error);
+      logger.error("Error fetching orders with status %s: %s", status, error);
       throw new Error("Could not fetch orders.");
     }
   }
@@ -162,7 +164,7 @@ static async updatePaymentStatus(orderId: string, newStatus: 'unpaid' | 'paid' |
   try {
     await pool.execute(query, [newStatus, newStatus, orderId]);
   } catch (error) {
-    console.error(`Error updating payment status to ${newStatus} for order ${orderId}:`, error);
+    logger.error("Error updating payment status to %s for order %s: %s", newStatus, orderId, error);
     throw new Error("Could not update payment status.");
   }
 }
@@ -209,7 +211,7 @@ static async getOrderDetails(orderId: string): Promise<any> {
     const [results] = await pool.execute(query, [orderId]);
     return results;
   } catch (error) {
-    console.error("Error in getOrderDetails:", error);
+    logger.error("Error in getOrderDetails: %s", error);
     throw new Error("Could not fetch order details.");
   }
 }

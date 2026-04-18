@@ -1,11 +1,13 @@
 import { exec } from 'child_process';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import logger from '../logs/logger';
 
 const result = dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 if (result.error) {
-  console.error('Błąd podczas wczytywania zmiennych środowiskowych:', result.error);
+  // 27.11.7: Backup bazy raportuje błędy i sukcesy przez winston zamiast przez console.*.
+  logger.error('Błąd podczas wczytywania zmiennych środowiskowych: %s', result.error);
   process.exit(1);
 }
 
@@ -31,11 +33,10 @@ const command = `mysqldump -h ${host} -u ${user} -p${password} ${database} > ${b
 
 exec(command, (error, stdout, stderr) => {
   if (error) {
-    console.error(`Błąd podczas wykonywania backupu: ${stderr}`);
+    logger.error('Błąd podczas wykonywania backupu: %s', stderr);
   } else {
-    console.log(`Backup wykonany poprawnie. Zapisano do pliku: ${backupFileName}`);
+    logger.info('Backup wykonany poprawnie. Zapisano do pliku: %s', backupFileName);
   }
 });
 
 // mysqldump -u root -p \ --databases dw_erp_papier \ --routines --triggers \ > dw_erp_papier_dump.sql
-

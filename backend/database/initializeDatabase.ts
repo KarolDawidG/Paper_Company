@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { pool } from "./pool";
+import logger from "../logs/logger";
 
 const nameDB = process.env.NAME_DB;
 
@@ -38,9 +39,10 @@ const initializeDatabase = async () => {
     for await (const table of tables) {
       await table(pool);
     }
-    console.log("Database initialized successfully.");
+    // 27.11.5: Końcowy status inicjalizacji DB trafia do wspólnego loggera zamiast do konsoli.
+    logger.info("Database initialized successfully.");
   } catch (err) {
-    console.error(err);
+    logger.error("Database initialization failed: %s", err);
   }
 };
 

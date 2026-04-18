@@ -4,6 +4,7 @@ import { performTransaction } from "../performTransaction";
 import { v4 as uuidv4 } from "uuid";
 import { EmployeeInterface } from "./EmployeeInterface";
 import { INSERT_EMPLOYEE, SELECT_EMPLOYEE } from "./querryEmployeeRecord";
+import logger from "../../../logs/logger";
 
 class EmployeeRecord implements EmployeeInterface {
   id: string;
@@ -53,7 +54,8 @@ class EmployeeRecord implements EmployeeInterface {
         const [results] = await pool.execute(SELECT_EMPLOYEE) as any;
         return results.map((obj: any) => new EmployeeRecord(obj));
     } catch (error) {
-        console.error("Error in selectAll:", error);
+        // 27.11.11: Odczyt pracowników loguje błędy przez wspólny logger, żeby nie mieszać warstwy danych z konsolą.
+        logger.error("Error in selectAll: %s", error);
         throw error;
     }
 }

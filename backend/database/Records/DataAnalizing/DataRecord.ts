@@ -1,5 +1,6 @@
 
 import { pool } from "../../pool";
+import logger from "../../../logs/logger";
 
 interface MonthlyData {
   profit: number;
@@ -28,7 +29,8 @@ export class DataRecord {
       const [rows] = await pool.execute(query, [langCode]);
       return rows as { name: string; quantity: number }[];
     } catch (error) {
-      console.error("Error fetching top products from DB:", error);
+      // 27.11.14: Analityka korzysta z winston, żeby błędy raportów nie znikały w surowych console.error.
+      logger.error("Error fetching top products from DB: %s", error);
       throw new Error("Could not fetch top products.");
     }
   }
@@ -52,7 +54,7 @@ export class DataRecord {
       const [rows] = await pool.execute(query);
       return rows as { name: string; quantity: number; value: number }[];
     } catch (error) {
-      console.error("Error fetching top sellers from DB:", error);
+      logger.error("Error fetching top sellers from DB: %s", error);
       throw new Error("Could not fetch top sellers.");
     }
   }
@@ -76,7 +78,7 @@ export class DataRecord {
       const [rows] = await pool.execute(query);
       return rows as { name: string; quantity: number; value: number }[];
     } catch (error) {
-      console.error("Error fetching top clients from DB:", error);
+      logger.error("Error fetching top clients from DB: %s", error);
       throw new Error("Could not fetch top clients.");
     }
   }
@@ -97,7 +99,7 @@ export class DataRecord {
     const [rows] = await pool.execute(query);
     return rows as { month: string; profit: number }[];
   } catch (error) {
-    console.error("Error fetching monthly profit from DB:", error);
+    logger.error("Error fetching monthly profit from DB: %s", error);
     throw new Error("Could not fetch monthly profit.");
   }
 }
@@ -181,7 +183,7 @@ static async getMonthlySummaryData(month: string, langCode: string = 'pl') {
       profit: (profit as any)[0]?.profit ?? 0,
     };
   } catch (error) {
-    console.error('Error fetching monthly summary:', error);
+    logger.error("Error fetching monthly summary: %s", error);
     throw new Error('Could not fetch monthly summary data.');
   } finally {
     connection.release();

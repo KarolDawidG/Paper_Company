@@ -3,6 +3,7 @@ import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
 import {DELETE_CLIENT, CLIENT_ORDER_DATA, INSERT_CLIENT, SELECT_CLIENT_BY_ID, SELECT_CLIENTS, UPDATE_CLIENT} from "./querryClientRecord";
 import { Client } from "./InterfaceClient";
+import logger from "../../../logs/logger";
 
 class ClientRecord implements Client {
   id: string;
@@ -27,7 +28,8 @@ class ClientRecord implements Client {
             const [results] = await pool.execute(SELECT_CLIENTS) as any;
             return results.map((obj: any) => new ClientRecord(obj));
         } catch (error) {
-            console.error("Error in getListById:", error);
+            // 27.11.12: Logi warstwy klienta są kierowane do winston, żeby łatwiej śledzić błędy danych sprzedażowych.
+            logger.error("Error in getListById: %s", error);
             throw error;
         }
     }

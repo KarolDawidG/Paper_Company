@@ -1,0 +1,8 @@
+2026-04-18 20:43:46 info: Checking if database "erp" exists...
+2026-04-18 20:43:46 info: Database "erp" already exists, no need to create.
+2026-04-18 20:43:46 info: User root status: 1
+2026-04-18 20:43:46 info: Database initialized successfully.
+2026-04-18 20:43:46 info: Server is running on port: 3001
+2026-04-18 20:45:30 warn: Token verification failed on GET /users/user/0a90fd86-c85a-4d6e-bb77-1a4d8c119483: Authorization failed due to an invalid JsonWebToken signature.
+2026-04-18 20:45:32 info: Logout Route: POST: User 0a90fd86-c85a-4d6e-bb77-1a4d8c119483 logged out.
+2026-04-18 20:45:37 info: Logged in user: superuser, access level: superuser

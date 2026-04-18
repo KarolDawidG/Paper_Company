@@ -33,6 +33,7 @@ import swaggerOptions from './swaggerOptions';
 
 import MESSAGES from "./config/messages";
 import STATUS_CODES from "./config/status-codes";
+import logger from "./logs/logger";
 const specs = swaggerJsdoc(swaggerOptions);
 
 //save api-docs into JSON
@@ -81,9 +82,10 @@ app.get("/", (req: Request, res: Response) => {
     await createDatabaseIfNotExists();
     await initializeDatabase();
     app.listen(PORT, () => {
-      console.log(`Server is running on port: ${PORT}`);
+      // 27.11.2: Start aplikacji logujemy przez winston, żeby log startu trafiał do wspólnych transportów.
+      logger.info(`Server is running on port: ${PORT}`);
     });
   } catch (err) {
-    console.error("Initialization failed:", err);
+    logger.error("Initialization failed: %s", err);
   }
 })();

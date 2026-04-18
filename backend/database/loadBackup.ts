@@ -2,11 +2,13 @@ import { exec } from 'child_process';
 import * as dotenv from 'dotenv';
 import { readdirSync, statSync } from 'fs';
 import * as path from 'path';
+import logger from '../logs/logger';
 
 const result = dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 if (result.error) {
-  console.error('Błąd podczas wczytywania zmiennych środowiskowych:', result.error);
+  // 27.11.6: Skrypty backupu też logują przez winston, żeby diagnostyka środowiska nie ginęła w console.error.
+  logger.error('Błąd podczas wczytywania zmiennych środowiskowych: %s', result.error);
   process.exit(1);
 }
 
@@ -28,7 +30,7 @@ const getLatestBackupFile = (): string | null => {
 const latestBackupFile = getLatestBackupFile();
 
 if (!latestBackupFile) {
-  console.error('Nie znaleziono plików backupu.');
+  logger.error('Nie znaleziono plików backupu.');
   process.exit(1);
 }
 
@@ -38,8 +40,8 @@ const command = `mysql -h ${host} -u ${user} -p${password} ${database} < ${lates
 // Wykonanie polecenia przywracania
 exec(command, (error, stdout, stderr) => {
   if (error) {
-    console.error(`Błąd podczas przywracania bazy danych: ${stderr}`);
+    logger.error('Błąd podczas przywracania bazy danych: %s', stderr);
   } else {
-    console.log(`Baza danych została przywrócona z pliku: ${latestBackupFile}`);
+    logger.info('Baza danych została przywrócona z pliku: %s', latestBackupFile);
   }
 });

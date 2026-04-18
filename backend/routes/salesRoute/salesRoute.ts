@@ -13,7 +13,7 @@ router.use(middleware);
 router.get("/", verifyToken, requireRoles("sales", "accounting", "admin"), async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getPendingList();
-     // console.log(ordersList);
+     // debug pod listę zamówień był tu wcześniej potrzebny podczas wdrażania modułu sprzedaży.
       return res.status(STATUS_CODES.SUCCESS).json({ ordersList });
     } catch (error: any) {
       return handleError(res, error, "Sales Route: GET", MESSAGES.UNKNOW_ERROR);

@@ -18,8 +18,8 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.error(err);
-  logger.error(err.message);
+  // 27.11.3: Globalny error handler zapisuje błąd tylko przez winston, żeby nie mieszać console.error z loggerem.
+  logger.error("Unhandled middleware error on %s %s: %s", req.method, req.originalUrl, err);
   return res.status(STATUS_CODES.BAD_REQUEST).send(MESSAGES.INVALID_REQUEST);
 };
 
@@ -63,7 +63,7 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
 
   jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
     if (err) {
-      logger.info("New error in verify: ", MESSAGES.JWT_ERROR);
+      logger.warn("Token verification failed on %s %s: %s", req.method, req.originalUrl, MESSAGES.JWT_ERROR);
       return res
         .status(STATUS_CODES.UNAUTHORIZED)
         .send(MESSAGES.SESSION_EXPIRED);

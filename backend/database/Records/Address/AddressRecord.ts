@@ -3,6 +3,7 @@ import {v4 as uuidv4} from "uuid";
 import {pool} from "../../pool";
 import {DELETE_ADDRESS_FROM_ORDERS, DELETE_CLIENT_ADDRESS, INSERT_ADDRESS, SELECT_BY_CLIENT_ID} from "./querryAddressRecord";
 import { Address } from "./InterfaceAddress";
+import logger from "../../../logs/logger";
 
 
 
@@ -58,7 +59,8 @@ class AddressRecord implements Address {
       const [results] = await pool.execute(SELECT_BY_CLIENT_ID, [id]) as any;
       return results.map((obj: any) => new AddressRecord(obj));
     } catch (error) {
-      console.error("Error in getListById:", error);
+      // 27.11.17: Warstwa adresów loguje błędy przez winston, żeby dane pomocnicze sprzedaży były diagnozowane tym samym standardem.
+      logger.error("Error in getListById: %s", error);
       throw error;
     }
   }

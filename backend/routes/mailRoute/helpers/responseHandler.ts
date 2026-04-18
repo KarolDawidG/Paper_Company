@@ -3,8 +3,8 @@ import STATUS_CODES from "../../../config/status-codes";
 import logger from "../../../logs/logger";
 
 export const handleResponse = (res: Response, errors: string[], successEmails: string[]) => {
-  console.log('Errors:', errors);
-  console.log('Success Emails:', successEmails);
+  // 27.11.18: Podsumowanie masowej wysyłki maili trafia do winston, żeby nie rozpraszać wyników po konsoli i loggerze.
+  logger.info("Mail batch result - errors: %d, success: %d", errors.length, successEmails.length);
 
   if (errors.length > 0 && successEmails.length > 0) {
     logger.error(`MULTI STATUS Errors: ${errors.join(", ")}`);

@@ -3,6 +3,7 @@ import { pool } from "../../pool";
 import { performTransaction } from "../performTransaction";
 import { validateEmail, validateUserName } from "../../../config/config";
 import { v4 as uuidv4 } from "uuid";
+import logger from "../../../logs/logger";
 import {
   INSERT,
   ACTIVE,
@@ -127,7 +128,8 @@ class UsersRecord implements IUserRecord {
       const [results] = await pool.execute(SELECT_BY_ROLE, [role]) as any;
       return results.map((obj: any) => new UsersRecord(obj));
     } catch (error) {
-      console.error("Error in listByRole:", error);
+      // 27.11.16: Odczyt użytkowników po rolach przechodzi na winston, żeby logi administracyjne były spójne z resztą backendu.
+      logger.error("Error in listByRole: %s", error);
       throw error;
     }
   }
@@ -138,7 +140,7 @@ class UsersRecord implements IUserRecord {
       const [results] = await pool.execute(SELECT_SUPPORT_BY_ROLE, [role]) as any;
       return results;
     } catch (error) {
-      console.error("Error in listSupportByRole:", error);
+      logger.error("Error in listSupportByRole: %s", error);
       throw error;
     }
   }
