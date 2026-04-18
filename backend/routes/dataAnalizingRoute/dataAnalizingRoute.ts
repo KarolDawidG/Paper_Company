@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler } from "../../config/config";
+import { limiter, errorHandler, requireRoles, verifyToken } from "../../config/config";
 import logger from "../../logs/logger";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
@@ -10,7 +10,8 @@ const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 router.use(express.json({ limit: "10mb" }));
 
-router.get("/top-product", async (req: Request, res: Response) => {
+// 27.8.6: Raporty analityczne dostają własną bramkę roli analize/admin zamiast być publiczne.
+router.get("/top-product", verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   const lang = (req.query.lang as string) || 'pl';
 
   try {
@@ -22,7 +23,7 @@ router.get("/top-product", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/top-sellers", async (req: Request, res: Response) => {
+router.get("/top-sellers", verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   try {
     const sellers = await DataRecord.getTopSellers();
     return res.status(STATUS_CODES.SUCCESS).json(sellers);
@@ -32,7 +33,7 @@ router.get("/top-sellers", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/top-clients", async (req: Request, res: Response) => {
+router.get("/top-clients", verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   try {
     const clients = await DataRecord.getTopClients();
     return res.status(STATUS_CODES.SUCCESS).json(clients);
@@ -42,7 +43,7 @@ router.get("/top-clients", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/monthly-profit", async (req: Request, res: Response) => {
+router.get("/monthly-profit", verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   try {
     const monthlyProfit = await DataRecord.getMonthlyProfit();
     return res.status(STATUS_CODES.SUCCESS).json(monthlyProfit);
@@ -52,7 +53,7 @@ router.get("/monthly-profit", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/monthly-summary", async (req: Request, res: Response) => {
+router.get("/monthly-summary", verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   const month = req.query.month as string;
   const lang = (req.query.lang as string) || 'pl';
 
@@ -69,7 +70,7 @@ router.get("/monthly-summary", async (req: Request, res: Response) => {
   }
 });
 
-router.get('/monthly-report', async (req: Request, res: Response) => {
+router.get('/monthly-report', verifyToken, requireRoles("analize", "admin"), async (req: Request, res: Response) => {
   const month = (req.query.month as string) || '';
   if (!/^\d{4}-\d{2}$/.test(month)) {
     return res.status(400).json({ message: 'Nieprawidłowy format miesiąca (YYYY-MM).' });

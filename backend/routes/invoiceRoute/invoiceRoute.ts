@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { limiter, errorHandler, handleError } from "../../config/config";
+import { limiter, errorHandler, handleError, requireRoles, verifyToken } from "../../config/config";
 import STATUS_CODES from "../../config/status-codes";
 import MESSAGES from "../../config/messages";
 import logger from "../../logs/logger";
@@ -13,7 +13,8 @@ const router = express.Router();
 router.use(middleware, limiter, errorHandler);
 router.use(express.json({ limit: "10mb" }));
 
-router.get("/history", async (req: Request, res: Response) => {
+// 27.8.5: Operacje na fakturach są ograniczone do księgowości i administratora.
+router.get("/history", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   try {
     const history = await InvoiceRecord.getPaymentHistory();
     return res.status(200).json({ history });
@@ -24,7 +25,7 @@ router.get("/history", async (req: Request, res: Response) => {
 });
 
 
-router.get("/details/:id", async (req, res) => {
+router.get("/details/:id", verifyToken, requireRoles("accounting", "admin"), async (req, res) => {
   try {
     const { id } = req.params;
     const details = await OrdersRecord.getOrderDetails(id);
@@ -35,7 +36,7 @@ router.get("/details/:id", async (req, res) => {
 });
 
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
     const invoice = await InvoiceRecord.getInvoicesList();
     if (!invoice) return res.status(404).send("Nie znaleziono faktury.");
    return res.status(STATUS_CODES.SUCCESS).json({ invoice });
@@ -48,7 +49,7 @@ router.get("/", async (req: Request, res: Response) => {
     */
 
 
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const invoice = await InvoiceRecord.getOneById(id);
@@ -64,7 +65,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 
-router.patch("/:id/status", async (req: Request, res: Response) => {
+router.patch("/:id/status", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
 
@@ -82,7 +83,7 @@ router.patch("/:id/status", async (req: Request, res: Response) => {
 });
 
 
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response, next: NextFunction) => {
   const { pdf, clientId, clientAddressId, orderId } = req.body;
 
     if (!pdf || !clientId || !clientAddressId || !orderId) {
@@ -123,7 +124,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.post("/resend/:id", async (req: Request, res: Response) => {
+router.post("/resend/:id", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   const { id } = req.params;
   const testowy_email = "karoldawidg@gmail.com"; 
 
@@ -148,7 +149,7 @@ router.post("/resend/:id", async (req: Request, res: Response) => {
 });
     
 
-router.get("/view/:invoiceId", async (req: Request, res: Response) => {
+router.get("/view/:invoiceId", verifyToken, requireRoles("accounting", "admin"), async (req: Request, res: Response) => {
   const { invoiceId } = req.params;
 
   console.log(invoiceId);

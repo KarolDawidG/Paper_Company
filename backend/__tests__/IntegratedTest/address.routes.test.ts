@@ -35,7 +35,7 @@ describe('Address API', () => {
 
     const response = await request(app)
       .get('/address/valid-id')
-      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('addressList');
     expect(response.body.addressList).toBeInstanceOf(Array);
@@ -46,7 +46,7 @@ describe('Address API', () => {
   
     const response = await request(app)
       .get('/address/invalid-id')
-      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`);
     expect(response.status).toBe(STATUS_CODES.SUCCESS);
     expect(response.body.addressList).toEqual([]);
   });
@@ -56,7 +56,7 @@ describe('Address API', () => {
       
     const response = await request(app)
       .get('/address/valid-id')
-      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`);
     expect(response.status).toBe(500);
     expect(response.text).toBe(`${MESSAGES.UNKNOW_ERROR} (ID: valid-id)`);
   });
@@ -80,7 +80,7 @@ describe('Address API', () => {
   
     const response = await request(app)
       .delete('/address/test-id')
-      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`);
     expect(response.status).toBe(200);
     expect(response.text).toBe(MESSAGES.SUCCESSFUL_OPERATION);
   });
@@ -90,7 +90,7 @@ describe('Address API', () => {
     
     const response = await request(app)
       .delete('/address/invalid-id')
-      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`);
     expect(response.status).toBe(404);
     expect(response.text).toBe(MESSAGES.NO_RECORDS_MODIFIED);
   });
@@ -113,6 +113,15 @@ describe('Address API', () => {
       .set('Authorization', `Bearer fake-token`);
     expect(response.status).toBe(401);
     expect(response.text).toBe(MESSAGES.SESSION_EXPIRED);
+  });
+
+  it('should return 403 for role without access', async () => {
+    const response = await request(app)
+      .get('/address/valid-id')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 
 });

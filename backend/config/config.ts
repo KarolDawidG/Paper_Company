@@ -90,6 +90,17 @@ const requireSelfOrAdmin = (
   return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
 };
 
+const requireRoles =
+  (...roles: string[]) =>
+  (req: CustomRequest, res: Response, next: NextFunction) => {
+    // 27.8.1: Moduły biznesowe mają jawnie wskazane role zamiast samego "czy token istnieje".
+    if (req.userRole && roles.includes(req.userRole)) {
+      return next();
+    }
+
+    return res.status(STATUS_CODES.FORBIDDEN).send(MESSAGES.FORBIDDEN);
+  };
+
 const queryParameterize = /^[A-Za-z0-9]+$/;
 
 const validateEmail = (e: string) => {
@@ -192,6 +203,7 @@ export {
   areNonEmptyStrings,
   verifyToken,
   requireSelfOrAdmin,
+  requireRoles,
   handleError,
   handleWarning,
   handleNoRecordsModified,

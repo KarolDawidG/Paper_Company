@@ -1,10 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, limiter, normalizeString, validateEmail } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, limiter, normalizeString, requireRoles, validateEmail, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
 import logger from "../../logs/logger";
-import { verifyToken } from "../../config/config";
 import {ClientRecord} from "../../database/Records/Client/ClientRecord";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import { saveOrderDetailsToFile } from "../../config/fileUtils";
@@ -19,7 +18,7 @@ const getNormalizedClientPayload = (body: any) => ({
   company_name: normalizeString(body.company_name),
 });
 
-router.get("/", verifyToken, async (req: Request, res: Response) => {
+router.get("/", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   try {
     const clientList = await ClientRecord.getList();
     if (clientList.length === 0) {
@@ -32,7 +31,7 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-router.get("/client-data/:clientid/:addresid", async (req: Request, res: Response) => {
+router.get("/client-data/:clientid/:addresid", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const clientid = normalizeString(req.params.clientid);
   const addresid = normalizeString(req.params.addresid);
 
@@ -55,7 +54,8 @@ router.get("/client-data/:clientid/:addresid", async (req: Request, res: Respons
   }
 });
 
-router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
+// 27.8.3: Szczegóły zamówienia są współdzielone przez sprzedaż i księgowość przy generowaniu faktur.
+router.get("/:addressId/:orderId", verifyToken, requireRoles("sales", "accounting", "admin"), async (req: Request, res: Response) => {
   const addressId:string = normalizeString(req.params.addressId);
   const orderId:string = normalizeString(req.params.orderId);
     if (!areNonEmptyStrings(addressId, orderId)) {
@@ -76,7 +76,7 @@ router.get("/:addressId/:orderId", async (req: Request, res: Response) => {
 });
 
 // Nowy endpoint zapisujący szczegóły zamówienia do pliku JSON po naciśnięciu przycisku "Zapisz" na froncie
-router.post("/save/:orderId", async (req: Request, res: Response) => {
+router.post("/save/:orderId", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const orderId: string = normalizeString(req.params.orderId);
   const addressId: string = normalizeString(req.body.addressId);
   const clientId: string = normalizeString(req.body.clientId);
@@ -104,7 +104,7 @@ router.post("/save/:orderId", async (req: Request, res: Response) => {
 });
 
 
-router.post("/", verifyToken, async (req: Request, res: Response) => {
+router.post("/", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const formData = getNormalizedClientPayload(req.body);
     // 27.7.3: Dane klienta przechodzą wspólną walidację pól wymaganych i formatu e-mail.
     if (!areNonEmptyStrings(formData.first_name, formData.second_name, formData.email, formData.company_name)) {
@@ -122,7 +122,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => {
+router.delete("/:clientId", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const clientId = normalizeString(req.params.clientId);
   if (!clientId) {
     return handleWarning(res, "Client Route: DELETE: Missing client id", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);
@@ -139,7 +139,7 @@ router.delete("/:clientId", verifyToken, async (req: Request, res: Response) => 
     }
 });
 
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const id: string = normalizeString(req.params.id);
   const formData = getNormalizedClientPayload(req.body);
 

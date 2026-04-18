@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ProductsData,  TablePropsProducts, Products } from './TableInterfaces';
 import axiosInstance from '@/app/api/axiosInstance';
-import axios from 'axios';
 
 const TableLogic = () => {
   const [data, setData] = useState<any[]>([]);
@@ -18,7 +17,8 @@ const TableLogic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<any>('http://localhost:3001/warehouse/products');
+        // 27.8.7: Magazyn pobiera dane przez axiosInstance, bo endpoint jest już chroniony tokenem i rolą.
+        const response = await axiosInstance.get<any>('http://localhost:3001/warehouse/products');
         console.log(response.data)
         setData(response.data);
       } catch (error) {

@@ -5,6 +5,7 @@ import STATUS_CODES from '../../../config/status-codes';
 import MESSAGES from '../../../config/messages';
 import router from '../../../routes/salesRoute/salesRoute';
 import { handleError, handleWarning } from '../../../config/config';
+import { generateTokenForUnitTest } from '../../../config/config';
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use('/sales', router);
 
 jest.mock('../../../database/Records/Orders/OrdersRecord');
 jest.mock('../../../config/config', () => ({
+  ...jest.requireActual('../../../config/config'),
   handleError: jest.fn(),
   handleWarning: jest.fn(),
 }));
@@ -33,6 +35,7 @@ jest.mock('../../../config/config', () => ({
   
       const response = await request(app)
         .post('/sales/new-order')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -53,6 +56,7 @@ jest.mock('../../../config/config', () => ({
   
       const response = await request(app)
         .post('/sales/new-order')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -76,6 +80,7 @@ jest.mock('../../../config/config', () => ({
   
       const response = await request(app)
         .post('/sales/new-order')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -85,5 +90,13 @@ jest.mock('../../../config/config', () => ({
     });
   });
 
+  it('should return 403 for role without access to create order', async () => {
+    const response = await request(app)
+      .post('/sales/new-order')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`)
+      .send({ client_id: '456', client_address_id: '789' });
 
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });
 

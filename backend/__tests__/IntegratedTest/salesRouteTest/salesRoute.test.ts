@@ -6,6 +6,7 @@ import MESSAGES from '../../../config/messages';
 import router from '../../../routes/salesRoute/salesRoute';
 import { handleError, handleWarning } from '../../../config/config';
 import { AddressRecord } from '../../../database/Records/Address/AddressRecord';
+import { generateTokenForUnitTest } from '../../../config/config';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use('/sales', router);
 jest.mock('../../../database/Records/Address/AddressRecord');
 jest.mock('../../../database/Records/Orders/OrdersRecord');
 jest.mock('../../../config/config', () => ({
+  ...jest.requireActual('../../../config/config'),
   handleError: jest.fn(),
   handleWarning: jest.fn(),
 }));
@@ -29,23 +31,29 @@ describe('GET /sales', () => {
       { id: '2', client_id: '457', client_address_id: '790', created_at: new Date().toISOString() },
     ];
 
-    (OrdersRecord.getListById as jest.Mock).mockResolvedValue(mockOrders);
+    (OrdersRecord.getPendingList as jest.Mock).mockResolvedValue(mockOrders);
 
-    const response = await request(app).get('/sales').set('Accept-Language', 'en');
+    const response = await request(app)
+      .get('/sales')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
+      .set('Accept-Language', 'en');
 
     expect(response.status).toBe(STATUS_CODES.SUCCESS);
     expect(response.body.ordersList).toEqual(mockOrders);
   });
 
   it('should return 404 if no orders are found', async () => {
-    (OrdersRecord.getListById as jest.Mock).mockResolvedValue([]);
+    (OrdersRecord.getPendingList as jest.Mock).mockResolvedValue([]);
 
     // Mock the handleWarning function to check its usage
     (handleWarning as jest.Mock).mockImplementation((res, route, message, status) => {
       res.status(status).json({ message });
     });
 
-    const response = await request(app).get('/sales').set('Accept-Language', 'en');
+    const response = await request(app)
+      .get('/sales')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
+      .set('Accept-Language', 'en');
 
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
     expect(response.body.message).toBe(MESSAGES.NOT_FOUND);
@@ -53,14 +61,17 @@ describe('GET /sales', () => {
   });
 
   it('should return 500 if there is an error', async () => {
-    (OrdersRecord.getListById as jest.Mock).mockRejectedValue(new Error('Database error'));
+    (OrdersRecord.getPendingList as jest.Mock).mockRejectedValue(new Error('Database error'));
 
     // Mock the handleError function to check its usage
     (handleError as jest.Mock).mockImplementation((res, error, route, message) => {
       res.status(STATUS_CODES.SERVER_ERROR).json({ message });
     });
 
-    const response = await request(app).get('/sales').set('Accept-Language', 'en');
+    const response = await request(app)
+      .get('/sales')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
+      .set('Accept-Language', 'en');
 
     expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
     expect(response.body.message).toBe(MESSAGES.UNKNOW_ERROR);
@@ -88,6 +99,7 @@ describe('POST /sales', () => {
   
       const response = await request(app)
         .post('/sales')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -117,6 +129,7 @@ describe('POST /sales', () => {
   
       const response = await request(app)
         .post('/sales')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -145,6 +158,7 @@ describe('POST /sales', () => {
   
       const response = await request(app)
         .post('/sales')
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .send(formData)
         .set('Accept-Language', 'en');
   
@@ -152,6 +166,16 @@ describe('POST /sales', () => {
       expect(response.body.message).toBe(MESSAGES.UNKNOW_ERROR);
       expect(handleError).toHaveBeenCalledWith(expect.anything(), expect.any(Error), "Sales Route address: POST", MESSAGES.UNKNOW_ERROR, STATUS_CODES.SERVER_ERROR, '456');
     });
+  });
+
+  it('should return 403 for role without access to sales address creation', async () => {
+    const response = await request(app)
+      .post('/sales')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`)
+      .send({ city: 'Warsaw', street: 'Main St', client_id: '456' });
+
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
   });
 
   

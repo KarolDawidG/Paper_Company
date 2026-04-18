@@ -5,6 +5,7 @@ import STATUS_CODES from '../../../config/status-codes';
 import MESSAGES from '../../../config/messages';
 import router from '../../../routes/salesRoute/salesRoute';
 import { handleError, handleNoRecordsModified, handleWarning } from '../../../config/config';
+import { generateTokenForUnitTest } from '../../../config/config';
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use('/sales', router);
 
 jest.mock('../../../database/Records/Orders/OrdersRecord');
 jest.mock('../../../config/config', () => ({
+  ...jest.requireActual('../../../config/config'),
   handleError: jest.fn(),
   handleWarning: jest.fn(),
   handleNoRecordsModified: jest.fn(),
@@ -33,6 +35,7 @@ jest.mock('../../../config/config', () => ({
   
       const response = await request(app)
         .delete(`/sales/${orderId}`)
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .set('Accept-Language', 'en');
   
       expect(response.status).toBe(STATUS_CODES.SUCCESS);
@@ -59,6 +62,7 @@ jest.mock('../../../config/config', () => ({
       
         const response = await request(app)
           .delete(`/sales/${orderId}`)
+          .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
           .set('Accept-Language', 'en');
       
         expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
@@ -81,6 +85,7 @@ jest.mock('../../../config/config', () => ({
   
       const response = await request(app)
         .delete(`/sales/${orderId}`)
+        .set('Authorization', `Bearer ${generateTokenForUnitTest('sales')}`)
         .set('Accept-Language', 'en');
   
       expect(response.status).toBe(STATUS_CODES.SERVER_ERROR);
@@ -89,4 +94,11 @@ jest.mock('../../../config/config', () => ({
     });
   });
 
+  it('should return 403 for role without access to delete order', async () => {
+    const response = await request(app)
+      .delete('/sales/123')
+      .set('Authorization', `Bearer ${generateTokenForUnitTest('user')}`);
 
+    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
+    expect(response.text).toBe(MESSAGES.FORBIDDEN);
+  });

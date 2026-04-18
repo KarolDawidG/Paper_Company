@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import middleware from "../../config/middleware";
-import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, normalizeString } from "../../config/config";
+import { areNonEmptyStrings, handleError, handleNoRecordsModified, handleWarning, normalizeString, requireRoles, verifyToken } from "../../config/config";
 import { OrdersRecord } from "../../database/Records/Orders/OrdersRecord";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
@@ -9,7 +9,8 @@ const router = express.Router();
 
 router.use(middleware);
 
-router.get("/", async (req: Request, res: Response) => {
+// 27.8.2: Lista zamówień jest potrzebna zarówno sprzedaży, jak i księgowości pracującej na fakturach.
+router.get("/", verifyToken, requireRoles("sales", "accounting", "admin"), async (req: Request, res: Response) => {
     try {
       const ordersList = await OrdersRecord.getPendingList();
      // console.log(ordersList);
@@ -19,7 +20,7 @@ router.get("/", async (req: Request, res: Response) => {
     }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const formData = {
     miasto: normalizeString(req.body.city),
     ulica: normalizeString(req.body.street),
@@ -42,7 +43,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
-router.post("/new-order", async (req: Request, res: Response) => {
+router.post("/new-order", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const client_id = normalizeString(req.body.client_id);
   const client_address_id = normalizeString(req.body.client_address_id);
   const account_id = normalizeString(req.body.account_id) || undefined;
@@ -58,7 +59,7 @@ router.post("/new-order", async (req: Request, res: Response) => {
     }
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", verifyToken, requireRoles("sales", "accounting", "admin"), async (req: Request, res: Response) => {
   const id:string = normalizeString(req.params.id);
     if (!id) {
       return handleWarning(res, "Sales Route: DELETE: Missing order id", MESSAGES.BAD_REQUEST, STATUS_CODES.BAD_REQUEST);

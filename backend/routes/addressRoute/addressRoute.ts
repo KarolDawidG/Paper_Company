@@ -1,15 +1,14 @@
 import express, { Request, Response } from "express";
 import middleware from "../../config/middleware";
-import { handleError, handleNoRecordsModified, handleWarning, limiter } from "../../config/config";
+import { handleError, handleNoRecordsModified, handleWarning, limiter, requireRoles, verifyToken } from "../../config/config";
 import MESSAGES from "../../config/messages";
 import STATUS_CODES from "../../config/status-codes";
-import { verifyToken } from "../../config/config";
 import {AddressRecord} from "../../database/Records/Address/AddressRecord";
 import logger from "../../logs/logger";
 const router = express.Router();
 router.use(middleware, limiter);
 
-router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+router.get("/:id", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
 
@@ -26,7 +25,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+router.delete("/:id", verifyToken, requireRoles("sales", "admin"), async (req: Request, res: Response) => {
   const id:string = req.params.id;
     try {
       const [result] = await AddressRecord.delete(id);
